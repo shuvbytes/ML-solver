@@ -1,6 +1,6 @@
 // Validate the question bank and generators. Run: node scripts/check.js [--subtopics]
 const fs = require('fs'), path = require('path');
-const { parseBank, GENS, buildGenerated, TOPICS, SUBTOPICS } = require('../src/core.js');
+const { parseBank, GENS, buildGenerated, TOPICS, SUBTOPICS, OPTREF, bareOptionRefs } = require('../src/core.js');
 const dir = path.join(__dirname, '..', 'bank');
 const text = fs.readdirSync(dir).filter(f => f.endsWith('.txt')).map(f => fs.readFileSync(path.join(dir, f), 'utf8')).join('\n\n');
 const B = parseBank(text);
@@ -29,6 +29,11 @@ for (const q of B) {
       if (new Set(q.ans).size !== q.ans.length) err(q.id, 'ANS lists an option twice');
     }
   }
+  for (const k of new Set(q.dups)) err(q.id, `field ${k}: appears twice. A Q/EXP line starting with "${k}:" is read as a new field; rephrase it${'ABCD'.includes(k) ? ` (write [[${k}]] to refer to an option)` : ''}`);
+  const refs = [...(q.q + q.exp).matchAll(OPTREF)];
+  if (refs.length && q.type === 'nat') err(q.id, '[[X]] option references are not allowed in TYPE: nat');
+  for (const m of refs) if (q.type !== 'nat' && !q.opts['ABCD'.indexOf(m[1])]) err(q.id, `[[${m[1]}]] refers to a missing option`);
+  for (const r of bareOptionRefs(q.exp)) err(q.id, `explanation names an option by a bare letter ("${r}"). Options are shuffled on screen; write [[A]]..[[D]] instead`);
   const all = q.q + q.opts.join('') + q.exp;
   if ((all.split('$').length - 1) % 2) err(q.id, 'odd number of $ (unbalanced math)');
   if (/<\/script/i.test(all)) err(q.id, 'contains </script');

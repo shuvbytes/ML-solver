@@ -26,6 +26,8 @@ function getQ(id) {
   if (b.type === 'nat') return Object.assign(base, { options: [], ans: b.ans, tol: b.tol });
   const order = shuffle(mulberry32(hashStr(id)), [0, 1, 2, 3]);
   base.options = order.map(i => b.opts[i]);
+  // [[B]] in an explanation means "the option written as B in the bank"; show the letter it has on screen.
+  base.exp = b.exp.replace(OPTREF, (m, l) => '\u0001' + 'ABCD'[order.indexOf('ABCD'.indexOf(l))]);
   // mcq: correct = display index. msq: correct = sorted display indices.
   base.correct = b.type === 'msq' ? b.ans.map(i => order.indexOf(i)).sort((x, y) => x - y) : order.indexOf(b.ans);
   return base;
@@ -315,7 +317,7 @@ function renderSolve() {
       ${!s.done && hasNext ? '<button class="btn ghost" data-next="1">Skip</button>' : ''}
       <span class="kbd">${keys}</span>
     </div>
-    ${s.done ? `<div class="result ${ok ? 'ok' : 'bad'}"><p class="verdict">${ok ? 'Correct.' + (q.type === 'nat' && parseNum(s.sel) !== q.ans ? ` Exact answer: ${esc(q.ans)}.` : '') : `Not quite. ${answerText}`}</p><div class="exp">${rich(q.exp)}</div></div>` : ''}
+    ${s.done ? `<div class="result ${ok ? 'ok' : 'bad'}"><p class="verdict">${ok ? 'Correct.' + (q.type === 'nat' && parseNum(s.sel) !== q.ans ? ` Exact answer: ${esc(q.ans)}.` : '') : `Not quite. ${answerText}`}</p><div class="exp">${rich(q.exp).replace(/\u0001([ABCD])/g, '<b class="optref">$1</b>')}</div></div>` : ''}
   </article>
   ${justCompleted ? `<div class="banner">Today’s set is complete. Your streak is now ${curStreak()} day${curStreak() === 1 ? '' : 's'}.</div>` : ''}`;
 }

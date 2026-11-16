@@ -441,8 +441,8 @@ C: $\begin{pmatrix}0&1\\1&0\end{pmatrix}$
 D: $\begin{pmatrix}1&0\\0&0\end{pmatrix}$
 ANS: A
 EXP: A symmetric matrix is PD iff all eigenvalues are $>0$ (or all leading principal minors $>0$).
-(A): minors $2>0$, $4-1=3>0$ → eigenvalues $1,3$: PD.
-(B): eigenvalues $3,-1$. (C): eigenvalues $\pm1$. (D): eigenvalues $1,0$, only positive semidefinite.
+[[A]]: minors $2>0$, $4-1=3>0$ → eigenvalues $1,3$: PD.
+[[B]]: eigenvalues $3,-1$. [[C]]: eigenvalues $\pm1$. [[D]]: eigenvalues $1,0$, only positive semidefinite.
 
 
 @ la m la-m-008
@@ -601,8 +601,8 @@ B: $\begin{pmatrix}2&1\\0&3\end{pmatrix}$
 C: $\begin{pmatrix}0&1\\0&0\end{pmatrix}$
 D: $\begin{pmatrix}0&-1\\1&0\end{pmatrix}$
 ANS: B
-EXP: (B) has distinct real eigenvalues $2,3$, and distinct eigenvalues always give independent eigenvectors, so it is diagonalisable.
-(A) and (C) have a repeated eigenvalue with only one eigenvector (Jordan blocks). (D) is a rotation with eigenvalues $\pm i$, so it is not diagonalisable over $\mathbb R$.
+EXP: [[B]] has distinct real eigenvalues $2,3$, and distinct eigenvalues always give independent eigenvectors, so it is diagonalisable.
+[[A]] and [[C]] have a repeated eigenvalue with only one eigenvector (Jordan blocks). [[D]] is a rotation with eigenvalues $\pm i$, so it is not diagonalisable over $\mathbb R$.
 
 
 @ la h la-h-010
@@ -617,6 +617,2321 @@ ANS: B
 EXP: $Hu=u-2u=-u$, so $u$ has eigenvalue $-1$.
 Any $w\perp u$ gives $Hw=w$, so eigenvalue $1$ with multiplicity $n-1$.
 $\det H=(-1)\cdot1^{n-1}=-1$. $H$ is a reflection: orthogonal and symmetric. It is used in QR decomposition.
+
+@ la e la-e-012
+T: L1 norm of a vector
+S: vectors-norms
+Q: What is the $L_1$ norm $\|x\|_1$ of $x=(3,-4,1,-2)$?
+A: $10$
+B: $-2$
+C: $\sqrt{30}$
+D: $4$
+ANS: A
+EXP: The $L_1$ norm is the sum of absolute values: $\|x\|_1=|3|+|-4|+|1|+|-2|=10$.
+$-2$ is the plain sum (forgetting absolute values), $\sqrt{30}$ is the $L_2$ norm, and $4$ is the $L_\infty$ norm (largest absolute entry).
+In ML, the $L_1$ penalty (lasso) uses exactly this norm and pushes weights to be exactly zero.
+
+
+@ la e la-e-013
+T: Cosine similarity of two vectors
+S: vectors-norms
+TYPE: nat
+TOL: 0.01
+Q: Find the cosine similarity $\dfrac{u\cdot v}{\|u\|\,\|v\|}$ of $u=(1,2,2)$ and $v=(2,1,2)$. Give your answer to 2 decimal places.
+ANS: 0.89
+EXP: Dot product: $u\cdot v=1\cdot2+2\cdot1+2\cdot2=8$.
+Norms: $\|u\|=\sqrt{1+4+4}=3$ and $\|v\|=\sqrt{4+1+4}=3$.
+Cosine similarity $=\frac{8}{3\cdot3}=\frac89\approx0.89$.
+A common slip is dividing by $\|u\|^2+\|v\|^2=18$ or by only one norm. Cosine similarity is how embeddings (words, sentences) are usually compared.
+
+
+@ la e la-e-014
+T: Unit vector in a given direction
+S: vectors-norms
+Q: What is the unit vector in the direction of $v=(2,-1,2)$?
+A: $\left(\tfrac23,-\tfrac13,\tfrac23\right)$
+B: $\left(\tfrac25,-\tfrac15,\tfrac25\right)$
+C: $\left(\tfrac29,-\tfrac19,\tfrac29\right)$
+D: $\left(\tfrac{2}{\sqrt3},-\tfrac{1}{\sqrt3},\tfrac{2}{\sqrt3}\right)$
+ANS: A
+EXP: Divide $v$ by its $L_2$ norm: $\|v\|=\sqrt{4+1+4}=3$, so $\hat v=v/3=\left(\tfrac23,-\tfrac13,\tfrac23\right)$.
+Dividing by $5$ uses the $L_1$ norm, dividing by $9$ uses $\|v\|^2$, and dividing by $\sqrt3$ uses the square root of the number of entries. Only $\|v\|_2=3$ gives a vector of length $1$.
+
+
+@ la e la-e-015
+T: Which sets are subspaces of R^3
+S: vector-spaces
+TYPE: msq
+Q: Which of the following sets are subspaces of $\mathbb R^3$? More than one option may be correct.
+A: $\{x\in\mathbb R^3 : x_1+x_2+x_3=0\}$
+B: $\{x\in\mathbb R^3 : x_1+x_2+x_3=1\}$
+C: $\{x\in\mathbb R^3 : x_1=2x_3\}$
+D: $\{x\in\mathbb R^3 : x_1x_2=0\}$
+ANS: A,C
+EXP: A subspace must contain $0$ and be closed under addition and scalar multiplication.
+[[A]] the solution set of a homogeneous linear equation, so it is a subspace (a plane through the origin).
+[[B]] $0$ is not in it ($0+0+0\ne1$), so it is not a subspace (it is a shifted plane).
+[[C]] $x_1-2x_3=0$ is homogeneous and linear, so it is a subspace.
+[[D]] contains $0$ and is closed under scaling, but not under addition: $(1,0,0)$ and $(0,1,0)$ are in it, their sum $(1,1,0)$ is not. Not a subspace.
+
+
+@ la e la-e-016
+T: Dimension of a span
+S: vector-spaces
+Q: What is the dimension of $\operatorname{span}\{(1,2,3),\ (2,4,6),\ (0,1,1)\}$?
+A: $1$
+B: $2$
+C: $3$
+D: $0$
+ANS: B
+EXP: The dimension of a span is the number of linearly independent vectors in the set.
+$(2,4,6)=2(1,2,3)$ adds nothing new. $(0,1,1)$ is not a multiple of $(1,2,3)$, so these two are independent.
+So the span is a plane and has dimension $2$. Answering $3$ just counts the vectors without checking for dependence.
+
+
+@ la e la-e-017
+T: Five vectors in R^4
+S: vector-spaces
+Q: $v_1,\dots,v_5$ are any five vectors in $\mathbb R^4$. Which statement is always true?
+A: They are linearly dependent.
+B: They are linearly independent.
+C: They span $\mathbb R^4$.
+D: They are independent as long as none of them is the zero vector.
+ANS: A
+EXP: $\dim\mathbb R^4=4$, so at most $4$ vectors in $\mathbb R^4$ can be linearly independent. Any $5$ vectors must be dependent.
+They need not span $\mathbb R^4$: for example all five could lie on one line. Being nonzero does not prevent dependence either (e.g. $v$ and $2v$).
+
+
+@ la e la-e-018
+T: Dimension of 3×3 symmetric matrices
+S: vector-spaces
+TYPE: nat
+TOL: 0
+Q: What is the dimension of the vector space of all real symmetric $3\times3$ matrices?
+ANS: 6
+EXP: A symmetric matrix is fixed by its diagonal and the entries above it, since $a_{ji}=a_{ij}$.
+Free entries: $3$ on the diagonal $+\ 3$ above it $=6$. In general the dimension is $\frac{n(n+1)}{2}$.
+$9$ is the dimension of all $3\times3$ matrices; $3$ counts only the off-diagonal (that is the dimension of skew-symmetric $3\times3$ matrices).
+
+
+@ la e la-e-019
+T: Trace of AB versus BA
+S: matrix-ops
+Q: $A$ is $2\times3$ and $B$ is $3\times2$, with $\operatorname{tr}(AB)=5$. What is $\operatorname{tr}(BA)$?
+A: $5$
+B: $0$
+C: $\tfrac{15}{2}$
+D: It cannot be determined because $BA$ is a different size from $AB$.
+ANS: A
+EXP: The trace is invariant under cyclic shifts: $\operatorname{tr}(AB)=\operatorname{tr}(BA)$ whenever both products are defined, even if $AB$ ($2\times2$) and $BA$ ($3\times3$) have different sizes.
+Reason: both equal $\sum_{i,j}a_{ij}b_{ji}$. So $\operatorname{tr}(BA)=5$.
+This identity is used constantly in ML derivations, e.g. $x^TAx=\operatorname{tr}(Axx^T)$.
+
+
+@ la e la-e-020
+T: Matrix identities that always hold
+S: matrix-ops
+TYPE: msq
+Q: $A$ and $B$ are $n\times n$ matrices. Which statements are always true? More than one option may be correct.
+A: $(A+B)^T=A^T+B^T$
+B: $AB=BA$
+C: $\det(A+B)=\det A+\det B$
+D: If $A$ and $B$ are invertible, $(AB)^{-1}=B^{-1}A^{-1}$
+ANS: A,D
+EXP: [[A]] true, transposing is linear, entry by entry.
+[[B]] false in general. Example: $A=\begin{pmatrix}0&1\\0&0\end{pmatrix}$, $B=\begin{pmatrix}0&0\\1&0\end{pmatrix}$ give $AB=\begin{pmatrix}1&0\\0&0\end{pmatrix}\ne BA=\begin{pmatrix}0&0\\0&1\end{pmatrix}$.
+[[C]] false. With $A=B=I_2$: $\det(2I)=4$ but $\det I+\det I=2$. The determinant is multiplicative, not additive.
+[[D]] true, since $(AB)(B^{-1}A^{-1})=A(BB^{-1})A^{-1}=I$. Note the order reverses.
+
+
+@ la e la-e-021
+T: Multiplying by a diagonal matrix on the left
+S: matrix-ops
+Q: Let $D=\begin{pmatrix}2&0\\0&3\end{pmatrix}$ and $A=\begin{pmatrix}1&2\\3&4\end{pmatrix}$. What is $DA$?
+A: $\begin{pmatrix}2&4\\9&12\end{pmatrix}$
+B: $\begin{pmatrix}2&6\\6&12\end{pmatrix}$
+C: $\begin{pmatrix}2&0\\0&12\end{pmatrix}$
+D: $\begin{pmatrix}2&9\\4&12\end{pmatrix}$
+ANS: A
+EXP: Multiplying by a diagonal matrix on the left scales the rows: row $i$ of $A$ is multiplied by $d_i$.
+Row 1 $\times2$: $(2,4)$. Row 2 $\times3$: $(9,12)$. So $DA=\begin{pmatrix}2&4\\9&12\end{pmatrix}$.
+$\begin{pmatrix}2&6\\6&12\end{pmatrix}$ is $AD$ (columns scaled), the most common mix-up. $\begin{pmatrix}2&0\\0&12\end{pmatrix}$ is the entrywise (Hadamard) product.
+
+
+@ la e la-e-022
+T: Parameter that makes a system inconsistent
+S: linear-systems
+Q: For which value of $k$ does the system $x+2y=3,\ 2x+ky=7$ have no solution?
+A: $k=4$
+B: $k=-4$
+C: $k=2$
+D: $k=1$
+ANS: A
+EXP: Eliminate $x$: $R_2-2R_1$ gives $(k-4)y=7-6=1$.
+If $k\ne4$, $y=\frac{1}{k-4}$ and there is a unique solution. If $k=4$, the equation becomes $0=1$, so there is no solution (the two lines are parallel and distinct).
+$k=2$ makes the coefficients proportional to $1:1$, not $1:2$, so it still gives a unique solution.
+
+
+@ la e la-e-023
+T: Homogeneous system with more unknowns
+S: linear-systems
+Q: A homogeneous system $Ax=0$ has $3$ equations in $5$ unknowns. Which is always true?
+A: It has infinitely many solutions.
+B: It has only the trivial solution $x=0$.
+C: It has no solution.
+D: It has exactly one nonzero solution.
+ANS: A
+EXP: A homogeneous system always has the solution $x=0$, so it is never inconsistent.
+$\operatorname{rank}A\le3<5$, so at least $5-3=2$ variables are free. Each free variable can take any value, giving infinitely many solutions.
+"Only the trivial solution" would need $\operatorname{rank}A=5$, which is impossible with 3 rows.
+
+
+@ la e la-e-024
+T: Consistency from ranks of A and [A|b]
+S: linear-systems
+Q: For a system $Ax=b$, $\operatorname{rank}(A)=2$ and $\operatorname{rank}([A\mid b])=3$. The system has:
+A: no solution
+B: exactly one solution
+C: infinitely many solutions
+D: exactly two solutions
+ANS: A
+EXP: By the Rouché–Capelli criterion, $Ax=b$ is consistent if and only if $\operatorname{rank}(A)=\operatorname{rank}([A\mid b])$.
+Here the ranks differ: adding $b$ raised the rank, so $b$ is not in the column space of $A$. There is no solution.
+(A linear system can never have exactly two solutions: it has $0$, $1$, or infinitely many.)
+
+
+@ la e la-e-025
+T: Rank of a Gram matrix
+S: rank-nullity
+Q: A data matrix $X$ is $50\times4$ with $\operatorname{rank}(X)=3$. What is $\operatorname{rank}(X^TX)$?
+A: $3$
+B: $4$
+C: $50$
+D: $9$
+ANS: A
+EXP: For any real matrix, $\operatorname{rank}(X^TX)=\operatorname{rank}(X)$, because $X^TXv=0 \Rightarrow v^TX^TXv=\|Xv\|^2=0 \Rightarrow Xv=0$, so both have the same null space.
+So $\operatorname{rank}(X^TX)=3$, even though $X^TX$ is $4\times4$.
+This is why the normal equations $X^TX\beta=X^Ty$ have no unique solution when the features are linearly dependent (here one of the 4 columns is redundant).
+
+
+@ la e la-e-026
+T: Smallest possible nullity of a 3×5 matrix
+S: rank-nullity
+TYPE: nat
+TOL: 0
+Q: $A$ is a real $3\times5$ matrix. What is the smallest possible dimension of the null space of $A$?
+ANS: 2
+EXP: Rank–nullity: $\operatorname{rank}A+\operatorname{nullity}A=5$ (the number of columns).
+The rank is at most $\min(3,5)=3$, so $\operatorname{nullity}A\ge5-3=2$. This is reached by any full-rank $A$.
+A common mistake is to use the number of rows instead of columns in the theorem.
+
+
+@ la e la-e-027
+T: Determinant after row operations
+S: determinants
+Q: $A$ is $3\times3$ with $\det A=3$. Matrix $B$ is formed by swapping two rows of $A$ and then multiplying one row by $2$. What is $\det B$?
+A: $-6$
+B: $6$
+C: $-24$
+D: $24$
+ANS: A
+EXP: Swapping two rows multiplies the determinant by $-1$: $3\to-3$.
+Multiplying a single row by $2$ multiplies it by $2$: $-3\to-6$.
+$\pm24$ comes from treating "one row times 2" as "whole matrix times 2" ($2^3=8$). $6$ forgets the sign change from the swap.
+
+
+@ la e la-e-028
+T: Determinant of a product with transpose
+S: determinants
+Q: $A$ and $B$ are $3\times3$ with $\det A=2$ and $\det B=-3$. What is $\det(A^TB^2)$?
+A: $18$
+B: $-18$
+C: $-12$
+D: $4.5$
+ANS: A
+EXP: Use $\det(XY)=\det X\det Y$ and $\det(A^T)=\det A$.
+$\det(A^TB^2)=\det A\cdot(\det B)^2=2\cdot9=18$.
+$-12$ comes from $\det(B^2)=2\det B$ (wrong), $-18$ from dropping the sign when squaring, and $4.5$ from $\det(A^T)=1/\det A$ (that rule is for the inverse, not the transpose).
+
+
+@ la e la-e-029
+T: Checking an eigenvector
+S: eigen
+Q: $v=(1,-1)$ is an eigenvector of $A=\begin{pmatrix}2&1\\1&2\end{pmatrix}$. What is its eigenvalue?
+A: $1$
+B: $3$
+C: $-1$
+D: $2$
+ANS: A
+EXP: Compute $Av$ and compare with $v$: $Av=(2-1,\ 1-2)=(1,-1)=1\cdot v$, so $\lambda=1$.
+$3$ is the other eigenvalue of $A$, belonging to $(1,1)$. Always multiply out instead of guessing from the matrix entries.
+
+
+@ la e la-e-030
+T: Sum of eigenvalues of a 3×3 matrix
+S: eigen
+Q: What is the sum of the eigenvalues of $A=\begin{pmatrix}4&1&2\\0&3&5\\1&1&2\end{pmatrix}$?
+A: $9$
+B: $3$
+C: $24$
+D: $20$
+ANS: A
+EXP: The sum of the eigenvalues (with multiplicity) equals the trace: $4+3+2=9$.
+$3$ is $\det A$, which equals the product of the eigenvalues, not the sum. $24=4\cdot3\cdot2$ is the product of the diagonal, which equals the determinant only for triangular matrices; $A$ is not triangular.
+
+
+@ la e la-e-031
+T: Consequences of a zero eigenvalue
+S: eigen
+TYPE: msq
+Q: A square matrix $A$ has $0$ as an eigenvalue. Which statements must be true? More than one option may be correct.
+A: $A$ is not invertible.
+B: $Ax=0$ has a nonzero solution.
+C: $A$ is the zero matrix.
+D: $\operatorname{tr}(A)=0$.
+ANS: A,B
+EXP: $\lambda=0$ means $Av=0\cdot v=0$ for some $v\ne0$, so [[B]] holds directly.
+Then $\det A=$ product of eigenvalues $=0$, so [[A]] holds.
+[[C]] is false: $\begin{pmatrix}1&0\\0&0\end{pmatrix}$ has eigenvalue $0$ but is not zero. [[D]] is false for the same matrix (trace $1$): only one eigenvalue needs to be $0$, not all of them.
+
+
+@ la e la-e-032
+T: Symmetric part of a matrix
+S: special-matrices
+Q: Every square matrix can be written as $A=S+K$ with $S$ symmetric and $K$ skew-symmetric. For $A=\begin{pmatrix}1&4\\2&3\end{pmatrix}$, what is $S$?
+A: $\begin{pmatrix}1&3\\3&3\end{pmatrix}$
+B: $\begin{pmatrix}2&6\\6&6\end{pmatrix}$
+C: $\begin{pmatrix}0&1\\-1&0\end{pmatrix}$
+D: $\begin{pmatrix}1&4\\4&3\end{pmatrix}$
+ANS: A
+EXP: The symmetric part is $S=\frac12(A+A^T)$ and the skew part is $K=\frac12(A-A^T)$.
+$A+A^T=\begin{pmatrix}2&6\\6&6\end{pmatrix}$, so $S=\begin{pmatrix}1&3\\3&3\end{pmatrix}$.
+$\begin{pmatrix}2&6\\6&6\end{pmatrix}$ forgets the $\frac12$, and $\begin{pmatrix}0&1\\-1&0\end{pmatrix}$ is $K$. Check: $S+K=A$.
+Only $S$ matters in a quadratic form: $x^TAx=x^TSx$.
+
+
+@ la e la-e-033
+T: Which matrices are idempotent
+S: special-matrices
+TYPE: msq
+Q: Which of the following matrices are idempotent ($P^2=P$)? More than one option may be correct.
+A: $\begin{pmatrix}1&0\\0&0\end{pmatrix}$
+B: $\frac12\begin{pmatrix}1&1\\1&1\end{pmatrix}$
+C: $\begin{pmatrix}0&1\\1&0\end{pmatrix}$
+D: $\begin{pmatrix}1&1\\0&1\end{pmatrix}$
+ANS: A,B
+EXP: Square each one.
+[[A]] $\begin{pmatrix}1&0\\0&0\end{pmatrix}^2=\begin{pmatrix}1&0\\0&0\end{pmatrix}$. Idempotent (projection onto the $x$-axis).
+[[B]] $\frac14\begin{pmatrix}2&2\\2&2\end{pmatrix}=\frac12\begin{pmatrix}1&1\\1&1\end{pmatrix}$. Idempotent (projection onto the line $y=x$).
+[[C]] the swap matrix squares to $I$, not to itself. It is involutory, not idempotent.
+[[D]] $\begin{pmatrix}1&2\\0&1\end{pmatrix}\ne D$. Not idempotent, even though its eigenvalues are $1,1$.
+
+
+@ la e la-e-034
+T: Missing entries of a skew-symmetric matrix
+S: special-matrices
+Q: The matrix $A=\begin{pmatrix}0&2&a\\b&0&-1\\3&c&0\end{pmatrix}$ is skew-symmetric. What is $a+b+c$?
+A: $-4$
+B: $4$
+C: $0$
+D: $-6$
+ANS: A
+EXP: Skew-symmetric means $A^T=-A$, i.e. $a_{ji}=-a_{ij}$.
+$b=-a_{12}=-2$, $a=-a_{31}=-3$, $c=-a_{23}=1$. So $a+b+c=-3-2+1=-4$.
+$4$ is what you get by making $A$ symmetric instead ($a=3$, $b=2$, $c=-1$).
+
+
+@ la e la-e-035
+T: Matrix of a quadratic form
+S: quadratic-forms
+Q: Which symmetric matrix $A$ gives $x^TAx=x_1^2+4x_1x_2+3x_2^2$?
+A: $\begin{pmatrix}1&2\\2&3\end{pmatrix}$
+B: $\begin{pmatrix}1&4\\4&3\end{pmatrix}$
+C: $\begin{pmatrix}1&4\\0&3\end{pmatrix}$
+D: $\begin{pmatrix}1&0\\0&3\end{pmatrix}$
+ANS: A
+EXP: For symmetric $A$, $x^TAx=a_{11}x_1^2+2a_{12}x_1x_2+a_{22}x_2^2$.
+So $a_{11}=1$, $a_{22}=3$, and $2a_{12}=4\Rightarrow a_{12}=a_{21}=2$.
+$\begin{pmatrix}1&4\\4&3\end{pmatrix}$ gives $8x_1x_2$ (it forgets to split the cross term). $\begin{pmatrix}1&4\\0&3\end{pmatrix}$ gives the right form but is not symmetric.
+
+
+@ la e la-e-036
+T: Definiteness of a diagonal quadratic form
+S: quadratic-forms
+Q: The quadratic form $q(x)=2x_1^2-x_2^2+3x_3^2$ is:
+A: indefinite
+B: positive definite
+C: positive semidefinite
+D: negative definite
+ANS: A
+EXP: The matrix is $\operatorname{diag}(2,-1,3)$, whose eigenvalues are $2,-1,3$.
+There are both positive and negative eigenvalues: $q(1,0,0)=2>0$ but $q(0,1,0)=-1<0$. So the form is indefinite.
+Positive semidefinite would need all eigenvalues $\ge0$; one negative eigenvalue rules it out.
+
+
+@ la e la-e-037
+T: Evaluating a quadratic form
+S: quadratic-forms
+TYPE: nat
+TOL: 0
+Q: Let $A=\begin{pmatrix}2&1\\1&3\end{pmatrix}$ and $x=(1,-2)^T$. Find $x^TAx$.
+ANS: 10
+EXP: First $Ax=(2\cdot1+1\cdot(-2),\ 1\cdot1+3\cdot(-2))=(0,-5)$.
+Then $x^TAx=1\cdot0+(-2)(-5)=10$.
+Check with the expanded form $2x_1^2+2x_1x_2+3x_2^2=2-4+12=10$. Forgetting the factor $2$ on the cross term gives $12$.
+
+
+@ la e la-e-038
+T: Parameter range for positive definiteness
+S: quadratic-forms
+Q: For which values of $k$ is $A=\begin{pmatrix}1&k\\k&4\end{pmatrix}$ positive definite?
+A: $|k|<2$
+B: $|k|\le2$
+C: $|k|<4$
+D: $k<2$
+ANS: A
+EXP: Sylvester's criterion: a symmetric matrix is positive definite iff all leading principal minors are positive.
+First minor: $1>0$. Second: $\det A=4-k^2>0\iff|k|<2$.
+At $|k|=2$ the determinant is $0$, so $A$ is only positive semidefinite; that is why $|k|\le2$ is wrong. $k<2$ wrongly allows $k=-3$, where $\det A=-5$.
+
+
+@ la e la-e-039
+T: Normal equations of least squares
+S: projections-least-squares
+Q: $A$ is $m\times n$ with $m>n$ and independent columns. The least squares solution $\hat x$ of $Ax\approx b$ satisfies:
+A: $A^TA\hat x=A^Tb$
+B: $AA^T\hat x=b$
+C: $A\hat x=b$
+D: $A^TA\hat x=b$
+ANS: A
+EXP: Minimise $\|Ax-b\|^2$. Setting the gradient $2A^T(Ax-b)$ to zero gives the normal equations $A^TA\hat x=A^Tb$.
+$A\hat x=b$ usually has no solution when $m>n$, which is why we use least squares. $A^TA\hat x=b$ does not even have matching sizes ($n$ vs $m$).
+In linear regression this is $\hat\beta=(X^TX)^{-1}X^Ty$.
+
+
+@ la e la-e-040
+T: Least squares residual is orthogonal to...
+S: projections-least-squares
+Q: Let $\hat x$ be the least squares solution of $Ax\approx b$ and $r=b-A\hat x$ the residual. Then $r$ is always orthogonal to:
+A: every column of $A$
+B: every row of $A$
+C: the vector $b$
+D: the null space of $A$
+ANS: A
+EXP: The normal equations $A^T(b-A\hat x)=0$ say $A^Tr=0$, i.e. $r$ is orthogonal to each column of $A$ (the whole column space).
+Geometrically, $A\hat x$ is the orthogonal projection of $b$ onto the column space, and $r$ is the perpendicular part.
+$r$ is not orthogonal to $b$ in general (unless $r=0$). In regression this means the residuals have zero correlation with every feature column.
+
+
+@ la e la-e-041
+T: Trace of the hat matrix
+S: projections-least-squares
+TYPE: nat
+TOL: 0
+Q: $X$ is a $20\times3$ matrix of rank $3$, and $H=X(X^TX)^{-1}X^T$ is the hat (projection) matrix of linear regression. What is $\operatorname{tr}(H)$?
+ANS: 3
+EXP: Use the cyclic property of the trace: $\operatorname{tr}\big(X(X^TX)^{-1}X^T\big)=\operatorname{tr}\big((X^TX)^{-1}X^TX\big)=\operatorname{tr}(I_3)=3$.
+Equivalently, $H$ is a projection onto the 3-dimensional column space of $X$, so its eigenvalues are three $1$s and seventeen $0$s.
+$20$ would be the trace of $I_{20}$. In statistics $\operatorname{tr}(H)$ is the number of parameters (degrees of freedom) of the fit.
+
+
+@ la e la-e-042
+T: Least squares fit of a constant
+S: projections-least-squares
+Q: Fit the model $y=c$ (a constant, no slope) by least squares to the observations $y=1,2,3,10$. What is $\hat c$?
+A: $4$
+B: $2.5$
+C: $\frac{16}{3}$
+D: $16$
+ANS: A
+EXP: Minimise $\sum(y_i-c)^2$. Setting the derivative $-2\sum(y_i-c)$ to zero gives $\hat c=\frac1n\sum y_i=\frac{1+2+3+10}{4}=4$.
+In matrix form the design matrix is the column $\mathbf 1=(1,1,1,1)^T$, and $\hat c=\dfrac{\mathbf 1^Ty}{\mathbf 1^T\mathbf 1}=\dfrac{16}{4}$. Forgetting to divide by $\mathbf 1^T\mathbf 1=4$ gives $16$.
+$2.5$ is the median, which minimises the absolute loss $\sum|y_i-c|$ (the $L_1$ loss), not the squared loss. The outlier $10$ pulls the mean up but not the median.
+$\frac{16}{3}$ divides by $n-1$, which belongs in the sample variance, not in the mean.
+
+
+@ la e la-e-043
+T: The L factor of a 2×2 matrix
+S: lu
+Q: $A=\begin{pmatrix}2&1\\6&5\end{pmatrix}=LU$ with $L$ unit lower triangular and $U$ upper triangular. What is $L$?
+A: $\begin{pmatrix}1&0\\3&1\end{pmatrix}$
+B: $\begin{pmatrix}1&0\\-3&1\end{pmatrix}$
+C: $\begin{pmatrix}1&0\\\tfrac13&1\end{pmatrix}$
+D: $\begin{pmatrix}1&3\\0&1\end{pmatrix}$
+ANS: A
+EXP: Eliminate below the pivot $2$: the multiplier is $\ell_{21}=6/2=3$, and $R_2-3R_1$ gives $U=\begin{pmatrix}2&1\\0&2\end{pmatrix}$.
+$L$ stores the multiplier with a plus sign: $L=\begin{pmatrix}1&0\\3&1\end{pmatrix}$. Check: $LU=\begin{pmatrix}2&1\\6&3+2\end{pmatrix}=A$.
+$-3$ is the entry of the elimination matrix $E$ (with $EA=U$), and $L=E^{-1}$ flips that sign.
+
+
+@ la e la-e-044
+T: Determinant from an LU factorisation
+S: lu
+Q: $A=LU$, where $L$ is $3\times3$ unit lower triangular and $U$ is upper triangular with diagonal entries $2,3,-1$. What is $\det A$?
+A: $-6$
+B: $6$
+C: $4$
+D: It cannot be found without the entries of $L$.
+ANS: A
+EXP: $\det A=\det L\cdot\det U$. A triangular matrix has determinant equal to the product of its diagonal.
+$L$ has $1$s on the diagonal, so $\det L=1$. $\det U=2\cdot3\cdot(-1)=-6$. So $\det A=-6$.
+This is how software computes determinants: factor once, then multiply the pivots. The off-diagonal entries of $L$ never matter.
+
+
+@ la e la-e-045
+T: Matrix needing a row exchange for LU
+S: lu
+Q: Which matrix has no factorisation $A=LU$ (unit lower $L$, upper $U$) without row exchanges?
+A: $\begin{pmatrix}0&1\\1&1\end{pmatrix}$
+B: $\begin{pmatrix}1&1\\1&1\end{pmatrix}$
+C: $\begin{pmatrix}1&2\\3&4\end{pmatrix}$
+D: $\begin{pmatrix}2&1\\1&0\end{pmatrix}$
+ANS: A
+EXP: LU without pivoting fails when a zero appears in a pivot position that has a nonzero below it.
+For $\begin{pmatrix}0&1\\1&1\end{pmatrix}$ the first pivot is $0$, so no multiple of row 1 can clear the $1$ below. You need $PA=LU$ with a row swap.
+The singular $\begin{pmatrix}1&1\\1&1\end{pmatrix}$ is the trap: it does factor, $L=\begin{pmatrix}1&0\\1&1\end{pmatrix}$, $U=\begin{pmatrix}1&1\\0&0\end{pmatrix}$. A zero in the last pivot is allowed.
+[[C]] and [[D]] have nonzero first pivots ($1$ and $2$), so elimination goes through.
+
+
+@ la e la-e-046
+T: Solving a system with given L and U
+S: lu
+TYPE: nat
+TOL: 0
+Q: $A=LU$ with $L=\begin{pmatrix}1&0\\2&1\end{pmatrix}$ and $U=\begin{pmatrix}1&1\\0&2\end{pmatrix}$. Solve $Ax=b$ for $b=(3,8)^T$ and enter $x_1$.
+ANS: 2
+EXP: Step 1 (forward substitution), solve $Ly=b$: $y_1=3$, then $2y_1+y_2=8\Rightarrow y_2=2$.
+Step 2 (back substitution), solve $Ux=y$: $2x_2=2\Rightarrow x_2=1$, then $x_1+x_2=3\Rightarrow x_1=2$.
+Check: $A=LU=\begin{pmatrix}1&1\\2&4\end{pmatrix}$ and $A(2,1)^T=(3,8)^T$. Skipping step 1 and solving $Ux=b$ directly gives the wrong $x_1=-1$.
+
+
+@ la e la-e-047
+T: Singular values from eigenvalues of A^T A
+S: svd-pca
+Q: For a matrix $A$, the eigenvalues of $A^TA$ are $16$ and $9$. What are the singular values of $A$?
+A: $4$ and $3$
+B: $16$ and $9$
+C: $256$ and $81$
+D: $8$ and $4.5$
+ANS: A
+EXP: The singular values of $A$ are the square roots of the eigenvalues of $A^TA$: $\sigma_i=\sqrt{\lambda_i(A^TA)}$.
+So $\sigma=\sqrt{16}=4$ and $\sqrt9=3$.
+Taking the eigenvalues of $A^TA$ themselves as singular values ($16$, $9$) is the usual slip. They are $\sigma_i^2$.
+
+
+@ la e la-e-048
+T: Variance explained by two principal components
+S: svd-pca
+TYPE: nat
+TOL: 0
+Q: The covariance matrix of a 4-feature dataset has eigenvalues $5,3,1,1$. What percentage of the total variance is explained by the first two principal components? Enter a number (e.g. 50 for 50%).
+ANS: 80
+EXP: Each principal component's variance is its eigenvalue, and the total variance is the trace (sum of eigenvalues): $5+3+1+1=10$.
+The first two PCs explain $\frac{5+3}{10}=0.8$, i.e. $80\%$.
+Dividing by the number of features (4) instead of the total variance is a common mistake. This ratio is what you look at in a scree plot to choose how many components to keep.
+
+
+@ la e la-e-049
+T: Rank from singular values
+S: svd-pca
+Q: A $4\times3$ matrix has singular values $6,\ 2,\ 0$. What is its rank?
+A: $2$
+B: $3$
+C: $4$
+D: $1$
+ANS: A
+EXP: The rank equals the number of nonzero singular values. Here $6$ and $2$ are nonzero, so the rank is $2$.
+$3$ just counts all singular values listed (the number of columns). In practice, numerically tiny singular values are treated as zero to find the effective rank.
+
+
+@ la e la-e-050
+T: Direction of the first principal component
+S: svd-pca
+Q: For centred data, the first principal component direction is:
+A: the eigenvector of the sample covariance matrix with the largest eigenvalue
+B: the eigenvector of the sample covariance matrix with the smallest eigenvalue
+C: the unit vector along the original feature with the largest variance
+D: the unit vector in the direction of the mean of the data
+ANS: A
+EXP: PCA finds the unit vector $w$ maximising the projected variance $w^TSw$, where $S$ is the covariance matrix.
+The maximum of $w^TSw$ over $\|w\|=1$ is the largest eigenvalue, reached at its eigenvector (the Rayleigh quotient).
+The smallest eigenvalue's eigenvector is the direction of least variance. The best direction is usually a mix of features, not one original axis. For centred data the mean is $0$, so it gives no direction.
+
+@ la h la-h-011
+T: Maximise a linear function on a sphere
+S: vectors-norms
+Q: Over all $(x,y,z)$ with $x^2+y^2+z^2=9$, what is the maximum value of $2x+y-2z$?
+A: $9$
+B: $3$
+C: $27$
+D: $5$
+ANS: A
+EXP: Write the objective as $w\cdot v$ with $w=(2,1,-2)$ and $\|v\|_2=3$.
+Cauchy–Schwarz: $w\cdot v\le\|w\|_2\|v\|_2=3\cdot3=9$, with equality when $v$ points along $w$: $v=\tfrac{3}{3}(2,1,-2)=(2,1,-2)$, giving $4+1+4=9$.
+$3$ forgets the radius ($\|v\|=3$, not $1$); $27$ uses $\|v\|^2=9$ instead of $\|v\|=3$; $5$ is the $L_1$ norm of $w$.
+
+@ la h la-h-012
+T: Span of cyclic differences
+S: vector-spaces
+Q: $v_1,v_2,v_3$ are linearly independent vectors in $\mathbb R^5$. What is the dimension of $\operatorname{span}\{v_1-v_2,\ v_2-v_3,\ v_3-v_1\}$?
+A: $2$
+B: $3$
+C: $1$
+D: $5$
+ANS: A
+EXP: The three differences add to zero: $(v_1-v_2)+(v_2-v_3)+(v_3-v_1)=0$, so they are dependent and the dimension is at most $2$.
+$v_1-v_2$ and $v_2-v_3$ are independent: $a(v_1-v_2)+b(v_2-v_3)=av_1+(b-a)v_2-bv_3=0$ forces $a=b=0$ because the $v_i$ are independent.
+So the dimension is exactly $2$. Answering $3$ assumes "three vectors built from independent vectors are independent", which is false.
+
+@ la h la-h-013
+T: High power of a shear matrix
+S: matrix-ops
+Q: Let $A=\begin{pmatrix}1&1\\0&1\end{pmatrix}$. What is $A^{50}$?
+A: $\begin{pmatrix}1&50\\0&1\end{pmatrix}$
+B: $\begin{pmatrix}1&2^{50}\\0&1\end{pmatrix}$
+C: $\begin{pmatrix}1&49\\0&1\end{pmatrix}$
+D: $\begin{pmatrix}50&50\\0&50\end{pmatrix}$
+ANS: A
+EXP: Write $A=I+N$ with $N=\begin{pmatrix}0&1\\0&0\end{pmatrix}$. $N^2=0$ and $I$ commutes with $N$, so the binomial theorem stops after two terms:
+$A^{50}=(I+N)^{50}=I+50N+\binom{50}{2}N^2+\dots=I+50N=\begin{pmatrix}1&50\\0&1\end{pmatrix}$.
+$2^{50}$ comes from squaring entries instead of multiplying matrices; $\begin{pmatrix}50&50\\0&50\end{pmatrix}$ is $50A$, not $A^{50}$.
+$A$ is not diagonalisable (eigenvalue $1$ repeated, one eigenvector), so the $P D^{50}P^{-1}$ shortcut does not apply.
+
+@ la h la-h-014
+T: Parameters for infinitely many solutions
+S: linear-systems
+TYPE: nat
+TOL: 0
+Q: The system
+$$x+y+z=6,\qquad x+2y+3z=10,\qquad x+2y+\lambda z=\mu$$
+has infinitely many solutions. Enter the value of $\lambda+\mu$.
+ANS: 13
+EXP: Subtract equation 1 from equations 2 and 3: $y+2z=4$ and $y+(\lambda-1)z=\mu-6$.
+Subtract these: $(\lambda-3)z=\mu-10$.
+If $\lambda\ne3$ there is a unique solution. If $\lambda=3$ and $\mu\ne10$ the last row reads $0=\mu-10\ne0$: no solution.
+Infinitely many solutions need $\lambda=3$ and $\mu=10$ (rank of $A$ = rank of $[A\mid b]$ = $2<3$). So $\lambda+\mu=13$.
+
+@ la h la-h-015
+T: Smallest possible rank of a product
+S: rank-nullity
+Q: $A$ is $4\times5$ with rank $4$ and $B$ is $5\times3$ with rank $3$. What is the smallest possible value of $\operatorname{rank}(AB)$?
+A: $2$
+B: $3$
+C: $0$
+D: $1$
+ANS: A
+EXP: Sylvester's rank inequality: $\operatorname{rank}(AB)\ge\operatorname{rank}A+\operatorname{rank}B-n$, where $n=5$ is the shared inner dimension. So $\operatorname{rank}(AB)\ge4+3-5=2$.
+Why: $\operatorname{rank}(AB)=3-\dim(\operatorname{col}B\cap\operatorname{null}A)$, and $\dim\operatorname{null}A=5-4=1$, so at most one dimension of $\operatorname{col}B$ can be killed.
+The bound is reached when $\operatorname{null}A\subset\operatorname{col}B$. $3$ is only the maximum (from $\operatorname{rank}(AB)\le\min(4,3)$), not the minimum.
+
+@ la h la-h-016
+T: Determinant of the 1D Laplacian matrix
+S: determinants
+Q: What is the determinant of the $4\times4$ tridiagonal matrix
+$$T=\begin{pmatrix}2&-1&0&0\\-1&2&-1&0\\0&-1&2&-1\\0&0&-1&2\end{pmatrix}?$$
+A: $5$
+B: $16$
+C: $4$
+D: $1$
+ANS: A
+EXP: Expand along the first row to get the recurrence $D_n=2D_{n-1}-D_{n-2}$ for this family, with $D_1=2$ and $D_2=4-1=3$.
+Then $D_3=2\cdot3-2=4$ and $D_4=2\cdot4-3=5$. In general $D_n=n+1$.
+$16$ is the product of the diagonal, which is only valid for triangular matrices. This matrix is the discrete second-difference (Laplacian) operator; being positive definite, its determinant must be positive.
+
+@ la h la-h-017
+T: Trace of a power of J minus I
+S: eigen
+TYPE: nat
+TOL: 0
+Q: Let $A=\begin{pmatrix}0&1&1\\1&0&1\\1&1&0\end{pmatrix}$. Enter $\operatorname{tr}(A^4)$.
+ANS: 18
+EXP: $A=J-I$ where $J$ is the $3\times3$ all-ones matrix. $J$ has eigenvalues $3,0,0$, so $A$ has eigenvalues $3-1=2$ and $0-1=-1$ (twice).
+The trace of $A^4$ is the sum of the fourth powers of the eigenvalues: $2^4+(-1)^4+(-1)^4=16+1+1=18$.
+A common slip is $(\operatorname{tr}A)^4=0$; the trace of a power is not the power of the trace. ($A$ is the adjacency matrix of the triangle graph, and $\operatorname{tr}(A^4)$ counts closed walks of length 4.)
+
+@ la h la-h-018
+T: Determinant of I plus a projection
+S: special-matrices
+Q: $P$ is a $4\times4$ matrix with $P^2=P$ and $\operatorname{tr}P=2$. What is $\det(I+P)$?
+A: $4$
+B: $3$
+C: $2$
+D: $9$
+ANS: A
+EXP: Idempotent means every eigenvalue is $0$ or $1$, and an idempotent matrix is diagonalisable (its minimal polynomial $\lambda^2-\lambda$ has distinct roots).
+The trace is the number of eigenvalues equal to $1$, so the eigenvalues are $1,1,0,0$ and $\operatorname{rank}P=2$.
+$I+P$ has eigenvalues $2,2,1,1$, so $\det(I+P)=4$.
+$3=1+\operatorname{tr}P$ wrongly uses the rank-one formula $\det(I+uv^T)=1+v^Tu$ for a rank-2 matrix.
+
+@ la h la-h-019
+T: Positive definiteness with a parameter
+S: quadratic-forms
+Q: For which values of $k$ is the quadratic form $x^2+4y^2+kz^2+2xy+4yz$ positive definite?
+A: $k>\frac43$
+B: $k>4$
+C: $k>0$
+D: $k>\frac34$
+ANS: A
+EXP: The symmetric matrix halves the cross terms: $A=\begin{pmatrix}1&1&0\\1&4&2\\0&2&k\end{pmatrix}$.
+Sylvester's criterion (all leading principal minors $>0$): $1>0$; $\begin{vmatrix}1&1\\1&4\end{vmatrix}=3>0$; $\det A=1(4k-4)-1(k-0)=3k-4>0$.
+So $k>\tfrac43$. Using the cross-term coefficients $2$ and $4$ directly as matrix entries (forgetting to halve) makes the $2\times2$ minor $4-4=0$, wrongly suggesting no $k$ works; $k>0$ only makes the last diagonal entry positive, which is necessary but not sufficient.
+
+@ la h la-h-020
+T: Distance from a vector to the ones line
+S: projections-least-squares
+Q: What is the squared distance from $b=(1,2,6)$ to the line spanned by $\mathbf 1=(1,1,1)$?
+A: $14$
+B: $41$
+C: $27$
+D: $\frac{14}{3}$
+ANS: A
+EXP: Project onto $\mathbf 1$: $\hat b=\dfrac{\mathbf 1^Tb}{\mathbf 1^T\mathbf 1}\mathbf 1=\dfrac{9}{3}\mathbf 1=(3,3,3)$, i.e. every entry becomes the mean.
+The residual $b-\hat b=(-2,-1,3)$ is $b$ centred, and its squared length is $4+1+9=14$.
+$41=\|b\|^2$ ignores the projection, $27=\|\hat b\|^2$ is the projected part, and $\tfrac{14}{3}$ divides by $n$ (that would be the population variance).
+This is why centring data in PCA is an orthogonal projection onto the complement of $\mathbf 1$.
+
+@ la h la-h-021
+T: When LU without pivoting fails
+S: lu
+Q: For which value of $a$ does $A=\begin{pmatrix}1&2&3\\2&a&1\\1&3&5\end{pmatrix}$ have NO factorisation $A=LU$ (unit lower triangular $L$, upper triangular $U$) without row exchanges?
+A: $a=4$
+B: $a=\frac32$
+C: $a=0$
+D: $a=-4$
+ANS: A
+EXP: Doolittle elimination: $\ell_{21}=2$, so the second pivot is $u_{22}=a-2\cdot2=a-4$.
+If $a=4$ the pivot is $0$; the next step needs $\ell_{32}u_{22}=a_{32}-\ell_{31}u_{12}=3-2=1$, i.e. $\ell_{32}\cdot0=1$, which is impossible. So no LU exists without a row swap.
+Equivalently, the $2\times2$ leading principal minor $a-4$ is zero.
+$a=\tfrac32$ makes $\det A=2a-3=0$, but singularity alone does not block LU: only the leading minors of order $1,\dots,n-1$ matter (then $u_{33}=0$ is allowed).
+
+@ la h la-h-022
+T: Variance explained by the first PC
+S: svd-pca
+TYPE: nat
+TOL: 0.01
+Q: The covariance matrix of a 2-feature dataset is $\Sigma=\begin{pmatrix}5&2\\2&2\end{pmatrix}$. What fraction of the total variance is explained by the first principal component? Give your answer to 2 decimal places.
+ANS: 0.86
+EXP: PCA directions are eigenvectors of $\Sigma$; the variance along each is its eigenvalue.
+$\operatorname{tr}\Sigma=7$, $\det\Sigma=10-4=6$, so $\lambda^2-7\lambda+6=0\Rightarrow\lambda=6,1$.
+Fraction explained by PC1 $=\dfrac{6}{6+1}=\dfrac67\approx0.86$.
+Using the largest diagonal entry ($5/7\approx0.71$) ignores the correlation between the features, which PCA exploits.
+
+@ la h la-h-023
+T: Valid inequalities between vector norms
+S: vectors-norms
+TYPE: msq
+Q: Which inequalities hold for every $x\in\mathbb R^n$? More than one option may be correct.
+A: $\|x\|_2\le\|x\|_1$
+B: $\|x\|_1\le\sqrt n\,\|x\|_2$
+C: $\|x\|_2\le\|x\|_\infty$
+D: $\|x\|_1\le\|x\|_\infty$
+ANS: A,B
+EXP: [[A]] True: $\|x\|_1^2=\left(\sum|x_i|\right)^2=\sum x_i^2+\sum_{i\ne j}|x_i||x_j|\ge\|x\|_2^2$.
+[[B]] True: Cauchy–Schwarz with the all-ones vector: $\sum|x_i|\cdot1\le\sqrt{\sum x_i^2}\sqrt n$.
+[[C]] False: $x=(1,1)$ gives $\|x\|_2=\sqrt2>1=\|x\|_\infty$. The correct direction is $\|x\|_\infty\le\|x\|_2$.
+[[D]] False: $x=(1,1)$ gives $2>1$. The correct bound is $\|x\|_1\le n\|x\|_\infty$.
+The full chain is $\|x\|_\infty\le\|x\|_2\le\|x\|_1\le\sqrt n\|x\|_2\le n\|x\|_\infty$.
+
+@ la h la-h-024
+T: Which set of 2×2 matrices is not a subspace
+S: vector-spaces
+Q: Which of these subsets of the space of real $2\times2$ matrices is NOT a subspace?
+A: matrices with $\det A=0$
+B: matrices with $\operatorname{tr}A=0$
+C: symmetric matrices
+D: upper triangular matrices
+ANS: A
+EXP: A subspace must contain $0$ and be closed under addition and scalar multiplication.
+Singular matrices contain $0$ and are closed under scaling, but not under addition: $\begin{pmatrix}1&0\\0&0\end{pmatrix}+\begin{pmatrix}0&0\\0&1\end{pmatrix}=I$, and $\det I=1\ne0$.
+Trace is linear, so $\{\operatorname{tr}A=0\}$ is the null space of a linear map (dimension 3). Symmetric (dimension 3) and upper triangular (dimension 3) matrices are closed under both operations.
+The trap is that "$\det=0$" looks like a linear equation, but $\det$ is not linear.
+
+@ la h la-h-025
+T: Cyclic property of the trace
+S: matrix-ops
+Q: $A,B,C$ are $n\times n$ matrices. Which expression equals $\operatorname{tr}(ABC)$ for all such matrices?
+A: $\operatorname{tr}(CAB)$
+B: $\operatorname{tr}(BAC)$
+C: $\operatorname{tr}(ACB)$
+D: $\operatorname{tr}A\cdot\operatorname{tr}B\cdot\operatorname{tr}C$
+ANS: A
+EXP: $\operatorname{tr}(XY)=\operatorname{tr}(YX)$. With $X=AB$ and $Y=C$: $\operatorname{tr}(ABC)=\operatorname{tr}(CAB)$. The trace is invariant under cyclic shifts only.
+$BAC$ and $ACB$ are cyclic shifts of each other but are a swap (not a rotation) of $ABC$, so they differ in general; a random $3\times3$ example gives $\operatorname{tr}(ABC)\approx3.52$ but $\operatorname{tr}(BAC)\approx-0.94$.
+The trace is not multiplicative, so [[D]] fails too: $A=\mathrm{diag}(1,0)$, $B=C=\mathrm{diag}(0,1)$ give $\operatorname{tr}(ABC)=0$ but $\operatorname{tr}A\operatorname{tr}B\operatorname{tr}C=1$.
+ML use: $\|X\|_F^2=\operatorname{tr}(X^TX)$ and $x^TAx=\operatorname{tr}(Axx^T)$ both rely on the cyclic rule.
+
+@ la h la-h-026
+T: Rank from three solutions of Ax = b
+S: linear-systems
+Q: $A$ is a $3\times3$ matrix, and $Ax=b$ is satisfied by all three vectors $(1,0,1)$, $(2,1,0)$ and $(0,-1,2)$. What is the largest possible rank of $A$?
+A: $2$
+B: $1$
+C: $3$
+D: $0$
+ANS: A
+EXP: The difference of two solutions of $Ax=b$ solves $Ax=0$.
+Differences: $(2,1,0)-(1,0,1)=(1,1,-1)$ and $(0,-1,2)-(1,0,1)=(-1,-1,1)$. These are parallel, so they only show $\dim\operatorname{null}A\ge1$.
+By rank–nullity, $\operatorname{rank}A\le3-1=2$, and rank 2 is achievable (any $A$ with null space exactly $\operatorname{span}\{(1,1,-1)\}$ and $b=A(1,0,1)$).
+The trap is answering $1$ by assuming three solutions give two independent null vectors; here the three points are collinear.
+
+@ la h la-h-027
+T: Nullity of the Gram matrix XXᵀ
+S: rank-nullity
+Q: A data matrix $X$ is $100\times5$ with rank $3$. What is the nullity of the $100\times100$ matrix $XX^T$?
+A: $97$
+B: $2$
+C: $95$
+D: $3$
+ANS: A
+EXP: Key fact: $\operatorname{rank}(XX^T)=\operatorname{rank}(X^TX)=\operatorname{rank}X=3$ (since $X^Tv=0\iff v^TXX^Tv=\|X^Tv\|^2=0$).
+Rank–nullity on the $100\times100$ matrix: nullity $=100-3=97$.
+$2$ is the nullity of the $5\times5$ matrix $X^TX$ (or of $X$); $95$ wrongly uses rank $5$.
+In kernel methods the $n\times n$ Gram matrix $XX^T$ is highly rank-deficient whenever $n$ exceeds the feature dimension.
+
+@ la h la-h-028
+T: Determinant of a block triangular matrix
+S: determinants
+Q: What is the determinant of
+$$M=\begin{pmatrix}2&1&5&7\\1&1&3&-2\\0&0&3&1\\0&0&4&2\end{pmatrix}?$$
+A: $2$
+B: $6$
+C: $-2$
+D: $12$
+ANS: A
+EXP: $M=\begin{pmatrix}A&B\\0&D\end{pmatrix}$ is block upper triangular, so $\det M=\det A\cdot\det D$; the block $B$ does not matter.
+$\det A=2\cdot1-1\cdot1=1$ and $\det D=3\cdot2-1\cdot4=2$, so $\det M=2$.
+$12=2\cdot1\cdot3\cdot2$ multiplies the diagonal entries, which only works for fully triangular matrices; $6=3\cdot2$ uses only the diagonal of $D$; $-2$ comes from computing $\det D$ as $4\cdot1-3\cdot2$ (wrong sign).
+
+@ la h la-h-029
+T: Determinant of I + BA from eigenvalues of AB
+S: eigen
+Q: $A$ is $2\times3$ and $B$ is $3\times2$. The eigenvalues of $AB$ are $3$ and $5$. What is $\det(I_3+BA)$?
+A: $24$
+B: $0$
+C: $15$
+D: $9$
+ANS: A
+EXP: Key fact: $AB$ and $BA$ have the same nonzero eigenvalues. $BA$ is $3\times3$ with rank at most $2$, so its eigenvalues are $3,5,0$.
+$I_3+BA$ has eigenvalues $4,6,1$, so $\det(I_3+BA)=24$.
+$0=\det(BA)$ and $15=\det(AB)$ forget the identity shift; $9=1+3+5$ wrongly treats $\det(I+M)$ as $1+\operatorname{tr}M$, which holds only for rank-one $M$.
+This is Sylvester's determinant identity $\det(I_3+BA)=\det(I_2+AB)=4\cdot6$, used to swap a large determinant for a small one (e.g. in Gaussian process likelihoods).
+
+@ la h la-h-030
+T: Orthogonal 3×3 matrix with determinant −1
+S: special-matrices
+Q: $Q$ is a real $3\times3$ orthogonal matrix with $\det Q=-1$. What is $\det(I+Q)$?
+A: $0$
+B: $-1$
+C: $-8$
+D: $8$
+ANS: A
+EXP: Eigenvalues of an orthogonal matrix have modulus $1$. Non-real ones come in conjugate pairs $e^{\pm i\theta}$ whose product is $1$.
+A $3\times3$ real matrix has at least one real eigenvalue, which must be $\pm1$. The product of all eigenvalues is $\det Q=-1$; the conjugate pair (if any) contributes $+1$, so the real eigenvalues must include $-1$. (If all three are real, they are $\pm1$ with product $-1$, so again $-1$ appears.)
+Then $I+Q$ has eigenvalue $1+(-1)=0$, so $\det(I+Q)=0$.
+$8=\det(2I)$ assumes $Q=I$; $-8=\det(2Q)$ treats $I+Q$ like $2Q$; $-1=\det Q$ just drops the $I$. Determinants are not additive. Geometrically $Q$ is a reflection (possibly composed with a rotation) and flips some direction $v$: $Qv=-v$.
+
+@ la h la-h-031
+T: Maximum Rayleigh quotient of a block matrix
+S: quadratic-forms
+Q: Let $A=\begin{pmatrix}4&2&0\\2&1&0\\0&0&3\end{pmatrix}$. What is the maximum of $\dfrac{x^TAx}{x^Tx}$ over all nonzero $x\in\mathbb R^3$?
+A: $5$
+B: $4$
+C: $3$
+D: $8$
+ANS: A
+EXP: For symmetric $A$, the maximum of the Rayleigh quotient is the largest eigenvalue (attained at its eigenvector).
+$A$ is block diagonal. The top block $\begin{pmatrix}4&2\\2&1\end{pmatrix}$ has trace $5$ and determinant $0$, so eigenvalues $5,0$. The bottom block gives $3$.
+Eigenvalues $5,0,3$; the maximum is $5$, at $x=(2,1,0)$: $x^TAx=16+8+1=25$, $x^Tx=5$.
+$4$ is the largest diagonal entry, which is only a lower bound (try $x=e_1$). $8$ is the trace (sum of all eigenvalues). This is the variational idea behind PCA: the first PC maximises $w^T\Sigma w$ over unit $w$.
+
+@ la h la-h-032
+T: Leverage of an extreme point in simple regression
+S: projections-least-squares
+TYPE: nat
+TOL: 0.01
+Q: Simple linear regression $y=\beta_0+\beta_1x$ (with intercept) is fitted to the five inputs $x=0,1,2,3,4$. Let $H=X(X^TX)^{-1}X^T$ be the hat matrix, where $X$ has a column of ones and a column of the $x$ values. Enter the leverage $h_{55}$ of the point with $x=4$, to 2 decimal places.
+ANS: 0.6
+EXP: For simple regression with an intercept, the diagonal of the hat matrix is $h_{ii}=\dfrac1n+\dfrac{(x_i-\bar x)^2}{\sum_j(x_j-\bar x)^2}$.
+Here $n=5$, $\bar x=2$ and $\sum(x_j-\bar x)^2=4+1+0+1+4=10$, so $h_{55}=\dfrac15+\dfrac{(4-2)^2}{10}=0.2+0.4=0.6$.
+(Directly: $X^TX=\begin{pmatrix}5&10\\10&30\end{pmatrix}$, and $h_{55}=(1,4)(X^TX)^{-1}(1,4)^T=\frac{1}{50}(30-80+80)=0.6$.)
+Two traps: $0.4$ forgets the $\frac1n$ term from the intercept, and also equals the average leverage $\operatorname{tr}H/n=2/5$. Points far from $\bar x$ have high leverage, so they pull the fitted line towards themselves.
+
+
+@ la h la-h-033
+T: Which matrices have an LU factorisation
+S: lu
+TYPE: msq
+Q: Which of these matrices can be written as $A=LU$ with $L$ unit lower triangular and $U$ upper triangular, without any row exchanges? More than one option may be correct.
+A: $\begin{pmatrix}0&1\\1&0\end{pmatrix}$
+B: $\begin{pmatrix}1&2\\2&4\end{pmatrix}$
+C: $\begin{pmatrix}2&1\\4&3\end{pmatrix}$
+D: $\begin{pmatrix}0&2\\3&1\end{pmatrix}$
+ANS: B,C
+EXP: Write $L=\begin{pmatrix}1&0\\\ell&1\end{pmatrix}$, $U=\begin{pmatrix}u_{11}&u_{12}\\0&u_{22}\end{pmatrix}$. Then $u_{11}=a_{11}$, $u_{12}=a_{12}$, $\ell u_{11}=a_{21}$, $u_{22}=a_{22}-\ell u_{12}$.
+[[A]] and [[D]]: $u_{11}=0$ but $a_{21}\ne0$, so $\ell\cdot0=a_{21}$ is impossible. A row swap is needed ($PA=LU$).
+[[B]]: $\ell=2$, $U=\begin{pmatrix}1&2\\0&0\end{pmatrix}$. It exists even though $B$ is singular; a zero in the LAST pivot is harmless.
+[[C]]: $\ell=2$, $U=\begin{pmatrix}2&1\\0&1\end{pmatrix}$.
+The trap is thinking singular matrices have no LU; what matters is a zero pivot before the last step.
+
+@ la h la-h-034
+T: Singular value of a rank-one matrix
+S: svd-pca
+Q: What is the largest singular value of $A=\begin{pmatrix}2&2\\1&1\\2&2\end{pmatrix}$?
+A: $3\sqrt2$
+B: $18$
+C: $6$
+D: $5$
+ANS: A
+EXP: Every row is a multiple of $(1,1)$: $A=uv^T$ with $u=(2,1,2)^T$, $v=(1,1)^T$, so $A$ has rank one.
+For $A=uv^T$, $A=\|u\|\|v\|\,\hat u\hat v^T$ is already an SVD, so $\sigma_1=\|u\|\,\|v\|=3\cdot\sqrt2=3\sqrt2$ and $\sigma_2=0$.
+Check: $A^TA=\begin{pmatrix}9&9\\9&9\end{pmatrix}$ with eigenvalues $18,0$; $\sigma_1=\sqrt{18}=3\sqrt2$.
+$18$ is the eigenvalue of $A^TA$ (forgetting the square root). $6=\|u\|_2\cdot\|v\|_1$ uses the wrong norm for $v$, and $5$ is the sum of the first column; neither is a singular value.
+
+@ la h la-h-035
+T: Parallelogram law for vector lengths
+S: vectors-norms
+Q: Vectors $u,v$ satisfy $\|u\|=3$, $\|v\|=4$ and $\|u-v\|=\sqrt{13}$. What is $\|u+v\|$?
+A: $\sqrt{37}$
+B: $\sqrt{13}$
+C: $7$
+D: $5$
+ANS: A
+EXP: Parallelogram law: $\|u+v\|^2+\|u-v\|^2=2\|u\|^2+2\|v\|^2=2(9+16)=50$.
+So $\|u+v\|^2=50-13=37$ and $\|u+v\|=\sqrt{37}$.
+(Directly: $\|u-v\|^2=25-2u\cdot v=13\Rightarrow u\cdot v=6$, then $\|u+v\|^2=25+12=37$.)
+$7$ assumes $u,v$ are parallel (triangle inequality with equality); $5$ assumes they are orthogonal, which would need $\|u-v\|=5$ too.
+
+@ la h la-h-036
+T: Intersection of two subspaces of R⁵
+S: vector-spaces
+Q: $U$ and $W$ are subspaces of $\mathbb R^5$ with $\dim U=3$ and $\dim W=4$. What is the smallest possible value of $\dim(U\cap W)$?
+A: $2$
+B: $1$
+C: $0$
+D: $3$
+ANS: A
+EXP: Dimension formula: $\dim(U+W)=\dim U+\dim W-\dim(U\cap W)$.
+Since $U+W\subseteq\mathbb R^5$, $\dim(U+W)\le5$, so $\dim(U\cap W)\ge3+4-5=2$.
+It is attained, e.g. $U=\operatorname{span}\{e_1,e_2,e_5\}$, $W=\operatorname{span}\{e_1,e_2,e_3,e_4\}$, with $U\cap W=\operatorname{span}\{e_1,e_2\}$.
+$0$ treats subspaces like sets that can be disjoint; $3$ is the maximum (when $U\subseteq W$), not the minimum.
+
+@ la h la-h-037
+T: Inverse of I − N for nilpotent N
+S: matrix-ops
+TYPE: nat
+TOL: 0
+Q: Let $N=\begin{pmatrix}0&1&2\\0&0&3\\0&0&0\end{pmatrix}$. Enter the $(1,3)$ entry of $(I-N)^{-1}$.
+ANS: 5
+EXP: $N$ is strictly upper triangular, so $N^3=0$. The geometric (Neumann) series then terminates:
+$(I-N)(I+N+N^2)=I-N^3=I$, so $(I-N)^{-1}=I+N+N^2$.
+$N^2=\begin{pmatrix}0&0&3\\0&0&0\\0&0&0\end{pmatrix}$ (row 1 of $N$ times column 3: $1\cdot3$).
+The $(1,3)$ entry is $0+2+3=5$. Forgetting $N^2$ gives $2$; using $I-N$ instead gives $-2$.
+
+@ la h la-h-038
+T: Homogeneous system with a repeated root
+S: linear-systems
+Q: Consider $\begin{pmatrix}1&1&1\\1&k&1\\1&1&k\end{pmatrix}x=0$. For the value(s) of $k$ where nontrivial solutions exist, what is the dimension of the solution space?
+A: $k=1$, dimension $2$
+B: $k=1$, dimension $1$
+C: $k=-2$, dimension $1$
+D: $k=1$ or $k=-2$, dimension $1$
+ANS: A
+EXP: Subtract row 1 from rows 2 and 3: $\begin{pmatrix}1&1&1\\0&k-1&0\\0&0&k-1\end{pmatrix}$, so $\det=(k-1)^2$.
+Nontrivial solutions need $\det=0$, so only $k=1$. Then all three rows equal $(1,1,1)$, the rank is $1$, and by rank–nullity the solution space $\{x+y+z=0\}$ has dimension $3-1=2$.
+The double root $(k-1)^2$ is the hint that rank drops by $2$. $k=-2$ is a trap from the similar-looking matrix $\begin{pmatrix}k&1&1\\1&k&1\\1&1&k\end{pmatrix}$, whose determinant is $(k-1)^2(k+2)$.
+
+@ la h la-h-039
+T: Maximum rank of a square-zero matrix
+S: rank-nullity
+Q: $A$ is a real $6\times6$ matrix with $A^2=0$. What is the largest possible rank of $A$?
+A: $3$
+B: $5$
+C: $2$
+D: $6$
+ANS: A
+EXP: $A^2=0$ means $A(Ax)=0$ for every $x$, so the column space of $A$ lies inside its null space: $\operatorname{rank}A\le\operatorname{nullity}A$.
+With rank–nullity $\operatorname{rank}A+\operatorname{nullity}A=6$, this gives $2\operatorname{rank}A\le6$, so $\operatorname{rank}A\le3$.
+Attained by $A=\begin{pmatrix}0&I_3\\0&0\end{pmatrix}$ (block form), which has rank $3$ and $A^2=0$.
+$5$ is the largest rank of a nilpotent $6\times6$ matrix (a single Jordan block, where $A^6=0$ but $A^2\ne0$).
+
+@ la h la-h-040
+T: Determinant of the min(i, j) matrix
+S: determinants
+Q: Let $A$ be the $4\times4$ matrix with entries $a_{ij}=\min(i,j)$. What is $\det A$?
+A: $1$
+B: $0$
+C: $24$
+D: $4$
+ANS: A
+EXP: $A=\begin{pmatrix}1&1&1&1\\1&2&2&2\\1&2&3&3\\1&2&3&4\end{pmatrix}$.
+Row operations $R_4-R_3$, $R_3-R_2$, $R_2-R_1$ (done bottom-up) do not change the determinant and give the upper triangular matrix of all ones on and above the diagonal.
+So $\det A=1$. In fact $A=LL^T$ with $L$ the lower-triangular all-ones matrix, a Cholesky factorisation (this is the covariance matrix of a random walk / Brownian motion at times $1,2,3,4$).
+$24=1\cdot2\cdot3\cdot4$ multiplies the diagonal of a non-triangular matrix; $0$ guesses that repeated entries mean dependent rows.
+
+@ la h la-h-041
+T: Second eigenvalue of a stochastic matrix
+S: eigen
+TYPE: nat
+TOL: 0.01
+Q: The column-stochastic transition matrix $P=\begin{pmatrix}0.5&0.2\\0.5&0.8\end{pmatrix}$ has $1$ as one eigenvalue. Enter its other eigenvalue.
+ANS: 0.3
+EXP: Each column sums to $1$, so $\mathbf 1^TP=\mathbf 1^T$: $1$ is an eigenvalue of $P^T$, hence of $P$.
+The eigenvalues sum to the trace: $1+\lambda_2=0.5+0.8=1.3$, so $\lambda_2=0.3$. (Check with the determinant: $0.4-0.1=0.3=1\cdot0.3$.)
+$|\lambda_2|=0.3$ controls how fast $P^k x$ approaches the stationary distribution: the error shrinks by a factor $0.3$ per step.
+
+@ la h la-h-042
+T: Properties of a 3×3 skew-symmetric matrix
+S: special-matrices
+TYPE: msq
+Q: $A$ is a real $3\times3$ matrix with $A^T=-A$. Which statements are always true? More than one option may be correct.
+A: $\det A=0$
+B: $x^TAx=0$ for every $x\in\mathbb R^3$
+C: all eigenvalues of $A$ are real
+D: $A^2$ is symmetric
+ANS: A,B,D
+EXP: [[A]] True: $\det A=\det A^T=\det(-A)=(-1)^3\det A=-\det A$, so $\det A=0$. (This uses odd $n$.)
+[[B]] True: $x^TAx$ is a scalar, so it equals its transpose $x^TA^Tx=-x^TAx$, forcing it to be $0$.
+[[C]] False: $A=\begin{pmatrix}0&1&0\\-1&0&0\\0&0&0\end{pmatrix}$ has eigenvalues $0,\pm i$. Skew-symmetric eigenvalues are purely imaginary (or $0$).
+[[D]] True: $(A^2)^T=(A^T)^2=(-A)^2=A^2$.
+[[B]] is why only the symmetric part $\tfrac12(M+M^T)$ of a matrix matters in a quadratic form.
+
+@ la h la-h-043
+T: Definiteness when only the last minor vanishes
+S: quadratic-forms
+Q: Classify the quadratic form $Q(x,y,z)=2x^2+2y^2+z^2+2xz+2yz$.
+A: positive semidefinite but not positive definite
+B: positive definite
+C: indefinite
+D: negative semidefinite
+ANS: A
+EXP: The symmetric matrix is $A=\begin{pmatrix}2&0&1\\0&2&1\\1&1&1\end{pmatrix}$ (each cross term is split in half).
+Leading principal minors: $2>0$, $4>0$, and $\det A=2(2-1)-0+1(0-2)=0$.
+The first two minors look like the start of a positive definite pattern, which is the trap. But Sylvester's criterion needs all three to be positive, and $\det A=0$ means $A$ is singular.
+Completing squares settles it: $Q=(x+y+z)^2+(x-y)^2\ge0$, and $Q=0$ at $(1,1,-2)\ne0$. So $Q$ is positive semidefinite but not definite (eigenvalues $3,2,0$).
+
+
+@ la h la-h-044
+T: Projection onto a plane through the origin
+S: projections-least-squares
+Q: What is the orthogonal projection of $b=(3,0,0)$ onto the plane $x+y+z=0$?
+A: $(2,-1,-1)$
+B: $(1,1,1)$
+C: $(3,-1,-1)$
+D: $(1,-\tfrac12,-\tfrac12)$
+ANS: A
+EXP: The plane has normal $n=(1,1,1)$. Remove the component of $b$ along $n$:
+$\operatorname{proj}_n b=\dfrac{b\cdot n}{n\cdot n}n=\dfrac33(1,1,1)=(1,1,1)$, so the projection onto the plane is $b-(1,1,1)=(2,-1,-1)$.
+Check: $2-1-1=0$ (in the plane) and $b-(2,-1,-1)=(1,1,1)\parallel n$.
+$(1,1,1)$ is the projection onto the normal line, not the plane: the classic mix-up between $P$ and $I-P$.
+
+@ la h la-h-045
+T: Solving the transposed system from LU factors
+S: lu
+TYPE: nat
+TOL: 0
+Q: $A=LU$ with $L=\begin{pmatrix}1&0&0\\2&1&0\\-1&3&1\end{pmatrix}$ and $U=\begin{pmatrix}2&1&1\\0&1&2\\0&0&1\end{pmatrix}$. Using these factors, solve the transposed system $A^Tx=b$ for $b=(-6,2,9)^T$ and enter $x_3$.
+ANS: 2
+EXP: $A^T=(LU)^T=U^TL^T$, where $U^T$ is lower triangular and $L^T$ is upper triangular. So solve $U^Ty=b$ by forward substitution, then $L^Tx=y$ by back substitution.
+$U^T=\begin{pmatrix}2&0&0\\1&1&0\\1&2&1\end{pmatrix}$: $2y_1=-6\Rightarrow y_1=-3$; $y_2=2+3=5$; $y_3=9+3-10=2$.
+$L^T=\begin{pmatrix}1&2&-1\\0&1&3\\0&0&1\end{pmatrix}$: $x_3=2$; $x_2=5-3\cdot2=-1$; $x_1=-3-2(-1)+2=1$.
+So $x=(1,-1,2)$ and $x_3=2$. Check: $A=\begin{pmatrix}2&1&1\\4&3&4\\-2&2&6\end{pmatrix}$ and $A^Tx=(2-4-4,\ 1-3+4,\ 1-4+12)=(-6,2,9)$.
+The trap is to run the usual $Ly=b$, $Ux=y$, which solves $Ax=b$ instead and gives $x_3=-39$. The order of the factors reverses under transposition, as in $(AB)^T=B^TA^T$.
+
+
+@ la h la-h-046
+T: Condition number from the Gram matrix
+S: svd-pca
+Q: A $2\times2$ matrix $A$ satisfies $A^TA=\begin{pmatrix}5&4\\4&5\end{pmatrix}$. What is the 2-norm condition number $\kappa_2(A)=\sigma_{\max}/\sigma_{\min}$?
+A: $3$
+B: $9$
+C: $\frac{5}{4}$
+D: $\sqrt5$
+ANS: A
+EXP: The singular values of $A$ are the square roots of the eigenvalues of $A^TA$.
+$A^TA$ has eigenvalues $5\pm4=9,1$ (eigenvectors $(1,1)$ and $(1,-1)$), so $\sigma=3,1$ and $\kappa_2(A)=3$.
+$9$ is $\kappa(A^TA)=\kappa(A)^2$; this squaring is exactly why solving least squares via the normal equations $A^TAx=A^Tb$ is less accurate than via QR or SVD.
+
+@ la h la-h-047
+T: Dual norm: maximise over the L1 ball
+S: vectors-norms
+Q: What is the maximum of $x_1+2x_2+2x_3$ over all $x\in\mathbb R^3$ with $\|x\|_1\le1$?
+A: $2$
+B: $3$
+C: $5$
+D: $1$
+ANS: A
+EXP: $w\cdot x\le\sum|w_i||x_i|\le\left(\max_i|w_i|\right)\sum|x_i|\le\|w\|_\infty\|x\|_1$. With $w=(1,2,2)$ this gives $\le2$.
+Equality at the vertex $x=e_2$ (or $e_3$): value $2$. A linear function on the $L_1$ ball is maximised at a vertex $\pm e_i$.
+So the dual of the $L_1$ norm is the $L_\infty$ norm. $3=\|w\|_2$ is the answer for the $L_2$ ball, and $5=\|w\|_1$ is the answer for the $L_\infty$ ball.
+The corners of the $L_1$ ball are also why LASSO produces sparse solutions.
+
+@ la h la-h-048
+T: When (1, t, t²) vectors form a basis
+S: vector-spaces
+Q: The vectors $(1,a,a^2)$, $(1,b,b^2)$, $(1,c,c^2)$ form a basis of $\mathbb R^3$ exactly when:
+A: $a,b,c$ are pairwise distinct
+B: $a+b+c\ne0$
+C: $abc\ne0$
+D: at least two of $a,b,c$ are different
+ANS: A
+EXP: Three vectors in $\mathbb R^3$ form a basis iff the matrix with them as rows has nonzero determinant.
+This is a Vandermonde matrix: $\det=(b-a)(c-a)(c-b)$, nonzero iff $a,b,c$ are pairwise distinct.
+[[D]] is not enough: $a=b=0$, $c=1$ gives two equal vectors. $abc\ne0$ is irrelevant: $a=0,b=1,c=2$ works.
+This is why polynomial interpolation through $n$ points with distinct $x$-values has a unique solution.
+
+@ la h la-h-049
+T: Scalar that makes I − P/3 an inverse
+S: matrix-ops
+Q: $P$ is a nonzero square matrix with $P^2=P$. For which scalar $\alpha$ is $(I+\alpha P)^{-1}=I-\frac13P$?
+A: $\alpha=\frac12$
+B: $\alpha=\frac13$
+C: $\alpha=-\frac13$
+D: $\alpha=2$
+ANS: A
+EXP: Multiply and use $P^2=P$: $(I+\alpha P)(I-\tfrac13P)=I-\tfrac13P+\alpha P-\tfrac{\alpha}{3}P^2=I+\left(\tfrac{2\alpha}{3}-\tfrac13\right)P$.
+Since $P\ne0$, this equals $I$ exactly when $\tfrac{2\alpha}{3}=\tfrac13$, i.e. $\alpha=\tfrac12$.
+In general $(I+\alpha P)^{-1}=I-\dfrac{\alpha}{1+\alpha}P$ for $\alpha\ne-1$. Eigenvalue check: $P$ has eigenvalues $0$ and $1$, so $I+\tfrac12P$ has $1$ and $\tfrac32$, and its inverse has $1$ and $\tfrac23=1-\tfrac13$.
+$\tfrac13$ is the first-order guess $(I+\alpha P)^{-1}\approx I-\alpha P$, which ignores that $P^2=P$ keeps every higher term alive. $2$ comes from solving $\tfrac{1}{1+\alpha}=\tfrac13$ instead of $\tfrac{\alpha}{1+\alpha}=\tfrac13$.
+
+
+@ la h la-h-050
+T: Consistency condition by row reduction
+S: linear-systems
+Q: Consider the system
+$$x+2y-z=3,\qquad 2x+4y+z=3,\qquad 3x+6y=k.$$
+For the value of $k$ that makes it consistent, how many free variables does the solution have?
+A: $k=6$, one free variable
+B: $k=6$, two free variables
+C: $k=9$, one free variable
+D: $k=6$, no free variables (unique solution)
+ANS: A
+EXP: Row 3 of the coefficient matrix equals row 1 + row 2: $(1,2,-1)+(2,4,1)=(3,6,0)$. So the system is consistent only if the right-hand sides match: $k=3+3=6$.
+Rank of the coefficient matrix: columns 1 and 2 are proportional ($c_2=2c_1$), and rows 1, 2 are independent, so rank $=2$.
+With $3$ unknowns and rank $2$ there is $3-2=1$ free variable ($y$), so infinitely many solutions.
+$k=9$ comes from scaling row 1 by $3$ and ignoring row 2.
+
+@ la h la-h-051
+T: Rank of the i + j matrix
+S: rank-nullity
+Q: Let $A$ be the $5\times5$ matrix with entries $a_{ij}=i+j$. What is $\operatorname{rank}A$?
+A: $2$
+B: $1$
+C: $5$
+D: $4$
+ANS: A
+EXP: Write $a_{ij}=i\cdot1+1\cdot j$, so $A=r\mathbf 1^T+\mathbf 1r^T$ with $r=(1,2,3,4,5)^T$.
+Each term has rank one and $\operatorname{rank}(X+Y)\le\operatorname{rank}X+\operatorname{rank}Y$, so $\operatorname{rank}A\le2$.
+Rows 1 and 2, $(2,3,4,5,6)$ and $(3,4,5,6,7)$, are not multiples of each other, so the rank is exactly $2$. Every row is in $\operatorname{span}\{r^T,\mathbf 1^T\}$.
+$1$ is the trap from thinking "entries follow a simple formula, so rank one"; a rank-one matrix needs $a_{ij}=u_iv_j$ (a product), not a sum.
+
+@ la h la-h-052
+T: Determinant of a scaled adjugate
+S: determinants
+Q: $A$ is a $3\times3$ matrix with $\det A=4$. What is $\det(2\operatorname{adj}A)$?
+A: $128$
+B: $32$
+C: $16$
+D: $64$
+ANS: A
+EXP: From $A\operatorname{adj}A=(\det A)I_n$: $\det A\cdot\det(\operatorname{adj}A)=(\det A)^n$, so $\det(\operatorname{adj}A)=(\det A)^{n-1}=4^2=16$.
+Scaling an $n\times n$ matrix by $2$ multiplies the determinant by $2^n=8$: $\det(2\operatorname{adj}A)=8\cdot16=128$.
+$32=2\cdot16$ uses $\det(cB)=c\det B$; $16$ forgets the factor $2$; $64=4^3$ uses $(\det A)^n$ instead of $(\det A)^{n-1}$ for the adjugate and also drops the $2$.
+
+@ la h la-h-053
+T: A matrix power from non-orthogonal eigenvectors
+S: eigen
+Q: A $2\times2$ matrix $A$ has eigenvector $(1,1)$ with eigenvalue $2$ and eigenvector $(1,2)$ with eigenvalue $3$. What is the $(1,2)$ entry of $A^4$?
+A: $65$
+B: $97$
+C: $178$
+D: $-130$
+ANS: A
+EXP: Diagonalise: $A=PDP^{-1}$ with $P=\begin{pmatrix}1&1\\1&2\end{pmatrix}$ (eigenvectors as columns), $D=\operatorname{diag}(2,3)$ and $P^{-1}=\begin{pmatrix}2&-1\\-1&1\end{pmatrix}$.
+Then $A^4=PD^4P^{-1}$. Its $(1,2)$ entry is (row 1 of $PD^4$) $\cdot$ (column 2 of $P^{-1}$) $=(16,81)\cdot(-1,1)=65$.
+(Here $A=\begin{pmatrix}1&1\\-2&4\end{pmatrix}$ and $A^4=\begin{pmatrix}-49&65\\-130&146\end{pmatrix}$.)
+The eigenvectors are not orthogonal, so $P^{-1}\ne P^T$. Using $P^T$ anyway gives $178$. $97=2^4+3^4$ adds the powered eigenvalues, which gives the trace of $A^4$, not an entry. $-130$ is the $(2,1)$ entry.
+
+
+@ la h la-h-054
+T: Determinant of a symmetric block matrix
+S: special-matrices
+Q: Let $B=\begin{pmatrix}1&1\\0&1\end{pmatrix}$ and let $M=\begin{pmatrix}I_2&B\\B^T&I_2\end{pmatrix}$ be the $4\times4$ partitioned matrix. What is $\det M$?
+A: $-1$
+B: $0$
+C: $5$
+D: $1$
+ANS: A
+EXP: For a partitioned matrix with an invertible top-left block, the Schur complement gives $\det\begin{pmatrix}P&Q\\R&S\end{pmatrix}=\det P\cdot\det(S-RP^{-1}Q)$.
+Here $P=I_2$, so $\det M=\det(I_2-B^TB)$. $B^TB=\begin{pmatrix}1&1\\1&2\end{pmatrix}$, so $I_2-B^TB=\begin{pmatrix}0&-1\\-1&-1\end{pmatrix}$ with determinant $0-1=-1$.
+The trap is treating the blocks like numbers: $\det I\cdot\det I-\det B\cdot\det B^T=1-1=0$. That formula is wrong for blocks. $5=\det(I+B^TB)$ has the wrong sign inside.
+$\det M<0$ also shows $M$ is not positive definite, even though it is symmetric with ones on the diagonal.
+
+
+@ la h la-h-055
+T: Inertia of a form with no square terms
+S: quadratic-forms
+Q: The quadratic form $q(x,y,z)=xy+yz$ has a symmetric matrix with $n_+$ positive, $n_-$ negative and $n_0$ zero eigenvalues. What is $(n_+,n_-,n_0)$?
+A: $(1,1,1)$
+B: $(0,0,3)$
+C: $(2,1,0)$
+D: $(1,2,0)$
+ANS: A
+EXP: The matrix is $A=\begin{pmatrix}0&\frac12&0\\\frac12&0&\frac12\\0&\frac12&0\end{pmatrix}$ (each cross term split in half).
+$\det(A-\lambda I)=-\lambda^3+\tfrac12\lambda=-\lambda\left(\lambda^2-\tfrac12\right)$, so the eigenvalues are $\tfrac{1}{\sqrt2},\,0,\,-\tfrac{1}{\sqrt2}$, giving $(1,1,1)$.
+Quick check without eigenvalues: $q=y(x+z)$ is positive at $(1,1,0)$ and negative at $(1,-1,0)$, so it is indefinite, and $A(1,0,-1)^T=0$, so one eigenvalue is $0$.
+$(0,0,3)$ is the trap of reading definiteness off the zero diagonal. A zero diagonal says only that the trace, the sum of the eigenvalues, is $0$.
+
+
+@ la h la-h-056
+T: Intercept of a least squares line
+S: projections-least-squares
+TYPE: nat
+TOL: 0.01
+Q: Fit $y=a+bx$ by ordinary least squares to the points $(0,1),(1,3),(2,4),(3,8)$. Enter the intercept $a$.
+ANS: 0.7
+EXP: With an intercept, the normal equations give $b=\dfrac{S_{xy}}{S_{xx}}$ and $a=\bar y-b\bar x$.
+$\bar x=1.5$, $\bar y=4$. Deviations $x-\bar x=(-1.5,-0.5,0.5,1.5)$, $y-\bar y=(-3,-1,0,4)$.
+$S_{xy}=4.5+0.5+0+6=11$, $S_{xx}=2.25+0.25+0.25+2.25=5$, so $b=2.2$.
+$a=4-2.2\cdot1.5=0.7$.
+Forgetting to centre ($b=\sum xy/\sum x^2=35/14=2.5$) fits a line through the origin and is the usual mistake. The line passes through $(\bar x,\bar y)$, which is a quick check.
+
+@ la h la-h-057
+T: Determinant from a pivoted LU
+S: lu
+Q: Gaussian elimination with partial pivoting gives $PA=LU$, where $P$ swaps rows 1 and 2 (one swap), $L$ is unit lower triangular, and $U$ has diagonal entries $2,3,-1$. What is $\det A$?
+A: $6$
+B: $-6$
+C: $1$
+D: $-1$
+ANS: A
+EXP: Take determinants: $\det P\cdot\det A=\det L\cdot\det U$.
+$\det L=1$ (unit diagonal), $\det U=2\cdot3\cdot(-1)=-6$, and a single row swap has $\det P=-1$.
+So $\det A=\dfrac{-6}{-1}=6$.
+$-6$ forgets the sign flip from the row exchange. This is how software computes determinants: product of pivots times $(-1)^{\#\text{swaps}}$.
+
+@ la h la-h-058
+T: Facts from the singular values of a tall matrix
+S: svd-pca
+TYPE: msq
+Q: $A$ is a $3\times2$ real matrix with singular values $3$ and $2$. Which statements are true? More than one option may be correct.
+A: $A^TA$ has eigenvalues $9$ and $4$
+B: $AA^T$ has $0$ as an eigenvalue
+C: $\|A\|_F=5$
+D: $\|A\|_2=9$
+ANS: A,B
+EXP: From $A=U\Sigma V^T$: $A^TA=V\Sigma^T\Sigma V^T$ and $AA^T=U\Sigma\Sigma^TU^T$.
+[[A]] True: the eigenvalues of $A^TA$ are $\sigma_i^2=9,4$.
+[[B]] True: $AA^T$ is $3\times3$ with rank $2$, so its eigenvalues are $9,4,0$.
+[[C]] False: $\|A\|_F=\sqrt{\sum\sigma_i^2}=\sqrt{13}$, not $\sum\sigma_i=5$ (that is the nuclear norm).
+[[D]] False: the spectral norm is $\sigma_{\max}=3$; $9$ is $\sigma_{\max}^2$.
+PCA uses exactly this: the eigenvalues of $X^TX$ are the squared singular values of $X$.
+
+@ la h la-h-059
+T: Distance from a Gram matrix
+S: vectors-norms
+Q: Vectors $u,v$ have Gram matrix $G=\begin{pmatrix}u\cdot u&u\cdot v\\v\cdot u&v\cdot v\end{pmatrix}=\begin{pmatrix}4&2\\2&9\end{pmatrix}$. What is $\|u-v\|$?
+A: $3$
+B: $\sqrt{13}$
+C: $\sqrt{17}$
+D: $1$
+ANS: A
+EXP: Expand: $\|u-v\|^2=u\cdot u-2\,u\cdot v+v\cdot v=4-4+9=9$, so $\|u-v\|=3$.
+$\sqrt{13}$ ignores the cross term (assumes orthogonality); $\sqrt{17}$ adds it with the wrong sign (that is $\|u+v\|$); $1=3-2=\|v\|-\|u\|$ assumes $u,v$ are parallel.
+This is the kernel trick: distances can be computed from inner products alone, $\|\phi(x)-\phi(y)\|^2=k(x,x)-2k(x,y)+k(y,y)$.
+
+@ la h la-h-060
+T: The four fundamental subspaces of a 3×4 matrix
+S: vector-spaces
+TYPE: msq
+Q: $A$ is a real $3\times4$ matrix. Which statements are always true? More than one option may be correct.
+A: Every vector in $\operatorname{null}(A)$ is orthogonal to every row of $A$
+B: $\dim\operatorname{null}(A)+\dim\operatorname{col}(A^T)=4$
+C: $\operatorname{null}(A)$ is orthogonal to $\operatorname{col}(A)$
+D: $\dim\operatorname{col}(A)=\dim\operatorname{col}(A^T)$
+ANS: A,B,D
+EXP: [[A]] True: $Ax=0$ says each row dotted with $x$ is $0$, so $\operatorname{null}(A)\perp\operatorname{row}(A)$.
+[[B]] True: $\operatorname{null}(A)$ and $\operatorname{row}(A)=\operatorname{col}(A^T)$ are orthogonal complements in $\mathbb R^4$, and rank $+$ nullity $=4$ columns.
+[[C]] False: $\operatorname{null}(A)\subseteq\mathbb R^4$ but $\operatorname{col}(A)\subseteq\mathbb R^3$; vectors of different lengths cannot even be dotted. The orthogonal complement of $\operatorname{col}(A)$ is $\operatorname{null}(A^T)$.
+[[D]] True: row rank equals column rank.
+
+@ la h la-h-061
+T: Matrices that commute with a Jordan block
+S: matrix-ops
+Q: Let $N=\begin{pmatrix}1&1\\0&1\end{pmatrix}$ and let $\mathcal C$ be the set of all real $2\times2$ matrices $X$ with $XN=NX$. Which set is equal to $\mathcal C$?
+A: $\left\{\begin{pmatrix}a&b\\0&a\end{pmatrix}: a,b\in\mathbb R\right\}$
+B: $\left\{\begin{pmatrix}a&0\\0&a\end{pmatrix}: a\in\mathbb R\right\}$
+C: $\left\{\begin{pmatrix}a&b\\0&d\end{pmatrix}: a,b,d\in\mathbb R\right\}$
+D: $\left\{\begin{pmatrix}a&0\\0&d\end{pmatrix}: a,d\in\mathbb R\right\}$
+ANS: A
+EXP: $N=I+E$ with $E=\begin{pmatrix}0&1\\0&0\end{pmatrix}$, and $I$ commutes with everything, so $XN=NX$ exactly when $XE=EX$.
+With $X=\begin{pmatrix}a&b\\c&d\end{pmatrix}$: $XE=\begin{pmatrix}0&a\\0&c\end{pmatrix}$ and $EX=\begin{pmatrix}c&d\\0&0\end{pmatrix}$.
+These are equal exactly when $c=0$ and $a=d$, so $\mathcal C=\{aI+bE\}$, the polynomials in $N$. It is a 2-dimensional subspace.
+[[B]] is too small: it misses $X=N$ itself. [[C]] is too big: $\mathrm{diag}(1,2)$ is upper triangular, but $\mathrm{diag}(1,2)E=E\ne2E=E\,\mathrm{diag}(1,2)$. [[D]] is both: it contains $\mathrm{diag}(1,2)$ and misses $N$.
+
+
+@ la h la-h-062
+T: Unique solution for a tall system
+S: linear-systems
+TYPE: msq
+Q: $A$ is a $5\times3$ real matrix, and for some particular $b$ the system $Ax=b$ has exactly one solution. Which statements must be true? More than one option may be correct.
+A: $\operatorname{rank}A=3$
+B: $Ax=c$ is consistent for every $c\in\mathbb R^5$
+C: $A^TA$ is invertible
+D: $Ax=c$ has at most one solution for every $c\in\mathbb R^5$
+ANS: A,C,D
+EXP: All solutions of $Ax=b$ are $x_p+\operatorname{null}(A)$. Exactly one solution forces $\operatorname{null}(A)=\{0\}$, so the 3 columns are independent: rank $3$. [[A]] true.
+[[D]] True: for any $c$, the solution set is either empty or $x_p+\{0\}$.
+[[C]] True: $A^TAx=0\Rightarrow\|Ax\|^2=0\Rightarrow x=0$, so the $3\times3$ matrix $A^TA$ is invertible (this is why least squares has a unique solution).
+[[B]] False: the column space is only 3-dimensional inside $\mathbb R^5$, so most $c$ are not reachable, e.g. $A=\begin{pmatrix}I_3\\0\end{pmatrix}$ and $c=e_5$.
+The trap is carrying "unique solution means invertible" over from square matrices.
+
+@ la h la-h-063
+T: Rank of a repeated block matrix
+S: rank-nullity
+Q: $A$ is a $3\times3$ matrix of rank $2$. What is the rank of the $6\times6$ matrix $M=\begin{pmatrix}A&A\\A&A\end{pmatrix}$?
+A: $2$
+B: $4$
+C: $1$
+D: $6$
+ANS: A
+EXP: $M=\begin{pmatrix}1&1\\1&1\end{pmatrix}\otimes A$, or directly: the bottom block row equals the top block row, and within the top row $\begin{pmatrix}A&A\end{pmatrix}$ the second block of columns repeats the first.
+Block row/column operations ($R_{\text{bottom}}-R_{\text{top}}$, then $C_{\text{right}}-C_{\text{left}}$) turn $M$ into $\begin{pmatrix}A&0\\0&0\end{pmatrix}$ without changing rank.
+So $\operatorname{rank}M=\operatorname{rank}A=2$. (In general $\operatorname{rank}(B\otimes A)=\operatorname{rank}B\cdot\operatorname{rank}A=1\cdot2$.)
+$4=2\operatorname{rank}A$ treats the four copies as if they added rank.
+
+@ la h la-h-064
+T: Determinant of a 3×3 circulant
+S: determinants
+Q: What is $\det\begin{pmatrix}1&2&3\\3&1&2\\2&3&1\end{pmatrix}$?
+A: $18$
+B: $6$
+C: $-18$
+D: $0$
+ANS: A
+EXP: Every row sums to $6$. Add columns 2 and 3 to column 1 (determinant unchanged) and factor out $6$:
+$\det=6\begin{vmatrix}1&2&3\\1&1&2\\1&3&1\end{vmatrix}$. Subtract row 1 from rows 2 and 3: $6\begin{vmatrix}1&2&3\\0&-1&-1\\0&1&-2\end{vmatrix}=6\cdot(2+1)=18$.
+Formula for a circulant with first row $(a,b,c)$: $a^3+b^3+c^3-3abc=1+8+27-18=18$.
+$6$ stops after factoring out the row sum; $-18$ is a sign slip in the $2\times2$ minor. The row sum $6$ is one eigenvalue (eigenvector $\mathbf 1$), and the other two eigenvalues are a conjugate pair with product $3$.
+
+@ la h la-h-065
+T: Operations that preserve orthogonality
+S: special-matrices
+Q: $Q_1$ and $Q_2$ are $n\times n$ orthogonal matrices. Which of these is NOT necessarily orthogonal?
+A: $Q_1+Q_2$
+B: $Q_1Q_2$
+C: $Q_1^T$
+D: $-Q_1$
+ANS: A
+EXP: Test $M^TM=I$ for each.
+[[B]] $(Q_1Q_2)^T(Q_1Q_2)=Q_2^TQ_1^TQ_1Q_2=Q_2^TQ_2=I$. [[C]] $Q_1^T=Q_1^{-1}$ and the inverse of an orthogonal matrix is orthogonal. [[D]] $(-Q_1)^T(-Q_1)=Q_1^TQ_1=I$.
+[[A]] fails: $Q_1=Q_2=I$ gives $2I$, and $(2I)^T(2I)=4I\ne I$; $Q_1=I$, $Q_2=-I$ gives the zero matrix.
+Orthogonal matrices form a group under multiplication (rotations and reflections compose), but not a subspace.
+
+@ la h la-h-066
+T: Minimum of a quadratic function
+S: quadratic-forms
+TYPE: nat
+TOL: 0.01
+Q: Let $A=\begin{pmatrix}2&1\\1&1\end{pmatrix}$ and $b=(1,0)^T$. Enter the minimum value of $f(x)=x^TAx-2b^Tx$ over $x\in\mathbb R^2$.
+ANS: -1
+EXP: $A$ is positive definite (leading minors $2$ and $1$), so $f$ is strictly convex with a unique minimiser.
+Gradient: $\nabla f=2Ax-2b=0\Rightarrow Ax^*=b$. $A^{-1}=\begin{pmatrix}1&-1\\-1&2\end{pmatrix}$, so $x^*=(1,-1)$.
+$f(x^*)=x^{*T}b-2b^Tx^*=-b^TA^{-1}b=-1$. (Directly: $x^{*T}Ax^*=2-2+1=1$ and $2b^Tx^*=2$, so $1-2=-1$.)
+A common slip is reporting $b^TA^{-1}b=1$ (dropping the sign) or the minimiser instead of the minimum. Least squares has this shape: $\|Xw-y\|^2=w^TX^TXw-2y^TXw+\text{const}$.
+
+@ la h la-h-067
+T: Ridge regression with a diagonal Gram matrix
+S: projections-least-squares
+Q: In ridge regression, $w=(X^TX+\lambda I)^{-1}X^Ty$. Suppose $X^TX=\begin{pmatrix}4&0\\0&1\end{pmatrix}$, $X^Ty=(8,3)^T$ and $\lambda=1$. What is $w$?
+A: $(1.6,\ 1.5)$
+B: $(2,\ 3)$
+C: $(1.75,\ 2)$
+D: $(2.25,\ 4)$
+ANS: A
+EXP: $X^TX+\lambda I=\mathrm{diag}(5,2)$, so $w=(8/5,\ 3/2)=(1.6,1.5)$.
+$(2,3)$ is the ordinary least squares solution ($\lambda=0$). Ridge shrinks every coordinate towards $0$, but not equally: the factor is $\dfrac{d_i}{d_i+\lambda}$, i.e. $\tfrac45$ for the well-determined direction and $\tfrac12$ for the weak one.
+$(1.75,2)$ subtracts $\lambda$ from $X^Ty$ before dividing, and $(2.25,4)$ adds it; neither is the ridge formula.
+
+@ la h la-h-068
+T: Cholesky factor of a 2×2 matrix
+S: lu
+Q: The symmetric positive definite matrix $A=\begin{pmatrix}4&2\\2&5\end{pmatrix}$ is written as $A=LL^T$ with $L$ lower triangular and positive diagonal. What is $L$?
+A: $\begin{pmatrix}2&0\\1&2\end{pmatrix}$
+B: $\begin{pmatrix}2&0\\1&\sqrt5\end{pmatrix}$
+C: $\begin{pmatrix}2&0\\2&1\end{pmatrix}$
+D: $\begin{pmatrix}1&0\\0.5&1\end{pmatrix}$
+ANS: A
+EXP: Match entries of $LL^T=\begin{pmatrix}\ell_{11}^2&\ell_{11}\ell_{21}\\\ell_{11}\ell_{21}&\ell_{21}^2+\ell_{22}^2\end{pmatrix}$:
+$\ell_{11}=\sqrt4=2$; $\ell_{21}=2/2=1$; $\ell_{22}=\sqrt{5-1^2}=2$.
+[[B]] forgets to subtract $\ell_{21}^2$; [[C]] forgets to divide $a_{21}$ by $\ell_{11}$ (then $LL^T$ has $(1,2)$ entry $4$); [[D]] is the unit-diagonal factor of $A=LDL^T$ with $D=\mathrm{diag}(4,4)$, not a Cholesky factor.
+Cholesky is how Gaussian samples with covariance $A$ are drawn: $x=Lz$ with $z\sim N(0,I)$.
+
+@ la h la-h-069
+T: First principal component of four points
+S: svd-pca
+Q: The centred data points $(2,2),(-2,-2),(1,-1),(-1,1)$ are analysed with PCA, using the covariance matrix $\frac1n\sum x_ix_i^T$. What are the first principal direction and the variance along it?
+A: $\frac{1}{\sqrt2}(1,1)$, variance $4$
+B: $\frac{1}{\sqrt2}(1,-1)$, variance $1$
+C: $\frac{1}{\sqrt2}(1,1)$, variance $2.5$
+D: $(1,0)$, variance $2.5$
+ANS: A
+EXP: $\sum x_ix_i^T=2\begin{pmatrix}4&4\\4&4\end{pmatrix}+2\begin{pmatrix}1&-1\\-1&1\end{pmatrix}=\begin{pmatrix}10&6\\6&10\end{pmatrix}$, so $\Sigma=\begin{pmatrix}2.5&1.5\\1.5&2.5\end{pmatrix}$.
+Eigenvalues $2.5\pm1.5=4,1$ with eigenvectors $(1,1)/\sqrt2$ and $(1,-1)/\sqrt2$.
+PC1 is $(1,1)/\sqrt2$ with variance $4$. Check by projecting: scores $2\sqrt2,-2\sqrt2,0,0$, mean square $(8+8)/4=4$.
+$2.5$ is the variance of a single original feature (a diagonal entry), and $(1,-1)/\sqrt2$ is the direction of least variance (PC2).
+
+@ la h la-h-070
+T: Margin between two parallel hyperplanes
+S: vectors-norms
+Q: In a linear SVM with weight vector $w=(3,4)$ and bias $b$, what is the distance between the hyperplanes $w^Tx+b=1$ and $w^Tx+b=-1$?
+A: $0.4$
+B: $0.2$
+C: $0.08$
+D: $10$
+ANS: A
+EXP: The distance from a point $x_0$ to $w^Tx+b=c$ is $\dfrac{|w^Tx_0+b-c|}{\|w\|_2}$. For two parallel planes with right-hand sides $1$ and $-1$ it is $\dfrac{|1-(-1)|}{\|w\|}=\dfrac{2}{\|w\|}$.
+$\|w\|=\sqrt{9+16}=5$, so the margin is $2/5=0.4$.
+$0.2=1/\|w\|$ is the distance from the decision boundary to one plane (half the margin); $0.08=2/\|w\|^2$ forgets the square root; $10=2\|w\|$ inverts the formula.
+Maximising the margin $2/\|w\|$ is why SVMs minimise $\|w\|^2$.
+
+@ la h la-h-071
+T: Dimension of a commutant
+S: vector-spaces
+TYPE: nat
+TOL: 0
+Q: Let $D=\mathrm{diag}(1,1,2,3)$. The set of all real $4\times4$ matrices $X$ with $XD=DX$ is a subspace. Enter its dimension.
+ANS: 6
+EXP: Entrywise, $(XD-DX)_{ij}=x_{ij}(d_j-d_i)$. So $XD=DX$ iff $x_{ij}=0$ whenever $d_i\ne d_j$.
+The diagonal values group the indices as $\{1,2\}$ (value $1$), $\{3\}$ (value $2$), $\{4\}$ (value $3$). Free entries are those inside a group: a $2\times2$ block, a $1\times1$ block and a $1\times1$ block.
+Dimension $=2^2+1^2+1^2=6$.
+$4$ (only diagonal matrices) is the answer when all diagonal entries are distinct; the repeated eigenvalue $1$ allows a full $2\times2$ block.
+
+@ la h la-h-072
+T: Principal component variance from singular values
+S: svd-pca
+TYPE: nat
+TOL: 0.01
+Q: A centred data matrix $X$ has $n=10$ rows (samples) and $2$ columns (features), with singular values $6$ and $2$. Using the covariance matrix $\frac1nX^TX$, enter the variance of the data along the first principal component.
+ANS: 3.6
+EXP: With $X=U\Sigma V^T$, the covariance is $\frac1nX^TX=V\,\frac{\Sigma^T\Sigma}{n}\,V^T$. So the principal directions are the right singular vectors, and the variances along them are $\sigma_i^2/n$.
+First component: $\sigma_1^2/n=36/10=3.6$.
+Traps: $0.6=\sigma_1/n$ forgets to square the singular value. $4=36/9$ uses $n-1$, which the question rules out. $0.9=36/40$ is the fraction of variance explained, not the variance itself.
+
+
+@ la h la-h-073
+T: Which matrices are positive definite
+S: quadratic-forms
+TYPE: msq
+Q: Which of these symmetric matrices are positive definite? More than one option may be correct.
+A: $\begin{pmatrix}2&-1&0\\-1&2&-1\\0&-1&2\end{pmatrix}$
+B: $\begin{pmatrix}1&2\\2&3\end{pmatrix}$
+C: $M^TM$ where $M=\begin{pmatrix}1&2\\3&4\end{pmatrix}$
+D: $\begin{pmatrix}1&1&1\\1&1&1\\1&1&1\end{pmatrix}$
+ANS: A,C
+EXP: [[A]] PD: leading minors $2$, $3$, $4$ are all positive (eigenvalues $2-\sqrt2,\,2,\,2+\sqrt2$).
+[[B]] Not PD: $\det=3-4=-1<0$, so one eigenvalue is negative, even though both diagonal entries are positive.
+[[C]] PD: $x^TM^TMx=\|Mx\|^2\ge0$, with equality only if $Mx=0$; $\det M=-2\ne0$, so $x=0$. A Gram matrix $M^TM$ is PD exactly when $M$ has independent columns.
+[[D]] Only PSD: $x^TJx=(x_1+x_2+x_3)^2$ vanishes at $x=(1,-1,0)$; eigenvalues $3,0,0$.
+Note that [[C]] is PD even though $M$ itself has a negative determinant and is not symmetric.
+
+@ la h la-h-074
+T: The D in an LDLᵀ factorisation
+S: lu
+Q: The symmetric matrix $A=\begin{pmatrix}1&2\\2&7\end{pmatrix}$ is factored as $A=LDL^T$ with $L$ unit lower triangular and $D$ diagonal. What is $D$?
+A: $\mathrm{diag}(1,3)$
+B: $\mathrm{diag}(1,7)$
+C: $\mathrm{diag}(1,5)$
+D: $\mathrm{diag}(1,\sqrt3)$
+ANS: A
+EXP: Eliminate: $\ell_{21}=2/1=2$, and the second pivot is $7-2\cdot2=3$. So $L=\begin{pmatrix}1&0\\2&1\end{pmatrix}$, $D=\mathrm{diag}(1,3)$.
+Check: $LDL^T=\begin{pmatrix}1&0\\2&1\end{pmatrix}\begin{pmatrix}1&2\\0&3\end{pmatrix}=\begin{pmatrix}1&2\\2&7\end{pmatrix}$.
+$D$ holds the pivots, not the diagonal of $A$ [[B]]. $5=7-2$ forgets to multiply by $\ell_{21}$ in $7-\ell_{21}a_{12}$. $\sqrt3$ is the corresponding Cholesky entry, since $L_{\text{chol}}=LD^{1/2}$.
+All pivots positive means $A$ is positive definite: the number of positive pivots equals the number of positive eigenvalues (Sylvester's law of inertia).
+
+@ la h la-h-075
+T: Another solution from the general solution
+S: linear-systems
+Q: $A$ is a $3\times3$ matrix of rank $2$, $b\ne0$, and $Ax=b$ has the solution $x_p=(1,0,1)$. Also $A(1,1,1)^T=0$. Which vector is also a solution of $Ax=b$?
+A: $(3,2,3)$
+B: $(2,0,2)$
+C: $(2,2,2)$
+D: $(3,2,1)$
+ANS: A
+EXP: Rank $2$ means $\dim\operatorname{null}A=1$, so $\operatorname{null}A=\operatorname{span}\{(1,1,1)\}$ and every solution is $x_p+t(1,1,1)$.
+$(3,2,3)=(1,0,1)+2(1,1,1)$ is a solution.
+$(2,0,2)=2x_p$ gives $A(2x_p)=2b\ne b$: solutions of a non-homogeneous system are not closed under scaling. $(2,2,2)$ solves $Ax=0$, not $Ax=b$. $(3,2,1)-x_p=(2,2,0)$ is not in the null space.
+
+@ la m la-m-011
+T: Frobenius norm of an outer product
+S: vectors-norms
+TYPE: nat
+TOL: 0
+Q: Let $u=(1,2,2)^T$ and $v=(3,4)^T$. Find the Frobenius norm $\|uv^T\|_F=\sqrt{\sum_{i,j}(uv^T)_{ij}^2}$ of the $3\times2$ matrix $uv^T$.
+ANS: 15
+EXP: Entry $(i,j)$ of $uv^T$ is $u_iv_j$, so $\sum_{i,j}u_i^2v_j^2=\left(\sum_iu_i^2\right)\left(\sum_jv_j^2\right)=\|u\|_2^2\,\|v\|_2^2$.
+$\|u\|_2=\sqrt{1+4+4}=3$ and $\|v\|_2=\sqrt{9+16}=5$, so $\|uv^T\|_F=3\cdot5=15$.
+No need to write out the six entries. A rank-one matrix has a single nonzero singular value, which is also $\|u\|\|v\|=15$. Answering $225$ forgets the square root.
+
+@ la m la-m-012
+T: Which sets of vectors form a basis of R^3
+S: vector-spaces
+TYPE: msq
+Q: Which of the following sets are bases of $\mathbb R^3$? More than one option may be correct.
+A: $\{(1,0,0),\ (1,1,0),\ (1,1,1)\}$
+B: $\{(1,2,3),\ (4,5,6),\ (7,8,9)\}$
+C: $\{(1,0,1),\ (0,1,1),\ (1,1,0)\}$
+D: $\{(1,1,0),\ (0,1,1),\ (1,0,0),\ (0,0,1)\}$
+ANS: A,C
+EXP: A basis of $\mathbb R^3$ is exactly $3$ linearly independent vectors; for $3$ vectors, that means the matrix they form has nonzero determinant.
+[[A]] Triangular with ones on the diagonal: determinant $1$. Basis.
+[[B]] $(4,5,6)-(1,2,3)=(3,3,3)=(7,8,9)-(4,5,6)$, so the vectors are dependent (rank $2$). Not a basis.
+[[C]] $\det\begin{pmatrix}1&0&1\\0&1&1\\1&1&0\end{pmatrix}=1(0-1)-0+1(0-1)=-2\ne0$. Basis.
+[[D]] The four vectors span $\mathbb R^3$, but any $4$ vectors in $\mathbb R^3$ are dependent, so they are not a basis. Spanning alone is not enough.
+
+@ la m la-m-013
+T: Trace of A transpose A
+S: matrix-ops
+TYPE: nat
+TOL: 0
+Q: Let $A=\begin{pmatrix}1&2\\3&-1\\0&2\end{pmatrix}$. Find $\operatorname{tr}(A^TA)$.
+ANS: 19
+EXP: The $(j,j)$ entry of $A^TA$ is the dot product of column $j$ with itself, so $\operatorname{tr}(A^TA)=\sum_{i,j}a_{ij}^2=\|A\|_F^2$.
+Column 1: $1+9+0=10$. Column 2: $4+1+4=9$. Total $=19$.
+No need to form the full $2\times2$ product. The same identity says the squared Frobenius norm equals the sum of squared singular values, which is used in PCA to compute total variance.
+
+@ la m la-m-014
+T: Parameter values that make a system consistent
+S: linear-systems
+Q: For which values of $a$ is the system
+$$x+y+z=1,\qquad x+2y+4z=a,\qquad x+4y+10z=a^2$$
+consistent?
+A: $a=1$ or $a=2$
+B: $a=-1$ or $a=-2$
+C: $a=1$ only
+D: every real $a$
+ANS: A
+EXP: Eliminate $x$: $R_2-R_1$ gives $y+3z=a-1$ and $R_3-R_1$ gives $3y+9z=a^2-1$.
+Then $(R_3-R_1)-3(R_2-R_1)$ gives $0=a^2-1-3(a-1)=a^2-3a+2=(a-1)(a-2)$.
+The coefficient matrix has rank $2$, so the system is consistent iff this right side is $0$, i.e. $a=1$ or $a=2$ (and then it has infinitely many solutions).
+[[D]] is the trap of assuming three equations in three unknowns always have a solution; [[C]] finds only the obvious root.
+
+@ la m la-m-015
+T: Rank of a product with a full-column-rank factor
+S: rank-nullity
+Q: $A$ is $4\times3$ with rank $3$, and $B$ is $3\times5$ with rank $2$. What is $\operatorname{rank}(AB)$?
+A: $2$
+B: $3$
+C: $1$
+D: It cannot be determined from the information given
+ANS: A
+EXP: Because $A$ has full column rank, $Ay=0$ only for $y=0$. So $ABx=0 \iff Bx=0$, i.e. $\operatorname{null}(AB)=\operatorname{null}(B)$.
+By rank–nullity on the $5$ columns: $\operatorname{nullity}(B)=5-2=3$, so $\operatorname{rank}(AB)=5-3=2$.
+The general bound $\operatorname{rank}(AB)\le\min(\operatorname{rank}A,\operatorname{rank}B)=2$ alone would not fix the value, which is why [[D]] is tempting; the full column rank of $A$ is what pins it to exactly $2$.
+
+@ la m la-m-016
+T: Determinant of 3 A-inverse B-transpose
+S: determinants
+Q: $A$ and $B$ are $3\times3$ matrices with $\det A=4$ and $\det B=-2$. What is $\det\left(3A^{-1}B^T\right)$?
+A: $-\frac{27}{2}$
+B: $-\frac{3}{2}$
+C: $-216$
+D: $-\frac{27}{8}$
+ANS: A
+EXP: Use $\det(cM)=c^n\det M$, $\det(A^{-1})=1/\det A$, $\det(B^T)=\det B$ and $\det(MN)=\det M\det N$.
+$\det(3A^{-1}B^T)=3^3\cdot\frac14\cdot(-2)=-\frac{27}{2}$.
+$-\frac32$ uses $\det(3M)=3\det M$ (the scalar must be raised to the power $n=3$). $-216$ uses $\det A$ instead of $1/\det A$. $-\frac{27}{8}$ wrongly inverts $\det B$ as well; transposing does not change the determinant.
+
+@ la m la-m-017
+T: Geometric multiplicity of a repeated eigenvalue
+S: eigen
+Q: For $A=\begin{pmatrix}2&1&0\\0&2&0\\0&0&2\end{pmatrix}$, what is the geometric multiplicity of the eigenvalue $\lambda=2$?
+A: $2$
+B: $3$
+C: $1$
+D: $0$
+ANS: A
+EXP: $A$ is triangular, so $\lambda=2$ is its only eigenvalue, with algebraic multiplicity $3$.
+Geometric multiplicity $=\dim\operatorname{null}(A-2I)=3-\operatorname{rank}(A-2I)$.
+$A-2I=\begin{pmatrix}0&1&0\\0&0&0\\0&0&0\end{pmatrix}$ has rank $1$, so the eigenspace has dimension $3-1=2$ (spanned by $e_1$ and $e_3$).
+Answering $3$ confuses geometric with algebraic multiplicity. Since $2<3$, $A$ is not diagonalisable.
+
+@ la m la-m-018
+T: Properties of an idempotent matrix
+S: special-matrices
+TYPE: msq
+Q: $P$ is an $n\times n$ real matrix with $P^2=P$. Which statements are always true? More than one option may be correct.
+A: $I-P$ is also idempotent
+B: $(I-2P)^2=I$
+C: $P$ is invertible
+D: $\operatorname{tr}(P)=\operatorname{rank}(P)$
+ANS: A,B,D
+EXP: [[A]] $(I-P)^2=I-2P+P^2=I-2P+P=I-P$. True. (In regression, if $P$ is the hat matrix then $I-P$ produces the residuals.)
+[[B]] $(I-2P)^2=I-4P+4P^2=I-4P+4P=I$. True: $I-2P$ is a reflection.
+[[C]] False in general. If $P$ were invertible, multiplying $P^2=P$ by $P^{-1}$ gives $P=I$. Any other idempotent (e.g. $P=0$ or $\mathrm{diag}(1,0)$) is singular.
+[[D]] True. The eigenvalues are $0$ or $1$ and $P$ is diagonalisable, so the trace counts the eigenvalues equal to $1$, which is the rank.
+
+@ la m la-m-019
+T: Negative definite despite alternating minors
+S: quadratic-forms
+Q: Classify the symmetric matrix $A=\begin{pmatrix}-2&1&0\\1&-2&1\\0&1&-2\end{pmatrix}$.
+A: Negative definite
+B: Indefinite
+C: Positive definite
+D: Negative semidefinite but singular
+ANS: A
+EXP: Leading principal minors: $D_1=-2$, $D_2=4-1=3$, $D_3=\det A=-4$.
+Sylvester's criterion for negative definiteness: the signs alternate starting with negative ($D_1<0,\ D_2>0,\ D_3<0$). That is exactly the pattern here, so $A$ is negative definite.
+Equivalently $-A$ has minors $2,3,4>0$, so $-A$ is positive definite. The eigenvalues are $-2$ and $-2\pm\sqrt2$, all negative.
+[[B]] is the trap: mixed signs among the minors suggest indefiniteness, but alternating signs starting from negative is the negative-definite pattern. $D_3\ne0$ rules out [[D]]. ($-A$ is the familiar second-difference matrix.)
+
+@ la m la-m-020
+T: Projection onto the span of two orthogonal vectors
+S: projections-least-squares
+Q: Let $a_1=(1,0,1)$ and $a_2=(1,2,-1)$. What is the orthogonal projection of $b=(4,3,-2)$ onto $\operatorname{span}\{a_1,a_2\}$?
+A: $(3,4,-1)$
+B: $(14,24,-10)$
+C: $(1,0,1)$
+D: $(2,4,-2)$
+ANS: A
+EXP: $a_1\cdot a_2=1+0-1=0$, so the vectors are orthogonal and the projection is the sum of the projections onto each:
+$p=\dfrac{b\cdot a_1}{a_1\cdot a_1}a_1+\dfrac{b\cdot a_2}{a_2\cdot a_2}a_2=\dfrac{2}{2}(1,0,1)+\dfrac{12}{6}(1,2,-1)=(3,4,-1)$.
+Check: the residual $b-p=(1,-1,-1)$ is orthogonal to both $a_1$ and $a_2$.
+[[B]] forgets to divide by $a_i\cdot a_i$. [[C]] and [[D]] project onto only one of the two vectors. (The sum formula needs orthogonal vectors; otherwise use the normal equations.)
+
+@ la m la-m-021
+T: Rebuilding A from its L and U factors
+S: lu
+Q: Elimination on a $2\times2$ matrix $A$ produced $L=\begin{pmatrix}1&0\\3&1\end{pmatrix}$ and $U=\begin{pmatrix}2&1\\0&4\end{pmatrix}$ with $A=LU$. What is $A$?
+A: $\begin{pmatrix}2&1\\6&7\end{pmatrix}$
+B: $\begin{pmatrix}5&1\\12&4\end{pmatrix}$
+C: $\begin{pmatrix}2&1\\6&4\end{pmatrix}$
+D: $\begin{pmatrix}2&1\\-6&1\end{pmatrix}$
+ANS: A
+EXP: Multiply in the order $LU$: row 1 of $A$ is row 1 of $U$, $(2,1)$; row 2 of $A$ is $3\times$(row 1 of $U$) $+$ (row 2 of $U$) $=(6,3)+(0,4)=(6,7)$.
+Check by elimination: the multiplier is $6/2=3$ and $7-3\cdot1=4=u_{22}$.
+[[B]] is $UL$ (wrong order). [[C]] forgets the $\ell_{21}u_{12}=3$ contribution to the $(2,2)$ entry. [[D]] treats the multiplier as $-3$.
+
+@ la m la-m-022
+T: Singular values are not the eigenvalues
+S: svd-pca
+Q: What are the singular values of $A=\begin{pmatrix}3&0\\4&5\end{pmatrix}$?
+A: $3\sqrt5$ and $\sqrt5$
+B: $5$ and $3$
+C: $45$ and $5$
+D: $5$ and $5$
+ANS: A
+EXP: Singular values are the square roots of the eigenvalues of $A^TA$.
+$A^TA=\begin{pmatrix}25&20\\20&25\end{pmatrix}$: trace $50$, determinant $625-400=225$, so eigenvalues $45$ and $5$.
+Hence $\sigma_1=\sqrt{45}=3\sqrt5$ and $\sigma_2=\sqrt5$. Check: $\sigma_1\sigma_2=15=|\det A|$.
+$5$ and $3$ are the eigenvalues of $A$ (it is triangular); for a non-symmetric matrix they differ from the singular values. $45,5$ forgets the square root, and $5,5$ are the column norms.
+
+@ la m la-m-023
+T: Shape of the L1 unit ball
+S: vectors-norms
+Q: In $\mathbb R^2$, the set $\{x:\|x\|_1\le1\}$ is:
+A: a square (diamond) with vertices $(\pm1,0)$ and $(0,\pm1)$
+B: a square with vertices $(\pm1,\pm1)$
+C: the disc of radius $1$
+D: a square (diamond) with vertices $(\pm2,0)$ and $(0,\pm2)$
+ANS: A
+EXP: $|x_1|+|x_2|\le1$ is, in each quadrant, a half-plane bounded by a line such as $x_1+x_2=1$, which joins $(1,0)$ and $(0,1)$. The four lines form a diamond with corners on the axes.
+[[B]] is the $L_\infty$ ball ($\max(|x_1|,|x_2|)\le1$) and [[C]] is the $L_2$ ball.
+The corners of the $L_1$ ball lie on the axes, where one coordinate is $0$. That is why $L_1$ (lasso) regularisation tends to produce sparse weights.
+
+@ la m la-m-024
+T: Vector in the span of two given vectors
+S: vector-spaces
+Q: For which $k$ does $w=(5,k,-1)$ lie in $\operatorname{span}\{(1,2,1),\ (2,1,-1)\}$?
+A: $k=4$
+B: $k=5$
+C: $k=-1$
+D: Every real $k$
+ANS: A
+EXP: Solve $\alpha(1,2,1)+\beta(2,1,-1)=(5,k,-1)$.
+First coordinate: $\alpha+2\beta=5$. Third coordinate: $\alpha-\beta=-1$. Subtracting gives $3\beta=6$, so $\beta=2$, $\alpha=1$.
+The second coordinate must then match: $k=2\alpha+\beta=4$.
+[[D]] is the trap: two vectors span only a plane in $\mathbb R^3$, so the third coordinate condition fixes $k$.
+
+@ la m la-m-025
+T: Inverse of a product from the inverses
+S: matrix-ops
+Q: Invertible matrices $A,B$ satisfy $A^{-1}=\begin{pmatrix}1&2\\0&1\end{pmatrix}$ and $B^{-1}=\begin{pmatrix}1&0\\3&1\end{pmatrix}$. What is $(AB)^{-1}$?
+A: $\begin{pmatrix}1&2\\3&7\end{pmatrix}$
+B: $\begin{pmatrix}7&2\\3&1\end{pmatrix}$
+C: $\begin{pmatrix}7&-2\\-3&1\end{pmatrix}$
+D: $\begin{pmatrix}7&3\\2&1\end{pmatrix}$
+ANS: A
+EXP: The inverse of a product reverses the order: $(AB)^{-1}=B^{-1}A^{-1}$.
+$B^{-1}A^{-1}=\begin{pmatrix}1&0\\3&1\end{pmatrix}\begin{pmatrix}1&2\\0&1\end{pmatrix}=\begin{pmatrix}1&2\\3&7\end{pmatrix}$.
+[[B]] is $A^{-1}B^{-1}$ (wrong order), [[D]] is its transpose, and [[C]] is $AB$ itself, the inverse of the correct answer.
+
+@ la m la-m-026
+T: Solutions of a wide full-row-rank system
+S: linear-systems
+Q: $A$ is a $3\times5$ matrix with rank $3$. The system $Ax=b$ has:
+A: infinitely many solutions for every $b\in\mathbb R^3$
+B: infinitely many solutions for some $b$ and no solution for others
+C: a unique solution for every $b\in\mathbb R^3$
+D: a unique solution only when $b=0$
+ANS: A
+EXP: Rank $3$ = number of rows, so the columns span $\mathbb R^3$: every $b$ is in the column space and the system is always consistent.
+Rank–nullity: nullity $=5-3=2$, so each solution set is a 2-parameter family, i.e. infinitely many solutions.
+[[B]] would be right if the rank were less than $3$. [[D]] fails because $Ax=0$ also has a 2-dimensional solution space.
+
+@ la m la-m-027
+T: Gram determinant of a 3×2 matrix
+S: determinants
+TYPE: nat
+TOL: 0
+Q: Let $A=\begin{pmatrix}1&0\\2&1\\2&1\end{pmatrix}$. Find $\det(A^TA)$.
+ANS: 2
+EXP: $A$ is not square, so it has no determinant, but the $2\times2$ Gram matrix does.
+$A^TA=\begin{pmatrix}1+4+4&0+2+2\\0+2+2&0+1+1\end{pmatrix}=\begin{pmatrix}9&4\\4&2\end{pmatrix}$, so $\det(A^TA)=18-16=2$.
+Geometric check: $\det(A^TA)$ is the squared area of the parallelogram spanned by the columns $c_1=(1,2,2)$, $c_2=(0,1,1)$. The cross product is $c_1\times c_2=(0,-1,1)$, with squared length $2$.
+Multiplying the column norms ($3\cdot\sqrt2$, squared $18$) ignores the angle between the columns.
+
+@ la m la-m-028
+T: Last pivot in a 3×3 LU factorisation
+S: lu
+Q: Gaussian elimination without row swaps gives $A=LU$ for $A=\begin{pmatrix}1&2&1\\2&5&3\\1&3&4\end{pmatrix}$. What is $u_{33}$, the $(3,3)$ entry of $U$?
+A: $2$
+B: $3$
+C: $4$
+D: $1$
+ANS: A
+EXP: Column 1: $R_2-2R_1=(0,1,1)$ and $R_3-1\cdot R_1=(0,1,3)$.
+Column 2: the pivot is $1$, so $R_3-1\cdot R_2=(0,0,2)$.
+$U=\begin{pmatrix}1&2&1\\0&1&1\\0&0&2\end{pmatrix}$, $L=\begin{pmatrix}1&0&0\\2&1&0\\1&1&1\end{pmatrix}$, and $u_{33}=2$.
+$3$ is what remains if you stop after clearing column 1. Check: $\det A=1\cdot1\cdot2=2$.
+
+@ la m la-m-029
+T: Quadratic form along its principal axes
+S: quadratic-forms
+Q: By rotating to orthonormal eigenvector coordinates $(u,v)$, the form $q(x,y)=5x^2-4xy+2y^2$ can be written without a cross term. Which expression is it (up to the order of $u$ and $v$)?
+A: $6u^2+v^2$
+B: $5u^2+2v^2$
+C: $8u^2-v^2$
+D: $3u^2+4v^2$
+ANS: A
+EXP: $q=\mathbf x^TA\mathbf x$ with $A=\begin{pmatrix}5&-2\\-2&2\end{pmatrix}$. Trace $7$, determinant $10-4=6$, so the eigenvalues are $6$ and $1$.
+Principal axes theorem: with $\mathbf x=Q\mathbf y$ ($Q$ orthogonal, columns the eigenvectors), $q=\mathbf y^TQ^TAQ\mathbf y=6u^2+v^2$.
+Both coefficients are positive, so $q$ is positive definite. [[B]] just drops the cross term, which is not allowed. [[C]] and [[D]] have the right trace ($7$) but the wrong determinant.
+
+@ la m la-m-030
+T: Least squares with a repeated equation
+S: projections-least-squares
+TYPE: nat
+TOL: 0
+Q: The three equations $x=1$, $x=1$ and $x=4$ (the first is listed twice) cannot all hold. Enter the least-squares solution $\hat x$, which minimises the sum of squared residuals over all three equations.
+ANS: 2
+EXP: In matrix form $a\,x\approx b$ with $a=(1,1,1)^T$ and $b=(1,1,4)^T$. The normal equation is $a^Ta\,\hat x=a^Tb$.
+$a^Ta=3$ and $a^Tb=1+1+4=6$, so $\hat x=2$.
+The tempting answer $2.5$ averages the distinct values $1$ and $4$. But least squares counts every row: the repeated equation contributes two residuals, so it gets twice the weight. This is why duplicated rows in a training set act like sample weights.
+
+
+@ la m la-m-031
+T: Induced matrix 1-norm: columns, not rows
+S: vectors-norms
+Q: For $A=\begin{pmatrix}1&-2\\3&4\end{pmatrix}$, what is the induced norm $\|A\|_1=\max_{x\ne0}\dfrac{\|Ax\|_1}{\|x\|_1}$?
+A: $6$
+B: $7$
+C: $10$
+D: $\sqrt{30}$
+ANS: A
+EXP: The induced 1-norm is the maximum absolute column sum: columns give $|1|+|3|=4$ and $|-2|+|4|=6$, so $\|A\|_1=6$ (attained at $x=e_2$).
+[[B]] is the maximum absolute row sum ($|3|+|4|=7$), which is the induced $\infty$-norm. [[C]] adds every absolute entry, and $\sqrt{30}$ is the Frobenius norm.
+
+@ la m la-m-032
+T: Dimension of cubics vanishing at a point
+S: vector-spaces
+Q: Let $V=\{p : p \text{ is a real polynomial of degree} \le 3 \text{ and } p(1)=0\}$. What is $\dim V$?
+A: $3$
+B: $4$
+C: $2$
+D: $1$
+ANS: A
+EXP: Polynomials of degree $\le3$ form a 4-dimensional space with basis $1,x,x^2,x^3$.
+$p(1)=a_0+a_1+a_2+a_3=0$ is one nontrivial linear condition, so $\dim V=4-1=3$.
+A basis is $x-1,\ x^2-1,\ x^3-1$ (or $(x-1)\cdot\{1,x,x^2\}$). $4$ forgets the constraint; $2$ wrongly removes the constant and the constraint as two separate conditions.
+
+@ la m la-m-033
+T: Cheapest order for a matrix chain product
+S: matrix-ops
+TYPE: nat
+TOL: 0
+Q: $A$ is $10\times100$, $B$ is $100\times5$ and $C$ is $5\times50$. Multiplying a $p\times q$ matrix by a $q\times r$ matrix costs $pqr$ scalar multiplications. What is the minimum number of scalar multiplications needed to compute $ABC$?
+ANS: 7500
+EXP: Matrix multiplication is associative, so we may choose the bracketing.
+$(AB)C$: $AB$ costs $10\cdot100\cdot5=5000$ and gives $10\times5$; then $(AB)C$ costs $10\cdot5\cdot50=2500$. Total $7500$.
+$A(BC)$: $BC$ costs $100\cdot5\cdot50=25000$ and gives $100\times50$; then $A(BC)$ costs $10\cdot100\cdot50=50000$. Total $75000$.
+The minimum is $7500$, ten times cheaper. The same idea is why backpropagation multiplies Jacobians in the order it does.
+
+@ la m la-m-034
+T: Nontrivial solutions of a symmetric homogeneous system
+S: linear-systems
+TYPE: msq
+Q: For which values of $k$ does the system
+$$kx+y+z=0,\qquad x+ky+z=0,\qquad x+y+kz=0$$
+have a nontrivial solution? More than one option may be correct.
+A: $k=1$
+B: $k=-2$
+C: $k=2$
+D: $k=-1$
+ANS: A,B
+EXP: A square homogeneous system has a nontrivial solution iff the coefficient matrix is singular.
+The matrix is $(k-1)I+J$ where $J$ is the all-ones matrix. $J$ has eigenvalues $3,0,0$, so the matrix has eigenvalues $k+2,\ k-1,\ k-1$.
+$\det=(k-1)^2(k+2)=0 \iff k=1$ or $k=-2$.
+Check: $k=1$ gives three copies of $x+y+z=0$; $k=-2$ has the solution $(1,1,1)$.
+For $k=2$ the determinant is $1\cdot4=4\ne0$, and for $k=-1$ it is $4\cdot1=4\ne0$, so only the trivial solution exists.
+
+@ la m la-m-035
+T: Parameter that drops the rank to 2
+S: rank-nullity
+Q: For which value of $a$ does $A=\begin{pmatrix}1&2&1&0\\2&4&3&1\\1&2&2&a\end{pmatrix}$ have rank $2$?
+A: $a=1$
+B: $a=0$
+C: $a=2$
+D: No value of $a$; the rank is always $3$
+ANS: A
+EXP: Row reduce: $R_2-2R_1=(0,0,1,1)$ and $R_3-R_1=(0,0,1,a)$.
+Then $R_3-R_2=(0,0,0,a-1)$.
+If $a=1$ this row is zero and there are two pivots, so rank $=2$. For any other $a$ there are three pivots (columns 1, 3, 4), so rank $=3$.
+Column 2 is always twice column 1, but that alone only shows rank $\le3$; it is the parameter that decides between $2$ and $3$.
+
+@ la m la-m-036
+T: Determinant of an anti-diagonal matrix
+S: determinants
+Q: What is $\det\begin{pmatrix}0&0&0&2\\0&0&3&0\\0&1&0&0\\4&0&0&0\end{pmatrix}$?
+A: $24$
+B: $-24$
+C: $0$
+D: $10$
+ANS: A
+EXP: Swap rows 1 and 4, then rows 2 and 3: the matrix becomes $\mathrm{diag}(4,1,3,2)$ with determinant $24$.
+Two swaps give a factor $(-1)^2=+1$, so $\det=+24$.
+[[B]] assumes an anti-diagonal always brings a minus sign; for $n\times n$ the sign is $(-1)^{n(n-1)/2}$, which is $+1$ for $n=4$ (and $-1$ for $n=2,3$). [[C]] is wrong because the matrix is a scaled permutation, hence invertible.
+
+@ la m la-m-037
+T: Eigenvectors when an eigenvalue repeats
+S: eigen
+TYPE: msq
+Q: Let $A=\begin{pmatrix}1&2&0\\2&1&0\\0&0&3\end{pmatrix}$. Which of the following are eigenvectors of $A$? More than one option may be correct.
+A: $(1,1,0)^T$
+B: $(1,0,0)^T$
+C: $(1,1,1)^T$
+D: $(1,-1,1)^T$
+ANS: A,C
+EXP: Test each vector directly: $v$ is an eigenvector iff $Av$ is a multiple of $v$.
+[[A]] $A(1,1,0)^T=(3,3,0)^T=3(1,1,0)^T$. Eigenvector, $\lambda=3$.
+[[B]] $A(1,0,0)^T=(1,2,0)^T$, not a multiple. Not an eigenvector.
+[[C]] $A(1,1,1)^T=(3,3,3)^T$. Eigenvector, $\lambda=3$.
+[[D]] $A(1,-1,1)^T=(-1,1,3)^T$, not a multiple.
+The insight: $\lambda=3$ has a 2-dimensional eigenspace spanned by $(1,1,0)$ and $(0,0,1)$, so their sum $(1,1,1)$ is also an eigenvector. But $(1,-1,0)$ ($\lambda=-1$) plus $(0,0,1)$ ($\lambda=3$) gives [[D]], which is not, because the eigenvalues differ.
+
+@ la m la-m-038
+T: When a product of symmetric matrices is symmetric
+S: special-matrices
+Q: $A$ and $B$ are $n\times n$ real symmetric matrices. The product $AB$ is symmetric if and only if:
+A: $AB=BA$
+B: always; a product of symmetric matrices is symmetric
+C: $A=B$
+D: $AB=-BA$
+ANS: A
+EXP: $(AB)^T=B^TA^T=BA$. So $AB$ is symmetric iff $AB=BA$, i.e. $A$ and $B$ commute.
+[[B]] is false: $A=\begin{pmatrix}1&0\\0&0\end{pmatrix}$ and $B=\begin{pmatrix}0&1\\1&0\end{pmatrix}$ give $AB=\begin{pmatrix}0&1\\0&0\end{pmatrix}$, not symmetric.
+[[C]] is sufficient but not necessary ($A=I$ works with any $B$). [[D]] characterises when $AB$ is skew-symmetric.
+
+@ la m la-m-039
+T: Positive diagonal but not positive definite
+S: quadratic-forms
+Q: Classify $q(x,y,z)=x^2+y^2+z^2+4xy$.
+A: Indefinite
+B: Positive definite
+C: Positive semidefinite but not positive definite
+D: Negative definite
+ANS: A
+EXP: Symmetric matrix: $A=\begin{pmatrix}1&2&0\\2&1&0\\0&0&1\end{pmatrix}$.
+The $2\times2$ leading minor is $1-4=-3<0$, so $A$ is not positive (semi)definite. Eigenvalues: $3,-1$ from the top block and $1$ from $z$, so it is indefinite.
+Direct check: $(x,y,z)=(1,-1,0)$ gives $q=1+1-4=-2<0$, and $(1,0,0)$ gives $q=1>0$.
+A positive diagonal is necessary for positive definiteness but not sufficient; a large cross term can make the form indefinite.
+
+@ la m la-m-040
+T: Least-squares solution via normal equations
+S: projections-least-squares
+Q: Find the least-squares solution $\hat x$ of the inconsistent system $Ax=b$ with
+$$A=\begin{pmatrix}1&0\\0&1\\1&1\end{pmatrix},\qquad b=\begin{pmatrix}1\\1\\0\end{pmatrix}.$$
+A: $\left(\tfrac13,\tfrac13\right)$
+B: $(1,1)$
+C: $\left(\tfrac12,\tfrac12\right)$
+D: $(0,0)$
+ANS: A
+EXP: Solve the normal equations $A^TA\hat x=A^Tb$.
+$A^TA=\begin{pmatrix}2&1\\1&2\end{pmatrix}$ and $A^Tb=\begin{pmatrix}1\\1\end{pmatrix}$.
+By symmetry $\hat x_1=\hat x_2=t$ with $3t=1$, so $\hat x=(\tfrac13,\tfrac13)$.
+$(1,1)$ satisfies the first two equations exactly but leaves the third with error $2$; total squared error $4$, versus $\frac49+\frac49+\frac49=\frac43$ for $\hat x$. Least squares balances the errors across all equations, exactly as in linear regression.
+
+@ la m la-m-041
+T: Inverse of an elimination L
+S: lu
+Q: Let $L=\begin{pmatrix}1&0&0\\2&1&0\\0&3&1\end{pmatrix}$. What is $L^{-1}$?
+A: $\begin{pmatrix}1&0&0\\-2&1&0\\6&-3&1\end{pmatrix}$
+B: $\begin{pmatrix}1&0&0\\-2&1&0\\0&-3&1\end{pmatrix}$
+C: $\begin{pmatrix}1&0&0\\-2&1&0\\-6&-3&1\end{pmatrix}$
+D: $\begin{pmatrix}1&-2&0\\0&1&-3\\0&0&1\end{pmatrix}$
+ANS: A
+EXP: Solve $Ly=e_j$ column by column, or note $L=E_{21}(2)E_{32}(3)$, so $L^{-1}=E_{32}(-3)E_{21}(-2)$.
+Column 1: $y_1=1$, $y_2=-2$, $y_3=-3y_2=6$. Columns 2 and 3: $(0,1,-3)$ and $(0,0,1)$.
+Check row 3 of $LL^{-1}$ with column 1: $0\cdot1+3\cdot(-2)+1\cdot6=0$.
+[[B]] just negates the multipliers. That works for a single elimination step, but not when they combine: the $(3,1)$ entry picks up $(-3)(-2)=6$. [[D]] is the transpose of [[B]].
+
+@ la m la-m-042
+T: Variance of data projected onto a direction
+S: svd-pca
+TYPE: nat
+TOL: 0.01
+Q: Centred 2-D data has covariance matrix $\Sigma=\begin{pmatrix}4&2\\2&3\end{pmatrix}$. The data points are projected onto the unit vector $u=\frac{1}{\sqrt2}(1,1)^T$, giving scores $u^Tx$. What is the variance of these scores?
+ANS: 5.5
+EXP: For a fixed vector $u$, $\operatorname{Var}(u^Tx)=u^T\Sigma u$.
+$u^T\Sigma u=\tfrac12(1,1)\begin{pmatrix}4&2\\2&3\end{pmatrix}\begin{pmatrix}1\\1\end{pmatrix}=\tfrac12(4+2+2+3)=5.5$.
+Using the unnormalised $(1,1)$ gives $11$. PCA chooses the unit $u$ that maximises $u^T\Sigma u$; that maximum is the largest eigenvalue, $\frac{7+\sqrt{17}}{2}\approx5.56$, slightly more than $5.5$.
+
+@ la m la-m-043
+T: Equality in the triangle inequality
+S: vectors-norms
+Q: For nonzero $u,v\in\mathbb R^n$, when does $\|u+v\|_2=\|u\|_2+\|v\|_2$ hold?
+A: Exactly when $v=cu$ for some $c>0$
+B: Exactly when $u\cdot v=0$
+C: Exactly when $\|u\|_2=\|v\|_2$
+D: Exactly when $v=cu$ for some real $c\ne0$
+ANS: A
+EXP: Square both sides: $\|u\|^2+2u\cdot v+\|v\|^2=\|u\|^2+2\|u\|\|v\|+\|v\|^2\iff u\cdot v=\|u\|\|v\|$.
+By Cauchy–Schwarz this equality holds iff $u,v$ are parallel and point the same way, i.e. $\cos\theta=1$, so $v=cu$ with $c>0$.
+[[D]] allows $c<0$, but then $\|u+v\|=\big|\|u\|-\|v\|\big|$. [[B]] is the Pythagoras case, $\|u+v\|^2=\|u\|^2+\|v\|^2$.
+
+@ la m la-m-044
+T: Coordinates in a non-standard basis
+S: vector-spaces
+Q: With respect to the basis $b_1=(1,1)$, $b_2=(1,-1)$ of $\mathbb R^2$, what are the coordinates of $x=(5,1)$?
+A: $(3,2)$
+B: $(2,3)$
+C: $(6,4)$
+D: $(5,1)$
+ANS: A
+EXP: Solve $c_1(1,1)+c_2(1,-1)=(5,1)$: $c_1+c_2=5$ and $c_1-c_2=1$.
+So $c_1=3$, $c_2=2$. Check: $3(1,1)+2(1,-1)=(5,1)$.
+$(6,4)$ is $(x\cdot b_1,\ x\cdot b_2)$: the dot products need dividing by $\|b_i\|^2=2$ because this orthogonal basis is not orthonormal. $(2,3)$ swaps the coordinates.
+
+@ la m la-m-045
+T: Entry (i, j) of A-transpose B
+S: matrix-ops
+Q: $A$ and $B$ are both $m\times n$. The $(i,j)$ entry of $A^TB$ equals the dot product of:
+A: column $i$ of $A$ with column $j$ of $B$
+B: row $i$ of $A$ with row $j$ of $B$
+C: row $i$ of $A$ with column $j$ of $B$
+D: column $j$ of $A$ with column $i$ of $B$
+ANS: A
+EXP: $(A^TB)_{ij}=\sum_k(A^T)_{ik}B_{kj}=\sum_ka_{ki}b_{kj}$, which runs down column $i$ of $A$ and column $j$ of $B$.
+So $A^TB$ is $n\times n$ and collects all column-against-column dot products. With $B=A$ this is the Gram matrix $A^TA$; for a centred data matrix it is proportional to the covariance matrix.
+[[B]] describes $AB^T$ (rows against rows). [[C]] describes $AB$, which is not even defined here unless $m=n$. [[D]] gives the $(j,i)$ entry, i.e. $(B^TA)_{ij}$.
+
+@ la m la-m-046
+T: Operations that keep the solution set
+S: linear-systems
+TYPE: msq
+Q: Which operations on the equations of a linear system $Ax=b$ never change its set of solutions? More than one option may be correct.
+A: Swapping two equations
+B: Multiplying one equation by $0$
+C: Adding $3$ times equation 1 to equation 2
+D: Swapping two columns of $A$ while keeping the unknowns in the original order
+ANS: A,C
+EXP: The elementary row operations (swap, scale by a nonzero constant, add a multiple of one equation to another) are reversible, so they keep the solution set.
+[[A]] True: the order of the equations does not matter.
+[[C]] True: undo it by subtracting $3$ times equation 1 again.
+[[B]] False: scaling by $0$ is not reversible; it turns an equation into $0=0$ and can add solutions.
+[[D]] False: swapping columns $i$ and $j$ of $A$ swaps the roles of $x_i$ and $x_j$; unless the unknowns are relabelled too, the solution vector changes (its entries $i$ and $j$ swap).
+
+@ la m la-m-047
+T: Rank of a sum of two outer products
+S: rank-nullity
+Q: Let $u_1=(1,0,1)^T$, $u_2=(0,1,1)^T$, $v_1=(1,1,0)^T$, $v_2=(2,2,0)^T$. What is the rank of $M=u_1v_1^T+u_2v_2^T$?
+A: $1$
+B: $2$
+C: $3$
+D: $0$
+ANS: A
+EXP: $v_2=2v_1$, so $M=u_1v_1^T+2u_2v_1^T=(u_1+2u_2)v_1^T=(1,2,3)^Tv_1^T$.
+That is a single outer product of nonzero vectors, so rank $=1$. Explicitly $M=\begin{pmatrix}1&1&0\\2&2&0\\3&3&0\end{pmatrix}$.
+[[B]] is the trap: a sum of two rank-one terms has rank at most $2$, and exactly $2$ only when both the $u$'s and the $v$'s are independent.
+
+@ la m la-m-048
+T: Determinant when the columns are orthogonal
+S: determinants
+Q: A real $3\times3$ matrix $A$ satisfies $A^TA=4I$. What is $|\det A|$?
+A: $8$
+B: $4$
+C: $64$
+D: $2$
+ANS: A
+EXP: Take determinants: $\det(A^T)\det(A)=(\det A)^2=\det(4I)=4^3=64$.
+So $|\det A|=8$. (Equivalently $A=2Q$ with $Q$ orthogonal, and $|\det(2Q)|=2^3\cdot1$.)
+$4$ uses $\det(4I)=4$; $64$ forgets the square root; $2$ forgets that the scale factor is applied in all $3$ dimensions.
+
+@ la m la-m-049
+T: Cost of many solves with one LU factorisation
+S: lu
+Q: You must solve $Ax=b_k$ for one $n\times n$ invertible matrix $A$ and $m$ different right-hand sides $b_1,\dots,b_m$. You factor $A=LU$ once and reuse the factors. What is the total cost, to leading order?
+A: $O(n^3+mn^2)$
+B: $O(mn^3)$
+C: $O(mn^2)$
+D: $O(n^3+mn)$
+ANS: A
+EXP: Factoring $A=LU$ by Gaussian elimination costs about $\frac23n^3$ operations, and it is done once.
+Each right-hand side then needs two triangular solves: forward substitution $Ly=b_k$, then back substitution $Ux=y$. Each touches about $n^2/2$ entries, so each solve is $O(n^2)$ and all $m$ cost $O(mn^2)$. The total is $O(n^3+mn^2)$.
+[[B]] repeats the elimination for every right-hand side, which is exactly what reusing the factors avoids. [[C]] forgets the one-time factorisation. [[D]] treats a triangular solve as $O(n)$, but a triangular matrix still has about $n^2/2$ nonzero entries to use.
+
+
+@ la m la-m-050
+T: Residual length via an orthonormal basis
+S: projections-least-squares
+TYPE: nat
+TOL: 0
+Q: The columns $q_1=\tfrac12(1,1,1,1)^T$ and $q_2=\tfrac12(1,-1,1,-1)^T$ are orthonormal. Let $p$ be the orthogonal projection of $b=(1,2,3,4)^T$ onto $\operatorname{span}\{q_1,q_2\}$. Find $\|b-p\|_2^2$.
+ANS: 4
+EXP: With an orthonormal basis, $p=(q_1^Tb)q_1+(q_2^Tb)q_2$ and $\|p\|^2=(q_1^Tb)^2+(q_2^Tb)^2$.
+$q_1^Tb=\tfrac12(1+2+3+4)=5$ and $q_2^Tb=\tfrac12(1-2+3-4)=-1$, so $\|p\|^2=25+1=26$.
+By Pythagoras ($b-p\perp p$): $\|b-p\|^2=\|b\|^2-\|p\|^2=30-26=4$.
+Check directly: $p=5q_1-q_2=(2,3,2,3)$, and $b-p=(-1,-1,1,1)$ has squared length $4$.
+
+@ la m la-m-051
+T: Distance between unit-normalised embeddings
+S: vectors-norms
+TYPE: nat
+TOL: 0.01
+Q: Two embeddings $u,v$ are normalised to unit length, $\|u\|_2=\|v\|_2=1$, and their cosine similarity is $0.82$. Find the squared Euclidean distance $\|u-v\|_2^2$. Give your answer to 2 decimal places.
+ANS: 0.36
+EXP: Expand: $\|u-v\|^2=\|u\|^2-2\,u\cdot v+\|v\|^2$.
+For unit vectors $u\cdot v=\cos\theta=0.82$, so $\|u-v\|^2=1-2(0.82)+1=2-2(0.82)=0.36$.
+Forgetting the factor $2$ gives $1-0.82=0.18$; $0.6$ is the distance itself, not its square.
+For unit vectors, ranking neighbours by Euclidean distance and by cosine similarity gives the same order, which is why vector search libraries normalise embeddings first.
+
+@ la m la-m-052
+T: Value of k that makes three vectors dependent
+S: vector-spaces
+Q: For which $k$ are the vectors $(1,2,3)$, $(2,1,k)$ and $(1,-1,1)$ linearly dependent?
+A: $k=4$
+B: $k=-4$
+C: $k=3$
+D: $k=12$
+ANS: A
+EXP: Three vectors in $\mathbb R^3$ are dependent iff the matrix with them as rows is singular.
+$\det\begin{pmatrix}1&2&3\\2&1&k\\1&-1&1\end{pmatrix}=1(1+k)-2(2-k)+3(-2-1)=3k-12$.
+$3k-12=0\Rightarrow k=4$. Check: $(2,1,4)=(1,2,3)+(1,-1,1)$.
+[[B]] comes from a sign slip in the middle cofactor, and $12$ stops at the constant term without dividing by $3$.
+
+@ la m la-m-053
+T: Expanding (A+B)(A−B) for matrices
+S: matrix-ops
+Q: For $n\times n$ matrices $A$ and $B$, $(A+B)(A-B)$ always equals:
+A: $A^2-AB+BA-B^2$
+B: $A^2-B^2$
+C: $A^2+AB-BA-B^2$
+D: $A^2-2AB-B^2$
+ANS: A
+EXP: Distribute while keeping the order of every product: $(A+B)(A-B)=A\cdot A-A\cdot B+B\cdot A-B\cdot B=A^2-AB+BA-B^2$.
+This equals $A^2-B^2$ only when $AB=BA$. For example $A=\begin{pmatrix}1&1\\0&0\end{pmatrix}$, $B=\begin{pmatrix}1&0\\0&0\end{pmatrix}$ give $AB=\begin{pmatrix}1&0\\0&0\end{pmatrix}\ne BA=\begin{pmatrix}1&1\\0&0\end{pmatrix}$.
+[[C]] swaps the order of the cross terms; that is $(A-B)(A+B)$.
+
+@ la m la-m-054
+T: Interpolating a parabola through three points
+S: linear-systems
+TYPE: nat
+TOL: 0
+Q: The parabola $y=a+bx+cx^2$ passes through $(0,1)$, $(1,2)$ and $(2,5)$. Find the value of $y$ at $x=3$.
+ANS: 10
+EXP: Each point gives one linear equation in $a,b,c$ (a Vandermonde system):
+$x=0$: $a=1$. $x=1$: $a+b+c=2\Rightarrow b+c=1$. $x=2$: $a+2b+4c=5\Rightarrow 2b+4c=4$.
+From $b+c=1$ and $b+2c=2$: $c=1$, $b=0$. So $y=1+x^2$ and $y(3)=10$.
+The three $x$-values are distinct, so the system has a unique solution. Fitting a line by straight-line extrapolation from the last two points would give $8$.
+
+@ la m la-m-055
+T: Row-space dimension from a null-space basis
+S: rank-nullity
+Q: $A$ is a $5\times4$ matrix whose null space has basis $\{(1,1,0,0),\ (0,1,1,1)\}$. What is the dimension of the row space of $A$?
+A: $2$
+B: $3$
+C: $4$
+D: $1$
+ANS: A
+EXP: Rank–nullity counts columns: $\operatorname{rank}A=4-\operatorname{nullity}A=4-2=2$.
+The row space dimension equals the rank (row rank $=$ column rank), so it is $2$.
+[[B]] uses the number of rows ($5-2=3$); that is the wrong count for rank–nullity. In fact the row space is the orthogonal complement of the null space in $\mathbb R^4$, which also gives $4-2=2$.
+
+@ la m la-m-056
+T: Cofactor expansion along a sparse row
+S: determinants
+Q: What is $\det\begin{pmatrix}3&0&2&0\\1&2&0&1\\0&0&1&0\\2&0&4&1\end{pmatrix}$?
+A: $6$
+B: $-6$
+C: $12$
+D: $0$
+ANS: A
+EXP: Expand along row 3, whose only nonzero entry is $a_{33}=1$, with sign $(-1)^{3+3}=+1$:
+$\det=+1\cdot\det\begin{pmatrix}3&0&0\\1&2&1\\2&0&1\end{pmatrix}$.
+Expand that along its first row: $3\cdot\det\begin{pmatrix}2&1\\0&1\end{pmatrix}=3\cdot2=6$.
+[[B]] uses the wrong cofactor sign; the checkerboard sign at a diagonal position is always $+$.
+
+@ la m la-m-057
+T: Trace of the inverse of a shifted matrix
+S: eigen
+TYPE: nat
+TOL: 0.01
+Q: A $3\times3$ matrix $A$ has eigenvalues $1$, $2$ and $4$. Find $\operatorname{tr}\big((A+I)^{-1}\big)$. Give your answer to 2 decimal places.
+ANS: 1.03
+EXP: If $Av=\lambda v$ then $(A+I)v=(\lambda+1)v$ and $(A+I)^{-1}v=\frac{1}{\lambda+1}v$.
+So $(A+I)^{-1}$ has eigenvalues $\frac12,\frac13,\frac15$, and the trace is their sum: $\frac12+\frac13+\frac15=\frac{31}{30}\approx1.03$.
+A common slip is $\frac{1}{\operatorname{tr}(A+I)}=\frac1{10}$: the trace of an inverse is not the inverse of the trace. Shifting by $I$ like this is what ridge regression does to $X^TX$.
+
+@ la m la-m-058
+T: Solving a system with an orthogonal matrix
+S: special-matrices
+Q: $Q=\dfrac13\begin{pmatrix}1&2&2\\-2&-1&2\\2&-2&1\end{pmatrix}$ is orthogonal. What is the solution of $Qx=(3,0,0)^T$?
+A: $(1,2,2)^T$
+B: $(1,-2,2)^T$
+C: $(3,6,6)^T$
+D: $\left(\tfrac13,\tfrac23,\tfrac23\right)^T$
+ANS: A
+EXP: For orthogonal $Q$, $Q^{-1}=Q^T$, so $x=Q^Tb$; no elimination is needed.
+$Q^T(3,0,0)^T=3\times$(first column of $Q^T$) $=3\times$(first row of $Q$) $=3\cdot\frac13(1,2,2)=(1,2,2)$.
+Check: $Q(1,2,2)^T=\frac13(1+4+4,\ -2-2+4,\ 2-4+2)=(3,0,0)$.
+[[B]] is $Qb$ (using $Q$ instead of $Q^T$). [[C]] forgets the factor $\frac13$.
+
+@ la m la-m-059
+T: Smallest shift that makes a form semidefinite
+S: quadratic-forms
+TYPE: nat
+TOL: 0
+Q: Find the smallest real $c$ such that $q(x)=x_1^2+4x_1x_2+x_2^2+c\,(x_1^2+x_2^2)\ge0$ for all $x\in\mathbb R^2$.
+ANS: 1
+EXP: $q(x)=x^T(A+cI)x$ with $A=\begin{pmatrix}1&2\\2&1\end{pmatrix}$.
+$A$ has eigenvalues $3$ and $-1$ (eigenvectors $(1,1)$ and $(1,-1)$), so $A+cI$ has eigenvalues $3+c$ and $c-1$.
+$q\ge0$ for all $x$ iff $A+cI$ is positive semidefinite iff $c-1\ge0$, so the smallest $c$ is $1$.
+Check: at $c=1$, $q(1,-1)=1-4+1+2=0$. Adding $cI$ is the same move as the ridge penalty $c\|x\|^2$, which shifts every eigenvalue up by $c$.
+
+@ la m la-m-060
+T: Facts about full-column-rank least squares
+S: projections-least-squares
+TYPE: msq
+Q: $A$ is $m\times n$ with $m>n$ and linearly independent columns, $b\in\mathbb R^m$, and $\hat x$ minimises $\|Ax-b\|_2$. Which statements are always true? More than one option may be correct.
+A: $A^TA$ is invertible
+B: $\hat x$ is unique
+C: $A\hat x=b$
+D: $b-A\hat x=0$ if and only if $b$ lies in the column space of $A$
+ANS: A,B,D
+EXP: [[A]] True: $A^TAx=0\Rightarrow\|Ax\|^2=0\Rightarrow Ax=0\Rightarrow x=0$ by independence of the columns.
+[[B]] True: the normal equations $A^TA\hat x=A^Tb$ then have the single solution $\hat x=(A^TA)^{-1}A^Tb$.
+[[C]] False in general: with more equations than unknowns, $b$ is usually not in the column space, and $A\hat x$ is only the projection of $b$ onto it.
+[[D]] True: $A\hat x$ is the closest point of the column space to $b$, so the residual is zero exactly when $b$ is already in that space.
+
+@ la m la-m-061
+T: Multiplier after partial pivoting
+S: lu
+Q: Gaussian elimination with partial pivoting is applied to $A=\begin{pmatrix}1&2\\3&4\end{pmatrix}$, giving $PA=LU$ with $L$ unit lower triangular. What is $\ell_{21}$?
+A: $\frac13$
+B: $3$
+C: $-3$
+D: $1$
+ANS: A
+EXP: Partial pivoting picks the entry of largest absolute value in column 1 as the pivot, so rows 1 and 2 are swapped: $PA=\begin{pmatrix}3&4\\1&2\end{pmatrix}$.
+The multiplier is $\ell_{21}=1/3$, and $U=\begin{pmatrix}3&4\\0&2-\frac43\end{pmatrix}=\begin{pmatrix}3&4\\0&\frac23\end{pmatrix}$.
+$3$ is the multiplier without pivoting. Partial pivoting guarantees $|\ell_{ij}|\le1$, which keeps rounding errors from growing.
+
+@ la m la-m-062
+T: Relations between singular vectors
+S: svd-pca
+TYPE: msq
+Q: $A=U\Sigma V^T$ is a singular value decomposition of a real $m\times n$ matrix, with singular values $\sigma_i$, left singular vectors $u_i$ (columns of $U$) and right singular vectors $v_i$ (columns of $V$). Which statements are true? More than one option may be correct.
+A: $Av_1=\sigma_1u_1$
+B: $A^Tu_1=\sigma_1v_1$
+C: The columns of $U$ are eigenvectors of $A^TA$
+D: $AA^Tu_1=\sigma_1^2u_1$
+ANS: A,B,D
+EXP: From $AV=U\Sigma$, column by column: $Av_i=\sigma_iu_i$. True [[A]].
+From $A^T=V\Sigma^TU^T$: $A^TU=V\Sigma^T$, so $A^Tu_i=\sigma_iv_i$. True [[B]].
+Combining: $AA^Tu_1=A(\sigma_1v_1)=\sigma_1^2u_1$. True [[D]]. So the columns of $U$ are eigenvectors of $AA^T$ (an $m\times m$ matrix), with eigenvalues $\sigma_i^2$.
+[[C]] False: it is the columns of $V$ that are eigenvectors of $A^TA$. Mixing up $A^TA$ and $AA^T$ is the classic slip; in PCA on a data matrix $X$, the principal directions are the right singular vectors $v_i$.
+
+@ la m la-m-063
+T: Which function is not a norm
+S: vectors-norms
+Q: Which of the following is NOT a norm on $\mathbb R^2$?
+A: $f(x)=|x_1+x_2|$
+B: $f(x)=|x_1|+|x_2|$
+C: $f(x)=\max(|x_1|,|x_2|)$
+D: $f(x)=\sqrt{2x_1^2+x_2^2}$
+ANS: A
+EXP: A norm needs: $f(x)\ge0$ with $f(x)=0$ only for $x=0$; $f(cx)=|c|f(x)$; and the triangle inequality.
+[[A]] fails the first: $f(1,-1)=0$ although $(1,-1)\ne0$. It is only a seminorm.
+[[B]] is the $L_1$ norm and [[C]] the $L_\infty$ norm.
+[[D]] is $\sqrt{x^TWx}$ with $W=\mathrm{diag}(2,1)$ positive definite, a weighted Euclidean norm; such norms (e.g. Mahalanobis distance) are valid whenever $W$ is positive definite.
+
+@ la m la-m-064
+T: A vector in the orthogonal complement
+S: vector-spaces
+Q: Let $W=\operatorname{span}\{(1,1,0,0),\ (0,0,1,1)\}\subset\mathbb R^4$. Which vector lies in $W^\perp$?
+A: $(1,-1,1,-1)$
+B: $(1,1,-1,-1)$
+C: $(1,0,0,-1)$
+D: $(0,1,1,0)$
+ANS: A
+EXP: $x\in W^\perp$ iff $x$ is orthogonal to each spanning vector: $x_1+x_2=0$ and $x_3+x_4=0$.
+[[A]] $1-1=0$ and $1-1=0$. Yes.
+[[B]] $1+1=2\ne0$. [[C]] $1+0=1\ne0$. [[D]] $0+1=1\ne0$.
+$W^\perp$ has dimension $4-2=2$, spanned by $(1,-1,0,0)$ and $(0,0,1,-1)$; option [[A]] is their sum. [[B]] is the tempting one because it is orthogonal to $(1,1,1,1)$, but that is not what is required.
+
+@ la m la-m-065
+T: Elementary matrix for a row operation
+S: matrix-ops
+Q: For every $3\times n$ matrix $A$, $EA$ should equal $A$ with row 3 replaced by (row 3 $-\,2\times$ row 1). Which $E$ does this?
+A: $\begin{pmatrix}1&0&0\\0&1&0\\-2&0&1\end{pmatrix}$
+B: $\begin{pmatrix}1&0&-2\\0&1&0\\0&0&1\end{pmatrix}$
+C: $\begin{pmatrix}1&0&0\\0&1&0\\2&0&1\end{pmatrix}$
+D: $\begin{pmatrix}1&0&2\\0&1&0\\0&0&1\end{pmatrix}$
+ANS: A
+EXP: Row $i$ of $EA$ is (row $i$ of $E$)$\cdot A$, a combination of the rows of $A$. We want row 3 of $E$ to be $(-2,0,1)$, i.e. $-2R_1+R_3$, and the other rows of $E$ to match $I$.
+So $E$ is $I$ with $-2$ in position $(3,1)$. Equivalently, apply the row operation to $I$.
+[[B]] puts $-2$ at $(1,3)$: it would replace row 1 by $R_1-2R_3$ (and acting on the right, $AE$, it does a column operation). [[C]] has the wrong sign; it is $E^{-1}$. Products of such $E$'s are how elimination builds $L$ in $A=LU$.
+
+@ la m la-m-066
+T: Right side equal to a sum of columns
+S: linear-systems
+Q: $A$ is a $3\times3$ matrix of rank $2$, and $b$ is the sum of the first two columns of $A$. How many solutions does $Ax=b$ have?
+A: Infinitely many
+B: Exactly one
+C: None, because $A$ is singular
+D: Exactly two
+ANS: A
+EXP: $b=a_1+a_2=A(1,1,0)^T$, so $x_p=(1,1,0)^T$ is a solution and the system is consistent.
+Since rank $=2$, the null space has dimension $3-2=1$, and every $x_p+t\,n$ (with $n$ spanning the null space) is also a solution: infinitely many.
+[[C]] is the trap: a singular $A$ means $Ax=b$ has either no solution or infinitely many, never exactly one; which case occurs depends on whether $b$ is in the column space. A linear system never has exactly two solutions.
+
+@ la m la-m-067
+T: Rank of the centring matrix
+S: rank-nullity
+Q: Let $H=I_5-\frac15\mathbf 1\mathbf 1^T$, the $5\times5$ matrix that subtracts the mean from a vector ($Hx=x-\bar x\mathbf 1$). What is $\operatorname{rank}H$?
+A: $4$
+B: $5$
+C: $1$
+D: $0$
+ANS: A
+EXP: $Hx=0\iff x=\bar x\mathbf 1$, i.e. $x$ is a constant vector. So $\operatorname{null}(H)=\operatorname{span}\{\mathbf 1\}$ has dimension $1$.
+Rank–nullity: $\operatorname{rank}H=5-1=4$.
+Also $H$ is a projection ($H^2=H$), so $\operatorname{rank}H=\operatorname{tr}H=5\left(1-\tfrac15\right)=4$.
+$1$ is the rank of $\frac15\mathbf1\mathbf1^T$, the part being subtracted. This lost dimension is why the sample variance divides by $n-1$.
+
+@ la m la-m-068
+T: Volume of a parallelepiped
+S: determinants
+Q: What is the volume of the parallelepiped spanned by $(1,0,1)$, $(0,2,1)$ and $(1,1,0)$?
+A: $3$
+B: $-3$
+C: $\frac12$
+D: $9$
+ANS: A
+EXP: Volume $=|\det M|$ where $M$ has the three vectors as rows.
+$\det\begin{pmatrix}1&0&1\\0&2&1\\1&1&0\end{pmatrix}=1(0-1)-0(0-1)+1(0-2)=-3$.
+Volume $=|-3|=3$. A determinant can be negative (it records orientation), but a volume cannot, so [[B]] is wrong.
+$\frac12=\frac{3}{6}$ is the volume of the tetrahedron on the same three edges, and $9=\det(MM^T)$ is the squared volume.
+
+@ la m la-m-069
+T: Which matrix is always positive semidefinite
+S: quadratic-forms
+Q: Let $X$ be any real $n\times n$ matrix. Which of the following is positive semidefinite for every such $X$?
+A: $X^TX$
+B: $X+X^T$
+C: $X^2$
+D: $-X^TX$
+ANS: A
+EXP: $X^TX$ is symmetric, and for any $v$: $v^TX^TXv=(Xv)^T(Xv)=\|Xv\|^2\ge0$. So the Gram matrix $X^TX$ is always PSD. Covariance matrices $\frac1nX_c^TX_c$ are PSD for this reason.
+[[B]] fails for $X=-I$ ($X+X^T=-2I$). [[C]] fails for $X=\begin{pmatrix}0&-1\\1&0\end{pmatrix}$ ($X^2=-I$). [[D]] is negative semidefinite, and PSD only when $X=0$.
+
+@ la m la-m-070
+T: Sparsity of the LU factors of a tridiagonal matrix
+S: lu
+Q: $A$ is an $n\times n$ tridiagonal matrix (nonzeros only on the main diagonal and the two adjacent diagonals) for which elimination needs no row exchanges. What structure do the factors in $A=LU$ have?
+A: $L$ is lower bidiagonal and $U$ is upper bidiagonal
+B: $L$ and $U$ are full lower and upper triangular matrices
+C: $L$ is the identity and $U=A$
+D: $L$ is lower bidiagonal and $U$ is full upper triangular
+ANS: A
+EXP: When eliminating below pivot $k$, only row $k+1$ has a nonzero in column $k$, so only one multiplier $\ell_{k+1,k}$ is needed. Subtracting a multiple of row $k$ (nonzeros in columns $k,k+1$) from row $k+1$ creates no new nonzeros.
+So $L$ has only its diagonal and first subdiagonal, and $U$ only its diagonal and first superdiagonal. Example: $\begin{pmatrix}2&1&0\\1&2&1\\0&1&2\end{pmatrix}$ gives $\ell_{21}=\frac12$, $\ell_{32}=\frac23$ and $U$ with diagonal $2,\frac32,\frac43$ and superdiagonal $1,1$.
+There is no fill-in, so the factorisation costs $O(n)$ instead of $O(n^3)$ (the Thomas algorithm, used for splines and 1-D PDEs).
+
+@ la m la-m-071
+T: Consistency of an overdetermined system
+S: linear-systems
+Q: For which $k$ does the system $x+y=3,\ x-y=1,\ 2x+3y=k$ have a solution?
+A: $k=7$
+B: $k=8$
+C: Every real $k$
+D: No value of $k$; three equations in two unknowns are never consistent
+ANS: A
+EXP: The first two equations already fix the unknowns: adding gives $2x=4$, so $x=2$, $y=1$.
+The third equation must agree: $2(2)+3(1)=7$, so the system is consistent only for $k=7$ (and then the solution is unique).
+In rank terms: $\operatorname{rank}A=2$, and $\operatorname{rank}[A\mid b]=2$ only when $b$ lies in the column space, which here means $k=7$.
+[[D]] is the trap: more equations than unknowns usually means no solution, but not always. When it fails, least squares gives the best approximate solution.
+
+@ la m la-m-072
+T: Inverse of a block unit upper-triangular matrix
+S: special-matrices
+Q: $B$ is any $p\times q$ matrix, and $M=\begin{pmatrix}I_p&B\\0&I_q\end{pmatrix}$ is written in block form. What is $M^{-1}$?
+A: $\begin{pmatrix}I_p&-B\\0&I_q\end{pmatrix}$
+B: $\begin{pmatrix}I_p&B\\0&I_q\end{pmatrix}$
+C: $\begin{pmatrix}I_p&0\\-B&I_q\end{pmatrix}$
+D: $\begin{pmatrix}I_p&-B^T\\0&I_q\end{pmatrix}$
+ANS: A
+EXP: Multiply blocks just like entries (sizes are compatible): $\begin{pmatrix}I&B\\0&I\end{pmatrix}\begin{pmatrix}I&-B\\0&I\end{pmatrix}=\begin{pmatrix}I&-B+B\\0&I\end{pmatrix}=I$.
+Think of $M$ as "add $B\times$(second block) to the first block"; the inverse subtracts it again.
+[[C]] has the wrong shape: $-B$ is $p\times q$ but the lower-left block must be $q\times p$. [[D]] would need $B^T$, which has the wrong shape too unless $p=q$, and it does not cancel $B$. [[B]] fails because $M^2$ has upper-right block $2B$, not $0$.
+
+@ la m la-m-073
+T: An entry of a rank-one projection matrix
+S: projections-least-squares
+Q: $P=\dfrac{aa^T}{a^Ta}$ projects onto the line through $a=(1,2,2)^T$. What is the entry $P_{23}$?
+A: $\frac49$
+B: $4$
+C: $\frac43$
+D: $\frac29$
+ANS: A
+EXP: $a^Ta=1+4+4=9$ and $(aa^T)_{23}=a_2a_3=2\cdot2=4$, so $P_{23}=\frac49$.
+[[B]] forgets to divide by $a^Ta$. [[C]] divides by $\|a\|=3$ instead of $\|a\|^2=9$; that matrix is not a projection, since $P^2\ne P$. [[D]] is $P_{12}$ or $P_{13}$.
+Check: $\operatorname{tr}P=\frac{1+4+4}{9}=1=\operatorname{rank}P$, as for every projection onto a line.
+
+@ la m la-m-074
+T: Reconstructing a point from its first PC score
+S: svd-pca
+Q: In 2-D centred data, the first principal direction is $u=\frac{1}{\sqrt2}(1,1)^T$. A data point $x=(3,1)$ is compressed to its first PC score and then reconstructed. What is the reconstruction $\hat x$?
+A: $(2,2)$
+B: $(4,4)$
+C: $(2\sqrt2,\,2\sqrt2)$
+D: $(3,1)$
+ANS: A
+EXP: Score $z=u^Tx=\frac{3+1}{\sqrt2}=2\sqrt2$. Reconstruction $\hat x=z\,u=2\sqrt2\cdot\frac{1}{\sqrt2}(1,1)=(2,2)$, i.e. $\hat x=uu^Tx$, the orthogonal projection onto the PC line.
+[[B]] uses the unnormalised direction $(1,1)$ in both steps, which multiplies by $\|(1,1)\|^2=2$. [[C]] stops at the score and puts it in both coordinates.
+The reconstruction error is $x-\hat x=(1,-1)$, orthogonal to $u$, with squared length $2$; PCA chooses $u$ to minimise the total of such errors.
+
+@ la m la-m-075
+T: Largest singular value of the pseudo-inverse
+S: svd-pca
+Q: A $3\times3$ matrix $A$ has singular values $5$, $2$ and $0$. What is the largest singular value of its Moore–Penrose pseudo-inverse $A^+$?
+A: $\frac12$
+B: $\frac15$
+C: $5$
+D: $A^+$ does not exist because $A$ is singular
+ANS: A
+EXP: If $A=U\Sigma V^T$, then $A^+=V\Sigma^+U^T$, where $\Sigma^+$ inverts the nonzero singular values and keeps the zeros: $\frac15,\ \frac12,\ 0$.
+The largest is $\frac12$, coming from the smallest nonzero singular value of $A$.
+[[B]] is the trap of inverting the largest one. [[D]] is wrong: the pseudo-inverse exists for every matrix, singular or rectangular. This is why tiny nonzero singular values make least-squares solutions $x=A^+b$ unstable, and why ridge regression or truncated SVD is used to tame them.
 
 @ prob e prob-e-001
 T: Sum of two dice equals 7
@@ -1469,7 +3784,7 @@ B: $\operatorname{Var}(\hat\theta)=0$
 C: $\hat\theta=\theta$ for every sample
 D: $\hat\theta\to\theta$ as $n\to\infty$
 ANS: A
-EXP: Unbiased means right on average over repeated samples. (D) describes consistency, a different property; an estimator can be biased yet consistent (e.g. the MLE of $\sigma^2$).
+EXP: Unbiased means right on average over repeated samples. [[D]] describes consistency, a different property; an estimator can be biased yet consistent (e.g. the MLE of $\sigma^2$).
 
 
 @ stat e stat-e-008
@@ -1543,7 +3858,7 @@ C: $(49.80,\ 50.20)$
 D: $(48.36,\ 51.64)$
 ANS: A
 EXP: $\bar x\pm z_{0.025}\dfrac{\sigma}{\sqrt n}=50\pm1.96\cdot\tfrac{10}{10}=50\pm1.96$.
-(B) forgets $\sqrt n$; (D) uses $1.645$, which is the 90% value.
+[[B]] forgets $\sqrt n$; [[D]] uses $1.645$, which is the 90% value.
 
 
 @ stat m stat-m-004
@@ -1604,7 +3919,7 @@ B: $N(200,\ 4)$
 C: $N(2,\ 0.04)$
 D: $N(200,\ 20)$
 ANS: A
-EXP: $E[S]=100\cdot2=200$ and $\operatorname{Var}(S)=100\cdot4=400$ (SD $20$). (C) is the distribution of the mean $\bar X$. (D) puts the SD where the variance belongs.
+EXP: $E[S]=100\cdot2=200$ and $\operatorname{Var}(S)=100\cdot4=400$ (SD $20$). [[C]] is the distribution of the mean $\bar X$. [[D]] puts the SD where the variance belongs.
 
 
 @ stat m stat-m-009
@@ -1667,7 +3982,7 @@ C: $p(1-p)$
 D: $\frac{p}{n}$
 ANS: A
 EXP: Fisher information per sample: $I(p)=\dfrac{1}{p(1-p)}$. The CRLB is $\dfrac1{nI(p)}=\dfrac{p(1-p)}n$.
-$\hat p=\bar X$ attains it, so it is efficient. (B) is $nI(p)$ itself.
+$\hat p=\bar X$ attains it, so it is efficient. [[B]] is $nI(p)$ itself.
 
 
 @ stat h stat-h-004
@@ -1832,8 +4147,8 @@ B: $(3,3,2,2)$
 C: $(3,2,2,1,1)$
 D: $(1,1,1,1)$
 ANS: C
-EXP: The degree sum must be even ($=2|E|$). $3+2+2+1+1=9$ is odd, so (C) is impossible.
-(A) is a triangle, (D) is two disjoint edges, and (B) is $K_4$ minus one edge.
+EXP: The degree sum must be even ($=2|E|$). $3+2+2+1+1=9$ is odd, so [[C]] is impossible.
+[[A]] is a triangle, [[D]] is two disjoint edges, and [[B]] is $K_4$ minus one edge.
 
 
 @ graph e graph-e-007
@@ -2204,13 +4519,15 @@ function parseBank(text) {
       finish();
       const [, topic, diff, explicitId] = head; const ck = topic + diff;
       counters[ck] = (counters[ck] || 0) + 1;
-      cur = { id: explicitId || (topic + '-' + diff + '-' + String(counters[ck]).padStart(3, '0')), topic, diff, sub: '', type: 'mcq', typeRaw: '', title: '', q: '', opts: ['', '', '', ''], ansRaw: '', tolRaw: '', ans: -1, exp: '' };
+      cur = { id: explicitId || (topic + '-' + diff + '-' + String(counters[ck]).padStart(3, '0')), topic, diff, sub: '', type: 'mcq', typeRaw: '', title: '', q: '', opts: ['', '', '', ''], ansRaw: '', tolRaw: '', ans: -1, exp: '', seen: {}, dups: [] };
       key = null; continue;
     }
     if (!cur) continue;
     const kv = line.match(/^(T|S|TYPE|TOL|Q|A|B|C|D|ANS|EXP): ?(.*)$/);
     if (kv) {
       key = kv[1]; const v = kv[2];
+      // A repeated field usually means an EXP/Q continuation line started with "B:" etc. and overwrote it.
+      if (cur.seen[key]) cur.dups.push(key); cur.seen[key] = 1;
       if (key === 'T') cur.title = v; else if (key === 'S') cur.sub = v.trim(); else if (key === 'Q') cur.q = v; else if (key === 'EXP') cur.exp = v;
       else if (key === 'TYPE') { cur.typeRaw = v.trim(); cur.type = QTYPES[cur.typeRaw] ? cur.typeRaw : 'invalid'; }
       else if (key === 'TOL') cur.tolRaw = v.trim();
@@ -2223,6 +4540,21 @@ function parseBank(text) {
   }
   finish();
   return out;
+}
+
+/* ---------- option references in explanations ---------- */
+// Options are shuffled at display time, so explanations must not name options by a bare letter.
+// Write [[A]] for "the option written as A in the bank"; the app shows the letter it has on screen.
+const OPTREF = /\[\[([ABCD])\]\]/g;
+const stripMath = s => s.replace(/\$\$[\s\S]*?\$\$/g, ' ').replace(/\$[^$]*\$/g, ' ');
+// Bare option letters outside math, e.g. "(C) fails", "B is the trap", "option A", or a line starting "D:".
+function bareOptionRefs(text) {
+  const t = stripMath(text.replace(OPTREF, ' ')); const found = [];
+  const pats = [/^[ \t]*\(?[ABCD]\)?[:)]/m, /(?<![\w}\\])\([ABCD]\)/, /\b[Oo]ptions? [ABCD]\b/,
+    /(?<![\w$\\{])[ABCD] (?:is|are|was|would|fails|gives|has|have|swaps|misses|holds|needs|forgets|uses|describes|puts|assumes|allows|adds|divides|stops|treats|characterises|finds|just|comes|drops|ignores|confuses|mixes|reverses|squares|takes|counts|forgot)\b/,
+    /(?<![\w$\\{])[BCD] and [BCD]\b/];
+  for (const p of pats) { const m = t.match(p); if (m) found.push(m[0].trim()); }
+  return found;
 }
 
 /* ---------- graph helpers for generators ---------- */
@@ -2439,7 +4771,7 @@ function buildGenerated(gid, seed) {
   return null;
 }
 
-if (typeof module !== 'undefined') module.exports = { parseBank, GENS, buildGenerated, TOPICS, SUBTOPICS, QTYPES };
+if (typeof module !== 'undefined') module.exports = { parseBank, GENS, buildGenerated, TOPICS, SUBTOPICS, QTYPES, OPTREF, bareOptionRefs };
 
 /* ---------- app ---------- */
 const BANK = parseBank(document.getElementById('bank').textContent);
@@ -2469,6 +4801,8 @@ function getQ(id) {
   if (b.type === 'nat') return Object.assign(base, { options: [], ans: b.ans, tol: b.tol });
   const order = shuffle(mulberry32(hashStr(id)), [0, 1, 2, 3]);
   base.options = order.map(i => b.opts[i]);
+  // [[B]] in an explanation means "the option written as B in the bank"; show the letter it has on screen.
+  base.exp = b.exp.replace(OPTREF, (m, l) => '\u0001' + 'ABCD'[order.indexOf('ABCD'.indexOf(l))]);
   // mcq: correct = display index. msq: correct = sorted display indices.
   base.correct = b.type === 'msq' ? b.ans.map(i => order.indexOf(i)).sort((x, y) => x - y) : order.indexOf(b.ans);
   return base;
@@ -2758,7 +5092,7 @@ function renderSolve() {
       ${!s.done && hasNext ? '<button class="btn ghost" data-next="1">Skip</button>' : ''}
       <span class="kbd">${keys}</span>
     </div>
-    ${s.done ? `<div class="result ${ok ? 'ok' : 'bad'}"><p class="verdict">${ok ? 'Correct.' + (q.type === 'nat' && parseNum(s.sel) !== q.ans ? ` Exact answer: ${esc(q.ans)}.` : '') : `Not quite. ${answerText}`}</p><div class="exp">${rich(q.exp)}</div></div>` : ''}
+    ${s.done ? `<div class="result ${ok ? 'ok' : 'bad'}"><p class="verdict">${ok ? 'Correct.' + (q.type === 'nat' && parseNum(s.sel) !== q.ans ? ` Exact answer: ${esc(q.ans)}.` : '') : `Not quite. ${answerText}`}</p><div class="exp">${rich(q.exp).replace(/\u0001([ABCD])/g, '<b class="optref">$1</b>')}</div></div>` : ''}
   </article>
   ${justCompleted ? `<div class="banner">Today’s set is complete. Your streak is now ${curStreak()} day${curStreak() === 1 ? '' : 's'}.</div>` : ''}`;
 }

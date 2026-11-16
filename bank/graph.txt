@@ -69,8 +69,8 @@ B: $(3,3,2,2)$
 C: $(3,2,2,1,1)$
 D: $(1,1,1,1)$
 ANS: C
-EXP: The degree sum must be even ($=2|E|$). $3+2+2+1+1=9$ is odd, so (C) is impossible.
-(A) is a triangle, (D) is two disjoint edges, and (B) is $K_4$ minus one edge.
+EXP: The degree sum must be even ($=2|E|$). $3+2+2+1+1=9$ is odd, so [[C]] is impossible.
+[[A]] is a triangle, [[D]] is two disjoint edges, and [[B]] is $K_4$ minus one edge.
 
 
 @ graph e graph-e-007

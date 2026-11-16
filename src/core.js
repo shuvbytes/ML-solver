@@ -59,13 +59,15 @@ function parseBank(text) {
       finish();
       const [, topic, diff, explicitId] = head; const ck = topic + diff;
       counters[ck] = (counters[ck] || 0) + 1;
-      cur = { id: explicitId || (topic + '-' + diff + '-' + String(counters[ck]).padStart(3, '0')), topic, diff, sub: '', type: 'mcq', typeRaw: '', title: '', q: '', opts: ['', '', '', ''], ansRaw: '', tolRaw: '', ans: -1, exp: '' };
+      cur = { id: explicitId || (topic + '-' + diff + '-' + String(counters[ck]).padStart(3, '0')), topic, diff, sub: '', type: 'mcq', typeRaw: '', title: '', q: '', opts: ['', '', '', ''], ansRaw: '', tolRaw: '', ans: -1, exp: '', seen: {}, dups: [] };
       key = null; continue;
     }
     if (!cur) continue;
     const kv = line.match(/^(T|S|TYPE|TOL|Q|A|B|C|D|ANS|EXP): ?(.*)$/);
     if (kv) {
       key = kv[1]; const v = kv[2];
+      // A repeated field usually means an EXP/Q continuation line started with "B:" etc. and overwrote it.
+      if (cur.seen[key]) cur.dups.push(key); cur.seen[key] = 1;
       if (key === 'T') cur.title = v; else if (key === 'S') cur.sub = v.trim(); else if (key === 'Q') cur.q = v; else if (key === 'EXP') cur.exp = v;
       else if (key === 'TYPE') { cur.typeRaw = v.trim(); cur.type = QTYPES[cur.typeRaw] ? cur.typeRaw : 'invalid'; }
       else if (key === 'TOL') cur.tolRaw = v.trim();
@@ -78,6 +80,21 @@ function parseBank(text) {
   }
   finish();
   return out;
+}
+
+/* ---------- option references in explanations ---------- */
+// Options are shuffled at display time, so explanations must not name options by a bare letter.
+// Write [[A]] for "the option written as A in the bank"; the app shows the letter it has on screen.
+const OPTREF = /\[\[([ABCD])\]\]/g;
+const stripMath = s => s.replace(/\$\$[\s\S]*?\$\$/g, ' ').replace(/\$[^$]*\$/g, ' ');
+// Bare option letters outside math, e.g. "(C) fails", "B is the trap", "option A", or a line starting "D:".
+function bareOptionRefs(text) {
+  const t = stripMath(text.replace(OPTREF, ' ')); const found = [];
+  const pats = [/^[ \t]*\(?[ABCD]\)?[:)]/m, /(?<![\w}\\])\([ABCD]\)/, /\b[Oo]ptions? [ABCD]\b/,
+    /(?<![\w$\\{])[ABCD] (?:is|are|was|would|fails|gives|has|have|swaps|misses|holds|needs|forgets|uses|describes|puts|assumes|allows|adds|divides|stops|treats|characterises|finds|just|comes|drops|ignores|confuses|mixes|reverses|squares|takes|counts|forgot)\b/,
+    /(?<![\w$\\{])[BCD] and [BCD]\b/];
+  for (const p of pats) { const m = t.match(p); if (m) found.push(m[0].trim()); }
+  return found;
 }
 
 /* ---------- graph helpers for generators ---------- */
@@ -294,4 +311,4 @@ function buildGenerated(gid, seed) {
   return null;
 }
 
-if (typeof module !== 'undefined') module.exports = { parseBank, GENS, buildGenerated, TOPICS, SUBTOPICS, QTYPES };
+if (typeof module !== 'undefined') module.exports = { parseBank, GENS, buildGenerated, TOPICS, SUBTOPICS, QTYPES, OPTREF, bareOptionRefs };

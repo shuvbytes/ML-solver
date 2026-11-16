@@ -81,7 +81,7 @@ B: $\operatorname{Var}(\hat\theta)=0$
 C: $\hat\theta=\theta$ for every sample
 D: $\hat\theta\to\theta$ as $n\to\infty$
 ANS: A
-EXP: Unbiased means right on average over repeated samples. (D) describes consistency, a different property; an estimator can be biased yet consistent (e.g. the MLE of $\sigma^2$).
+EXP: Unbiased means right on average over repeated samples. [[D]] describes consistency, a different property; an estimator can be biased yet consistent (e.g. the MLE of $\sigma^2$).
 
 
 @ stat e stat-e-008
@@ -155,7 +155,7 @@ C: $(49.80,\ 50.20)$
 D: $(48.36,\ 51.64)$
 ANS: A
 EXP: $\bar x\pm z_{0.025}\dfrac{\sigma}{\sqrt n}=50\pm1.96\cdot\tfrac{10}{10}=50\pm1.96$.
-(B) forgets $\sqrt n$; (D) uses $1.645$, which is the 90% value.
+[[B]] forgets $\sqrt n$; [[D]] uses $1.645$, which is the 90% value.
 
 
 @ stat m stat-m-004
@@ -216,7 +216,7 @@ B: $N(200,\ 4)$
 C: $N(2,\ 0.04)$
 D: $N(200,\ 20)$
 ANS: A
-EXP: $E[S]=100\cdot2=200$ and $\operatorname{Var}(S)=100\cdot4=400$ (SD $20$). (C) is the distribution of the mean $\bar X$. (D) puts the SD where the variance belongs.
+EXP: $E[S]=100\cdot2=200$ and $\operatorname{Var}(S)=100\cdot4=400$ (SD $20$). [[C]] is the distribution of the mean $\bar X$. [[D]] puts the SD where the variance belongs.
 
 
 @ stat m stat-m-009
@@ -279,7 +279,7 @@ C: $p(1-p)$
 D: $\frac{p}{n}$
 ANS: A
 EXP: Fisher information per sample: $I(p)=\dfrac{1}{p(1-p)}$. The CRLB is $\dfrac1{nI(p)}=\dfrac{p(1-p)}n$.
-$\hat p=\bar X$ attains it, so it is efficient. (B) is $nI(p)$ itself.
+$\hat p=\bar X$ attains it, so it is efficient. [[B]] is $nI(p)$ itself.
 
 
 @ stat h stat-h-004
