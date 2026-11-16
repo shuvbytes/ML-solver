@@ -1,0 +1,385 @@
+@ prob e prob-e-001
+T: Sum of two dice equals 7
+S: counting
+Q: Two fair dice are rolled. What is the probability that the sum is 7?
+A: $\frac16$
+B: $\frac{1}{12}$
+C: $\frac{7}{36}$
+D: $\frac19$
+ANS: A
+EXP: Favourable outcomes: $(1,6),(2,5),(3,4),(4,3),(5,2),(6,1)$, which is 6 of 36. So $P=\tfrac{6}{36}=\tfrac16$. Seven is the most likely sum.
+
+
+@ prob e prob-e-002
+T: Probability of a union
+S: axioms-events
+Q: $P(A)=0.5$, $P(B)=0.4$, $P(A\cap B)=0.2$. Find $P(A\cup B)$.
+A: $0.9$
+B: $0.7$
+C: $0.5$
+D: $0.2$
+ANS: B
+EXP: Inclusion–exclusion: $P(A\cup B)=P(A)+P(B)-P(A\cap B)=0.5+0.4-0.2=0.7$.
+$0.9$ double-counts the overlap.
+
+
+@ prob e prob-e-003
+T: Union of independent events
+S: independence
+Q: $A$ and $B$ are independent with $P(A)=0.3$ and $P(B)=0.5$. Find $P(A\cup B)$.
+A: $0.8$
+B: $0.65$
+C: $0.15$
+D: $0.5$
+ANS: B
+EXP: Independence gives $P(A\cap B)=0.3\times0.5=0.15$.
+Then $P(A\cup B)=0.3+0.5-0.15=0.65$. Equivalently, $1-P(A^c)P(B^c)=1-0.7\cdot0.5=0.65$.
+
+
+@ prob e prob-e-004
+T: At least one head in three tosses
+S: axioms-events
+Q: Three fair coins are tossed. What is $P(\text{at least one head})$?
+A: $\frac12$
+B: $\frac34$
+C: $\frac78$
+D: $\frac18$
+ANS: C
+EXP: Use the complement: $P(\text{no heads})=(\tfrac12)^3=\tfrac18$, so $P(\ge1\text{ head})=1-\tfrac18=\tfrac78$.
+
+
+@ prob e prob-e-005
+T: Expected value of a die
+S: expectation-variance
+Q: What is the expected value of one roll of a fair six-sided die?
+A: $3$
+B: $3.5$
+C: $4$
+D: $21$
+ANS: B
+EXP: $E[X]=\tfrac16(1+2+3+4+5+6)=\tfrac{21}{6}=3.5$. An expected value need not be a value $X$ can actually take.
+
+
+@ prob e prob-e-006
+T: Variance of a linear transform
+S: expectation-variance
+Q: $\operatorname{Var}(X)=4$. What is $\operatorname{Var}(3X+2)$?
+A: $14$
+B: $12$
+C: $36$
+D: $38$
+ANS: C
+EXP: $\operatorname{Var}(aX+b)=a^2\operatorname{Var}(X)$. Adding a constant shifts but does not spread.
+$3^2\cdot4=36$.
+
+
+@ prob e prob-e-007
+T: Maximum variance of a Bernoulli
+S: discrete-dists
+Q: What is the largest possible variance of a Bernoulli$(p)$ random variable?
+A: $0.5$
+B: $1$
+C: $0.25$
+D: $0.125$
+ANS: C
+EXP: $\operatorname{Var}=p(1-p)$, a downward parabola maximised at $p=\tfrac12$: $\tfrac12\cdot\tfrac12=0.25$.
+That is why the Gini impurity and entropy of a binary node are highest at a 50/50 split.
+
+
+@ prob e prob-e-008
+T: Mutually exclusive vs independent
+S: independence
+Q: $A$ and $B$ are mutually exclusive with $P(A)>0$ and $P(B)>0$. Then $A$ and $B$ are:
+A: always independent
+B: never independent
+C: independent only if $P(A)=P(B)$
+D: independent only if $P(A)+P(B)=1$
+ANS: B
+EXP: Mutually exclusive means $P(A\cap B)=0$. Independence needs $P(A\cap B)=P(A)P(B)>0$. These cannot both hold.
+Intuitively, knowing $A$ happened tells you $B$ did not, which is strong dependence.
+
+
+@ prob e prob-e-009
+T: Standard deviation of a Poisson
+S: discrete-dists
+Q: $X\sim\text{Poisson}(4)$. What is the standard deviation of $X$?
+A: $4$
+B: $2$
+C: $16$
+D: $\frac14$
+ANS: B
+EXP: For a Poisson, mean $=$ variance $=\lambda=4$. So $\text{SD}=\sqrt4=2$.
+
+
+@ prob e prob-e-010
+T: Variance of a continuous uniform
+S: continuous-dists
+Q: $X\sim U(2,6)$. What is $\operatorname{Var}(X)$?
+A: $\frac43$
+B: $\frac23$
+C: $4$
+D: $\frac13$
+ANS: A
+EXP: For $U(a,b)$: $\operatorname{Var}=\dfrac{(b-a)^2}{12}=\dfrac{16}{12}=\dfrac43$. (Mean $=\tfrac{a+b}{2}=4$.)
+
+
+@ prob m prob-m-001
+T: Bayes’ theorem for a medical test
+S: conditional-bayes
+Q: A disease affects 1% of people. A test detects it 99% of the time and gives a false positive 5% of the time. A random person tests positive. Approximately what is $P(\text{disease}\mid +)$?
+A: $\approx0.99$
+B: $\approx0.17$
+C: $\approx0.05$
+D: $\approx0.50$
+ANS: B
+EXP: $P(+)=0.01\cdot0.99+0.99\cdot0.05=0.0099+0.0495=0.0594$.
+$P(D\mid+)=\dfrac{0.0099}{0.0594}=\dfrac16\approx0.167$.
+The low base rate dominates: most positives come from the large healthy group (base-rate fallacy).
+
+
+@ prob m prob-m-002
+T: Exactly two heads in five tosses
+S: discrete-dists
+Q: A fair coin is tossed 5 times. What is $P(\text{exactly 2 heads})$?
+A: $\frac{5}{16}$
+B: $\frac{1}{16}$
+C: $\frac14$
+D: $\frac25$
+ANS: A
+EXP: Binomial: $\binom52\left(\tfrac12\right)^5=\tfrac{10}{32}=\tfrac5{16}$.
+
+
+@ prob m prob-m-003
+T: Expected rolls until the first six
+S: discrete-dists
+Q: You roll a fair die until a 6 appears. What is the expected number of rolls?
+A: $6$
+B: $3.5$
+C: $5$
+D: $36$
+ANS: A
+EXP: The number of trials to the first success is Geometric$(p)$ with $E=1/p=6$.
+Equivalently $E=1+\tfrac56E\Rightarrow E=6$.
+
+
+@ prob m prob-m-004
+T: Memoryless property of the exponential
+S: continuous-dists
+Q: $X\sim\text{Exp}(\lambda=0.5)$. Find $P(X>5\mid X>2)$.
+A: $e^{-1.5}$
+B: $e^{-2.5}$
+C: $e^{-1}$
+D: $1-e^{-1.5}$
+ANS: A
+EXP: Memorylessness: $P(X>s+t\mid X>s)=P(X>t)$. With $t=3$: $P(X>3)=e^{-0.5\cdot3}=e^{-1.5}$.
+Directly: $\dfrac{e^{-2.5}}{e^{-1}}=e^{-1.5}$.
+
+
+@ prob m prob-m-005
+T: Expected maximum of two dice
+S: random-variables
+Q: Two fair dice are rolled. What is $E[\max(X_1,X_2)]$?
+A: $\frac{161}{36}$
+B: $\frac72$
+C: $4$
+D: $\frac{91}{36}$
+ANS: A
+EXP: $P(\max\le k)=(k/6)^2$, so $P(\max\ge k)=1-\tfrac{(k-1)^2}{36}$.
+$E[M]=\sum_{k=1}^{6}P(M\ge k)=6-\tfrac{0+1+4+9+16+25}{36}=6-\tfrac{55}{36}=\tfrac{161}{36}\approx4.47$.
+$\tfrac{91}{36}$ is $E[\min]$; the two add to $7=E[X_1+X_2]$.
+
+
+@ prob m prob-m-006
+T: Correlation from variances
+S: covariance-correlation
+Q: $\operatorname{Var}(X)=4$, $\operatorname{Var}(Y)=9$ and $\operatorname{Var}(X+Y)=10$. What is the correlation $\rho(X,Y)$?
+A: $-0.25$
+B: $-1.5$
+C: $0.25$
+D: $-0.5$
+ANS: A
+EXP: $\operatorname{Var}(X+Y)=\operatorname{Var}X+\operatorname{Var}Y+2\operatorname{Cov}\Rightarrow10=13+2\operatorname{Cov}\Rightarrow\operatorname{Cov}=-1.5$.
+$\rho=\dfrac{-1.5}{2\cdot3}=-0.25$. ($-1.5$ is the covariance, not the correlation.)
+
+
+@ prob m prob-m-007
+T: Normalising a joint density
+S: joint-conditional
+Q: $f(x,y)=c(x+y)$ for $0\le x,y\le1$ (and 0 elsewhere). What is $c$?
+A: $\frac12$
+B: $1$
+C: $2$
+D: $4$
+ANS: B
+EXP: $\int_0^1\!\int_0^1(x+y)\,dx\,dy=\tfrac12+\tfrac12=1$. For the density to integrate to 1, $c=1$.
+
+
+@ prob m prob-m-008
+T: Law of total expectation
+S: conditional-expectation
+Q: Flip a fair coin. Heads: roll one die and record it. Tails: roll two dice and record the sum. What is the expected recorded value?
+A: $3.5$
+B: $5.25$
+C: $7$
+D: $10.5$
+ANS: B
+EXP: $E[X]=E[X\mid H]P(H)+E[X\mid T]P(T)=3.5\cdot\tfrac12+7\cdot\tfrac12=5.25$.
+
+
+@ prob m prob-m-009
+T: Race between two exponentials
+S: joint-conditional
+Q: $X\sim\text{Exp}(1)$ and $Y\sim\text{Exp}(2)$ are independent. Find $P(X<Y)$.
+A: $\frac13$
+B: $\frac23$
+C: $\frac12$
+D: $\frac14$
+ANS: A
+EXP: $P(X<Y)=\dfrac{\lambda_X}{\lambda_X+\lambda_Y}=\dfrac{1}{1+2}=\dfrac13$.
+$Y$ has the higher rate, so it usually happens first. Derivation: $\int_0^\infty e^{-x}e^{-2x}\,dx=\tfrac13$.
+
+
+@ prob m prob-m-010
+T: Zero covariance does not imply independence
+S: covariance-correlation
+Q: $X\sim U(-1,1)$ and $Y=X^2$. Which is true?
+A: $\operatorname{Cov}(X,Y)=0$ and they are independent
+B: $\operatorname{Cov}(X,Y)=0$ but they are dependent
+C: $\operatorname{Cov}(X,Y)>0$
+D: $\operatorname{Cov}(X,Y)<0$
+ANS: B
+EXP: $\operatorname{Cov}(X,X^2)=E[X^3]-E[X]E[X^2]=0-0=0$ by symmetry.
+Yet $Y$ is a deterministic function of $X$, so they are clearly dependent. Covariance only measures linear association.
+
+
+@ prob h prob-h-001
+T: Coupon collector with 4 coupons
+S: expectation-variance
+Q: Each cereal box contains one of 4 equally likely coupons. What is the expected number of boxes needed to collect all 4?
+A: $\frac{25}{3}$
+B: $4$
+C: $10$
+D: $\frac{16}{3}$
+ANS: A
+EXP: After collecting $i$ distinct coupons, the wait for a new one is Geometric with $p=\tfrac{4-i}{4}$.
+$E=\tfrac44+\tfrac43+\tfrac42+\tfrac41=4\left(1+\tfrac12+\tfrac13+\tfrac14\right)=4\cdot\tfrac{25}{12}=\tfrac{25}{3}\approx8.33$.
+In general $E=nH_n\approx n\ln n$.
+
+
+@ prob h prob-h-002
+T: Waiting for two consecutive sixes
+S: conditional-expectation
+Q: A fair die is rolled until two 6s appear in a row. What is the expected number of rolls?
+A: $36$
+B: $12$
+C: $42$
+D: $30$
+ANS: C
+EXP: Let $E_0$ = expected rolls from scratch, $E_1$ = expected rolls when the last roll was a 6.
+$E_1=1+\tfrac56E_0$ and $E_0=1+\tfrac16E_1+\tfrac56E_0$.
+Substituting: $E_0=\tfrac76+\tfrac{35}{36}E_0\Rightarrow\tfrac1{36}E_0=\tfrac76\Rightarrow E_0=42$.
+
+
+@ prob h prob-h-003
+T: Comparing two independent normals
+S: transformations
+Q: $X\sim N(1,4)$ and $Y\sim N(2,5)$ are independent (second parameter = variance). $P(X>Y)$ equals:
+A: $1-\Phi(1/3)$
+B: $\Phi(1/3)$
+C: $1-\Phi(1/9)$
+D: $1-\Phi(1/\sqrt3)$
+ANS: A
+EXP: $D=X-Y\sim N(1-2,\ 4+5)=N(-1,9)$. Variances add even when you subtract.
+$P(D>0)=P\!\left(Z>\tfrac{0-(-1)}{3}\right)=1-\Phi(1/3)\approx0.37$.
+
+
+@ prob h prob-h-004
+T: Monty Hall with four doors
+S: conditional-bayes
+Q: There are 4 doors and 1 car. You pick a door; the host, who knows where the car is, opens one other empty door. You then switch to one of the 2 remaining unopened doors chosen at random. $P(\text{win})$?
+A: $\frac14$
+B: $\frac38$
+C: $\frac12$
+D: $\frac34$
+ANS: B
+EXP: Your first pick is wrong with probability $\tfrac34$; then the car is behind one of the 2 other unopened doors and you pick it with probability $\tfrac12$.
+If your first pick was right ($\tfrac14$), switching always loses. So $P=\tfrac34\cdot\tfrac12=\tfrac38>\tfrac14$ for staying.
+
+
+@ prob h prob-h-005
+T: Broken stick forms a triangle
+S: joint-conditional
+Q: A stick of length 1 is broken at two points chosen independently and uniformly at random. What is the probability the three pieces form a triangle?
+A: $\frac12$
+B: $\frac13$
+C: $\frac14$
+D: $\frac18$
+ANS: C
+EXP: A triangle needs every piece $<\tfrac12$. In the unit square of break points $(U,V)$, this region is two triangles each of area $\tfrac18$.
+Total $=\tfrac14$.
+
+
+@ prob h prob-h-006
+T: Reading variance from an MGF
+S: expectation-variance
+Q: The moment generating function of $X$ is $M_X(t)=e^{2t+8t^2}$. What is $\operatorname{Var}(X)$?
+A: $8$
+B: $16$
+C: $4$
+D: $2$
+ANS: B
+EXP: A normal $N(\mu,\sigma^2)$ has $M(t)=e^{\mu t+\sigma^2t^2/2}$. Matching: $\mu=2$ and $\sigma^2/2=8\Rightarrow\sigma^2=16$.
+Or: $\operatorname{Var}=M''(0)-M'(0)^2=(16+4)-4=16$.
+
+
+@ prob h prob-h-007
+T: Transforming a uniform variable
+S: transformations
+Q: $U\sim U(0,1)$. What is the distribution of $Y=-\ln U$?
+A: Exponential with rate $1$
+B: Standard normal
+C: Uniform on $(0,1)$
+D: Gamma with shape $2$
+ANS: A
+EXP: For $y>0$: $P(Y>y)=P(-\ln U>y)=P(U<e^{-y})=e^{-y}$, the survival function of Exp(1).
+This is inverse-transform sampling, used to generate exponential samples from uniform ones.
+
+
+@ prob h prob-h-008
+T: Beta–Bernoulli posterior mean
+S: conditional-bayes
+Q: Prior on a coin’s heads probability: $p\sim\text{Beta}(2,2)$. You observe 3 heads and 1 tail. What is the posterior mean of $p$?
+A: $\frac34$
+B: $\frac58$
+C: $\frac12$
+D: $\frac56$
+ANS: B
+EXP: Beta is conjugate to Bernoulli: the posterior is $\text{Beta}(2+3,\ 2+1)=\text{Beta}(5,3)$.
+Mean $=\tfrac{\alpha}{\alpha+\beta}=\tfrac58$. The MLE is $\tfrac34$; the prior pulls it toward $\tfrac12$.
+
+
+@ prob h prob-h-009
+T: Stationary distribution of a 2-state Markov chain
+S: markov-chains
+Q: A Markov chain has transition matrix $P=\begin{pmatrix}0.9&0.1\\0.5&0.5\end{pmatrix}$ (rows = current state). What is its stationary distribution $\pi$?
+A: $\left(\frac56,\frac16\right)$
+B: $\left(\frac12,\frac12\right)$
+C: $(0.9,\ 0.1)$
+D: $\left(\frac16,\frac56\right)$
+ANS: A
+EXP: Solve $\pi P=\pi$. Balance of flow between the states: $\pi_1\cdot0.1=\pi_2\cdot0.5\Rightarrow\pi_1=5\pi_2$.
+With $\pi_1+\pi_2=1$: $\pi=(\tfrac56,\tfrac16)$.
+
+
+@ prob h prob-h-010
+T: Chebyshev’s inequality
+S: limit-theorems
+Q: $X$ has mean 50 and standard deviation 5 (distribution unknown). The best upper bound Chebyshev gives for $P(|X-50|\ge15)$ is:
+A: $\frac13$
+B: $\frac19$
+C: $\frac14$
+D: $0.003$
+ANS: B
+EXP: Chebyshev: $P(|X-\mu|\ge k\sigma)\le\tfrac1{k^2}$. Here $15=3\sigma$, so the bound is $\tfrac19$.
+$0.003$ is the normal-distribution value, which you cannot assume when the distribution is unknown.
+

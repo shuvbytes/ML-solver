@@ -1,0 +1,375 @@
+@ stat e stat-e-001
+T: Median of a small sample
+S: descriptive
+Q: What is the median of $\{2,3,3,5,7\}$?
+A: $4$
+B: $3$
+C: $5$
+D: $3.5$
+ANS: B
+EXP: Sorted, the middle (3rd of 5) value is $3$. The mean is $4$ and the mode is $3$.
+
+
+@ stat e stat-e-002
+T: Sample variance
+S: descriptive
+Q: What is the sample variance (with $n-1$ in the denominator) of $\{2,4,6\}$?
+A: $\frac83$
+B: $4$
+C: $2$
+D: $8$
+ANS: B
+EXP: Mean $=4$. Squared deviations: $4,0,4$, summing to $8$.
+$s^2=\tfrac{8}{3-1}=4$. Dividing by $n$ gives $\tfrac83$, the biased (MLE) version.
+
+
+@ stat e stat-e-003
+T: z-score
+S: descriptive
+Q: Test scores have mean $70$ and standard deviation $10$. What is the z-score of a score of $85$?
+A: $1.5$
+B: $15$
+C: $0.15$
+D: $-1.5$
+ANS: A
+EXP: $z=\dfrac{x-\mu}{\sigma}=\dfrac{85-70}{10}=1.5$: the score is 1.5 standard deviations above the mean.
+
+
+@ stat e stat-e-004
+T: Empirical rule
+S: descriptive
+Q: For a normal distribution, roughly what fraction of values lie within 2 standard deviations of the mean?
+A: $68\%$
+B: $95\%$
+C: $99.7\%$
+D: $50\%$
+ANS: B
+EXP: 68–95–99.7 rule: about 68% within $1\sigma$, 95% within $2\sigma$ (exactly 95% at $1.96\sigma$), and 99.7% within $3\sigma$.
+
+
+@ stat e stat-e-005
+T: Meaning of zero correlation
+S: regression-correlation
+Q: The Pearson correlation between $X$ and $Y$ is $0$. This means:
+A: $X$ and $Y$ are independent
+B: there is no linear relationship
+C: there is no relationship of any kind
+D: $Y$ is constant
+ANS: B
+EXP: Pearson $r$ measures only linear association. $Y=X^2$ with $X$ symmetric about 0 has $r=0$ but a perfect nonlinear relationship.
+
+
+@ stat e stat-e-006
+T: Type I error
+S: z-test
+Q: A Type I error is:
+A: rejecting $H_0$ when $H_0$ is true
+B: failing to reject $H_0$ when $H_0$ is false
+C: rejecting $H_1$ when $H_1$ is true
+D: using the wrong test statistic
+ANS: A
+EXP: Type I = false positive, with probability $\alpha$ (the significance level).
+Type II = false negative (failing to reject a false $H_0$), with probability $\beta$; power $=1-\beta$.
+
+
+@ stat e stat-e-007
+T: Definition of an unbiased estimator
+S: bias-variance
+Q: An estimator $\hat\theta$ of $\theta$ is unbiased if:
+A: $E[\hat\theta]=\theta$
+B: $\operatorname{Var}(\hat\theta)=0$
+C: $\hat\theta=\theta$ for every sample
+D: $\hat\theta\to\theta$ as $n\to\infty$
+ANS: A
+EXP: Unbiased means right on average over repeated samples. (D) describes consistency, a different property; an estimator can be biased yet consistent (e.g. the MLE of $\sigma^2$).
+
+
+@ stat e stat-e-008
+T: Standard error of the mean
+S: sampling-distributions
+Q: The population standard deviation is $12$ and the sample size is $36$. What is the standard error of $\bar X$?
+A: $2$
+B: $6$
+C: $\frac13$
+D: $12$
+ANS: A
+EXP: $\text{SE}(\bar X)=\dfrac{\sigma}{\sqrt n}=\dfrac{12}{6}=2$. To halve the SE you need 4× the data.
+
+
+@ stat e stat-e-009
+T: Skewness from mean and median
+S: descriptive
+Q: A distribution has mean $60$ and median $45$. It is most likely:
+A: right (positively) skewed
+B: left (negatively) skewed
+C: symmetric
+D: uniform
+ANS: A
+EXP: A long right tail of large values pulls the mean above the median. Income distributions are the classic example.
+
+
+@ stat e stat-e-010
+T: Outlier fence using the IQR
+S: descriptive
+Q: $Q_1=20$ and $Q_3=50$. Using the $1.5\times$IQR rule, values above what are flagged as outliers?
+A: $80$
+B: $95$
+C: $65$
+D: $125$
+ANS: B
+EXP: $\text{IQR}=50-20=30$. Upper fence $=Q_3+1.5\cdot\text{IQR}=50+45=95$ (lower fence $=20-45=-25$).
+
+
+@ stat m stat-m-001
+T: MLE of a Bernoulli parameter
+S: estimation-mle
+Q: In 20 independent Bernoulli trials you observe 7 successes. What is the maximum likelihood estimate of $p$?
+A: $0.35$
+B: $0.5$
+C: $0.7$
+D: $0.65$
+ANS: A
+EXP: $\ell(p)=7\ln p+13\ln(1-p)$. $\ell'(p)=\tfrac7p-\tfrac{13}{1-p}=0\Rightarrow p=\tfrac{7}{20}=0.35$, the sample proportion.
+
+
+@ stat m stat-m-002
+T: MLE of an exponential rate
+S: estimation-mle
+Q: Data from $\text{Exp}(\lambda)$ have sample mean $\bar x=4$. What is the MLE of $\lambda$?
+A: $4$
+B: $0.25$
+C: $0.5$
+D: $16$
+ANS: B
+EXP: $\ell(\lambda)=n\ln\lambda-\lambda\sum x_i$. $\ell'=\tfrac n\lambda-\sum x_i=0\Rightarrow\hat\lambda=\tfrac1{\bar x}=0.25$.
+The mean of Exp($\lambda$) is $1/\lambda$, so invariance gives the same answer.
+
+
+@ stat m stat-m-003
+T: 95% confidence interval for a mean
+S: confidence-intervals
+Q: $\bar x=50$, known $\sigma=10$, $n=100$. What is the 95% confidence interval for $\mu$?
+A: $(48.04,\ 51.96)$
+B: $(30.4,\ 69.6)$
+C: $(49.80,\ 50.20)$
+D: $(48.36,\ 51.64)$
+ANS: A
+EXP: $\bar x\pm z_{0.025}\dfrac{\sigma}{\sqrt n}=50\pm1.96\cdot\tfrac{10}{10}=50\pm1.96$.
+(B) forgets $\sqrt n$; (D) uses $1.645$, which is the 90% value.
+
+
+@ stat m stat-m-004
+T: Regression slope from correlation
+S: regression-correlation
+Q: The correlation between $x$ and $y$ is $r=0.8$, with $s_x=4$ and $s_y=10$. What is the least-squares slope of $y$ on $x$?
+A: $2$
+B: $3.2$
+C: $0.32$
+D: $5$
+ANS: A
+EXP: $b=r\dfrac{s_y}{s_x}=0.8\cdot\tfrac{10}{4}=2$. Regressing $x$ on $y$ instead gives $r\tfrac{s_x}{s_y}=0.32$, which is not the reciprocal of 2 unless $|r|=1$.
+
+
+@ stat m stat-m-005
+T: Sample covariance
+S: regression-correlation
+Q: For paired data $x=(1,2,3)$, $y=(2,4,7)$, what is the sample covariance (denominator $n-1$)?
+A: $2.5$
+B: $\frac53$
+C: $5$
+D: $\frac{13}{3}$
+ANS: A
+EXP: $\bar x=2$, $\bar y=\tfrac{13}{3}$. $\sum(x_i-\bar x)(y_i-\bar y)=(-1)(-\tfrac73)+0+(1)(\tfrac83)=5$.
+Divide by $n-1=2$: $2.5$. (Dividing by $n$ gives $\tfrac53$.)
+
+
+@ stat m stat-m-006
+T: Interpreting a p-value
+S: z-test
+Q: A test gives $p=0.03$. The correct interpretation is:
+A: $P(H_0\text{ is true})=0.03$
+B: assuming $H_0$ is true, the probability of a result at least this extreme is $0.03$
+C: there is a 97% chance $H_1$ is true
+D: the effect size is 0.03
+ANS: B
+EXP: A p-value is computed under $H_0$: $P(\text{data this extreme}\mid H_0)$. It is not $P(H_0\mid\text{data})$; that would need a prior (Bayes).
+
+
+@ stat m stat-m-007
+T: Bias–variance decomposition of MSE
+S: bias-variance
+Q: An estimator has bias $2$ and variance $5$. What is its mean squared error?
+A: $7$
+B: $9$
+C: $3$
+D: $29$
+ANS: B
+EXP: $\text{MSE}=\text{Bias}^2+\text{Var}=4+5=9$. A slightly biased, low-variance estimator (e.g. ridge regression) can beat an unbiased one on MSE.
+
+
+@ stat m stat-m-008
+T: Central limit theorem for a sum
+S: sampling-distributions
+Q: $X_1,\dots,X_{100}$ are iid with mean $2$ and variance $4$. Approximately, $S=\sum X_i$ follows:
+A: $N(200,\ 400)$
+B: $N(200,\ 4)$
+C: $N(2,\ 0.04)$
+D: $N(200,\ 20)$
+ANS: A
+EXP: $E[S]=100\cdot2=200$ and $\operatorname{Var}(S)=100\cdot4=400$ (SD $20$). (C) is the distribution of the mean $\bar X$. (D) puts the SD where the variance belongs.
+
+
+@ stat m stat-m-009
+T: Degrees of freedom of a chi-square test
+S: chi-squared-test
+Q: A chi-square test of independence on a $3\times4$ contingency table has how many degrees of freedom?
+A: $12$
+B: $6$
+C: $7$
+D: $11$
+ANS: B
+EXP: $\text{df}=(r-1)(c-1)=2\cdot3=6$.
+
+
+@ stat m stat-m-010
+T: Coefficient of determination
+S: regression-correlation
+Q: A regression has $\text{SSE}=20$ (residual) and $\text{SST}=80$ (total). What is $R^2$?
+A: $0.25$
+B: $0.75$
+C: $4$
+D: $0.8$
+ANS: B
+EXP: $R^2=1-\dfrac{\text{SSE}}{\text{SST}}=1-\dfrac{20}{80}=0.75$: the model explains 75% of the variance in $y$.
+
+
+@ stat h stat-h-001
+T: Bias of the MLE of normal variance
+S: bias-variance
+Q: For $X_1,\dots,X_n\sim N(\mu,\sigma^2)$, the MLE $\hat\sigma^2=\frac1n\sum(X_i-\bar X)^2$ has expectation:
+A: $\sigma^2$
+B: $\frac{n-1}{n}\sigma^2$
+C: $\frac{n}{n-1}\sigma^2$
+D: $\frac{\sigma^2}{n}$
+ANS: B
+EXP: $E\left[\sum(X_i-\bar X)^2\right]=(n-1)\sigma^2$ because one degree of freedom is used up estimating $\bar X$.
+So the MLE underestimates by the factor $\tfrac{n-1}{n}$; Bessel's correction (dividing by $n-1$) removes the bias.
+
+
+@ stat h stat-h-002
+T: MLE for Uniform(0, θ)
+S: estimation-mle
+Q: Observations from $U(0,\theta)$ are $2.1,\ 4.7,\ 3.3$. The MLE of $\theta$ is:
+A: $4.7$, and it is unbiased
+B: $4.7$, and it tends to underestimate $\theta$
+C: $2\bar x\approx6.73$, and it is unbiased
+D: $\bar x\approx3.37$
+ANS: B
+EXP: $L(\theta)=\theta^{-n}$ for $\theta\ge\max x_i$ (else 0). It is decreasing, so it is maximised at $\hat\theta=\max x_i=4.7$.
+$E[\max]=\tfrac{n}{n+1}\theta<\theta$, so it is biased low. $2\bar x$ is the unbiased method-of-moments estimator, not the MLE.
+
+
+@ stat h stat-h-003
+T: Cramér–Rao lower bound for a Bernoulli
+S: estimation-mle
+Q: For $n$ iid Bernoulli$(p)$ samples, the Cramér–Rao lower bound on the variance of any unbiased estimator of $p$ is:
+A: $\frac{p(1-p)}{n}$
+B: $\frac{1}{np(1-p)}$
+C: $p(1-p)$
+D: $\frac{p}{n}$
+ANS: A
+EXP: Fisher information per sample: $I(p)=\dfrac{1}{p(1-p)}$. The CRLB is $\dfrac1{nI(p)}=\dfrac{p(1-p)}n$.
+$\hat p=\bar X$ attains it, so it is efficient. (B) is $nI(p)$ itself.
+
+
+@ stat h stat-h-004
+T: Required sample size
+S: confidence-intervals
+Q: You want a 95% CI for a mean with margin of error at most $2$. With $\sigma=10$, what is the minimum $n$?
+A: $96$
+B: $97$
+C: $20$
+D: $49$
+ANS: B
+EXP: $1.96\cdot\tfrac{10}{\sqrt n}\le2\Rightarrow\sqrt n\ge9.8\Rightarrow n\ge96.04$.
+Round up to $97$; $96$ would give a margin slightly above 2.
+
+
+@ stat h stat-h-005
+T: Power of a one-sided z-test
+S: z-test
+Q: Test $H_0:\mu=0$ vs $H_1:\mu>0$ with $\sigma=1$, $n=25$, $\alpha=0.05$ (reject if $\bar x>0.329$). If the true $\mu=0.5$, the power is approximately:
+A: $0.05$
+B: $0.20$
+C: $0.80$
+D: $0.95$
+ANS: C
+EXP: $\text{SE}=1/\sqrt{25}=0.2$; the cutoff is $1.645\cdot0.2=0.329$.
+Power $=P(\bar X>0.329\mid\mu=0.5)=P\left(Z>\tfrac{0.329-0.5}{0.2}\right)=P(Z>-0.855)\approx0.80$. Then $\beta\approx0.20$.
+
+
+@ stat h stat-h-006
+T: L1 regularisation as a prior
+S: bayesian-inference
+Q: Lasso ($L_1$-penalised) regression equals MAP estimation with which prior on the weights?
+A: Gaussian
+B: Laplace
+C: Uniform
+D: Beta
+ANS: B
+EXP: MAP minimises $-\log p(y\mid w)-\log p(w)$. A Laplace prior $p(w)\propto e^{-\lambda|w|}$ contributes $\lambda\|w\|_1$.
+A Gaussian prior gives $\lambda\|w\|_2^2$ (ridge). The Laplace prior's sharp peak at 0 is why Lasso produces exact zeros.
+
+
+@ stat h stat-h-007
+T: Law of total variance
+S: descriptive
+Q: A population is 50% group A (mean 10, variance 4) and 50% group B (mean 20, variance 4). What is the overall variance?
+A: $4$
+B: $25$
+C: $29$
+D: $8$
+ANS: C
+EXP: $\operatorname{Var}(Y)=E[\operatorname{Var}(Y\mid G)]+\operatorname{Var}(E[Y\mid G])$.
+Within-group: $4$. Between-group: the group means $10,20$ with equal weight have variance $25$. Total $=29$.
+This within/between split is the basis of ANOVA and of the variance criterion in clustering.
+
+
+@ stat h stat-h-008
+T: Variance of the OLS estimator
+S: regression-correlation
+Q: In $y=X\beta+\varepsilon$ with $\varepsilon\sim N(0,\sigma^2I)$, the covariance of $\hat\beta=(X^TX)^{-1}X^Ty$ is:
+A: $\sigma^2(X^TX)^{-1}$
+B: $\sigma^2X^TX$
+C: $\sigma^2I$
+D: $(X^TX)^{-1}X^T$
+ANS: A
+EXP: $\hat\beta=\beta+(X^TX)^{-1}X^T\varepsilon$, so $\operatorname{Cov}(\hat\beta)=(X^TX)^{-1}X^T(\sigma^2I)X(X^TX)^{-1}=\sigma^2(X^TX)^{-1}$.
+Collinear features make $X^TX$ near-singular, which inflates this variance (multicollinearity).
+
+
+@ stat h stat-h-009
+T: KL divergence between two Gaussians
+S: information-theory
+Q: What is $D_{KL}\big(N(0,1)\,\|\,N(1,1)\big)$?
+A: $0$
+B: $0.5$
+C: $1$
+D: $2$
+ANS: B
+EXP: For equal variances, $D_{KL}\big(N(\mu_1,\sigma^2)\|N(\mu_2,\sigma^2)\big)=\dfrac{(\mu_1-\mu_2)^2}{2\sigma^2}=\tfrac12$.
+This closed form is the KL term in the VAE loss.
+
+
+@ stat h stat-h-010
+T: Multiple testing
+S: z-test
+Q: You run 20 independent tests at $\alpha=0.05$ where every null hypothesis is true. What is the probability of at least one false positive?
+A: $0.05$
+B: $\approx0.64$
+C: $1.0$
+D: $\approx0.36$
+ANS: B
+EXP: $1-(0.95)^{20}\approx1-0.358=0.642$. ($0.36$ is the probability of no false positives.)
+Bonferroni fixes this by testing each at $\alpha/20=0.0025$.
+

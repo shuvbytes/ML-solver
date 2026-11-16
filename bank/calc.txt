@@ -1,0 +1,383 @@
+@ calc e calc-e-001
+T: Product rule
+S: derivatives
+Q: $\dfrac{d}{dx}\left(x^3e^x\right)=$
+A: $3x^2e^x$
+B: $e^x(x^3+3x^2)$
+C: $x^3e^x$
+D: $3x^2+e^x$
+ANS: B
+EXP: Product rule $(uv)'=u'v+uv'$: $3x^2e^x+x^3e^x=e^x(x^3+3x^2)$.
+
+
+@ calc e calc-e-002
+T: Derivative of the sigmoid
+S: derivatives
+Q: For $\sigma(x)=\dfrac{1}{1+e^{-x}}$, $\sigma'(x)$ equals:
+A: $\sigma(x)(1-\sigma(x))$
+B: $\sigma(x)^2$
+C: $1-\sigma(x)$
+D: $\sigma(x)(1+\sigma(x))$
+ANS: A
+EXP: $\sigma'(x)=\dfrac{e^{-x}}{(1+e^{-x})^2}=\dfrac{1}{1+e^{-x}}\cdot\dfrac{e^{-x}}{1+e^{-x}}=\sigma(x)(1-\sigma(x))$.
+Its maximum is $\tfrac14$ at $x=0$, one reason deep sigmoid networks suffer vanishing gradients.
+
+
+@ calc e calc-e-003
+T: A standard limit
+S: limits
+Q: $\displaystyle\lim_{x\to0}\frac{e^x-1}{x}=$
+A: $0$
+B: $1$
+C: $e$
+D: $\infty$
+ANS: B
+EXP: It is the derivative of $e^x$ at $0$, which is $e^0=1$. L'Hôpital gives the same: $\lim e^x/1=1$.
+
+
+@ calc e calc-e-004
+T: Definite integral of x²
+S: integrals
+Q: $\displaystyle\int_0^1x^2\,dx=$
+A: $\frac12$
+B: $\frac13$
+C: $1$
+D: $\frac23$
+ANS: B
+EXP: $\int x^2dx=\tfrac{x^3}{3}$, so $\left[\tfrac{x^3}{3}\right]_0^1=\tfrac13$.
+
+
+@ calc e calc-e-005
+T: Gradient at a point
+S: gradients-multivariable
+Q: $f(x,y)=x^2y+3y$. What is $\nabla f(1,2)$?
+A: $(4,\ 4)$
+B: $(2,\ 4)$
+C: $(4,\ 3)$
+D: $(2,\ 1)$
+ANS: A
+EXP: $\partial f/\partial x=2xy=2\cdot1\cdot2=4$ and $\partial f/\partial y=x^2+3=1+3=4$. So $\nabla f(1,2)=(4,4)$.
+
+
+@ calc e calc-e-006
+T: Minimum of a quadratic
+S: single-var-optimization
+Q: What is the minimum value of $f(x)=x^2-4x+7$?
+A: $7$
+B: $2$
+C: $3$
+D: $-3$
+ANS: C
+EXP: $f'(x)=2x-4=0\Rightarrow x=2$, and $f''=2>0$ so it is a minimum. $f(2)=4-8+7=3$.
+Completing the square gives the same: $(x-2)^2+3$. ($2$ is where the minimum occurs, not its value.)
+
+
+@ calc e calc-e-007
+T: Derivative of softplus
+S: derivatives
+Q: $\dfrac{d}{dx}\ln(1+e^x)=$
+A: $\dfrac{1}{1+e^x}$
+B: $\dfrac{e^x}{1+e^x}$
+C: $\ln(e^x)$
+D: $\dfrac{1}{(1+e^x)^2}$
+ANS: B
+EXP: Chain rule: $\dfrac{1}{1+e^x}\cdot e^x=\dfrac{e^x}{1+e^x}=\sigma(x)$.
+The derivative of the softplus activation is the sigmoid.
+
+
+@ calc e calc-e-008
+T: Chain rule
+S: derivatives
+Q: $\dfrac{d}{dx}\sin(x^2)=$
+A: $\cos(x^2)$
+B: $2x\cos(x^2)$
+C: $2x\sin(x^2)$
+D: $\cos(2x)$
+ANS: B
+EXP: Outer derivative times inner derivative: $\cos(x^2)\cdot2x$. Backpropagation is repeated application of this rule.
+
+
+@ calc e calc-e-009
+T: One gradient descent step
+S: gradient-descent
+Q: Minimise $f(x)=x^2$ with gradient descent, learning rate $\eta=0.1$, starting at $x_0=3$. What is $x_1$?
+A: $2.4$
+B: $2.7$
+C: $3.6$
+D: $2.1$
+ANS: A
+EXP: $x_1=x_0-\eta f'(x_0)=3-0.1\cdot(2\cdot3)=3-0.6=2.4$.
+Adding the gradient ($3.6$) would be gradient ascent.
+
+
+@ calc e calc-e-010
+T: Locating a local maximum
+S: maxima-minima
+Q: Where does $f(x)=x^3-3x$ have a local maximum?
+A: $x=1$
+B: $x=-1$
+C: $x=0$
+D: $x=\sqrt3$
+ANS: B
+EXP: $f'(x)=3x^2-3=0\Rightarrow x=\pm1$. $f''(x)=6x$: $f''(-1)=-6<0$ gives a local max; $f''(1)=6>0$ gives a local min.
+
+
+@ calc m calc-m-001
+T: Gradient of a quadratic form
+S: gradients-multivariable
+Q: For a general (not necessarily symmetric) square matrix $A$, $\nabla_x\left(x^TAx\right)=$
+A: $Ax$
+B: $2Ax$
+C: $(A+A^T)x$
+D: $x^TA$
+ANS: C
+EXP: Write $x^TAx=\sum_{i,j}A_{ij}x_ix_j$; then $\partial/\partial x_k=\sum_jA_{kj}x_j+\sum_iA_{ik}x_i=(Ax+A^Tx)_k$.
+It reduces to $2Ax$ only when $A$ is symmetric (e.g. the least squares Hessian $X^TX$).
+
+
+@ calc m calc-m-002
+T: Classifying a critical point with the Hessian
+S: maxima-minima
+Q: $f(x,y)=x^2+3xy+y^2$ has a critical point at the origin. It is a:
+A: local minimum
+B: local maximum
+C: saddle point
+D: cannot be determined
+ANS: C
+EXP: Hessian $H=\begin{pmatrix}2&3\\3&2\end{pmatrix}$, $\det H=4-9=-5<0$, so the eigenvalues have opposite signs ($5$ and $-1$).
+Indefinite Hessian means a saddle: along $y=x$, $f=5x^2$ rises; along $y=-x$, $f=-x^2$ falls.
+
+
+@ calc m calc-m-003
+T: Second-order Taylor expansion
+S: taylor-series
+Q: The second-order Taylor approximation of $\ln(1+x)$ around $x=0$ is:
+A: $x-\dfrac{x^2}{2}$
+B: $x+\dfrac{x^2}{2}$
+C: $1+x-\dfrac{x^2}{2}$
+D: $x-x^2$
+ANS: A
+EXP: $f(0)=0$, $f'(x)=\tfrac1{1+x}\Rightarrow f'(0)=1$, $f''(x)=-\tfrac1{(1+x)^2}\Rightarrow f''(0)=-1$.
+$f\approx0+x+\tfrac{-1}{2}x^2=x-\tfrac{x^2}{2}$.
+
+
+@ calc m calc-m-004
+T: Integral of x·e^(−x)
+S: integrals
+Q: $\displaystyle\int_0^\infty xe^{-x}\,dx=$
+A: $1$
+B: $\frac12$
+C: $\infty$
+D: $e$
+ANS: A
+EXP: Integration by parts or the Gamma function: $\int_0^\infty x^{n}e^{-x}dx=\Gamma(n+1)=n!$, so with $n=1$ it is $1$.
+This is also the mean of an Exp(1) random variable.
+
+
+@ calc m calc-m-005
+T: Lagrange multipliers: product with fixed sum
+S: constrained-optimization
+Q: Maximise $xy$ subject to $x+y=10$.
+A: $25$
+B: $50$
+C: $100$
+D: $24$
+ANS: A
+EXP: $\mathcal L=xy-\lambda(x+y-10)$. $\partial_x: y=\lambda$, $\partial_y: x=\lambda\Rightarrow x=y=5$, so the maximum is $25$.
+($24=4\cdot6$ is feasible but not optimal.)
+
+
+@ calc m calc-m-006
+T: Limit of (1 − cos x)/x²
+S: limits
+Q: $\displaystyle\lim_{x\to0}\frac{1-\cos x}{x^2}=$
+A: $0$
+B: $\frac12$
+C: $1$
+D: $2$
+ANS: B
+EXP: Taylor: $\cos x=1-\tfrac{x^2}{2}+O(x^4)$, so $\tfrac{1-\cos x}{x^2}\to\tfrac12$. (Or L'Hôpital twice.)
+
+
+@ calc m calc-m-007
+T: Gradient of softmax cross-entropy
+S: gradients-multivariable
+Q: With logits $z$, $p=\operatorname{softmax}(z)$ and one-hot label $y$, the loss is $L=-\sum_iy_i\log p_i$. What is $\partial L/\partial z$?
+A: $p-y$
+B: $y-p$
+C: $p(1-p)$
+D: $-y/p$
+ANS: A
+EXP: $\log p_i=z_i-\log\sum_je^{z_j}$, so $\partial\log p_i/\partial z_k=\delta_{ik}-p_k$.
+$\partial L/\partial z_k=-\sum_iy_i(\delta_{ik}-p_k)=-y_k+p_k\sum_iy_i=p_k-y_k$ (since $\sum y_i=1$).
+$-y/p$ is the gradient with respect to $p$, not $z$.
+
+
+@ calc m calc-m-008
+T: Directional derivative
+S: gradients-multivariable
+Q: $f(x,y)=x^2+y^2$. What is the directional derivative at $(1,1)$ in the direction of $(3,4)$?
+A: $\frac{14}{5}$
+B: $4$
+C: $2\sqrt2$
+D: $14$
+ANS: A
+EXP: $\nabla f=(2x,2y)=(2,2)$. Unit direction $u=(3,4)/5$.
+$D_uf=\nabla f\cdot u=\tfrac{6+8}{5}=\tfrac{14}{5}$. Forgetting to normalise gives $14$; $2\sqrt2=\|\nabla f\|$ is the maximum rate.
+
+
+@ calc m calc-m-009
+T: Stable learning rate on a quadratic
+S: gradient-descent
+Q: Gradient descent on $f(x)=2x^2$ with a fixed step $\eta>0$ converges from any start if and only if:
+A: $\eta<0.25$
+B: $\eta<0.5$
+C: $\eta<1$
+D: $\eta<2$
+ANS: B
+EXP: $f'(x)=4x$, so $x_{t+1}=x_t-4\eta x_t=(1-4\eta)x_t$. Convergence needs $|1-4\eta|<1\Rightarrow0<\eta<\tfrac12$.
+In general $\eta<2/L$, where $L$ is the largest curvature. $\eta=0.25$ is the one-step optimal rate, not the limit.
+
+
+@ calc m calc-m-010
+T: Spotting a non-convex function
+S: convexity
+Q: Which function is NOT convex on its domain?
+A: $e^x$
+B: $-\log x\ (x>0)$
+C: $\max(0,x)$
+D: $\sqrt x\ (x\ge0)$
+ANS: D
+EXP: $(\sqrt x)''=-\tfrac14x^{-3/2}<0$, so $\sqrt x$ is concave, not convex.
+$e^x$ and $-\log x$ have positive second derivatives, and ReLU is a maximum of linear functions, so it is convex.
+
+
+@ calc h calc-h-001
+T: Two Newton steps for √2
+S: single-var-optimization
+Q: Apply Newton's method to $f(x)=x^2-2$ starting at $x_0=1$. What is $x_2$?
+A: $\frac32$
+B: $\frac{17}{12}$
+C: $\frac75$
+D: $\frac{577}{408}$
+ANS: B
+EXP: Newton: $x_{n+1}=x_n-\dfrac{x_n^2-2}{2x_n}=\tfrac12\left(x_n+\tfrac2{x_n}\right)$.
+$x_1=\tfrac12(1+2)=\tfrac32$. $x_2=\tfrac12\left(\tfrac32+\tfrac43\right)=\tfrac{17}{12}\approx1.4167$.
+$\tfrac{577}{408}$ is $x_3$, showing quadratic convergence (correct digits roughly double each step).
+
+
+@ calc h calc-h-002
+T: Gradient of log-determinant
+S: gradients-multivariable
+Q: For an invertible matrix $X$ with $\det X>0$, $\nabla_X\log\det X=$
+A: $X^{-T}$
+B: $X$
+C: $\det(X)\,X^{-1}$
+D: $X^T$
+ANS: A
+EXP: Jacobi's formula: $d\log\det X=\operatorname{tr}(X^{-1}dX)=\langle X^{-T},dX\rangle$, so the gradient is $(X^{-1})^T$.
+For symmetric $X$ (e.g. a covariance in a Gaussian log-likelihood) it is $X^{-1}$.
+
+
+@ calc h calc-h-003
+T: Gaussian integral
+S: integrals
+Q: $\displaystyle\int_{-\infty}^{\infty}e^{-x^2/2}\,dx=$
+A: $\sqrt\pi$
+B: $\sqrt{2\pi}$
+C: $2\pi$
+D: $1$
+ANS: B
+EXP: $I^2=\iint e^{-(x^2+y^2)/2}dx\,dy=\int_0^{2\pi}\!\int_0^\infty e^{-r^2/2}r\,dr\,d\theta=2\pi$, so $I=\sqrt{2\pi}$.
+That is why the normal density carries the factor $\tfrac1{\sqrt{2\pi}}$. ($\sqrt\pi$ is for $e^{-x^2}$.)
+
+
+@ calc h calc-h-004
+T: Jacobian of polar coordinates
+S: gradients-multivariable
+Q: For $x=r\cos\theta$, $y=r\sin\theta$, the Jacobian determinant $\left|\dfrac{\partial(x,y)}{\partial(r,\theta)}\right|$ is:
+A: $1$
+B: $r$
+C: $r^2$
+D: $\frac1r$
+ANS: B
+EXP: $\begin{vmatrix}\cos\theta&-r\sin\theta\\\sin\theta&r\cos\theta\end{vmatrix}=r\cos^2\theta+r\sin^2\theta=r$. So $dx\,dy=r\,dr\,d\theta$.
+
+
+@ calc h calc-h-005
+T: Constrained minimisation (KKT)
+S: constrained-optimization
+Q: Minimise $x^2+y^2$ subject to $x+2y\ge5$. Minimum value and minimiser:
+A: $5$ at $(1,2)$
+B: $\sqrt5$ at $(1,2)$
+C: $\frac{25}{4}$ at $(0,\frac52)$
+D: $25$ at $(5,0)$
+ANS: A
+EXP: The unconstrained minimum $(0,0)$ violates the constraint, so it is active: $x+2y=5$.
+KKT: $(2x,2y)=\mu(1,2)$ with $\mu\ge0\Rightarrow y=2x$, so $5x=5$, $x=1$, $y=2$, $\mu=2>0$.
+Value $=1+4=5$. ($\sqrt5$ is the distance; the objective is the squared distance.)
+
+
+@ calc h calc-h-006
+T: Gradient descent and the condition number
+S: gradient-descent
+Q: Gradient descent on a quadratic whose Hessian has eigenvalues $1$ and $100$, using the best fixed step $\eta=\frac{2}{L+\mu}$. The error contracts each step by a factor of:
+A: $\frac{99}{101}$
+B: $\frac{1}{100}$
+C: $\frac{99}{100}$
+D: $\frac12$
+ANS: A
+EXP: With $\eta=\tfrac2{\mu+L}=\tfrac2{101}$, each eigen-direction scales by $|1-\eta\lambda|$: $|1-\tfrac2{101}|=\tfrac{99}{101}$ and $|1-\tfrac{200}{101}|=\tfrac{99}{101}$.
+In general the factor is $\tfrac{\kappa-1}{\kappa+1}$ with $\kappa=L/\mu=100$. Large $\kappa$ makes convergence slow, which motivates feature scaling, momentum and Adam.
+
+
+@ calc h calc-h-007
+T: Leibniz rule with a variable limit
+S: integrals
+Q: $\dfrac{d}{dx}\displaystyle\int_0^{x^2}e^{t^2}\,dt=$
+A: $e^{x^4}$
+B: $2xe^{x^4}$
+C: $2xe^{x^2}$
+D: $e^{x^2}$
+ANS: B
+EXP: Fundamental theorem plus chain rule: $\dfrac{d}{dx}\int_0^{g(x)}h(t)dt=h(g(x))\,g'(x)=e^{(x^2)^2}\cdot2x$.
+
+
+@ calc h calc-h-008
+T: Hessian of log-sum-exp
+S: convexity
+Q: Let $f(z)=\log\sum_ie^{z_i}$ and $p=\operatorname{softmax}(z)$. The Hessian $\nabla^2f(z)$ is:
+A: $\operatorname{diag}(p)-pp^T$
+B: $pp^T$
+C: $\operatorname{diag}(p)$
+D: $I-pp^T$
+ANS: A
+EXP: $\nabla f=p$. $\partial p_i/\partial z_j=p_i(\delta_{ij}-p_j)$, so $H=\operatorname{diag}(p)-pp^T$.
+It is PSD ($v^THv=\operatorname{Var}_p(v)\ge0$), which proves log-sum-exp is convex and so is the softmax cross-entropy loss in the logits.
+
+
+@ calc h calc-h-009
+T: Maximise xy² on a line
+S: constrained-optimization
+Q: Maximise $f(x,y)=xy^2$ subject to $x+y=3$, $x,y\ge0$.
+A: $4$
+B: $\frac{27}{8}$
+C: $0$
+D: $9$
+ANS: A
+EXP: Substitute $x=3-y$: $g(y)=(3-y)y^2=3y^2-y^3$. $g'(y)=6y-3y^2=0\Rightarrow y=2$ (or $0$).
+$x=1$, $f=1\cdot4=4$. The symmetric guess $x=y=1.5$ gives only $\tfrac{27}{8}$.
+
+
+@ calc h calc-h-010
+T: Smoothness constant of logistic loss
+S: gradient-descent
+Q: What is the smallest $L$ such that $f(x)=\log(1+e^x)$ has an $L$-Lipschitz derivative?
+A: $1$
+B: $\frac12$
+C: $\frac14$
+D: $\infty$
+ANS: C
+EXP: $f'=\sigma(x)$ and $f''=\sigma(1-\sigma)$, which peaks at $\tfrac14$ when $\sigma=\tfrac12$ ($x=0$).
+So $L=\sup|f''|=\tfrac14$, and the safe GD step is $\eta\le1/L=4$ (for one sample with a unit feature).
+

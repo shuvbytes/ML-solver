@@ -1,0 +1,407 @@
+@ la e la-e-001
+T: Rank of a 2×2 matrix
+S: rank-nullity
+Q: What is the rank of $A=\begin{pmatrix}1&2\\2&4\end{pmatrix}$?
+A: $0$
+B: $1$
+C: $2$
+D: $4$
+ANS: B
+EXP: Row 2 is exactly $2\times$ Row 1, so there is only one linearly independent row.
+Check: $\det A = 1\cdot4-2\cdot2=0$, so rank $<2$; and $A\neq 0$, so rank $\ge 1$. Hence rank $=1$.
+
+
+@ la e la-e-002
+T: Eigenvalues of a triangular matrix
+S: eigen
+Q: What are the eigenvalues of $A=\begin{pmatrix}3&1\\0&-2\end{pmatrix}$?
+A: $3$ and $-2$
+B: $3$ and $1$
+C: $1$ and $-2$
+D: $2$ and $-3$
+ANS: A
+EXP: For any triangular matrix the eigenvalues are the diagonal entries.
+$\det(A-\lambda I)=(3-\lambda)(-2-\lambda)=0 \Rightarrow \lambda=3,\,-2$. The off-diagonal $1$ does not affect them.
+
+
+@ la e la-e-003
+T: Determinant of a scaled matrix
+S: determinants
+Q: $A$ is a $3\times3$ matrix with $\det A=4$. What is $\det(2A)$?
+A: $8$
+B: $16$
+C: $32$
+D: $64$
+ANS: C
+EXP: Scaling a matrix by $c$ scales every one of its $n$ rows by $c$, so $\det(cA)=c^n\det A$.
+Here $\det(2A)=2^3\cdot 4=32$. A common trap is answering $2\cdot4=8$.
+
+
+@ la e la-e-004
+T: Determinant of the inverse
+S: determinants
+Q: A $3\times3$ matrix $A$ has eigenvalues $1,2,3$. What is $\det(A^{-1})$?
+A: $6$
+B: $\frac{1}{6}$
+C: $-6$
+D: $\frac{1}{2}$
+ANS: B
+EXP: $\det A$ is the product of eigenvalues: $1\cdot2\cdot3=6$.
+Since $\det(A^{-1})=1/\det A$, the answer is $\frac16$. (Equivalently, $A^{-1}$ has eigenvalues $1,\tfrac12,\tfrac13$.)
+
+
+@ la e la-e-005
+T: Orthogonal vectors
+S: vectors-norms
+Q: For which $k$ are $u=(1,k,2)$ and $v=(3,-1,1)$ orthogonal?
+A: $-5$
+B: $5$
+C: $1$
+D: $3$
+ANS: B
+EXP: Orthogonal means $u\cdot v=0$: $1\cdot3+k\cdot(-1)+2\cdot1=5-k=0$, so $k=5$.
+
+
+@ la e la-e-006
+T: Solutions of a non-singular system
+S: linear-systems
+Q: $A$ is a $3\times3$ matrix with $\det A\neq0$. The system $Ax=b$ has:
+A: no solution for some $b$
+B: exactly one solution for every $b$
+C: infinitely many solutions for every $b$
+D: a unique solution only when $b=0$
+ANS: B
+EXP: $\det A\ne0$ means $A$ is invertible (full rank 3), so $x=A^{-1}b$ is the one and only solution for every $b\in\mathbb R^3$.
+
+
+@ la e la-e-007
+T: Transpose of a product
+S: matrix-ops
+Q: For conformable matrices $A$ and $B$, $(AB)^T$ equals:
+A: $A^TB^T$
+B: $B^TA^T$
+C: $BA$
+D: $(BA)^T$
+ANS: B
+EXP: Transpose reverses the order: $(AB)^T=B^TA^T$.
+Quick dimension check: if $A$ is $m\times n$ and $B$ is $n\times p$, then $(AB)^T$ is $p\times m$, and only $B^T(p\times n)\,A^T(n\times m)$ produces that shape.
+
+
+@ la e la-e-008
+T: Rank–nullity theorem
+S: rank-nullity
+Q: A $4\times6$ matrix has rank $3$. What is the dimension of its null space?
+A: $1$
+B: $2$
+C: $3$
+D: $6$
+ANS: C
+EXP: Rank–nullity: rank + nullity = number of columns $=6$.
+So nullity $=6-3=3$. (Using rows instead, $4-3=1$, is the common mistake; that is the dimension of the left null space.)
+
+
+@ la e la-e-009
+T: Euclidean norm
+S: vectors-norms
+Q: What is the $L_2$ norm of $x=(3,4,12)$?
+A: $19$
+B: $13$
+C: $12$
+D: $169$
+ANS: B
+EXP: $\|x\|_2=\sqrt{3^2+4^2+12^2}=\sqrt{9+16+144}=\sqrt{169}=13$.
+$19$ is the $L_1$ norm and $169$ is $\|x\|_2^2$.
+
+
+@ la e la-e-010
+T: Eigenvalues of a real symmetric matrix
+S: special-matrices
+Q: The eigenvalues of every real symmetric matrix are:
+A: always real
+B: always positive
+C: always distinct
+D: always integers
+ANS: A
+EXP: The spectral theorem says a real symmetric matrix has real eigenvalues and an orthonormal set of eigenvectors.
+They need not be positive (e.g. $\mathrm{diag}(1,-1)$) or distinct (e.g. $I$). This is why covariance matrices in PCA can always be diagonalised.
+
+
+@ la e la-e-011
+T: Shape of a matrix product
+S: matrix-ops
+Q: $A$ is $3\times4$ and $B$ is $4\times2$. What is the shape of $AB$?
+A: $4\times4$
+B: $3\times2$
+C: $2\times3$
+D: undefined
+ANS: B
+EXP: $(m\times n)(n\times p)=m\times p$. The inner dimensions ($4$) match and disappear, leaving $3\times2$.
+
+
+@ la m la-m-001
+T: Eigenvalues of a 2×2 matrix
+S: eigen
+Q: What are the eigenvalues of $A=\begin{pmatrix}4&1\\2&3\end{pmatrix}$?
+A: $5$ and $2$
+B: $4$ and $3$
+C: $6$ and $1$
+D: $7$ and $10$
+ANS: A
+EXP: For a $2\times2$ matrix, $\lambda^2-(\operatorname{tr}A)\lambda+\det A=0$.
+$\operatorname{tr}A=7$, $\det A=12-2=10$, so $\lambda^2-7\lambda+10=(\lambda-5)(\lambda-2)=0$.
+Check: $5+2=7$ (trace) and $5\cdot2=10$ (det).
+
+
+@ la m la-m-002
+T: Eigenvalues of an idempotent matrix
+S: special-matrices
+Q: If $A^2=A$ (an idempotent / projection matrix), its eigenvalues can only be:
+A: $0$ or $1$
+B: $1$ or $-1$
+C: any real number
+D: $1$ only
+ANS: A
+EXP: If $Av=\lambda v$ with $v\ne0$, then $A^2v=\lambda^2v$. But $A^2v=Av=\lambda v$, so $\lambda^2=\lambda$, giving $\lambda\in\{0,1\}$.
+Projection matrices such as the hat matrix $H=X(X^TX)^{-1}X^T$ in regression are idempotent.
+
+
+@ la m la-m-003
+T: Rank of the 1–9 matrix
+S: rank-nullity
+Q: What is the rank of $\begin{pmatrix}1&2&3\\4&5&6\\7&8&9\end{pmatrix}$?
+A: $1$
+B: $2$
+C: $3$
+D: $0$
+ANS: B
+EXP: $R_2-R_1=(3,3,3)$ and $R_3-R_2=(3,3,3)$, so $R_1-2R_2+R_3=0$: the rows are dependent and rank $<3$.
+$R_1$ and $R_2$ are not multiples of each other, so rank $=2$ (and $\det=0$).
+
+
+@ la m la-m-004
+T: Properties of orthogonal matrices
+S: special-matrices
+Q: $Q$ is a real orthogonal matrix. Which statement is NOT necessarily true?
+A: $Q^TQ=I$
+B: $\|Qx\|=\|x\|$ for all $x$
+C: $\det Q=\pm1$
+D: $Q$ is symmetric
+ANS: D
+EXP: Orthogonality gives $Q^TQ=I$, which implies length preservation $\|Qx\|^2=x^TQ^TQx=\|x\|^2$ and $\det(Q)^2=1$.
+It does not force symmetry: the rotation $\begin{pmatrix}0&-1\\1&0\end{pmatrix}$ is orthogonal but $Q^T\ne Q$.
+
+
+@ la m la-m-005
+T: Vector projection
+S: projections-least-squares
+Q: What is the projection of $b=(2,3)$ onto $a=(1,1)$?
+A: $(2.5,\ 2.5)$
+B: $(5,\ 5)$
+C: $(2,\ 3)$
+D: $(1.25,\ 1.25)$
+ANS: A
+EXP: $\operatorname{proj}_a b=\dfrac{a\cdot b}{a\cdot a}\,a=\dfrac{2+3}{1+1}(1,1)=\tfrac52(1,1)=(2.5,2.5)$.
+Forgetting to divide by $a\cdot a$ gives $(5,5)$.
+
+
+@ la m la-m-006
+T: Eigenvalues of a matrix polynomial
+S: eigen
+Q: $A=\begin{pmatrix}2&1\\1&2\end{pmatrix}$. What are the eigenvalues of $B=A^3-2A+I$?
+A: $0$ and $22$
+B: $1$ and $3$
+C: $0$ and $20$
+D: $2$ and $22$
+ANS: A
+EXP: Eigenvalues of $A$: trace $4$, det $3$, so $\lambda=1,3$.
+If $Av=\lambda v$ then $p(A)v=p(\lambda)v$ for any polynomial $p$. With $p(\lambda)=\lambda^3-2\lambda+1$:
+$p(1)=1-2+1=0$ and $p(3)=27-6+1=22$. So $B$ is singular.
+
+
+@ la m la-m-007
+T: Positive definite check
+S: quadratic-forms
+Q: Which matrix is positive definite?
+A: $\begin{pmatrix}2&-1\\-1&2\end{pmatrix}$
+B: $\begin{pmatrix}1&2\\2&1\end{pmatrix}$
+C: $\begin{pmatrix}0&1\\1&0\end{pmatrix}$
+D: $\begin{pmatrix}1&0\\0&0\end{pmatrix}$
+ANS: A
+EXP: A symmetric matrix is PD iff all eigenvalues are $>0$ (or all leading principal minors $>0$).
+(A): minors $2>0$, $4-1=3>0$ → eigenvalues $1,3$: PD.
+(B): eigenvalues $3,-1$. (C): eigenvalues $\pm1$. (D): eigenvalues $1,0$, only positive semidefinite.
+
+
+@ la m la-m-008
+T: Eigenvalue of an outer product
+S: eigen
+Q: Let $x=(1,2,2)^T$. What is the only nonzero eigenvalue of $xx^T$?
+A: $3$
+B: $5$
+C: $9$
+D: $1$
+ANS: C
+EXP: $(xx^T)x=x(x^Tx)=\|x\|^2x$, so $x$ is an eigenvector with eigenvalue $\|x\|^2=1+4+4=9$.
+$xx^T$ has rank 1, so the other two eigenvalues are $0$. (Trace check: $1+4+4=9$.)
+
+
+@ la m la-m-009
+T: Singular values of a diagonal matrix
+S: svd-pca
+Q: What are the singular values of $\begin{pmatrix}3&0\\0&-4\end{pmatrix}$?
+A: $3$ and $-4$
+B: $4$ and $3$
+C: $9$ and $16$
+D: $7$ and $1$
+ANS: B
+EXP: Singular values are $\sqrt{\text{eigenvalues of }A^TA}$. $A^TA=\mathrm{diag}(9,16)$, so $\sigma=4,3$.
+Singular values are never negative; the sign goes into the singular vectors. $9,16$ are the eigenvalues of $A^TA$, not the singular values.
+
+
+@ la m la-m-010
+T: Inverse via Cayley–Hamilton
+S: eigen
+Q: For $A=\begin{pmatrix}1&2\\3&4\end{pmatrix}$, which expression equals $A^{-1}$?
+A: $\frac{1}{2}(A-5I)$
+B: $\frac{1}{2}(5I-A)$
+C: $\frac{1}{2}(A+5I)$
+D: $\frac{1}{5}(A-2I)$
+ANS: A
+EXP: Characteristic polynomial: $\lambda^2-5\lambda-2$ (trace 5, det $-2$).
+Cayley–Hamilton: $A^2-5A-2I=0\Rightarrow A(A-5I)=2I\Rightarrow A^{-1}=\tfrac12(A-5I)$.
+Check: $\tfrac12\begin{pmatrix}-4&2\\3&-1\end{pmatrix}=\begin{pmatrix}-2&1\\1.5&-0.5\end{pmatrix}$, which is the inverse.
+
+
+@ la h la-h-001
+T: Determinant of I + all-ones matrix
+S: determinants
+Q: Let $J$ be the $4\times4$ matrix of all ones. What is $\det(I+J)$?
+A: $1$
+B: $4$
+C: $5$
+D: $16$
+ANS: C
+EXP: $J=\mathbf 1\mathbf 1^T$ has rank 1, with eigenvalue $\mathbf 1^T\mathbf 1=4$ (eigenvector $\mathbf 1$) and $0$ with multiplicity 3.
+$I+J$ shifts every eigenvalue by 1: $5,1,1,1$. So $\det(I+J)=5$.
+In general $\det(I+uv^T)=1+v^Tu$ (matrix determinant lemma).
+
+
+@ la h la-h-002
+T: Square of a rank-one matrix
+S: matrix-ops
+Q: Let $u=(1,2,3)^T$, $v=(1,1,-1)^T$ and $A=uv^T$. Then $A^2$ equals:
+A: the zero matrix
+B: $A$
+C: $2A$
+D: $6A$
+ANS: A
+EXP: $A^2=u(v^Tu)v^T=(v^Tu)\,uv^T=(v^Tu)A$.
+$v^Tu=1+2-3=0$, so $A^2=0$: $A$ is nilpotent even though $A\ne0$. All its eigenvalues are $0$.
+
+
+@ la h la-h-003
+T: Least squares through the origin
+S: projections-least-squares
+Q: Fit $y=mx$ (no intercept) by least squares to the points $(1,2),(2,3),(3,7)$. What is $m$?
+A: $\frac{29}{14}$
+B: $2$
+C: $\frac{7}{3}$
+D: $\frac{29}{6}$
+ANS: A
+EXP: Minimise $\sum(y_i-mx_i)^2$. Setting the derivative to zero gives the normal equation $m=\dfrac{\sum x_iy_i}{\sum x_i^2}$.
+$\sum x_iy_i=2+6+21=29$, $\sum x_i^2=1+4+9=14$, so $m=\tfrac{29}{14}\approx2.07$.
+This is $(X^TX)^{-1}X^Ty$ with $X=(1,2,3)^T$. $\sum y/\sum x=2$ is a ratio of means, not the least squares fit.
+
+
+@ la h la-h-004
+T: Involutory matrix with given trace
+S: special-matrices
+Q: A $3\times3$ real matrix satisfies $A^2=I$ and $\operatorname{tr}A=1$. What is $\det A$?
+A: $1$
+B: $-1$
+C: $0$
+D: $3$
+ANS: B
+EXP: $A^2=I\Rightarrow\lambda^2=1\Rightarrow\lambda\in\{1,-1\}$.
+Three eigenvalues from $\{\pm1\}$ summing to $1$: must be $1,1,-1$. So $\det A=1\cdot1\cdot(-1)=-1$.
+
+
+@ la h la-h-005
+T: Determinant of AB with mismatched shapes
+S: rank-nullity
+Q: $A$ is $5\times3$ and $B$ is $3\times5$. What is $\det(AB)$?
+A: $0$ always
+B: $1$
+C: $\det A\cdot\det B$
+D: cannot be determined
+ANS: A
+EXP: $\operatorname{rank}(AB)\le\min(\operatorname{rank}A,\operatorname{rank}B)\le3$, but $AB$ is $5\times5$.
+A $5\times5$ matrix of rank at most 3 is singular, so $\det(AB)=0$. ($\det A$ is not even defined for a non-square $A$.)
+
+
+@ la h la-h-006
+T: Eckart–Young best low-rank approximation
+S: svd-pca
+Q: A matrix has singular values $5,3,1$. What is the Frobenius-norm error of its best rank-1 approximation?
+A: $\sqrt{10}$
+B: $3$
+C: $4$
+D: $\sqrt{34}$
+ANS: A
+EXP: Eckart–Young: the best rank-$k$ approximation keeps the top $k$ singular values (truncated SVD), and
+$\|A-A_k\|_F=\sqrt{\sum_{i>k}\sigma_i^2}$. Here $\sqrt{3^2+1^2}=\sqrt{10}$.
+In the spectral (2-) norm the error would be $\sigma_2=3$. This is the maths behind PCA and low-rank compression.
+
+
+@ la h la-h-007
+T: Convergence rate of power iteration
+S: eigen
+Q: $A$ has eigenvalues $4,-3,1$. Power iteration converges to the dominant eigenvector, with error shrinking each step by a factor of about:
+A: $\frac14$
+B: $\frac34$
+C: $\frac13$
+D: $\frac43$
+ANS: B
+EXP: Write $x_0=\sum c_iv_i$. Then $A^kx_0=4^k\left(c_1v_1+c_2(-\tfrac34)^kv_2+c_3(\tfrac14)^kv_3\right)$.
+The slowest-decaying term is governed by $|\lambda_2/\lambda_1|=3/4$. Magnitudes matter, so $-3$ counts as 3.
+
+
+@ la h la-h-008
+T: What similar matrices share
+S: eigen
+Q: $B=P^{-1}AP$ for an invertible $P$. Which of these do $A$ and $B$ NOT necessarily share?
+A: eigenvalues
+B: determinant
+C: rank
+D: eigenvectors
+ANS: D
+EXP: Similar matrices represent the same linear map in different bases, so they share the characteristic polynomial (eigenvalues, trace, determinant) and rank.
+Eigenvectors change with the basis: if $Av=\lambda v$ then $B(P^{-1}v)=\lambda(P^{-1}v)$, so $B$'s eigenvector is $P^{-1}v$.
+
+
+@ la h la-h-009
+T: Diagonalisability over the reals
+S: eigen
+Q: Which matrix is diagonalisable over $\mathbb R$?
+A: $\begin{pmatrix}2&1\\0&2\end{pmatrix}$
+B: $\begin{pmatrix}2&1\\0&3\end{pmatrix}$
+C: $\begin{pmatrix}0&1\\0&0\end{pmatrix}$
+D: $\begin{pmatrix}0&-1\\1&0\end{pmatrix}$
+ANS: B
+EXP: (B) has distinct real eigenvalues $2,3$, and distinct eigenvalues always give independent eigenvectors, so it is diagonalisable.
+(A) and (C) have a repeated eigenvalue with only one eigenvector (Jordan blocks). (D) is a rotation with eigenvalues $\pm i$, so it is not diagonalisable over $\mathbb R$.
+
+
+@ la h la-h-010
+T: Determinant of a Householder reflector
+S: special-matrices
+Q: For a nonzero $u\in\mathbb R^n$, let $H=I-\dfrac{2uu^T}{u^Tu}$. What is $\det H$?
+A: $1$
+B: $-1$
+C: $0$
+D: depends on $u$
+ANS: B
+EXP: $Hu=u-2u=-u$, so $u$ has eigenvalue $-1$.
+Any $w\perp u$ gives $Hw=w$, so eigenvalue $1$ with multiplicity $n-1$.
+$\det H=(-1)\cdot1^{n-1}=-1$. $H$ is a reflection: orthogonal and symmetric. It is used in QR decomposition.
+

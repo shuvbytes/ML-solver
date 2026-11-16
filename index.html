@@ -1,0 +1,2840 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ML Math Practice</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:ital,wght@0,500;0,600;1,500&display=swap" rel="stylesheet">
+<style>
+/* Layout idea: a quiet problem sheet on graph-paper grey; one ink-blue accent; difficulty colours carry state. */
+:root {
+  --bg: #eef0f3; --surface: #ffffff; --ink: #161a23; --muted: #596273; --line: #d9dde4; --accent: #2449c7;
+  --accent-soft: #e5ebfb; --ok: #16865b; --ok-soft: #e2f4ec; --bad: #c4372f; --bad-soft: #fbe7e5;
+  --easy: #16865b; --med: #b77600; --hard: #c4372f;
+  --f-display: "IBM Plex Serif", Georgia, serif; --f-body: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif; --f-mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #10131a; --surface: #181c25; --ink: #e5e8ef; --muted: #98a1b3; --line: #2a303d; --accent: #86a2ff;
+  --accent-soft: #1f2840; --ok: #3fc58c; --ok-soft: #13291f; --bad: #ff7a70; --bad-soft: #2f1716;
+  --easy: #3fc58c; --med: #f0b232; --hard: #ff7a70; color-scheme: dark; } }
+:root[data-theme="dark"] {
+  --bg: #10131a; --surface: #181c25; --ink: #e5e8ef; --muted: #98a1b3; --line: #2a303d; --accent: #86a2ff;
+  --accent-soft: #1f2840; --ok: #3fc58c; --ok-soft: #13291f; --bad: #ff7a70; --bad-soft: #2f1716;
+  --easy: #3fc58c; --med: #f0b232; --hard: #ff7a70; color-scheme: dark; }
+
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body { background: var(--bg); color: var(--ink); font: 16px/1.55 var(--f-body);
+  background-image: linear-gradient(var(--line) 1px, transparent 1px), linear-gradient(90deg, var(--line) 1px, transparent 1px);
+  background-size: 28px 28px; background-attachment: fixed; }
+body::before { content: ""; position: fixed; inset: 0; background: var(--bg); opacity: .82; z-index: -1; }
+button { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.top { position: sticky; top: 0; z-index: 5; background: var(--surface); border-bottom: 1px solid var(--line); }
+.topin { max-width: 980px; margin: 0 auto; padding: 10px 16px; display: flex; align-items: center; gap: 18px; flex-wrap: wrap; }
+.brand { font: 600 18px/1 var(--f-display); letter-spacing: -.01em; display: flex; align-items: baseline; gap: 8px; }
+.brand i { font-style: italic; color: var(--accent); font-family: var(--f-display); }
+#nav { display: flex; gap: 2px; }
+#nav a { color: var(--muted); text-decoration: none; padding: 7px 12px; border-radius: 6px; font-weight: 500; font-size: 15px; }
+#nav a:hover { color: var(--ink); background: var(--bg); }
+#nav a.on { color: var(--accent); background: var(--accent-soft); }
+#hstats { margin-left: auto; display: flex; gap: 14px; font-size: 14px; color: var(--muted); }
+.hs b { color: var(--ink); font-family: var(--f-mono); font-weight: 500; font-variant-numeric: tabular-nums; }
+
+main { max-width: 980px; margin: 0 auto; padding: 24px 16px 40px; }
+h1 { font: 600 30px/1.15 var(--f-display); letter-spacing: -.015em; margin: 0 0 6px; text-wrap: balance; }
+.h2 { font: 600 19px/1.3 var(--f-display); margin: 28px 0 10px; }
+.lede { color: var(--muted); margin: 0; max-width: 62ch; }
+.eyebrow { font: 500 13px/1 var(--f-mono); color: var(--accent); text-transform: uppercase; letter-spacing: .06em; margin: 0 0 10px; }
+.phead { margin-bottom: 18px; }
+
+.hero { display: flex; justify-content: space-between; gap: 20px; align-items: flex-end; margin-bottom: 18px; flex-wrap: wrap; }
+.streakbox { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 12px 20px; text-align: center; min-width: 120px; font-size: 13px; color: var(--muted); }
+.streakbox .big { font: 500 38px/1 var(--f-mono); color: var(--ink); }
+.streakbox .sub { font-size: 12px; margin-top: 2px; }
+.segs { display: grid; grid-template-columns: repeat(6, 1fr); gap: 6px; margin-bottom: 10px; }
+.seg { height: 8px; border-radius: 4px; background: var(--line); }
+.seg.ok { background: var(--ok); } .seg.bad { background: var(--bad); }
+.todaybar { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 14px; color: var(--muted); font-size: 15px; flex-wrap: wrap; }
+.done { color: var(--ok); font-weight: 600; }
+.banner { background: var(--ok-soft); color: var(--ink); border: 1px solid var(--ok); border-radius: 8px; padding: 12px 16px; margin: 14px 0; }
+
+.btn { border: 1px solid var(--line); background: var(--surface); padding: 8px 14px; border-radius: 7px; cursor: pointer; font-weight: 500; font-size: 15px; }
+.btn:hover:not(:disabled) { border-color: var(--accent); }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: var(--surface); }
+.btn.primary:hover:not(:disabled) { filter: brightness(1.08); }
+.btn.ghost { background: transparent; }
+.btn:disabled { opacity: .45; cursor: not-allowed; }
+.btn.warn { border-color: var(--bad); color: var(--bad); }
+
+.filters { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 12px; display: grid; gap: 10px; margin-bottom: 14px; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip { border: 1px solid var(--line); background: transparent; border-radius: 999px; padding: 5px 12px; font-size: 14px; cursor: pointer; color: var(--muted); }
+.chip:hover { color: var(--ink); }
+.chip.on { background: var(--ink); border-color: var(--ink); color: var(--surface); }
+.frow { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; font-size: 14px; color: var(--muted); }
+.frow select { font: inherit; color: var(--ink); background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 5px 8px; }
+.count { font-family: var(--f-mono); font-variant-numeric: tabular-nums; }
+.grow { flex: 1; }
+
+.plist { list-style: none; margin: 0; padding: 0; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
+.plist li + li { border-top: 1px solid var(--line); }
+.prow { width: 100%; display: grid; grid-template-columns: 22px 34px 1fr auto; gap: 10px; align-items: center; text-align: left; padding: 11px 14px; background: transparent; border: 0; cursor: pointer; }
+.prow:hover { background: var(--bg); }
+.plist li:nth-child(even) .prow { background: color-mix(in srgb, var(--bg) 45%, var(--surface)); }
+.plist li:nth-child(even) .prow:hover { background: var(--bg); }
+.pnum { font: 13px var(--f-mono); color: var(--muted); }
+.ptitle { font-weight: 500; }
+.pmeta { display: flex; gap: 8px; align-items: center; justify-content: flex-end; }
+.st { font-weight: 700; text-align: center; }
+.st-ok { color: var(--ok); } .st-bad { color: var(--bad); } .st-new { color: var(--line); }
+.pill { font: 500 12px/1 var(--f-body); padding: 4px 8px; border-radius: 999px; white-space: nowrap; }
+.d-e { color: var(--easy); background: color-mix(in srgb, var(--easy) 13%, transparent); }
+.d-m { color: var(--med); background: color-mix(in srgb, var(--med) 15%, transparent); }
+.d-h { color: var(--hard); background: color-mix(in srgb, var(--hard) 13%, transparent); }
+.tag { font-size: 12px; color: var(--muted); white-space: nowrap; }
+.tag.fresh, .tag.prev { border: 1px solid var(--line); border-radius: 4px; padding: 2px 6px; }
+.tag.qtype { color: var(--accent); background: var(--accent-soft); border-radius: 4px; padding: 2px 6px; font-weight: 500; }
+.subchips { padding-top: 10px; border-top: 1px dashed var(--line); }
+.subchips .chip { font-size: 13px; padding: 4px 10px; }
+.chip .cn { font: 12px var(--f-mono); opacity: .7; margin-left: 2px; }
+.chip:disabled { opacity: .4; cursor: not-allowed; }
+.star { background: none; border: 0; color: var(--muted); cursor: pointer; font-size: 14px; }
+.star.on { color: var(--med); }
+.empty { color: var(--muted); background: var(--surface); border: 1px dashed var(--line); border-radius: 10px; padding: 22px; text-align: center; }
+
+.tabs { display: flex; gap: 6px; align-items: center; margin-bottom: 12px; flex-wrap: wrap; }
+.tab { border: 1px solid var(--line); background: var(--surface); border-radius: 7px; padding: 7px 12px; cursor: pointer; color: var(--muted); font-weight: 500; }
+.tab.on { color: var(--accent); border-color: var(--accent); background: var(--accent-soft); }
+.tab .n { font-family: var(--f-mono); margin-left: 4px; }
+
+.sbar { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+.sbar .pos { font: 14px var(--f-mono); color: var(--muted); margin-right: auto; }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 24px; }
+.qmeta { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin-bottom: 10px; }
+.qtitle { font-size: 24px; margin-bottom: 14px; }
+.qtext { font-size: 17px; line-height: 1.65; max-width: 68ch; margin-bottom: 18px; overflow-x: auto; }
+.opts { display: grid; gap: 8px; }
+.opt { display: grid; grid-template-columns: 30px 1fr; gap: 12px; align-items: center; text-align: left; border: 1.5px solid var(--line); background: var(--surface); border-radius: 9px; padding: 10px 14px; cursor: pointer; min-height: 50px; overflow-x: auto; }
+.opt:hover:not(:disabled) { border-color: var(--accent); }
+.opt .ol { font: 500 14px/1 var(--f-mono); width: 28px; height: 28px; border-radius: 6px; display: grid; place-items: center; background: var(--bg); color: var(--muted); }
+.opt.sel { border-color: var(--accent); background: var(--accent-soft); }
+.opt.sel .ol { background: var(--accent); color: var(--surface); }
+.opt:disabled { cursor: default; }
+.opt.right { border-color: var(--ok); background: var(--ok-soft); }
+.opt.right .ol { background: var(--ok); color: var(--surface); }
+.opt.wrongpick { border-color: var(--bad); background: var(--bad-soft); }
+.opt.wrongpick .ol { background: var(--bad); color: var(--surface); }
+.opt.multi .ol { border-radius: 3px; outline: 1.5px solid var(--line); outline-offset: -1.5px; }
+.opt.multi.sel .ol { outline-color: var(--accent); }
+.opt.right.missed { border-style: dashed; }
+.selhint { font-size: 14px; color: var(--muted); margin: -6px 0 10px; }
+.natwrap { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.natwrap label { font-weight: 500; }
+.natin { font: 500 18px var(--f-mono); color: var(--ink); background: var(--surface); border: 1.5px solid var(--line); border-radius: 9px; padding: 9px 12px; width: 200px; max-width: 100%; }
+.natin:focus { border-color: var(--accent); outline: none; box-shadow: 0 0 0 3px var(--accent-soft); }
+.natin.right { border-color: var(--ok); background: var(--ok-soft); }
+.natin.wrongpick { border-color: var(--bad); background: var(--bad-soft); }
+.nathint { font-size: 14px; color: var(--muted); }
+.actions { display: flex; gap: 10px; align-items: center; margin-top: 18px; flex-wrap: wrap; }
+.kbd { font-size: 12px; color: var(--muted); margin-left: auto; }
+.result { margin-top: 20px; border-left: 4px solid var(--ok); background: var(--ok-soft); border-radius: 0 8px 8px 0; padding: 14px 18px; }
+.result.bad { border-color: var(--bad); background: var(--bad-soft); }
+.verdict { font-weight: 600; margin: 0 0 6px; }
+.result.ok .verdict { color: var(--ok); } .result.bad .verdict { color: var(--bad); }
+.exp { line-height: 1.7; max-width: 70ch; overflow-x: auto; }
+
+.tiles { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+.tile { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; display: grid; gap: 2px; }
+.tile .k { font-size: 13px; color: var(--muted); }
+.tile .v { font: 500 30px/1.1 var(--f-mono); font-variant-numeric: tabular-nums; }
+.tile .v small { font-size: 15px; color: var(--muted); }
+.tile .s { font-size: 12px; color: var(--muted); }
+.tblwrap { overflow-x: auto; }
+.grid { width: 100%; border-collapse: collapse; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
+.grid th, .grid td { padding: 10px 14px; border-bottom: 1px solid var(--line); text-align: left; }
+.grid tbody th { font-weight: 500; white-space: nowrap; }
+.grid tr:last-child th, .grid tr:last-child td { border-bottom: 0; }
+.cell { display: grid; gap: 4px; min-width: 110px; }
+.frac { font: 500 16px var(--f-mono); font-variant-numeric: tabular-nums; }
+.frac small { color: var(--muted); font-size: 13px; }
+.bar { height: 6px; background: var(--line); border-radius: 3px; overflow: hidden; }
+.bar i { display: block; height: 100%; background: currentColor; }
+.bar i.d-e { color: var(--easy); } .bar i.d-m { color: var(--med); } .bar i.d-h { color: var(--hard); }
+.gstat { font-size: 12px; color: var(--muted); }
+.bar i.d-acc { color: var(--accent); }
+.subtopic-head { margin-bottom: 10px; }
+.subgrid td.num { font: 15px var(--f-mono); font-variant-numeric: tabular-nums; }
+.subgrid tr.nodata th, .subgrid tr.nodata td { color: var(--muted); }
+.heat { display: flex; gap: 8px; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 14px; overflow-x: auto; }
+.hdays { display: grid; grid-template-rows: repeat(7, 14px); gap: 3px; font-size: 10px; color: var(--muted); line-height: 14px; }
+.hgrid { display: flex; gap: 3px; }
+.hcol { display: grid; grid-template-rows: repeat(7, 14px); gap: 3px; }
+.hc { width: 14px; height: 14px; border-radius: 3px; background: var(--line); }
+.hc.fut { background: transparent; }
+.hc.l1 { background: color-mix(in srgb, var(--accent) 30%, var(--line)); }
+.hc.l2 { background: color-mix(in srgb, var(--accent) 55%, var(--line)); }
+.hc.l3 { background: color-mix(in srgb, var(--accent) 78%, var(--line)); }
+.hc.l4 { background: var(--accent); }
+.note { color: var(--muted); font-size: 14px; }
+.danger { margin-top: 30px; padding-top: 16px; border-top: 1px solid var(--line); }
+footer { max-width: 980px; margin: 0 auto; padding: 0 16px 28px; font-size: 13px; color: var(--muted); }
+
+@media (max-width: 720px) {
+  .tiles { grid-template-columns: repeat(2, 1fr); }
+  .prow { grid-template-columns: 20px 1fr; }
+  .prow .pnum { display: none; }
+  .prow .pmeta { grid-column: 2; justify-content: flex-start; }
+  #hstats { margin-left: 0; width: 100%; }
+  .card { padding: 16px; }
+  h1 { font-size: 25px; } .qtitle { font-size: 21px; }
+  .kbd { display: none; }
+}
+@media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important; } }
+</style>
+<script>
+window.MathJax = { tex: { inlineMath: [['$', '$']], displayMath: [['$$', '$$']] }, svg: { fontCache: 'global' },
+  startup: { ready() { MathJax.startup.defaultReady(); MathJax.startup.promise.then(() => { const m = document.getElementById('main'); if (m) MathJax.typesetPromise([m]).catch(() => {}); }); } } };
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-svg.js" async></script>
+</head>
+<body>
+<header class="top"><div class="topin">
+  <div class="brand">ML Math <i>Practice</i></div>
+  <nav id="nav" aria-label="Sections"></nav>
+  <div id="hstats"></div>
+</div></header>
+<main id="main"></main>
+<footer>Progress is saved in this browser. Questions follow the GATE DA syllabus.</footer>
+<script type="text/plain" id="bank">
+@ la e la-e-001
+T: Rank of a 2×2 matrix
+S: rank-nullity
+Q: What is the rank of $A=\begin{pmatrix}1&2\\2&4\end{pmatrix}$?
+A: $0$
+B: $1$
+C: $2$
+D: $4$
+ANS: B
+EXP: Row 2 is exactly $2\times$ Row 1, so there is only one linearly independent row.
+Check: $\det A = 1\cdot4-2\cdot2=0$, so rank $<2$; and $A\neq 0$, so rank $\ge 1$. Hence rank $=1$.
+
+
+@ la e la-e-002
+T: Eigenvalues of a triangular matrix
+S: eigen
+Q: What are the eigenvalues of $A=\begin{pmatrix}3&1\\0&-2\end{pmatrix}$?
+A: $3$ and $-2$
+B: $3$ and $1$
+C: $1$ and $-2$
+D: $2$ and $-3$
+ANS: A
+EXP: For any triangular matrix the eigenvalues are the diagonal entries.
+$\det(A-\lambda I)=(3-\lambda)(-2-\lambda)=0 \Rightarrow \lambda=3,\,-2$. The off-diagonal $1$ does not affect them.
+
+
+@ la e la-e-003
+T: Determinant of a scaled matrix
+S: determinants
+Q: $A$ is a $3\times3$ matrix with $\det A=4$. What is $\det(2A)$?
+A: $8$
+B: $16$
+C: $32$
+D: $64$
+ANS: C
+EXP: Scaling a matrix by $c$ scales every one of its $n$ rows by $c$, so $\det(cA)=c^n\det A$.
+Here $\det(2A)=2^3\cdot 4=32$. A common trap is answering $2\cdot4=8$.
+
+
+@ la e la-e-004
+T: Determinant of the inverse
+S: determinants
+Q: A $3\times3$ matrix $A$ has eigenvalues $1,2,3$. What is $\det(A^{-1})$?
+A: $6$
+B: $\frac{1}{6}$
+C: $-6$
+D: $\frac{1}{2}$
+ANS: B
+EXP: $\det A$ is the product of eigenvalues: $1\cdot2\cdot3=6$.
+Since $\det(A^{-1})=1/\det A$, the answer is $\frac16$. (Equivalently, $A^{-1}$ has eigenvalues $1,\tfrac12,\tfrac13$.)
+
+
+@ la e la-e-005
+T: Orthogonal vectors
+S: vectors-norms
+Q: For which $k$ are $u=(1,k,2)$ and $v=(3,-1,1)$ orthogonal?
+A: $-5$
+B: $5$
+C: $1$
+D: $3$
+ANS: B
+EXP: Orthogonal means $u\cdot v=0$: $1\cdot3+k\cdot(-1)+2\cdot1=5-k=0$, so $k=5$.
+
+
+@ la e la-e-006
+T: Solutions of a non-singular system
+S: linear-systems
+Q: $A$ is a $3\times3$ matrix with $\det A\neq0$. The system $Ax=b$ has:
+A: no solution for some $b$
+B: exactly one solution for every $b$
+C: infinitely many solutions for every $b$
+D: a unique solution only when $b=0$
+ANS: B
+EXP: $\det A\ne0$ means $A$ is invertible (full rank 3), so $x=A^{-1}b$ is the one and only solution for every $b\in\mathbb R^3$.
+
+
+@ la e la-e-007
+T: Transpose of a product
+S: matrix-ops
+Q: For conformable matrices $A$ and $B$, $(AB)^T$ equals:
+A: $A^TB^T$
+B: $B^TA^T$
+C: $BA$
+D: $(BA)^T$
+ANS: B
+EXP: Transpose reverses the order: $(AB)^T=B^TA^T$.
+Quick dimension check: if $A$ is $m\times n$ and $B$ is $n\times p$, then $(AB)^T$ is $p\times m$, and only $B^T(p\times n)\,A^T(n\times m)$ produces that shape.
+
+
+@ la e la-e-008
+T: Rank–nullity theorem
+S: rank-nullity
+Q: A $4\times6$ matrix has rank $3$. What is the dimension of its null space?
+A: $1$
+B: $2$
+C: $3$
+D: $6$
+ANS: C
+EXP: Rank–nullity: rank + nullity = number of columns $=6$.
+So nullity $=6-3=3$. (Using rows instead, $4-3=1$, is the common mistake; that is the dimension of the left null space.)
+
+
+@ la e la-e-009
+T: Euclidean norm
+S: vectors-norms
+Q: What is the $L_2$ norm of $x=(3,4,12)$?
+A: $19$
+B: $13$
+C: $12$
+D: $169$
+ANS: B
+EXP: $\|x\|_2=\sqrt{3^2+4^2+12^2}=\sqrt{9+16+144}=\sqrt{169}=13$.
+$19$ is the $L_1$ norm and $169$ is $\|x\|_2^2$.
+
+
+@ la e la-e-010
+T: Eigenvalues of a real symmetric matrix
+S: special-matrices
+Q: The eigenvalues of every real symmetric matrix are:
+A: always real
+B: always positive
+C: always distinct
+D: always integers
+ANS: A
+EXP: The spectral theorem says a real symmetric matrix has real eigenvalues and an orthonormal set of eigenvectors.
+They need not be positive (e.g. $\mathrm{diag}(1,-1)$) or distinct (e.g. $I$). This is why covariance matrices in PCA can always be diagonalised.
+
+
+@ la e la-e-011
+T: Shape of a matrix product
+S: matrix-ops
+Q: $A$ is $3\times4$ and $B$ is $4\times2$. What is the shape of $AB$?
+A: $4\times4$
+B: $3\times2$
+C: $2\times3$
+D: undefined
+ANS: B
+EXP: $(m\times n)(n\times p)=m\times p$. The inner dimensions ($4$) match and disappear, leaving $3\times2$.
+
+
+@ la m la-m-001
+T: Eigenvalues of a 2×2 matrix
+S: eigen
+Q: What are the eigenvalues of $A=\begin{pmatrix}4&1\\2&3\end{pmatrix}$?
+A: $5$ and $2$
+B: $4$ and $3$
+C: $6$ and $1$
+D: $7$ and $10$
+ANS: A
+EXP: For a $2\times2$ matrix, $\lambda^2-(\operatorname{tr}A)\lambda+\det A=0$.
+$\operatorname{tr}A=7$, $\det A=12-2=10$, so $\lambda^2-7\lambda+10=(\lambda-5)(\lambda-2)=0$.
+Check: $5+2=7$ (trace) and $5\cdot2=10$ (det).
+
+
+@ la m la-m-002
+T: Eigenvalues of an idempotent matrix
+S: special-matrices
+Q: If $A^2=A$ (an idempotent / projection matrix), its eigenvalues can only be:
+A: $0$ or $1$
+B: $1$ or $-1$
+C: any real number
+D: $1$ only
+ANS: A
+EXP: If $Av=\lambda v$ with $v\ne0$, then $A^2v=\lambda^2v$. But $A^2v=Av=\lambda v$, so $\lambda^2=\lambda$, giving $\lambda\in\{0,1\}$.
+Projection matrices such as the hat matrix $H=X(X^TX)^{-1}X^T$ in regression are idempotent.
+
+
+@ la m la-m-003
+T: Rank of the 1–9 matrix
+S: rank-nullity
+Q: What is the rank of $\begin{pmatrix}1&2&3\\4&5&6\\7&8&9\end{pmatrix}$?
+A: $1$
+B: $2$
+C: $3$
+D: $0$
+ANS: B
+EXP: $R_2-R_1=(3,3,3)$ and $R_3-R_2=(3,3,3)$, so $R_1-2R_2+R_3=0$: the rows are dependent and rank $<3$.
+$R_1$ and $R_2$ are not multiples of each other, so rank $=2$ (and $\det=0$).
+
+
+@ la m la-m-004
+T: Properties of orthogonal matrices
+S: special-matrices
+Q: $Q$ is a real orthogonal matrix. Which statement is NOT necessarily true?
+A: $Q^TQ=I$
+B: $\|Qx\|=\|x\|$ for all $x$
+C: $\det Q=\pm1$
+D: $Q$ is symmetric
+ANS: D
+EXP: Orthogonality gives $Q^TQ=I$, which implies length preservation $\|Qx\|^2=x^TQ^TQx=\|x\|^2$ and $\det(Q)^2=1$.
+It does not force symmetry: the rotation $\begin{pmatrix}0&-1\\1&0\end{pmatrix}$ is orthogonal but $Q^T\ne Q$.
+
+
+@ la m la-m-005
+T: Vector projection
+S: projections-least-squares
+Q: What is the projection of $b=(2,3)$ onto $a=(1,1)$?
+A: $(2.5,\ 2.5)$
+B: $(5,\ 5)$
+C: $(2,\ 3)$
+D: $(1.25,\ 1.25)$
+ANS: A
+EXP: $\operatorname{proj}_a b=\dfrac{a\cdot b}{a\cdot a}\,a=\dfrac{2+3}{1+1}(1,1)=\tfrac52(1,1)=(2.5,2.5)$.
+Forgetting to divide by $a\cdot a$ gives $(5,5)$.
+
+
+@ la m la-m-006
+T: Eigenvalues of a matrix polynomial
+S: eigen
+Q: $A=\begin{pmatrix}2&1\\1&2\end{pmatrix}$. What are the eigenvalues of $B=A^3-2A+I$?
+A: $0$ and $22$
+B: $1$ and $3$
+C: $0$ and $20$
+D: $2$ and $22$
+ANS: A
+EXP: Eigenvalues of $A$: trace $4$, det $3$, so $\lambda=1,3$.
+If $Av=\lambda v$ then $p(A)v=p(\lambda)v$ for any polynomial $p$. With $p(\lambda)=\lambda^3-2\lambda+1$:
+$p(1)=1-2+1=0$ and $p(3)=27-6+1=22$. So $B$ is singular.
+
+
+@ la m la-m-007
+T: Positive definite check
+S: quadratic-forms
+Q: Which matrix is positive definite?
+A: $\begin{pmatrix}2&-1\\-1&2\end{pmatrix}$
+B: $\begin{pmatrix}1&2\\2&1\end{pmatrix}$
+C: $\begin{pmatrix}0&1\\1&0\end{pmatrix}$
+D: $\begin{pmatrix}1&0\\0&0\end{pmatrix}$
+ANS: A
+EXP: A symmetric matrix is PD iff all eigenvalues are $>0$ (or all leading principal minors $>0$).
+(A): minors $2>0$, $4-1=3>0$ → eigenvalues $1,3$: PD.
+(B): eigenvalues $3,-1$. (C): eigenvalues $\pm1$. (D): eigenvalues $1,0$, only positive semidefinite.
+
+
+@ la m la-m-008
+T: Eigenvalue of an outer product
+S: eigen
+Q: Let $x=(1,2,2)^T$. What is the only nonzero eigenvalue of $xx^T$?
+A: $3$
+B: $5$
+C: $9$
+D: $1$
+ANS: C
+EXP: $(xx^T)x=x(x^Tx)=\|x\|^2x$, so $x$ is an eigenvector with eigenvalue $\|x\|^2=1+4+4=9$.
+$xx^T$ has rank 1, so the other two eigenvalues are $0$. (Trace check: $1+4+4=9$.)
+
+
+@ la m la-m-009
+T: Singular values of a diagonal matrix
+S: svd-pca
+Q: What are the singular values of $\begin{pmatrix}3&0\\0&-4\end{pmatrix}$?
+A: $3$ and $-4$
+B: $4$ and $3$
+C: $9$ and $16$
+D: $7$ and $1$
+ANS: B
+EXP: Singular values are $\sqrt{\text{eigenvalues of }A^TA}$. $A^TA=\mathrm{diag}(9,16)$, so $\sigma=4,3$.
+Singular values are never negative; the sign goes into the singular vectors. $9,16$ are the eigenvalues of $A^TA$, not the singular values.
+
+
+@ la m la-m-010
+T: Inverse via Cayley–Hamilton
+S: eigen
+Q: For $A=\begin{pmatrix}1&2\\3&4\end{pmatrix}$, which expression equals $A^{-1}$?
+A: $\frac{1}{2}(A-5I)$
+B: $\frac{1}{2}(5I-A)$
+C: $\frac{1}{2}(A+5I)$
+D: $\frac{1}{5}(A-2I)$
+ANS: A
+EXP: Characteristic polynomial: $\lambda^2-5\lambda-2$ (trace 5, det $-2$).
+Cayley–Hamilton: $A^2-5A-2I=0\Rightarrow A(A-5I)=2I\Rightarrow A^{-1}=\tfrac12(A-5I)$.
+Check: $\tfrac12\begin{pmatrix}-4&2\\3&-1\end{pmatrix}=\begin{pmatrix}-2&1\\1.5&-0.5\end{pmatrix}$, which is the inverse.
+
+
+@ la h la-h-001
+T: Determinant of I + all-ones matrix
+S: determinants
+Q: Let $J$ be the $4\times4$ matrix of all ones. What is $\det(I+J)$?
+A: $1$
+B: $4$
+C: $5$
+D: $16$
+ANS: C
+EXP: $J=\mathbf 1\mathbf 1^T$ has rank 1, with eigenvalue $\mathbf 1^T\mathbf 1=4$ (eigenvector $\mathbf 1$) and $0$ with multiplicity 3.
+$I+J$ shifts every eigenvalue by 1: $5,1,1,1$. So $\det(I+J)=5$.
+In general $\det(I+uv^T)=1+v^Tu$ (matrix determinant lemma).
+
+
+@ la h la-h-002
+T: Square of a rank-one matrix
+S: matrix-ops
+Q: Let $u=(1,2,3)^T$, $v=(1,1,-1)^T$ and $A=uv^T$. Then $A^2$ equals:
+A: the zero matrix
+B: $A$
+C: $2A$
+D: $6A$
+ANS: A
+EXP: $A^2=u(v^Tu)v^T=(v^Tu)\,uv^T=(v^Tu)A$.
+$v^Tu=1+2-3=0$, so $A^2=0$: $A$ is nilpotent even though $A\ne0$. All its eigenvalues are $0$.
+
+
+@ la h la-h-003
+T: Least squares through the origin
+S: projections-least-squares
+Q: Fit $y=mx$ (no intercept) by least squares to the points $(1,2),(2,3),(3,7)$. What is $m$?
+A: $\frac{29}{14}$
+B: $2$
+C: $\frac{7}{3}$
+D: $\frac{29}{6}$
+ANS: A
+EXP: Minimise $\sum(y_i-mx_i)^2$. Setting the derivative to zero gives the normal equation $m=\dfrac{\sum x_iy_i}{\sum x_i^2}$.
+$\sum x_iy_i=2+6+21=29$, $\sum x_i^2=1+4+9=14$, so $m=\tfrac{29}{14}\approx2.07$.
+This is $(X^TX)^{-1}X^Ty$ with $X=(1,2,3)^T$. $\sum y/\sum x=2$ is a ratio of means, not the least squares fit.
+
+
+@ la h la-h-004
+T: Involutory matrix with given trace
+S: special-matrices
+Q: A $3\times3$ real matrix satisfies $A^2=I$ and $\operatorname{tr}A=1$. What is $\det A$?
+A: $1$
+B: $-1$
+C: $0$
+D: $3$
+ANS: B
+EXP: $A^2=I\Rightarrow\lambda^2=1\Rightarrow\lambda\in\{1,-1\}$.
+Three eigenvalues from $\{\pm1\}$ summing to $1$: must be $1,1,-1$. So $\det A=1\cdot1\cdot(-1)=-1$.
+
+
+@ la h la-h-005
+T: Determinant of AB with mismatched shapes
+S: rank-nullity
+Q: $A$ is $5\times3$ and $B$ is $3\times5$. What is $\det(AB)$?
+A: $0$ always
+B: $1$
+C: $\det A\cdot\det B$
+D: cannot be determined
+ANS: A
+EXP: $\operatorname{rank}(AB)\le\min(\operatorname{rank}A,\operatorname{rank}B)\le3$, but $AB$ is $5\times5$.
+A $5\times5$ matrix of rank at most 3 is singular, so $\det(AB)=0$. ($\det A$ is not even defined for a non-square $A$.)
+
+
+@ la h la-h-006
+T: Eckart–Young best low-rank approximation
+S: svd-pca
+Q: A matrix has singular values $5,3,1$. What is the Frobenius-norm error of its best rank-1 approximation?
+A: $\sqrt{10}$
+B: $3$
+C: $4$
+D: $\sqrt{34}$
+ANS: A
+EXP: Eckart–Young: the best rank-$k$ approximation keeps the top $k$ singular values (truncated SVD), and
+$\|A-A_k\|_F=\sqrt{\sum_{i>k}\sigma_i^2}$. Here $\sqrt{3^2+1^2}=\sqrt{10}$.
+In the spectral (2-) norm the error would be $\sigma_2=3$. This is the maths behind PCA and low-rank compression.
+
+
+@ la h la-h-007
+T: Convergence rate of power iteration
+S: eigen
+Q: $A$ has eigenvalues $4,-3,1$. Power iteration converges to the dominant eigenvector, with error shrinking each step by a factor of about:
+A: $\frac14$
+B: $\frac34$
+C: $\frac13$
+D: $\frac43$
+ANS: B
+EXP: Write $x_0=\sum c_iv_i$. Then $A^kx_0=4^k\left(c_1v_1+c_2(-\tfrac34)^kv_2+c_3(\tfrac14)^kv_3\right)$.
+The slowest-decaying term is governed by $|\lambda_2/\lambda_1|=3/4$. Magnitudes matter, so $-3$ counts as 3.
+
+
+@ la h la-h-008
+T: What similar matrices share
+S: eigen
+Q: $B=P^{-1}AP$ for an invertible $P$. Which of these do $A$ and $B$ NOT necessarily share?
+A: eigenvalues
+B: determinant
+C: rank
+D: eigenvectors
+ANS: D
+EXP: Similar matrices represent the same linear map in different bases, so they share the characteristic polynomial (eigenvalues, trace, determinant) and rank.
+Eigenvectors change with the basis: if $Av=\lambda v$ then $B(P^{-1}v)=\lambda(P^{-1}v)$, so $B$'s eigenvector is $P^{-1}v$.
+
+
+@ la h la-h-009
+T: Diagonalisability over the reals
+S: eigen
+Q: Which matrix is diagonalisable over $\mathbb R$?
+A: $\begin{pmatrix}2&1\\0&2\end{pmatrix}$
+B: $\begin{pmatrix}2&1\\0&3\end{pmatrix}$
+C: $\begin{pmatrix}0&1\\0&0\end{pmatrix}$
+D: $\begin{pmatrix}0&-1\\1&0\end{pmatrix}$
+ANS: B
+EXP: (B) has distinct real eigenvalues $2,3$, and distinct eigenvalues always give independent eigenvectors, so it is diagonalisable.
+(A) and (C) have a repeated eigenvalue with only one eigenvector (Jordan blocks). (D) is a rotation with eigenvalues $\pm i$, so it is not diagonalisable over $\mathbb R$.
+
+
+@ la h la-h-010
+T: Determinant of a Householder reflector
+S: special-matrices
+Q: For a nonzero $u\in\mathbb R^n$, let $H=I-\dfrac{2uu^T}{u^Tu}$. What is $\det H$?
+A: $1$
+B: $-1$
+C: $0$
+D: depends on $u$
+ANS: B
+EXP: $Hu=u-2u=-u$, so $u$ has eigenvalue $-1$.
+Any $w\perp u$ gives $Hw=w$, so eigenvalue $1$ with multiplicity $n-1$.
+$\det H=(-1)\cdot1^{n-1}=-1$. $H$ is a reflection: orthogonal and symmetric. It is used in QR decomposition.
+
+@ prob e prob-e-001
+T: Sum of two dice equals 7
+S: counting
+Q: Two fair dice are rolled. What is the probability that the sum is 7?
+A: $\frac16$
+B: $\frac{1}{12}$
+C: $\frac{7}{36}$
+D: $\frac19$
+ANS: A
+EXP: Favourable outcomes: $(1,6),(2,5),(3,4),(4,3),(5,2),(6,1)$, which is 6 of 36. So $P=\tfrac{6}{36}=\tfrac16$. Seven is the most likely sum.
+
+
+@ prob e prob-e-002
+T: Probability of a union
+S: axioms-events
+Q: $P(A)=0.5$, $P(B)=0.4$, $P(A\cap B)=0.2$. Find $P(A\cup B)$.
+A: $0.9$
+B: $0.7$
+C: $0.5$
+D: $0.2$
+ANS: B
+EXP: Inclusion–exclusion: $P(A\cup B)=P(A)+P(B)-P(A\cap B)=0.5+0.4-0.2=0.7$.
+$0.9$ double-counts the overlap.
+
+
+@ prob e prob-e-003
+T: Union of independent events
+S: independence
+Q: $A$ and $B$ are independent with $P(A)=0.3$ and $P(B)=0.5$. Find $P(A\cup B)$.
+A: $0.8$
+B: $0.65$
+C: $0.15$
+D: $0.5$
+ANS: B
+EXP: Independence gives $P(A\cap B)=0.3\times0.5=0.15$.
+Then $P(A\cup B)=0.3+0.5-0.15=0.65$. Equivalently, $1-P(A^c)P(B^c)=1-0.7\cdot0.5=0.65$.
+
+
+@ prob e prob-e-004
+T: At least one head in three tosses
+S: axioms-events
+Q: Three fair coins are tossed. What is $P(\text{at least one head})$?
+A: $\frac12$
+B: $\frac34$
+C: $\frac78$
+D: $\frac18$
+ANS: C
+EXP: Use the complement: $P(\text{no heads})=(\tfrac12)^3=\tfrac18$, so $P(\ge1\text{ head})=1-\tfrac18=\tfrac78$.
+
+
+@ prob e prob-e-005
+T: Expected value of a die
+S: expectation-variance
+Q: What is the expected value of one roll of a fair six-sided die?
+A: $3$
+B: $3.5$
+C: $4$
+D: $21$
+ANS: B
+EXP: $E[X]=\tfrac16(1+2+3+4+5+6)=\tfrac{21}{6}=3.5$. An expected value need not be a value $X$ can actually take.
+
+
+@ prob e prob-e-006
+T: Variance of a linear transform
+S: expectation-variance
+Q: $\operatorname{Var}(X)=4$. What is $\operatorname{Var}(3X+2)$?
+A: $14$
+B: $12$
+C: $36$
+D: $38$
+ANS: C
+EXP: $\operatorname{Var}(aX+b)=a^2\operatorname{Var}(X)$. Adding a constant shifts but does not spread.
+$3^2\cdot4=36$.
+
+
+@ prob e prob-e-007
+T: Maximum variance of a Bernoulli
+S: discrete-dists
+Q: What is the largest possible variance of a Bernoulli$(p)$ random variable?
+A: $0.5$
+B: $1$
+C: $0.25$
+D: $0.125$
+ANS: C
+EXP: $\operatorname{Var}=p(1-p)$, a downward parabola maximised at $p=\tfrac12$: $\tfrac12\cdot\tfrac12=0.25$.
+That is why the Gini impurity and entropy of a binary node are highest at a 50/50 split.
+
+
+@ prob e prob-e-008
+T: Mutually exclusive vs independent
+S: independence
+Q: $A$ and $B$ are mutually exclusive with $P(A)>0$ and $P(B)>0$. Then $A$ and $B$ are:
+A: always independent
+B: never independent
+C: independent only if $P(A)=P(B)$
+D: independent only if $P(A)+P(B)=1$
+ANS: B
+EXP: Mutually exclusive means $P(A\cap B)=0$. Independence needs $P(A\cap B)=P(A)P(B)>0$. These cannot both hold.
+Intuitively, knowing $A$ happened tells you $B$ did not, which is strong dependence.
+
+
+@ prob e prob-e-009
+T: Standard deviation of a Poisson
+S: discrete-dists
+Q: $X\sim\text{Poisson}(4)$. What is the standard deviation of $X$?
+A: $4$
+B: $2$
+C: $16$
+D: $\frac14$
+ANS: B
+EXP: For a Poisson, mean $=$ variance $=\lambda=4$. So $\text{SD}=\sqrt4=2$.
+
+
+@ prob e prob-e-010
+T: Variance of a continuous uniform
+S: continuous-dists
+Q: $X\sim U(2,6)$. What is $\operatorname{Var}(X)$?
+A: $\frac43$
+B: $\frac23$
+C: $4$
+D: $\frac13$
+ANS: A
+EXP: For $U(a,b)$: $\operatorname{Var}=\dfrac{(b-a)^2}{12}=\dfrac{16}{12}=\dfrac43$. (Mean $=\tfrac{a+b}{2}=4$.)
+
+
+@ prob m prob-m-001
+T: Bayes’ theorem for a medical test
+S: conditional-bayes
+Q: A disease affects 1% of people. A test detects it 99% of the time and gives a false positive 5% of the time. A random person tests positive. Approximately what is $P(\text{disease}\mid +)$?
+A: $\approx0.99$
+B: $\approx0.17$
+C: $\approx0.05$
+D: $\approx0.50$
+ANS: B
+EXP: $P(+)=0.01\cdot0.99+0.99\cdot0.05=0.0099+0.0495=0.0594$.
+$P(D\mid+)=\dfrac{0.0099}{0.0594}=\dfrac16\approx0.167$.
+The low base rate dominates: most positives come from the large healthy group (base-rate fallacy).
+
+
+@ prob m prob-m-002
+T: Exactly two heads in five tosses
+S: discrete-dists
+Q: A fair coin is tossed 5 times. What is $P(\text{exactly 2 heads})$?
+A: $\frac{5}{16}$
+B: $\frac{1}{16}$
+C: $\frac14$
+D: $\frac25$
+ANS: A
+EXP: Binomial: $\binom52\left(\tfrac12\right)^5=\tfrac{10}{32}=\tfrac5{16}$.
+
+
+@ prob m prob-m-003
+T: Expected rolls until the first six
+S: discrete-dists
+Q: You roll a fair die until a 6 appears. What is the expected number of rolls?
+A: $6$
+B: $3.5$
+C: $5$
+D: $36$
+ANS: A
+EXP: The number of trials to the first success is Geometric$(p)$ with $E=1/p=6$.
+Equivalently $E=1+\tfrac56E\Rightarrow E=6$.
+
+
+@ prob m prob-m-004
+T: Memoryless property of the exponential
+S: continuous-dists
+Q: $X\sim\text{Exp}(\lambda=0.5)$. Find $P(X>5\mid X>2)$.
+A: $e^{-1.5}$
+B: $e^{-2.5}$
+C: $e^{-1}$
+D: $1-e^{-1.5}$
+ANS: A
+EXP: Memorylessness: $P(X>s+t\mid X>s)=P(X>t)$. With $t=3$: $P(X>3)=e^{-0.5\cdot3}=e^{-1.5}$.
+Directly: $\dfrac{e^{-2.5}}{e^{-1}}=e^{-1.5}$.
+
+
+@ prob m prob-m-005
+T: Expected maximum of two dice
+S: random-variables
+Q: Two fair dice are rolled. What is $E[\max(X_1,X_2)]$?
+A: $\frac{161}{36}$
+B: $\frac72$
+C: $4$
+D: $\frac{91}{36}$
+ANS: A
+EXP: $P(\max\le k)=(k/6)^2$, so $P(\max\ge k)=1-\tfrac{(k-1)^2}{36}$.
+$E[M]=\sum_{k=1}^{6}P(M\ge k)=6-\tfrac{0+1+4+9+16+25}{36}=6-\tfrac{55}{36}=\tfrac{161}{36}\approx4.47$.
+$\tfrac{91}{36}$ is $E[\min]$; the two add to $7=E[X_1+X_2]$.
+
+
+@ prob m prob-m-006
+T: Correlation from variances
+S: covariance-correlation
+Q: $\operatorname{Var}(X)=4$, $\operatorname{Var}(Y)=9$ and $\operatorname{Var}(X+Y)=10$. What is the correlation $\rho(X,Y)$?
+A: $-0.25$
+B: $-1.5$
+C: $0.25$
+D: $-0.5$
+ANS: A
+EXP: $\operatorname{Var}(X+Y)=\operatorname{Var}X+\operatorname{Var}Y+2\operatorname{Cov}\Rightarrow10=13+2\operatorname{Cov}\Rightarrow\operatorname{Cov}=-1.5$.
+$\rho=\dfrac{-1.5}{2\cdot3}=-0.25$. ($-1.5$ is the covariance, not the correlation.)
+
+
+@ prob m prob-m-007
+T: Normalising a joint density
+S: joint-conditional
+Q: $f(x,y)=c(x+y)$ for $0\le x,y\le1$ (and 0 elsewhere). What is $c$?
+A: $\frac12$
+B: $1$
+C: $2$
+D: $4$
+ANS: B
+EXP: $\int_0^1\!\int_0^1(x+y)\,dx\,dy=\tfrac12+\tfrac12=1$. For the density to integrate to 1, $c=1$.
+
+
+@ prob m prob-m-008
+T: Law of total expectation
+S: conditional-expectation
+Q: Flip a fair coin. Heads: roll one die and record it. Tails: roll two dice and record the sum. What is the expected recorded value?
+A: $3.5$
+B: $5.25$
+C: $7$
+D: $10.5$
+ANS: B
+EXP: $E[X]=E[X\mid H]P(H)+E[X\mid T]P(T)=3.5\cdot\tfrac12+7\cdot\tfrac12=5.25$.
+
+
+@ prob m prob-m-009
+T: Race between two exponentials
+S: joint-conditional
+Q: $X\sim\text{Exp}(1)$ and $Y\sim\text{Exp}(2)$ are independent. Find $P(X<Y)$.
+A: $\frac13$
+B: $\frac23$
+C: $\frac12$
+D: $\frac14$
+ANS: A
+EXP: $P(X<Y)=\dfrac{\lambda_X}{\lambda_X+\lambda_Y}=\dfrac{1}{1+2}=\dfrac13$.
+$Y$ has the higher rate, so it usually happens first. Derivation: $\int_0^\infty e^{-x}e^{-2x}\,dx=\tfrac13$.
+
+
+@ prob m prob-m-010
+T: Zero covariance does not imply independence
+S: covariance-correlation
+Q: $X\sim U(-1,1)$ and $Y=X^2$. Which is true?
+A: $\operatorname{Cov}(X,Y)=0$ and they are independent
+B: $\operatorname{Cov}(X,Y)=0$ but they are dependent
+C: $\operatorname{Cov}(X,Y)>0$
+D: $\operatorname{Cov}(X,Y)<0$
+ANS: B
+EXP: $\operatorname{Cov}(X,X^2)=E[X^3]-E[X]E[X^2]=0-0=0$ by symmetry.
+Yet $Y$ is a deterministic function of $X$, so they are clearly dependent. Covariance only measures linear association.
+
+
+@ prob h prob-h-001
+T: Coupon collector with 4 coupons
+S: expectation-variance
+Q: Each cereal box contains one of 4 equally likely coupons. What is the expected number of boxes needed to collect all 4?
+A: $\frac{25}{3}$
+B: $4$
+C: $10$
+D: $\frac{16}{3}$
+ANS: A
+EXP: After collecting $i$ distinct coupons, the wait for a new one is Geometric with $p=\tfrac{4-i}{4}$.
+$E=\tfrac44+\tfrac43+\tfrac42+\tfrac41=4\left(1+\tfrac12+\tfrac13+\tfrac14\right)=4\cdot\tfrac{25}{12}=\tfrac{25}{3}\approx8.33$.
+In general $E=nH_n\approx n\ln n$.
+
+
+@ prob h prob-h-002
+T: Waiting for two consecutive sixes
+S: conditional-expectation
+Q: A fair die is rolled until two 6s appear in a row. What is the expected number of rolls?
+A: $36$
+B: $12$
+C: $42$
+D: $30$
+ANS: C
+EXP: Let $E_0$ = expected rolls from scratch, $E_1$ = expected rolls when the last roll was a 6.
+$E_1=1+\tfrac56E_0$ and $E_0=1+\tfrac16E_1+\tfrac56E_0$.
+Substituting: $E_0=\tfrac76+\tfrac{35}{36}E_0\Rightarrow\tfrac1{36}E_0=\tfrac76\Rightarrow E_0=42$.
+
+
+@ prob h prob-h-003
+T: Comparing two independent normals
+S: transformations
+Q: $X\sim N(1,4)$ and $Y\sim N(2,5)$ are independent (second parameter = variance). $P(X>Y)$ equals:
+A: $1-\Phi(1/3)$
+B: $\Phi(1/3)$
+C: $1-\Phi(1/9)$
+D: $1-\Phi(1/\sqrt3)$
+ANS: A
+EXP: $D=X-Y\sim N(1-2,\ 4+5)=N(-1,9)$. Variances add even when you subtract.
+$P(D>0)=P\!\left(Z>\tfrac{0-(-1)}{3}\right)=1-\Phi(1/3)\approx0.37$.
+
+
+@ prob h prob-h-004
+T: Monty Hall with four doors
+S: conditional-bayes
+Q: There are 4 doors and 1 car. You pick a door; the host, who knows where the car is, opens one other empty door. You then switch to one of the 2 remaining unopened doors chosen at random. $P(\text{win})$?
+A: $\frac14$
+B: $\frac38$
+C: $\frac12$
+D: $\frac34$
+ANS: B
+EXP: Your first pick is wrong with probability $\tfrac34$; then the car is behind one of the 2 other unopened doors and you pick it with probability $\tfrac12$.
+If your first pick was right ($\tfrac14$), switching always loses. So $P=\tfrac34\cdot\tfrac12=\tfrac38>\tfrac14$ for staying.
+
+
+@ prob h prob-h-005
+T: Broken stick forms a triangle
+S: joint-conditional
+Q: A stick of length 1 is broken at two points chosen independently and uniformly at random. What is the probability the three pieces form a triangle?
+A: $\frac12$
+B: $\frac13$
+C: $\frac14$
+D: $\frac18$
+ANS: C
+EXP: A triangle needs every piece $<\tfrac12$. In the unit square of break points $(U,V)$, this region is two triangles each of area $\tfrac18$.
+Total $=\tfrac14$.
+
+
+@ prob h prob-h-006
+T: Reading variance from an MGF
+S: expectation-variance
+Q: The moment generating function of $X$ is $M_X(t)=e^{2t+8t^2}$. What is $\operatorname{Var}(X)$?
+A: $8$
+B: $16$
+C: $4$
+D: $2$
+ANS: B
+EXP: A normal $N(\mu,\sigma^2)$ has $M(t)=e^{\mu t+\sigma^2t^2/2}$. Matching: $\mu=2$ and $\sigma^2/2=8\Rightarrow\sigma^2=16$.
+Or: $\operatorname{Var}=M''(0)-M'(0)^2=(16+4)-4=16$.
+
+
+@ prob h prob-h-007
+T: Transforming a uniform variable
+S: transformations
+Q: $U\sim U(0,1)$. What is the distribution of $Y=-\ln U$?
+A: Exponential with rate $1$
+B: Standard normal
+C: Uniform on $(0,1)$
+D: Gamma with shape $2$
+ANS: A
+EXP: For $y>0$: $P(Y>y)=P(-\ln U>y)=P(U<e^{-y})=e^{-y}$, the survival function of Exp(1).
+This is inverse-transform sampling, used to generate exponential samples from uniform ones.
+
+
+@ prob h prob-h-008
+T: Beta–Bernoulli posterior mean
+S: conditional-bayes
+Q: Prior on a coin’s heads probability: $p\sim\text{Beta}(2,2)$. You observe 3 heads and 1 tail. What is the posterior mean of $p$?
+A: $\frac34$
+B: $\frac58$
+C: $\frac12$
+D: $\frac56$
+ANS: B
+EXP: Beta is conjugate to Bernoulli: the posterior is $\text{Beta}(2+3,\ 2+1)=\text{Beta}(5,3)$.
+Mean $=\tfrac{\alpha}{\alpha+\beta}=\tfrac58$. The MLE is $\tfrac34$; the prior pulls it toward $\tfrac12$.
+
+
+@ prob h prob-h-009
+T: Stationary distribution of a 2-state Markov chain
+S: markov-chains
+Q: A Markov chain has transition matrix $P=\begin{pmatrix}0.9&0.1\\0.5&0.5\end{pmatrix}$ (rows = current state). What is its stationary distribution $\pi$?
+A: $\left(\frac56,\frac16\right)$
+B: $\left(\frac12,\frac12\right)$
+C: $(0.9,\ 0.1)$
+D: $\left(\frac16,\frac56\right)$
+ANS: A
+EXP: Solve $\pi P=\pi$. Balance of flow between the states: $\pi_1\cdot0.1=\pi_2\cdot0.5\Rightarrow\pi_1=5\pi_2$.
+With $\pi_1+\pi_2=1$: $\pi=(\tfrac56,\tfrac16)$.
+
+
+@ prob h prob-h-010
+T: Chebyshev’s inequality
+S: limit-theorems
+Q: $X$ has mean 50 and standard deviation 5 (distribution unknown). The best upper bound Chebyshev gives for $P(|X-50|\ge15)$ is:
+A: $\frac13$
+B: $\frac19$
+C: $\frac14$
+D: $0.003$
+ANS: B
+EXP: Chebyshev: $P(|X-\mu|\ge k\sigma)\le\tfrac1{k^2}$. Here $15=3\sigma$, so the bound is $\tfrac19$.
+$0.003$ is the normal-distribution value, which you cannot assume when the distribution is unknown.
+
+@ calc e calc-e-001
+T: Product rule
+S: derivatives
+Q: $\dfrac{d}{dx}\left(x^3e^x\right)=$
+A: $3x^2e^x$
+B: $e^x(x^3+3x^2)$
+C: $x^3e^x$
+D: $3x^2+e^x$
+ANS: B
+EXP: Product rule $(uv)'=u'v+uv'$: $3x^2e^x+x^3e^x=e^x(x^3+3x^2)$.
+
+
+@ calc e calc-e-002
+T: Derivative of the sigmoid
+S: derivatives
+Q: For $\sigma(x)=\dfrac{1}{1+e^{-x}}$, $\sigma'(x)$ equals:
+A: $\sigma(x)(1-\sigma(x))$
+B: $\sigma(x)^2$
+C: $1-\sigma(x)$
+D: $\sigma(x)(1+\sigma(x))$
+ANS: A
+EXP: $\sigma'(x)=\dfrac{e^{-x}}{(1+e^{-x})^2}=\dfrac{1}{1+e^{-x}}\cdot\dfrac{e^{-x}}{1+e^{-x}}=\sigma(x)(1-\sigma(x))$.
+Its maximum is $\tfrac14$ at $x=0$, one reason deep sigmoid networks suffer vanishing gradients.
+
+
+@ calc e calc-e-003
+T: A standard limit
+S: limits
+Q: $\displaystyle\lim_{x\to0}\frac{e^x-1}{x}=$
+A: $0$
+B: $1$
+C: $e$
+D: $\infty$
+ANS: B
+EXP: It is the derivative of $e^x$ at $0$, which is $e^0=1$. L'Hôpital gives the same: $\lim e^x/1=1$.
+
+
+@ calc e calc-e-004
+T: Definite integral of x²
+S: integrals
+Q: $\displaystyle\int_0^1x^2\,dx=$
+A: $\frac12$
+B: $\frac13$
+C: $1$
+D: $\frac23$
+ANS: B
+EXP: $\int x^2dx=\tfrac{x^3}{3}$, so $\left[\tfrac{x^3}{3}\right]_0^1=\tfrac13$.
+
+
+@ calc e calc-e-005
+T: Gradient at a point
+S: gradients-multivariable
+Q: $f(x,y)=x^2y+3y$. What is $\nabla f(1,2)$?
+A: $(4,\ 4)$
+B: $(2,\ 4)$
+C: $(4,\ 3)$
+D: $(2,\ 1)$
+ANS: A
+EXP: $\partial f/\partial x=2xy=2\cdot1\cdot2=4$ and $\partial f/\partial y=x^2+3=1+3=4$. So $\nabla f(1,2)=(4,4)$.
+
+
+@ calc e calc-e-006
+T: Minimum of a quadratic
+S: single-var-optimization
+Q: What is the minimum value of $f(x)=x^2-4x+7$?
+A: $7$
+B: $2$
+C: $3$
+D: $-3$
+ANS: C
+EXP: $f'(x)=2x-4=0\Rightarrow x=2$, and $f''=2>0$ so it is a minimum. $f(2)=4-8+7=3$.
+Completing the square gives the same: $(x-2)^2+3$. ($2$ is where the minimum occurs, not its value.)
+
+
+@ calc e calc-e-007
+T: Derivative of softplus
+S: derivatives
+Q: $\dfrac{d}{dx}\ln(1+e^x)=$
+A: $\dfrac{1}{1+e^x}$
+B: $\dfrac{e^x}{1+e^x}$
+C: $\ln(e^x)$
+D: $\dfrac{1}{(1+e^x)^2}$
+ANS: B
+EXP: Chain rule: $\dfrac{1}{1+e^x}\cdot e^x=\dfrac{e^x}{1+e^x}=\sigma(x)$.
+The derivative of the softplus activation is the sigmoid.
+
+
+@ calc e calc-e-008
+T: Chain rule
+S: derivatives
+Q: $\dfrac{d}{dx}\sin(x^2)=$
+A: $\cos(x^2)$
+B: $2x\cos(x^2)$
+C: $2x\sin(x^2)$
+D: $\cos(2x)$
+ANS: B
+EXP: Outer derivative times inner derivative: $\cos(x^2)\cdot2x$. Backpropagation is repeated application of this rule.
+
+
+@ calc e calc-e-009
+T: One gradient descent step
+S: gradient-descent
+Q: Minimise $f(x)=x^2$ with gradient descent, learning rate $\eta=0.1$, starting at $x_0=3$. What is $x_1$?
+A: $2.4$
+B: $2.7$
+C: $3.6$
+D: $2.1$
+ANS: A
+EXP: $x_1=x_0-\eta f'(x_0)=3-0.1\cdot(2\cdot3)=3-0.6=2.4$.
+Adding the gradient ($3.6$) would be gradient ascent.
+
+
+@ calc e calc-e-010
+T: Locating a local maximum
+S: maxima-minima
+Q: Where does $f(x)=x^3-3x$ have a local maximum?
+A: $x=1$
+B: $x=-1$
+C: $x=0$
+D: $x=\sqrt3$
+ANS: B
+EXP: $f'(x)=3x^2-3=0\Rightarrow x=\pm1$. $f''(x)=6x$: $f''(-1)=-6<0$ gives a local max; $f''(1)=6>0$ gives a local min.
+
+
+@ calc m calc-m-001
+T: Gradient of a quadratic form
+S: gradients-multivariable
+Q: For a general (not necessarily symmetric) square matrix $A$, $\nabla_x\left(x^TAx\right)=$
+A: $Ax$
+B: $2Ax$
+C: $(A+A^T)x$
+D: $x^TA$
+ANS: C
+EXP: Write $x^TAx=\sum_{i,j}A_{ij}x_ix_j$; then $\partial/\partial x_k=\sum_jA_{kj}x_j+\sum_iA_{ik}x_i=(Ax+A^Tx)_k$.
+It reduces to $2Ax$ only when $A$ is symmetric (e.g. the least squares Hessian $X^TX$).
+
+
+@ calc m calc-m-002
+T: Classifying a critical point with the Hessian
+S: maxima-minima
+Q: $f(x,y)=x^2+3xy+y^2$ has a critical point at the origin. It is a:
+A: local minimum
+B: local maximum
+C: saddle point
+D: cannot be determined
+ANS: C
+EXP: Hessian $H=\begin{pmatrix}2&3\\3&2\end{pmatrix}$, $\det H=4-9=-5<0$, so the eigenvalues have opposite signs ($5$ and $-1$).
+Indefinite Hessian means a saddle: along $y=x$, $f=5x^2$ rises; along $y=-x$, $f=-x^2$ falls.
+
+
+@ calc m calc-m-003
+T: Second-order Taylor expansion
+S: taylor-series
+Q: The second-order Taylor approximation of $\ln(1+x)$ around $x=0$ is:
+A: $x-\dfrac{x^2}{2}$
+B: $x+\dfrac{x^2}{2}$
+C: $1+x-\dfrac{x^2}{2}$
+D: $x-x^2$
+ANS: A
+EXP: $f(0)=0$, $f'(x)=\tfrac1{1+x}\Rightarrow f'(0)=1$, $f''(x)=-\tfrac1{(1+x)^2}\Rightarrow f''(0)=-1$.
+$f\approx0+x+\tfrac{-1}{2}x^2=x-\tfrac{x^2}{2}$.
+
+
+@ calc m calc-m-004
+T: Integral of x·e^(−x)
+S: integrals
+Q: $\displaystyle\int_0^\infty xe^{-x}\,dx=$
+A: $1$
+B: $\frac12$
+C: $\infty$
+D: $e$
+ANS: A
+EXP: Integration by parts or the Gamma function: $\int_0^\infty x^{n}e^{-x}dx=\Gamma(n+1)=n!$, so with $n=1$ it is $1$.
+This is also the mean of an Exp(1) random variable.
+
+
+@ calc m calc-m-005
+T: Lagrange multipliers: product with fixed sum
+S: constrained-optimization
+Q: Maximise $xy$ subject to $x+y=10$.
+A: $25$
+B: $50$
+C: $100$
+D: $24$
+ANS: A
+EXP: $\mathcal L=xy-\lambda(x+y-10)$. $\partial_x: y=\lambda$, $\partial_y: x=\lambda\Rightarrow x=y=5$, so the maximum is $25$.
+($24=4\cdot6$ is feasible but not optimal.)
+
+
+@ calc m calc-m-006
+T: Limit of (1 − cos x)/x²
+S: limits
+Q: $\displaystyle\lim_{x\to0}\frac{1-\cos x}{x^2}=$
+A: $0$
+B: $\frac12$
+C: $1$
+D: $2$
+ANS: B
+EXP: Taylor: $\cos x=1-\tfrac{x^2}{2}+O(x^4)$, so $\tfrac{1-\cos x}{x^2}\to\tfrac12$. (Or L'Hôpital twice.)
+
+
+@ calc m calc-m-007
+T: Gradient of softmax cross-entropy
+S: gradients-multivariable
+Q: With logits $z$, $p=\operatorname{softmax}(z)$ and one-hot label $y$, the loss is $L=-\sum_iy_i\log p_i$. What is $\partial L/\partial z$?
+A: $p-y$
+B: $y-p$
+C: $p(1-p)$
+D: $-y/p$
+ANS: A
+EXP: $\log p_i=z_i-\log\sum_je^{z_j}$, so $\partial\log p_i/\partial z_k=\delta_{ik}-p_k$.
+$\partial L/\partial z_k=-\sum_iy_i(\delta_{ik}-p_k)=-y_k+p_k\sum_iy_i=p_k-y_k$ (since $\sum y_i=1$).
+$-y/p$ is the gradient with respect to $p$, not $z$.
+
+
+@ calc m calc-m-008
+T: Directional derivative
+S: gradients-multivariable
+Q: $f(x,y)=x^2+y^2$. What is the directional derivative at $(1,1)$ in the direction of $(3,4)$?
+A: $\frac{14}{5}$
+B: $4$
+C: $2\sqrt2$
+D: $14$
+ANS: A
+EXP: $\nabla f=(2x,2y)=(2,2)$. Unit direction $u=(3,4)/5$.
+$D_uf=\nabla f\cdot u=\tfrac{6+8}{5}=\tfrac{14}{5}$. Forgetting to normalise gives $14$; $2\sqrt2=\|\nabla f\|$ is the maximum rate.
+
+
+@ calc m calc-m-009
+T: Stable learning rate on a quadratic
+S: gradient-descent
+Q: Gradient descent on $f(x)=2x^2$ with a fixed step $\eta>0$ converges from any start if and only if:
+A: $\eta<0.25$
+B: $\eta<0.5$
+C: $\eta<1$
+D: $\eta<2$
+ANS: B
+EXP: $f'(x)=4x$, so $x_{t+1}=x_t-4\eta x_t=(1-4\eta)x_t$. Convergence needs $|1-4\eta|<1\Rightarrow0<\eta<\tfrac12$.
+In general $\eta<2/L$, where $L$ is the largest curvature. $\eta=0.25$ is the one-step optimal rate, not the limit.
+
+
+@ calc m calc-m-010
+T: Spotting a non-convex function
+S: convexity
+Q: Which function is NOT convex on its domain?
+A: $e^x$
+B: $-\log x\ (x>0)$
+C: $\max(0,x)$
+D: $\sqrt x\ (x\ge0)$
+ANS: D
+EXP: $(\sqrt x)''=-\tfrac14x^{-3/2}<0$, so $\sqrt x$ is concave, not convex.
+$e^x$ and $-\log x$ have positive second derivatives, and ReLU is a maximum of linear functions, so it is convex.
+
+
+@ calc h calc-h-001
+T: Two Newton steps for √2
+S: single-var-optimization
+Q: Apply Newton's method to $f(x)=x^2-2$ starting at $x_0=1$. What is $x_2$?
+A: $\frac32$
+B: $\frac{17}{12}$
+C: $\frac75$
+D: $\frac{577}{408}$
+ANS: B
+EXP: Newton: $x_{n+1}=x_n-\dfrac{x_n^2-2}{2x_n}=\tfrac12\left(x_n+\tfrac2{x_n}\right)$.
+$x_1=\tfrac12(1+2)=\tfrac32$. $x_2=\tfrac12\left(\tfrac32+\tfrac43\right)=\tfrac{17}{12}\approx1.4167$.
+$\tfrac{577}{408}$ is $x_3$, showing quadratic convergence (correct digits roughly double each step).
+
+
+@ calc h calc-h-002
+T: Gradient of log-determinant
+S: gradients-multivariable
+Q: For an invertible matrix $X$ with $\det X>0$, $\nabla_X\log\det X=$
+A: $X^{-T}$
+B: $X$
+C: $\det(X)\,X^{-1}$
+D: $X^T$
+ANS: A
+EXP: Jacobi's formula: $d\log\det X=\operatorname{tr}(X^{-1}dX)=\langle X^{-T},dX\rangle$, so the gradient is $(X^{-1})^T$.
+For symmetric $X$ (e.g. a covariance in a Gaussian log-likelihood) it is $X^{-1}$.
+
+
+@ calc h calc-h-003
+T: Gaussian integral
+S: integrals
+Q: $\displaystyle\int_{-\infty}^{\infty}e^{-x^2/2}\,dx=$
+A: $\sqrt\pi$
+B: $\sqrt{2\pi}$
+C: $2\pi$
+D: $1$
+ANS: B
+EXP: $I^2=\iint e^{-(x^2+y^2)/2}dx\,dy=\int_0^{2\pi}\!\int_0^\infty e^{-r^2/2}r\,dr\,d\theta=2\pi$, so $I=\sqrt{2\pi}$.
+That is why the normal density carries the factor $\tfrac1{\sqrt{2\pi}}$. ($\sqrt\pi$ is for $e^{-x^2}$.)
+
+
+@ calc h calc-h-004
+T: Jacobian of polar coordinates
+S: gradients-multivariable
+Q: For $x=r\cos\theta$, $y=r\sin\theta$, the Jacobian determinant $\left|\dfrac{\partial(x,y)}{\partial(r,\theta)}\right|$ is:
+A: $1$
+B: $r$
+C: $r^2$
+D: $\frac1r$
+ANS: B
+EXP: $\begin{vmatrix}\cos\theta&-r\sin\theta\\\sin\theta&r\cos\theta\end{vmatrix}=r\cos^2\theta+r\sin^2\theta=r$. So $dx\,dy=r\,dr\,d\theta$.
+
+
+@ calc h calc-h-005
+T: Constrained minimisation (KKT)
+S: constrained-optimization
+Q: Minimise $x^2+y^2$ subject to $x+2y\ge5$. Minimum value and minimiser:
+A: $5$ at $(1,2)$
+B: $\sqrt5$ at $(1,2)$
+C: $\frac{25}{4}$ at $(0,\frac52)$
+D: $25$ at $(5,0)$
+ANS: A
+EXP: The unconstrained minimum $(0,0)$ violates the constraint, so it is active: $x+2y=5$.
+KKT: $(2x,2y)=\mu(1,2)$ with $\mu\ge0\Rightarrow y=2x$, so $5x=5$, $x=1$, $y=2$, $\mu=2>0$.
+Value $=1+4=5$. ($\sqrt5$ is the distance; the objective is the squared distance.)
+
+
+@ calc h calc-h-006
+T: Gradient descent and the condition number
+S: gradient-descent
+Q: Gradient descent on a quadratic whose Hessian has eigenvalues $1$ and $100$, using the best fixed step $\eta=\frac{2}{L+\mu}$. The error contracts each step by a factor of:
+A: $\frac{99}{101}$
+B: $\frac{1}{100}$
+C: $\frac{99}{100}$
+D: $\frac12$
+ANS: A
+EXP: With $\eta=\tfrac2{\mu+L}=\tfrac2{101}$, each eigen-direction scales by $|1-\eta\lambda|$: $|1-\tfrac2{101}|=\tfrac{99}{101}$ and $|1-\tfrac{200}{101}|=\tfrac{99}{101}$.
+In general the factor is $\tfrac{\kappa-1}{\kappa+1}$ with $\kappa=L/\mu=100$. Large $\kappa$ makes convergence slow, which motivates feature scaling, momentum and Adam.
+
+
+@ calc h calc-h-007
+T: Leibniz rule with a variable limit
+S: integrals
+Q: $\dfrac{d}{dx}\displaystyle\int_0^{x^2}e^{t^2}\,dt=$
+A: $e^{x^4}$
+B: $2xe^{x^4}$
+C: $2xe^{x^2}$
+D: $e^{x^2}$
+ANS: B
+EXP: Fundamental theorem plus chain rule: $\dfrac{d}{dx}\int_0^{g(x)}h(t)dt=h(g(x))\,g'(x)=e^{(x^2)^2}\cdot2x$.
+
+
+@ calc h calc-h-008
+T: Hessian of log-sum-exp
+S: convexity
+Q: Let $f(z)=\log\sum_ie^{z_i}$ and $p=\operatorname{softmax}(z)$. The Hessian $\nabla^2f(z)$ is:
+A: $\operatorname{diag}(p)-pp^T$
+B: $pp^T$
+C: $\operatorname{diag}(p)$
+D: $I-pp^T$
+ANS: A
+EXP: $\nabla f=p$. $\partial p_i/\partial z_j=p_i(\delta_{ij}-p_j)$, so $H=\operatorname{diag}(p)-pp^T$.
+It is PSD ($v^THv=\operatorname{Var}_p(v)\ge0$), which proves log-sum-exp is convex and so is the softmax cross-entropy loss in the logits.
+
+
+@ calc h calc-h-009
+T: Maximise xy² on a line
+S: constrained-optimization
+Q: Maximise $f(x,y)=xy^2$ subject to $x+y=3$, $x,y\ge0$.
+A: $4$
+B: $\frac{27}{8}$
+C: $0$
+D: $9$
+ANS: A
+EXP: Substitute $x=3-y$: $g(y)=(3-y)y^2=3y^2-y^3$. $g'(y)=6y-3y^2=0\Rightarrow y=2$ (or $0$).
+$x=1$, $f=1\cdot4=4$. The symmetric guess $x=y=1.5$ gives only $\tfrac{27}{8}$.
+
+
+@ calc h calc-h-010
+T: Smoothness constant of logistic loss
+S: gradient-descent
+Q: What is the smallest $L$ such that $f(x)=\log(1+e^x)$ has an $L$-Lipschitz derivative?
+A: $1$
+B: $\frac12$
+C: $\frac14$
+D: $\infty$
+ANS: C
+EXP: $f'=\sigma(x)$ and $f''=\sigma(1-\sigma)$, which peaks at $\tfrac14$ when $\sigma=\tfrac12$ ($x=0$).
+So $L=\sup|f''|=\tfrac14$, and the safe GD step is $\eta\le1/L=4$ (for one sample with a unit feature).
+
+@ stat e stat-e-001
+T: Median of a small sample
+S: descriptive
+Q: What is the median of $\{2,3,3,5,7\}$?
+A: $4$
+B: $3$
+C: $5$
+D: $3.5$
+ANS: B
+EXP: Sorted, the middle (3rd of 5) value is $3$. The mean is $4$ and the mode is $3$.
+
+
+@ stat e stat-e-002
+T: Sample variance
+S: descriptive
+Q: What is the sample variance (with $n-1$ in the denominator) of $\{2,4,6\}$?
+A: $\frac83$
+B: $4$
+C: $2$
+D: $8$
+ANS: B
+EXP: Mean $=4$. Squared deviations: $4,0,4$, summing to $8$.
+$s^2=\tfrac{8}{3-1}=4$. Dividing by $n$ gives $\tfrac83$, the biased (MLE) version.
+
+
+@ stat e stat-e-003
+T: z-score
+S: descriptive
+Q: Test scores have mean $70$ and standard deviation $10$. What is the z-score of a score of $85$?
+A: $1.5$
+B: $15$
+C: $0.15$
+D: $-1.5$
+ANS: A
+EXP: $z=\dfrac{x-\mu}{\sigma}=\dfrac{85-70}{10}=1.5$: the score is 1.5 standard deviations above the mean.
+
+
+@ stat e stat-e-004
+T: Empirical rule
+S: descriptive
+Q: For a normal distribution, roughly what fraction of values lie within 2 standard deviations of the mean?
+A: $68\%$
+B: $95\%$
+C: $99.7\%$
+D: $50\%$
+ANS: B
+EXP: 68–95–99.7 rule: about 68% within $1\sigma$, 95% within $2\sigma$ (exactly 95% at $1.96\sigma$), and 99.7% within $3\sigma$.
+
+
+@ stat e stat-e-005
+T: Meaning of zero correlation
+S: regression-correlation
+Q: The Pearson correlation between $X$ and $Y$ is $0$. This means:
+A: $X$ and $Y$ are independent
+B: there is no linear relationship
+C: there is no relationship of any kind
+D: $Y$ is constant
+ANS: B
+EXP: Pearson $r$ measures only linear association. $Y=X^2$ with $X$ symmetric about 0 has $r=0$ but a perfect nonlinear relationship.
+
+
+@ stat e stat-e-006
+T: Type I error
+S: z-test
+Q: A Type I error is:
+A: rejecting $H_0$ when $H_0$ is true
+B: failing to reject $H_0$ when $H_0$ is false
+C: rejecting $H_1$ when $H_1$ is true
+D: using the wrong test statistic
+ANS: A
+EXP: Type I = false positive, with probability $\alpha$ (the significance level).
+Type II = false negative (failing to reject a false $H_0$), with probability $\beta$; power $=1-\beta$.
+
+
+@ stat e stat-e-007
+T: Definition of an unbiased estimator
+S: bias-variance
+Q: An estimator $\hat\theta$ of $\theta$ is unbiased if:
+A: $E[\hat\theta]=\theta$
+B: $\operatorname{Var}(\hat\theta)=0$
+C: $\hat\theta=\theta$ for every sample
+D: $\hat\theta\to\theta$ as $n\to\infty$
+ANS: A
+EXP: Unbiased means right on average over repeated samples. (D) describes consistency, a different property; an estimator can be biased yet consistent (e.g. the MLE of $\sigma^2$).
+
+
+@ stat e stat-e-008
+T: Standard error of the mean
+S: sampling-distributions
+Q: The population standard deviation is $12$ and the sample size is $36$. What is the standard error of $\bar X$?
+A: $2$
+B: $6$
+C: $\frac13$
+D: $12$
+ANS: A
+EXP: $\text{SE}(\bar X)=\dfrac{\sigma}{\sqrt n}=\dfrac{12}{6}=2$. To halve the SE you need 4× the data.
+
+
+@ stat e stat-e-009
+T: Skewness from mean and median
+S: descriptive
+Q: A distribution has mean $60$ and median $45$. It is most likely:
+A: right (positively) skewed
+B: left (negatively) skewed
+C: symmetric
+D: uniform
+ANS: A
+EXP: A long right tail of large values pulls the mean above the median. Income distributions are the classic example.
+
+
+@ stat e stat-e-010
+T: Outlier fence using the IQR
+S: descriptive
+Q: $Q_1=20$ and $Q_3=50$. Using the $1.5\times$IQR rule, values above what are flagged as outliers?
+A: $80$
+B: $95$
+C: $65$
+D: $125$
+ANS: B
+EXP: $\text{IQR}=50-20=30$. Upper fence $=Q_3+1.5\cdot\text{IQR}=50+45=95$ (lower fence $=20-45=-25$).
+
+
+@ stat m stat-m-001
+T: MLE of a Bernoulli parameter
+S: estimation-mle
+Q: In 20 independent Bernoulli trials you observe 7 successes. What is the maximum likelihood estimate of $p$?
+A: $0.35$
+B: $0.5$
+C: $0.7$
+D: $0.65$
+ANS: A
+EXP: $\ell(p)=7\ln p+13\ln(1-p)$. $\ell'(p)=\tfrac7p-\tfrac{13}{1-p}=0\Rightarrow p=\tfrac{7}{20}=0.35$, the sample proportion.
+
+
+@ stat m stat-m-002
+T: MLE of an exponential rate
+S: estimation-mle
+Q: Data from $\text{Exp}(\lambda)$ have sample mean $\bar x=4$. What is the MLE of $\lambda$?
+A: $4$
+B: $0.25$
+C: $0.5$
+D: $16$
+ANS: B
+EXP: $\ell(\lambda)=n\ln\lambda-\lambda\sum x_i$. $\ell'=\tfrac n\lambda-\sum x_i=0\Rightarrow\hat\lambda=\tfrac1{\bar x}=0.25$.
+The mean of Exp($\lambda$) is $1/\lambda$, so invariance gives the same answer.
+
+
+@ stat m stat-m-003
+T: 95% confidence interval for a mean
+S: confidence-intervals
+Q: $\bar x=50$, known $\sigma=10$, $n=100$. What is the 95% confidence interval for $\mu$?
+A: $(48.04,\ 51.96)$
+B: $(30.4,\ 69.6)$
+C: $(49.80,\ 50.20)$
+D: $(48.36,\ 51.64)$
+ANS: A
+EXP: $\bar x\pm z_{0.025}\dfrac{\sigma}{\sqrt n}=50\pm1.96\cdot\tfrac{10}{10}=50\pm1.96$.
+(B) forgets $\sqrt n$; (D) uses $1.645$, which is the 90% value.
+
+
+@ stat m stat-m-004
+T: Regression slope from correlation
+S: regression-correlation
+Q: The correlation between $x$ and $y$ is $r=0.8$, with $s_x=4$ and $s_y=10$. What is the least-squares slope of $y$ on $x$?
+A: $2$
+B: $3.2$
+C: $0.32$
+D: $5$
+ANS: A
+EXP: $b=r\dfrac{s_y}{s_x}=0.8\cdot\tfrac{10}{4}=2$. Regressing $x$ on $y$ instead gives $r\tfrac{s_x}{s_y}=0.32$, which is not the reciprocal of 2 unless $|r|=1$.
+
+
+@ stat m stat-m-005
+T: Sample covariance
+S: regression-correlation
+Q: For paired data $x=(1,2,3)$, $y=(2,4,7)$, what is the sample covariance (denominator $n-1$)?
+A: $2.5$
+B: $\frac53$
+C: $5$
+D: $\frac{13}{3}$
+ANS: A
+EXP: $\bar x=2$, $\bar y=\tfrac{13}{3}$. $\sum(x_i-\bar x)(y_i-\bar y)=(-1)(-\tfrac73)+0+(1)(\tfrac83)=5$.
+Divide by $n-1=2$: $2.5$. (Dividing by $n$ gives $\tfrac53$.)
+
+
+@ stat m stat-m-006
+T: Interpreting a p-value
+S: z-test
+Q: A test gives $p=0.03$. The correct interpretation is:
+A: $P(H_0\text{ is true})=0.03$
+B: assuming $H_0$ is true, the probability of a result at least this extreme is $0.03$
+C: there is a 97% chance $H_1$ is true
+D: the effect size is 0.03
+ANS: B
+EXP: A p-value is computed under $H_0$: $P(\text{data this extreme}\mid H_0)$. It is not $P(H_0\mid\text{data})$; that would need a prior (Bayes).
+
+
+@ stat m stat-m-007
+T: Bias–variance decomposition of MSE
+S: bias-variance
+Q: An estimator has bias $2$ and variance $5$. What is its mean squared error?
+A: $7$
+B: $9$
+C: $3$
+D: $29$
+ANS: B
+EXP: $\text{MSE}=\text{Bias}^2+\text{Var}=4+5=9$. A slightly biased, low-variance estimator (e.g. ridge regression) can beat an unbiased one on MSE.
+
+
+@ stat m stat-m-008
+T: Central limit theorem for a sum
+S: sampling-distributions
+Q: $X_1,\dots,X_{100}$ are iid with mean $2$ and variance $4$. Approximately, $S=\sum X_i$ follows:
+A: $N(200,\ 400)$
+B: $N(200,\ 4)$
+C: $N(2,\ 0.04)$
+D: $N(200,\ 20)$
+ANS: A
+EXP: $E[S]=100\cdot2=200$ and $\operatorname{Var}(S)=100\cdot4=400$ (SD $20$). (C) is the distribution of the mean $\bar X$. (D) puts the SD where the variance belongs.
+
+
+@ stat m stat-m-009
+T: Degrees of freedom of a chi-square test
+S: chi-squared-test
+Q: A chi-square test of independence on a $3\times4$ contingency table has how many degrees of freedom?
+A: $12$
+B: $6$
+C: $7$
+D: $11$
+ANS: B
+EXP: $\text{df}=(r-1)(c-1)=2\cdot3=6$.
+
+
+@ stat m stat-m-010
+T: Coefficient of determination
+S: regression-correlation
+Q: A regression has $\text{SSE}=20$ (residual) and $\text{SST}=80$ (total). What is $R^2$?
+A: $0.25$
+B: $0.75$
+C: $4$
+D: $0.8$
+ANS: B
+EXP: $R^2=1-\dfrac{\text{SSE}}{\text{SST}}=1-\dfrac{20}{80}=0.75$: the model explains 75% of the variance in $y$.
+
+
+@ stat h stat-h-001
+T: Bias of the MLE of normal variance
+S: bias-variance
+Q: For $X_1,\dots,X_n\sim N(\mu,\sigma^2)$, the MLE $\hat\sigma^2=\frac1n\sum(X_i-\bar X)^2$ has expectation:
+A: $\sigma^2$
+B: $\frac{n-1}{n}\sigma^2$
+C: $\frac{n}{n-1}\sigma^2$
+D: $\frac{\sigma^2}{n}$
+ANS: B
+EXP: $E\left[\sum(X_i-\bar X)^2\right]=(n-1)\sigma^2$ because one degree of freedom is used up estimating $\bar X$.
+So the MLE underestimates by the factor $\tfrac{n-1}{n}$; Bessel's correction (dividing by $n-1$) removes the bias.
+
+
+@ stat h stat-h-002
+T: MLE for Uniform(0, θ)
+S: estimation-mle
+Q: Observations from $U(0,\theta)$ are $2.1,\ 4.7,\ 3.3$. The MLE of $\theta$ is:
+A: $4.7$, and it is unbiased
+B: $4.7$, and it tends to underestimate $\theta$
+C: $2\bar x\approx6.73$, and it is unbiased
+D: $\bar x\approx3.37$
+ANS: B
+EXP: $L(\theta)=\theta^{-n}$ for $\theta\ge\max x_i$ (else 0). It is decreasing, so it is maximised at $\hat\theta=\max x_i=4.7$.
+$E[\max]=\tfrac{n}{n+1}\theta<\theta$, so it is biased low. $2\bar x$ is the unbiased method-of-moments estimator, not the MLE.
+
+
+@ stat h stat-h-003
+T: Cramér–Rao lower bound for a Bernoulli
+S: estimation-mle
+Q: For $n$ iid Bernoulli$(p)$ samples, the Cramér–Rao lower bound on the variance of any unbiased estimator of $p$ is:
+A: $\frac{p(1-p)}{n}$
+B: $\frac{1}{np(1-p)}$
+C: $p(1-p)$
+D: $\frac{p}{n}$
+ANS: A
+EXP: Fisher information per sample: $I(p)=\dfrac{1}{p(1-p)}$. The CRLB is $\dfrac1{nI(p)}=\dfrac{p(1-p)}n$.
+$\hat p=\bar X$ attains it, so it is efficient. (B) is $nI(p)$ itself.
+
+
+@ stat h stat-h-004
+T: Required sample size
+S: confidence-intervals
+Q: You want a 95% CI for a mean with margin of error at most $2$. With $\sigma=10$, what is the minimum $n$?
+A: $96$
+B: $97$
+C: $20$
+D: $49$
+ANS: B
+EXP: $1.96\cdot\tfrac{10}{\sqrt n}\le2\Rightarrow\sqrt n\ge9.8\Rightarrow n\ge96.04$.
+Round up to $97$; $96$ would give a margin slightly above 2.
+
+
+@ stat h stat-h-005
+T: Power of a one-sided z-test
+S: z-test
+Q: Test $H_0:\mu=0$ vs $H_1:\mu>0$ with $\sigma=1$, $n=25$, $\alpha=0.05$ (reject if $\bar x>0.329$). If the true $\mu=0.5$, the power is approximately:
+A: $0.05$
+B: $0.20$
+C: $0.80$
+D: $0.95$
+ANS: C
+EXP: $\text{SE}=1/\sqrt{25}=0.2$; the cutoff is $1.645\cdot0.2=0.329$.
+Power $=P(\bar X>0.329\mid\mu=0.5)=P\left(Z>\tfrac{0.329-0.5}{0.2}\right)=P(Z>-0.855)\approx0.80$. Then $\beta\approx0.20$.
+
+
+@ stat h stat-h-006
+T: L1 regularisation as a prior
+S: bayesian-inference
+Q: Lasso ($L_1$-penalised) regression equals MAP estimation with which prior on the weights?
+A: Gaussian
+B: Laplace
+C: Uniform
+D: Beta
+ANS: B
+EXP: MAP minimises $-\log p(y\mid w)-\log p(w)$. A Laplace prior $p(w)\propto e^{-\lambda|w|}$ contributes $\lambda\|w\|_1$.
+A Gaussian prior gives $\lambda\|w\|_2^2$ (ridge). The Laplace prior's sharp peak at 0 is why Lasso produces exact zeros.
+
+
+@ stat h stat-h-007
+T: Law of total variance
+S: descriptive
+Q: A population is 50% group A (mean 10, variance 4) and 50% group B (mean 20, variance 4). What is the overall variance?
+A: $4$
+B: $25$
+C: $29$
+D: $8$
+ANS: C
+EXP: $\operatorname{Var}(Y)=E[\operatorname{Var}(Y\mid G)]+\operatorname{Var}(E[Y\mid G])$.
+Within-group: $4$. Between-group: the group means $10,20$ with equal weight have variance $25$. Total $=29$.
+This within/between split is the basis of ANOVA and of the variance criterion in clustering.
+
+
+@ stat h stat-h-008
+T: Variance of the OLS estimator
+S: regression-correlation
+Q: In $y=X\beta+\varepsilon$ with $\varepsilon\sim N(0,\sigma^2I)$, the covariance of $\hat\beta=(X^TX)^{-1}X^Ty$ is:
+A: $\sigma^2(X^TX)^{-1}$
+B: $\sigma^2X^TX$
+C: $\sigma^2I$
+D: $(X^TX)^{-1}X^T$
+ANS: A
+EXP: $\hat\beta=\beta+(X^TX)^{-1}X^T\varepsilon$, so $\operatorname{Cov}(\hat\beta)=(X^TX)^{-1}X^T(\sigma^2I)X(X^TX)^{-1}=\sigma^2(X^TX)^{-1}$.
+Collinear features make $X^TX$ near-singular, which inflates this variance (multicollinearity).
+
+
+@ stat h stat-h-009
+T: KL divergence between two Gaussians
+S: information-theory
+Q: What is $D_{KL}\big(N(0,1)\,\|\,N(1,1)\big)$?
+A: $0$
+B: $0.5$
+C: $1$
+D: $2$
+ANS: B
+EXP: For equal variances, $D_{KL}\big(N(\mu_1,\sigma^2)\|N(\mu_2,\sigma^2)\big)=\dfrac{(\mu_1-\mu_2)^2}{2\sigma^2}=\tfrac12$.
+This closed form is the KL term in the VAE loss.
+
+
+@ stat h stat-h-010
+T: Multiple testing
+S: z-test
+Q: You run 20 independent tests at $\alpha=0.05$ where every null hypothesis is true. What is the probability of at least one false positive?
+A: $0.05$
+B: $\approx0.64$
+C: $1.0$
+D: $\approx0.36$
+ANS: B
+EXP: $1-(0.95)^{20}\approx1-0.358=0.642$. ($0.36$ is the probability of no false positives.)
+Bonferroni fixes this by testing each at $\alpha/20=0.0025$.
+
+@ graph e graph-e-001
+T: Handshake lemma
+S: basics-degree
+Q: An undirected graph has 10 edges. What is the sum of all vertex degrees?
+A: $10$
+B: $20$
+C: $5$
+D: $40$
+ANS: B
+EXP: Each edge adds 1 to the degree of each of its two endpoints, so $\sum\deg(v)=2|E|=20$.
+
+
+@ graph e graph-e-002
+T: Edges in a complete graph
+S: basics-degree
+Q: How many edges does the complete graph $K_6$ have?
+A: $30$
+B: $15$
+C: $36$
+D: $21$
+ANS: B
+EXP: Every pair of vertices is joined: $\binom62=\tfrac{6\cdot5}{2}=15$. ($21$ is $K_7$; $30$ counts ordered pairs.)
+
+
+@ graph e graph-e-003
+T: Edges in a tree
+S: trees
+Q: A tree has 12 vertices. How many edges does it have?
+A: $12$
+B: $11$
+C: $13$
+D: $66$
+ANS: B
+EXP: Every tree on $n$ vertices has exactly $n-1$ edges: connected with no cycles. Adding any edge creates a cycle.
+
+
+@ graph e graph-e-004
+T: Data structures for BFS and DFS
+S: traversal
+Q: Which pairing of traversal and data structure is correct?
+A: BFS uses a queue; DFS uses a stack
+B: BFS uses a stack; DFS uses a queue
+C: both use a queue
+D: both use a priority queue
+ANS: A
+EXP: BFS explores level by level, first in first out, so it uses a queue. DFS goes deep first, last in first out, so it uses a stack (or recursion).
+Dijkstra is the one that uses a priority queue.
+
+
+@ graph e graph-e-005
+T: Adjacency matrix of an undirected graph
+S: basics-degree
+Q: The adjacency matrix of any simple undirected graph is:
+A: symmetric with zero diagonal
+B: upper triangular
+C: always invertible
+D: orthogonal
+ANS: A
+EXP: Edge $\{i,j\}$ sets $A_{ij}=A_{ji}=1$, so $A$ is symmetric. "Simple" means no self-loops, so the diagonal is zero.
+It is often singular (e.g. any graph with two vertices that have identical neighbourhoods).
+
+
+@ graph e graph-e-006
+T: Impossible degree sequence
+S: basics-degree
+Q: Which degree sequence cannot belong to any simple graph?
+A: $(2,2,2)$
+B: $(3,3,2,2)$
+C: $(3,2,2,1,1)$
+D: $(1,1,1,1)$
+ANS: C
+EXP: The degree sum must be even ($=2|E|$). $3+2+2+1+1=9$ is odd, so (C) is impossible.
+(A) is a triangle, (D) is two disjoint edges, and (B) is $K_4$ minus one edge.
+
+
+@ graph e graph-e-007
+T: Which graph is bipartite
+S: matching-coloring
+Q: Which graph is bipartite?
+A: $K_3$
+B: $C_5$
+C: $C_6$
+D: $K_4$
+ANS: C
+EXP: A graph is bipartite if and only if it has no odd cycle. $C_6$ is an even cycle, so you can alternate two colours around it.
+$K_3$ and $C_5$ are odd cycles, and $K_4$ contains triangles.
+
+
+@ graph e graph-e-008
+T: Shortest paths with negative edges
+S: shortest-paths
+Q: Which algorithm finds single-source shortest paths when some edge weights are negative (but there is no negative cycle)?
+A: Dijkstra
+B: Bellman–Ford
+C: Prim
+D: BFS
+ANS: B
+EXP: Bellman–Ford relaxes every edge $V-1$ times in $O(VE)$, and a $V$-th pass detects negative cycles.
+Dijkstra's greedy finalisation can be wrong with negative edges. Prim builds a minimum spanning tree, not shortest paths. BFS only handles unweighted graphs.
+
+
+@ graph e graph-e-009
+T: Space for an adjacency list
+S: basics-degree
+Q: How much space does an adjacency-list representation of a graph use?
+A: $O(V^2)$
+B: $O(V+E)$
+C: $O(E^2)$
+D: $O(V\log V)$
+ANS: B
+EXP: One list per vertex ($V$) plus one entry per edge endpoint ($2E$ undirected). An adjacency matrix always uses $O(V^2)$, which wastes space on sparse graphs.
+
+
+@ graph e graph-e-010
+T: When a topological order exists
+S: dag-toposort
+Q: A directed graph has a topological ordering if and only if it:
+A: is strongly connected
+B: is a directed acyclic graph (DAG)
+C: has no isolated vertices
+D: is a tree
+ANS: B
+EXP: A cycle $u\to\dots\to u$ would require $u$ to come before itself. Every DAG has a topological order (Kahn's algorithm or DFS finish times).
+Neural network computation graphs are DAGs, which is why backprop can process them in reverse topological order.
+
+
+@ graph m graph-m-001
+T: Spanning trees of K₄
+S: trees
+Q: How many spanning trees does $K_4$ have?
+A: $4$
+B: $6$
+C: $12$
+D: $16$
+ANS: D
+EXP: Cayley's formula: $K_n$ has $n^{n-2}$ labelled spanning trees, so $4^2=16$.
+Breakdown: 4 stars plus 12 paths.
+
+
+@ graph m graph-m-002
+T: Counting triangles with the adjacency matrix
+S: spectral
+Q: $A$ is the adjacency matrix of $K_4$. What is $\operatorname{tr}(A^3)$?
+A: $4$
+B: $12$
+C: $24$
+D: $64$
+ANS: C
+EXP: $(A^3)_{ii}$ counts closed walks of length 3 from $i$. Each triangle gives $6$ such walks (3 starting vertices × 2 directions).
+$K_4$ has $\binom43=4$ triangles, so $\operatorname{tr}(A^3)=24$. (Check: eigenvalues $3,-1,-1,-1$ give $27-3=24$.)
+
+
+@ graph m graph-m-003
+T: Zero eigenvalues of the Laplacian
+S: spectral
+Q: The graph Laplacian $L=D-A$ of a graph with 3 connected components has eigenvalue $0$ with multiplicity:
+A: $0$
+B: $1$
+C: $3$
+D: depends on the number of edges
+ANS: C
+EXP: $x^TLx=\sum_{(i,j)\in E}(x_i-x_j)^2=0$ exactly when $x$ is constant on each component.
+That gives one independent null vector per component, so the multiplicity is 3. Spectral clustering uses this fact.
+
+
+@ graph m graph-m-004
+T: Condition for an Euler circuit
+S: connectivity
+Q: A connected undirected graph has an Euler circuit (a closed walk using every edge exactly once) if and only if:
+A: every vertex has even degree
+B: exactly two vertices have odd degree
+C: it is a complete graph
+D: it has a Hamiltonian cycle
+ANS: A
+EXP: Each pass through a vertex uses one edge in and one edge out, so degrees must be even.
+With exactly two odd vertices you get an Euler path (open trail) instead.
+
+
+@ graph m graph-m-005
+T: Weight of a minimum spanning tree
+S: mst
+Q: Undirected weighted edges: A–B (1), B–C (2), A–C (3), C–D (4), B–D (5). What is the total weight of the minimum spanning tree?
+A: $7$
+B: $6$
+C: $10$
+D: $8$
+ANS: A
+EXP: Kruskal: take A–B (1), take B–C (2), skip A–C (3) because it would form a cycle, take C–D (4). Now all 4 vertices are connected.
+Total $=1+2+4=7$. ($6$ wrongly includes A–C.)
+
+
+@ graph m graph-m-006
+T: Dijkstra on a small directed graph
+S: shortest-paths
+Q: Directed weighted edges: A→B (4), A→C (1), C→B (2), B→D (1), C→D (5). What is the shortest distance from A to D?
+A: $4$
+B: $5$
+C: $6$
+D: $3$
+ANS: A
+EXP: Dijkstra from A: $d(C)=1$, then $d(B)=\min(4,\ 1+2)=3$, then $d(D)=\min(1+5,\ 3+1)=4$.
+Path A→C→B→D. The more direct-looking A→B→D costs 5.
+
+
+@ graph m graph-m-007
+T: Running time of Dijkstra with a heap
+S: shortest-paths
+Q: The running time of Dijkstra's algorithm with a binary heap is:
+A: $O(V^2)$
+B: $O((V+E)\log V)$
+C: $O(VE)$
+D: $O(V+E)$
+ANS: B
+EXP: Each vertex is extracted once ($V\log V$) and each edge may cause a decrease-key ($E\log V$).
+$O(V^2)$ is the array version, which is better for dense graphs; $O(VE)$ is Bellman–Ford.
+
+
+@ graph m graph-m-008
+T: Maximum edges in a bipartite graph
+S: matching-coloring
+Q: What is the maximum number of edges in a simple bipartite graph on 10 vertices?
+A: $45$
+B: $25$
+C: $24$
+D: $20$
+ANS: B
+EXP: With parts of size $a$ and $10-a$, the maximum is $a(10-a)$, achieved by the complete bipartite graph. It peaks at $a=5$: $25$. ($45=\binom{10}{2}$ ignores bipartiteness.)
+
+
+@ graph m graph-m-009
+T: Chromatic number of an odd cycle
+S: matching-coloring
+Q: What is the chromatic number of the cycle $C_7$?
+A: $2$
+B: $3$
+C: $4$
+D: $7$
+ANS: B
+EXP: Alternating 2 colours fails on an odd cycle: the last vertex clashes with the first. Using a third colour for one vertex fixes it, so $\chi(C_{odd})=3$.
+
+
+@ graph m graph-m-010
+T: Edges in a 3-regular graph
+S: basics-degree
+Q: A graph has 8 vertices and every vertex has degree 3. How many edges does it have?
+A: $24$
+B: $12$
+C: $11$
+D: $8$
+ANS: B
+EXP: Handshake: $2|E|=8\cdot3=24\Rightarrow|E|=12$. (The cube graph $Q_3$ is an example.)
+
+
+@ graph h graph-h-001
+T: Adjacency eigenvalues of K₅
+S: spectral
+Q: What are the eigenvalues of the adjacency matrix of $K_5$?
+A: $4$ (once) and $-1$ (four times)
+B: $5$ (once) and $0$ (four times)
+C: $4$ (once) and $0$ (four times)
+D: $1$ (five times)
+ANS: A
+EXP: $A=J-I$. $J$ has eigenvalues $5$ (once) and $0$ (four times), so $A$ has $4$ and $-1\ (\times4)$.
+Check: the trace is $4-4=0$, matching the zero diagonal. The top eigenvalue equals the degree, as it does for any regular graph.
+
+
+@ graph h graph-h-002
+T: Number of labelled graphs
+S: basics-degree
+Q: How many distinct simple graphs are there on 4 labelled vertices?
+A: $16$
+B: $64$
+C: $11$
+D: $4096$
+ANS: B
+EXP: Each of the $\binom42=6$ possible edges is present or absent, so $2^6=64$.
+$11$ is the count of unlabelled graphs (up to isomorphism), a common confusion.
+
+
+@ graph h graph-h-003
+T: Planarity of K₅
+S: basics-degree
+Q: Is $K_5$ planar?
+A: Yes, it can be drawn without crossings
+B: No, because $|E|=10>3|V|-6=9$
+C: No, because it is bipartite
+D: Yes, because every vertex has degree 4
+ANS: B
+EXP: Euler's formula $V-E+F=2$ implies every simple planar graph with $V\ge3$ has $E\le3V-6$.
+$K_5$ has $10>9$, so it is not planar. By Kuratowski's theorem, $K_5$ and $K_{3,3}$ are the obstructions to planarity.
+
+
+@ graph h graph-h-004
+T: Algebraic connectivity of a path
+S: spectral
+Q: What is the algebraic connectivity (second smallest Laplacian eigenvalue) of the path $P_3$ (3 vertices, 2 edges)?
+A: $0$
+B: $1$
+C: $2$
+D: $3$
+ANS: B
+EXP: $L=\begin{pmatrix}1&-1&0\\-1&2&-1\\0&-1&1\end{pmatrix}$ has eigenvalues $0,1,3$ (trace $4$ ✓).
+$\lambda_2=1>0$ confirms the graph is connected. Its eigenvector (the Fiedler vector) $(1,0,-1)$ is used in spectral partitioning.
+
+
+@ graph h graph-h-005
+T: Perfect matchings in K₆
+S: matching-coloring
+Q: How many perfect matchings does $K_6$ have?
+A: $15$
+B: $720$
+C: $90$
+D: $6$
+ANS: A
+EXP: Vertex 1 can pair with 5 others; then the smallest remaining vertex has 3 choices; then 1 choice. $5\cdot3\cdot1=15=(2n-1)!!$ for $n=3$.
+
+
+@ graph h graph-h-006
+T: Stationary distribution of a random walk
+S: random-walks
+Q: A random walk on the star graph with one centre and 4 leaves moves to a uniformly random neighbour at each step. What is the stationary probability of the centre?
+A: $\frac15$
+B: $\frac12$
+C: $\frac45$
+D: $\frac14$
+ANS: B
+EXP: For a random walk on an undirected graph, $\pi_v=\dfrac{\deg v}{2|E|}$. Here $|E|=4$, so $\pi_{centre}=\tfrac48=\tfrac12$ (each leaf gets $\tfrac18$).
+This degree-proportional stationary distribution underlies PageRank without teleportation.
+
+
+@ graph h graph-h-007
+T: Closed walks in a bipartite graph
+S: spectral
+Q: How many closed walks of length 3 start and end at a given vertex of the cycle $C_4$?
+A: $0$
+B: $2$
+C: $4$
+D: $8$
+ANS: A
+EXP: $C_4$ is bipartite, so every walk alternates sides and any closed walk has even length. So $(A^3)_{ii}=0$.
+Equivalently, a graph is bipartite iff $\operatorname{tr}(A^k)=0$ for all odd $k$.
+
+
+@ graph h graph-h-008
+T: Complexity of finding SCCs
+S: connectivity
+Q: Kosaraju's algorithm for strongly connected components runs in:
+A: $O(V+E)$
+B: $O(V^2)$
+C: $O(VE)$
+D: $O(E\log V)$
+ANS: A
+EXP: Two DFS passes: one on $G$ to get finish order, one on the reversed graph $G^T$ in decreasing finish time. Each is $O(V+E)$, and so is reversing the graph. Tarjan's algorithm achieves the same in one pass.
+
+
+@ graph h graph-h-009
+T: Counting leaves in a tree
+S: trees
+Q: A tree has 3 vertices of degree 3, 2 vertices of degree 2, and all other vertices have degree 1. How many leaves does it have?
+A: $3$
+B: $4$
+C: $5$
+D: $6$
+ANS: C
+EXP: Let $L$ be the number of leaves. Then $n=5+L$ and $|E|=n-1=4+L$.
+Handshake: $3\cdot3+2\cdot2+L=2(4+L)\Rightarrow13+L=8+2L\Rightarrow L=5$.
+
+
+@ graph h graph-h-010
+T: Spectrum of the normalised adjacency
+S: spectral
+Q: In graph neural networks, $\hat A=D^{-1/2}AD^{-1/2}$ (graph with no isolated vertices). Its eigenvalues always lie in:
+A: $[-1,\ 1]$
+B: $[0,\ 1]$
+C: $[0,\ 2]$
+D: $[-d_{max},\ d_{max}]$
+ANS: A
+EXP: $\hat A=I-L_{sym}$, and the normalised Laplacian $L_{sym}$ has eigenvalues in $[0,2]$, so $\hat A$'s lie in $[-1,1]$.
+The value $-1$ occurs exactly for bipartite components. Bounded spectrum keeps repeated GCN propagation numerically stable, which is why GCNs add self-loops and renormalise.
+
+</script>
+<script>
+/* ---------- core: rng, helpers, bank parser, generators ---------- */
+const TOPICS = { la: 'Linear Algebra', prob: 'Probability', calc: 'Calculus & Optimization', stat: 'Statistics', graph: 'Graph Theory' };
+const TOPIC_SHORT = { la: 'Lin Alg', prob: 'Prob', calc: 'Calculus', stat: 'Stats', graph: 'Graphs' };
+const DIFF = { e: 'Easy', m: 'Medium', h: 'Hard' };
+const QTYPES = { mcq: 'Single choice', nat: 'Numerical', msq: 'Multiple select' };
+// Syllabus subtopics per topic (slug -> label). Keep in sync with CLAUDE.md.
+const SUBTOPICS = {
+  la: { 'vectors-norms': 'Vectors & norms', 'vector-spaces': 'Vector spaces', 'matrix-ops': 'Matrix operations', 'linear-systems': 'Linear systems',
+    'rank-nullity': 'Rank & nullity', determinants: 'Determinants', eigen: 'Eigenvalues & eigenvectors', 'special-matrices': 'Special matrices',
+    'quadratic-forms': 'Quadratic forms', 'projections-least-squares': 'Projections & least squares', lu: 'LU decomposition', 'svd-pca': 'SVD & PCA' },
+  prob: { counting: 'Counting', 'axioms-events': 'Axioms & events', 'conditional-bayes': 'Conditional probability & Bayes', independence: 'Independence',
+    'random-variables': 'Random variables (PMF, PDF, CDF)', 'expectation-variance': 'Expectation & variance', 'discrete-dists': 'Discrete distributions',
+    'continuous-dists': 'Continuous distributions', 'joint-conditional': 'Joint & conditional distributions', 'conditional-expectation': 'Conditional expectation',
+    'covariance-correlation': 'Covariance & correlation', transformations: 'Transformations', 'limit-theorems': 'Limit theorems', 'markov-chains': 'Markov chains' },
+  calc: { limits: 'Limits', 'continuity-differentiability': 'Continuity & differentiability', derivatives: 'Derivatives', 'taylor-series': 'Taylor series',
+    'maxima-minima': 'Maxima & minima', 'single-var-optimization': 'Single-variable optimisation', integrals: 'Integrals',
+    'gradients-multivariable': 'Gradients (multivariable)', 'gradient-descent': 'Gradient descent', convexity: 'Convexity', 'constrained-optimization': 'Constrained optimisation' },
+  stat: { descriptive: 'Descriptive statistics', 'sampling-distributions': 'Sampling distributions', 'estimation-mle': 'Estimation & MLE', 'bias-variance': 'Bias & variance',
+    'confidence-intervals': 'Confidence intervals', 'z-test': 'z-test', 't-test': 't-test', 'chi-squared-test': 'Chi-squared test',
+    'regression-correlation': 'Regression & correlation', 'bayesian-inference': 'Bayesian inference', 'information-theory': 'Information theory' },
+  graph: { 'basics-degree': 'Basics & degree', trees: 'Trees', traversal: 'Traversal (BFS/DFS)', 'shortest-paths': 'Shortest paths', mst: 'Minimum spanning trees',
+    'dag-toposort': 'DAGs & topological sort', connectivity: 'Connectivity', 'matching-coloring': 'Matching & colouring', spectral: 'Spectral graph theory', 'random-walks': 'Random walks' },
+};
+const subLabel = (topic, sub) => (SUBTOPICS[topic] && SUBTOPICS[topic][sub]) || sub || 'Untagged';
+
+function mulberry32(a) { return function () { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+function hashStr(s) { let h = 2166136261 >>> 0; for (let i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619); } return h >>> 0; }
+const ri = (r, a, b) => a + Math.floor(r() * (b - a + 1));
+const pick = (r, arr) => arr[Math.floor(r() * arr.length)];
+function shuffle(r, arr) { const a = arr.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(r() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+function gcd(a, b) { a = Math.abs(a); b = Math.abs(b); while (b) { [a, b] = [b, a % b]; } return a || 1; }
+function fr(n, d) { if (d === 0) return 'undefined'; if (d < 0) { n = -n; d = -d; } const g = gcd(n, d); n /= g; d /= g; if (d === 1) return String(n); return (n < 0 ? '-' : '') + '\\frac{' + Math.abs(n) + '}{' + d + '}'; }
+function num(x, dp = 4) { const v = Math.round(x * 10 ** dp) / 10 ** dp; return String(Object.is(v, -0) ? 0 : v); }
+const P = x => (x < 0 ? '(' + x + ')' : String(x));
+const M = s => '$' + s + '$';
+const vec = (...xs) => '\\left(' + xs.join(',\\ ') + '\\right)';
+const pmat = rows => '\\begin{pmatrix}' + rows.map(r => r.join('&')).join('\\\\') + '\\end{pmatrix}';
+function lin(terms) { let out = ''; for (const [c, sym] of terms) { if (!c) continue; const a = Math.abs(c); const body = (a === 1 && sym ? '' : String(a)) + sym; out += (c < 0 ? '-' : (out ? '+' : '')) + body; } return out || '0'; }
+function binom(n, k) { let r = 1; for (let i = 1; i <= k; i++) r = r * (n - k + i) / i; return Math.round(r); }
+
+/* ---------- bank parser ---------- */
+function parseBank(text) {
+  const out = []; const counters = {}; let cur = null, key = null;
+  // ANS is interpreted after the whole block is read, because TYPE may come after it.
+  // mcq: ans = option index (-1 if invalid). msq: ans = sorted option indices. nat: ans = number (NaN if invalid), tol = tolerance.
+  const finish = () => {
+    if (!cur) return;
+    const raw = cur.ansRaw;
+    if (cur.type === 'nat') { cur.ans = raw !== '' && /^[-+]?(\d+\.?\d*|\.\d+)([eE][-+]?\d+)?$/.test(raw) ? Number(raw) : NaN;
+      cur.tol = cur.tolRaw === '' ? 0.01 : (/^(\d+\.?\d*|\.\d+)([eE][-+]?\d+)?$/.test(cur.tolRaw) ? Number(cur.tolRaw) : NaN); }
+    else if (cur.type === 'msq') cur.ans = raw.split(',').map(s => s.trim()).filter(Boolean).map(s => (s.length === 1 ? 'ABCD'.indexOf(s) : -1)).sort((a, b) => a - b);
+    else cur.ans = raw.length === 1 ? 'ABCD'.indexOf(raw) : -1;
+    out.push(cur);
+  };
+  for (const raw of text.split('\n')) {
+    const line = raw.replace(/\s+$/, '');
+    const head = line.match(/^@ (\w+) ([emh])(?: (\S+))?$/);
+    if (head) {
+      finish();
+      const [, topic, diff, explicitId] = head; const ck = topic + diff;
+      counters[ck] = (counters[ck] || 0) + 1;
+      cur = { id: explicitId || (topic + '-' + diff + '-' + String(counters[ck]).padStart(3, '0')), topic, diff, sub: '', type: 'mcq', typeRaw: '', title: '', q: '', opts: ['', '', '', ''], ansRaw: '', tolRaw: '', ans: -1, exp: '' };
+      key = null; continue;
+    }
+    if (!cur) continue;
+    const kv = line.match(/^(T|S|TYPE|TOL|Q|A|B|C|D|ANS|EXP): ?(.*)$/);
+    if (kv) {
+      key = kv[1]; const v = kv[2];
+      if (key === 'T') cur.title = v; else if (key === 'S') cur.sub = v.trim(); else if (key === 'Q') cur.q = v; else if (key === 'EXP') cur.exp = v;
+      else if (key === 'TYPE') { cur.typeRaw = v.trim(); cur.type = QTYPES[cur.typeRaw] ? cur.typeRaw : 'invalid'; }
+      else if (key === 'TOL') cur.tolRaw = v.trim();
+      else if (key === 'ANS') cur.ansRaw = v.trim();
+      else cur.opts['ABCD'.indexOf(key)] = v;
+      continue;
+    }
+    if (line.trim() === '') continue;
+    if (key === 'Q') cur.q += '\n' + line; else if (key === 'EXP') cur.exp += '\n' + line;
+  }
+  finish();
+  return out;
+}
+
+/* ---------- graph helpers for generators ---------- */
+const LET = 'ABCDEF';
+function randGraph(r, n, extra) {
+  const perm = shuffle(r, [...Array(n).keys()]); const E = new Map();
+  const key = (u, v) => (u < v ? u + '-' + v : v + '-' + u);
+  for (let i = 1; i < n; i++) { const u = perm[i], v = perm[ri(r, 0, i - 1)]; E.set(key(u, v), { u: Math.min(u, v), v: Math.max(u, v) }); }
+  let tries = 0;
+  while (E.size < n - 1 + extra && tries < 200) { tries++; const u = ri(r, 0, n - 1), v = ri(r, 0, n - 1); if (u === v) continue; const k = key(u, v); if (!E.has(k)) E.set(k, { u: Math.min(u, v), v: Math.max(u, v) }); }
+  return [...E.values()].sort((a, b) => a.u - b.u || a.v - b.v);
+}
+const edgeList = es => es.map(e => LET[e.u] + '–' + LET[e.v] + ' (' + e.w + ')').join(', ');
+
+/* ---------- generators: fresh numbers every time ---------- */
+const GENS = [
+  { id: 'det2', topic: 'la', diff: 'e', title: 'Determinant of a 2×2 matrix (fresh numbers)', make(r) {
+    const a = ri(r, -4, 8), b = ri(r, -4, 8), c = ri(r, -4, 8), d = ri(r, -4, 8); const ans = a * d - b * c;
+    return { q: 'Compute ' + M('\\det' + pmat([[a, b], [c, d]])) + '.', ans: M(ans), wrong: [a * d + b * c, b * c - a * d, a * b - c * d, a + d, ans + 2].map(M),
+      exp: M('\\det\\begin{pmatrix}a&b\\\\c&d\\end{pmatrix}=ad-bc') + '.\n' + M(P(a) + '\\cdot' + P(d) + '-' + P(b) + '\\cdot' + P(c) + '=' + a * d + '-' + P(b * c) + '=' + ans) + '.' };
+  } },
+  { id: 'matvec', topic: 'la', diff: 'e', title: 'Matrix–vector product (fresh numbers)', make(r) {
+    const A = [[ri(r, -3, 4), ri(r, -3, 4), ri(r, -3, 4)], [ri(r, -3, 4), ri(r, -3, 4), ri(r, -3, 4)]]; const x = [ri(r, -2, 3), ri(r, -2, 3), ri(r, -2, 3)];
+    const y = A.map(row => row[0] * x[0] + row[1] * x[1] + row[2] * x[2]);
+    const cv = v => M(pmat([[v[0]], [v[1]]]));
+    const colsum = [A[0][0] + A[0][1] + A[0][2], A[1][0] + A[1][1] + A[1][2]];
+    return { q: 'Compute ' + M('Ax') + ' for ' + M('A=' + pmat(A)) + ' and ' + M('x=' + pmat(x.map(v => [v]))) + '.', ans: cv(y),
+      wrong: [cv([y[1], y[0]]), cv([y[0] + x[0], y[1] - x[2]]), cv(colsum), cv([y[0] - 1, y[1] + 1]), cv([-y[0], y[1]])],
+      exp: 'Each entry is a row of ' + M('A') + ' dotted with ' + M('x') + ':\n' + A.map((row, i) => M('y_' + (i + 1) + '=' + row.map((v, j) => P(v) + '\\cdot' + P(x[j])).join('+') + '=' + y[i])).join('\n') };
+  } },
+  { id: 'eig2', topic: 'la', diff: 'm', title: 'Eigenvalues of a 2×2 matrix (fresh numbers)', make(r) {
+    let l1 = ri(r, -3, 6), l2 = ri(r, -3, 6); if (l1 === l2) l2 = l1 + ri(r, 1, 3);
+    const s = l1 + l2, p = l1 * l2, a = ri(r, -2, 5), d = s - a; const need = a * d - p; // b*c = need
+    const opts = [1, -1, 2, -2, 3].filter(b => need % b === 0); const b = need === 0 ? pick(r, [1, 2, -1]) : pick(r, opts); const c = need === 0 ? 0 : need / b;
+    const hi = Math.max(l1, l2), lo = Math.min(l1, l2); const pr = (x, y) => M('\\lambda=' + Math.max(x, y) + ',\\ ' + Math.min(x, y));
+    return { q: 'Find the eigenvalues of ' + M('A=' + pmat([[a, b], [c, d]])) + '.', ans: pr(hi, lo), wrong: [pr(a, d), pr(-hi, -lo), pr(s, p), pr(hi + 1, lo - 1), pr(hi, -lo), pr(hi + 2, lo)],
+      exp: M('\\operatorname{tr}A=' + a + '+' + P(d) + '=' + s) + ', ' + M('\\det A=' + P(a) + '\\cdot' + P(d) + '-' + P(b) + '\\cdot' + P(c) + '=' + p) + '.\nCharacteristic equation: ' + M(lin([[1, '\\lambda^2'], [-s, '\\lambda'], [p, '']]) + '=0') + ', which factors as ' + M('(' + lin([[1, '\\lambda'], [-hi, '']]) + ')(' + lin([[1, '\\lambda'], [-lo, '']]) + ')=0') + '.\nCheck: the eigenvalues sum to the trace and multiply to the determinant.' };
+  } },
+  { id: 'inv2', topic: 'la', diff: 'm', title: 'Entry of a 2×2 inverse (fresh numbers)', make(r) {
+    let a, b, c, d, det, t = 0; do { a = ri(r, -3, 6); b = ri(r, -4, 5); c = ri(r, -4, 5); d = ri(r, -3, 6); det = a * d - b * c; t++; } while (([1, -1, 2, -2, 3, -3, 4, 5].indexOf(det) < 0 || b === 0) && t < 500);
+    return { q: 'For ' + M('A=' + pmat([[a, b], [c, d]])) + ', what is the (1,2) entry (row 1, column 2) of ' + M('A^{-1}') + '?', ans: M(fr(-b, det)),
+      wrong: [fr(b, det), fr(-c, det), fr(d, det), fr(a, det), fr(-b, 1), fr(det, -b)].map(M),
+      exp: M('A^{-1}=\\dfrac{1}{ad-bc}\\begin{pmatrix}d&-b\\\\-c&a\\end{pmatrix}') + ', and ' + M('ad-bc=' + det) + '.\nThe (1,2) entry is ' + M('\\dfrac{-b}{\\det A}=\\dfrac{' + (-b) + '}{' + det + '}=' + fr(-b, det)) + '. Swap the diagonal, negate the off-diagonal, divide by the determinant.' };
+  } },
+  { id: 'polyeig', topic: 'la', diff: 'h', title: 'Eigenvalues of a matrix polynomial (fresh numbers)', make(r) {
+    const a = ri(r, 1, 5), b = ri(r, 1, 4); const k = ri(r, -4, 3), m = ri(r, -3, 4);
+    const l1 = a + b, l2 = a - b; const p = x => x * x + k * x + m;
+    const pr = (x, y) => M(Math.max(x, y) + '\\text{ and }' + Math.min(x, y));
+    const poly = lin([[1, 'A^2'], [k, 'A'], [m, 'I']]), polyL = lin([[1, '\\lambda^2'], [k, '\\lambda'], [m, '']]);
+    return { q: 'Let ' + M('A=' + pmat([[a, b], [b, a]])) + '. What are the eigenvalues of ' + M('B=' + poly) + '?', ans: pr(p(l1), p(l2)),
+      wrong: [pr(l1, l2), pr(l1 * l1, l2 * l2), pr(p(l1) + 1, p(l2) - 1), pr(p(a), p(b)), pr(p(l1), p(-l2))],
+      exp: M('A') + ' is symmetric with trace ' + M(2 * a) + ' and det ' + M(a * a - b * b) + ', so its eigenvalues are ' + M('a\\pm b=' + l1 + ',\\ ' + l2) + ' (eigenvectors ' + M('(1,1)') + ' and ' + M('(1,-1)') + ').\nIf ' + M('Av=\\lambda v') + ' then ' + M('p(A)v=p(\\lambda)v') + '. With ' + M('p(\\lambda)=' + polyL) + ':\n' + M('p(' + l1 + ')=' + p(l1)) + ', ' + M('p(' + l2 + ')=' + p(l2)) + '.' };
+  } },
+  { id: 'union', topic: 'prob', diff: 'e', title: 'Union of independent events (fresh numbers)', make(r) {
+    const a = ri(r, 1, 7) / 10, b = ri(r, 1, 7) / 10; const ans = a + b - a * b; const f = x => M(num(x, 3));
+    return { q: 'Events ' + M('A') + ' and ' + M('B') + ' are independent with ' + M('P(A)=' + a) + ' and ' + M('P(B)=' + b) + '. Find ' + M('P(A\\cup B)') + '.', ans: f(ans),
+      wrong: [Math.min(1, a + b), a * b, a + b - 2 * a * b, (1 - a) * (1 - b), ans + 0.05].map(f),
+      exp: 'Independence gives ' + M('P(A\\cap B)=' + a + '\\times' + b + '=' + num(a * b, 3)) + '.\n' + M('P(A\\cup B)=' + a + '+' + b + '-' + num(a * b, 3) + '=' + num(ans, 3)) + '. Equivalently ' + M('1-(1-' + a + ')(1-' + b + ')') + '.' };
+  } },
+  { id: 'expect', topic: 'prob', diff: 'e', title: 'Expected value of a discrete variable (fresh numbers)', make(r) {
+    const ps = pick(r, [[0.2, 0.3, 0.5], [0.1, 0.6, 0.3], [0.25, 0.25, 0.5], [0.4, 0.4, 0.2], [0.5, 0.3, 0.2]]);
+    const xs = shuffle(r, [-2, -1, 0, 1, 2, 3, 4, 5, 6, 8, 10]).slice(0, 3).sort((a, b) => a - b);
+    const E = xs.reduce((s, x, i) => s + x * ps[i], 0); const E2 = xs.reduce((s, x, i) => s + x * x * ps[i], 0);
+    const f = x => M(num(x, 3));
+    return { q: M('X') + ' takes values ' + M(xs.join(',\\ ')) + ' with probabilities ' + M(ps.join(',\\ ')) + '. Find ' + M('E[X]') + '.', ans: f(E),
+      wrong: [(xs[0] + xs[1] + xs[2]) / 3, E2, xs.reduce((s, x, i) => s + x * ps[2 - i], 0), E + 0.5, E - 1].map(f),
+      exp: M('E[X]=\\sum x_ip_i=' + xs.map((x, i) => P(x) + '(' + ps[i] + ')').join('+') + '=' + num(E, 3)) + '.\nThe plain average of the values ignores the probabilities.' };
+  } },
+  { id: 'binom', topic: 'prob', diff: 'm', title: 'Binomial probability (fresh numbers)', make(r) {
+    const n = ri(r, 4, 8), k = ri(r, 1, n - 1), p = pick(r, [0.2, 0.3, 0.4, 0.6]); const q = Math.round((1 - p) * 10) / 10;
+    const ans = binom(n, k) * p ** k * q ** (n - k); const f = x => M('\\approx' + num(x, 4));
+    return { q: 'A test has ' + n + ' independent questions, and you get each right with probability ' + M(p) + '. What is ' + M('P(\\text{exactly } ' + k + '\\text{ right})') + '?', ans: f(ans),
+      wrong: [p ** k * q ** (n - k), binom(n, k) * q ** k * p ** (n - k), binom(n, k) * p ** k, 1 - ans, binom(n, k) / 2 ** n].map(f),
+      exp: M('X\\sim\\text{Bin}(' + n + ',' + p + ')') + ': ' + M('P(X=' + k + ')=\\binom{' + n + '}{' + k + '}(' + p + ')^{' + k + '}(' + q + ')^{' + (n - k) + '}=' + binom(n, k) + '\\times' + num(p ** k, 6) + '\\times' + num(q ** (n - k), 6) + '\\approx' + num(ans, 4)) + '.\nThe ' + M('\\binom{n}{k}') + ' factor counts which ' + k + ' questions are the correct ones.' };
+  } },
+  { id: 'bayes', topic: 'prob', diff: 'm', title: 'Bayes’ theorem (fresh numbers)', make(r) {
+    const pr = pick(r, [0.01, 0.02, 0.05, 0.1]), se = pick(r, [0.9, 0.95, 0.99]), fp = pick(r, [0.02, 0.05, 0.1]);
+    const num1 = pr * se, den = num1 + (1 - pr) * fp, ans = num1 / den; const f = x => M('\\approx' + num(x, 3));
+    return { q: 'A spam filter: ' + num(pr * 100) + '% of emails are spam. The filter flags ' + num(se * 100) + '% of spam and wrongly flags ' + num(fp * 100) + '% of legitimate email. Given an email is flagged, what is the probability it is spam?', ans: f(ans),
+      wrong: [se, num1, 1 - fp, pr, (se + pr) / 2].map(f),
+      exp: M('P(\\text{flag})=' + pr + '\\cdot' + se + '+' + num(1 - pr, 2) + '\\cdot' + fp + '=' + num(den, 5)) + '.\n' + M('P(\\text{spam}\\mid\\text{flag})=\\dfrac{' + num(num1, 5) + '}{' + num(den, 5) + '}\\approx' + num(ans, 3)) + '.\nWhen the base rate is low, false positives from the large legitimate pool dominate.' };
+  } },
+  { id: 'markov', topic: 'prob', diff: 'h', title: 'Stationary distribution of a 2-state chain (fresh numbers)', make(r) {
+    const a = ri(r, 1, 6) / 10; let b = ri(r, 1, 6) / 10; if (b === a) b = Math.round((b + 0.1) * 10) / 10;
+    const p1 = b / (a + b), p2 = a / (a + b); const pr = (x, y) => M('\\left(' + num(x, 3) + ',\\ ' + num(y, 3) + '\\right)');
+    return { q: 'A Markov chain has transition matrix ' + M('P=' + pmat([[num(1 - a, 2), a], [b, num(1 - b, 2)]])) + ' (rows = current state). What is its stationary distribution ' + M('\\pi') + '?', ans: pr(p1, p2),
+      wrong: [pr(p2, p1), pr(0.5, 0.5), pr(1 - a, a), pr(1 - b, b)],
+      exp: 'At stationarity, probability flow between the states balances: ' + M('\\pi_1\\cdot' + a + '=\\pi_2\\cdot' + b) + '.\nWith ' + M('\\pi_1+\\pi_2=1') + ': ' + M('\\pi_1=\\dfrac{' + b + '}{' + a + '+' + b + '}\\approx' + num(p1, 3)) + ', ' + M('\\pi_2\\approx' + num(p2, 3)) + '.' };
+  } },
+  { id: 'grad', topic: 'calc', diff: 'e', title: 'Gradient at a point (fresh numbers)', make(r) {
+    const a = ri(r, 1, 4), b = ri(r, -3, 3) || 2, x = ri(r, -3, 3) || 1, y = ri(r, -3, 3) || 2;
+    const gx = 2 * a * x * y, gy = a * x * x + 3 * b * y * y; const v = (p, q) => M(vec(p, q));
+    return { q: 'For ' + M('f(x,y)=' + (a === 1 ? '' : a) + 'x^2y' + (b > 0 ? '+' : '-') + (Math.abs(b) === 1 ? '' : Math.abs(b)) + 'y^3') + ', compute ' + M('\\nabla f(' + x + ',' + y + ')') + '.', ans: v(gx, gy),
+      wrong: [v(gy, gx), v(2 * a * x, a * x * x + 3 * b * y), v(gx, 3 * b * y * y), v(a * x * y, a * x * x + b * y * y), v(gx, gy + a * x * x)],
+      exp: M('\\partial f/\\partial x=' + 2 * a + 'xy=' + gx) + ' and ' + M('\\partial f/\\partial y=' + a + 'x^2+' + P(3 * b) + 'y^2=' + a * x * x + '+' + P(3 * b * y * y) + '=' + gy) + '.' };
+  } },
+  { id: 'gdstep', topic: 'calc', diff: 'e', title: 'One gradient descent step (fresh numbers)', make(r) {
+    const a = ri(r, 1, 3), b = ri(r, -6, 6), x0 = ri(r, -4, 5) || 2, eta = pick(r, [0.1, 0.05, 0.2, 0.25]);
+    const g = 2 * a * x0 + b, x1 = x0 - eta * g; const f = x => M(num(x, 4));
+    return { q: 'Run one step of gradient descent on ' + M('f(x)=' + (a === 1 ? '' : a) + 'x^2' + (b ? (b > 0 ? '+' : '') + b + 'x' : '')) + ' from ' + M('x_0=' + x0) + ' with learning rate ' + M('\\eta=' + eta) + '. What is ' + M('x_1') + '?', ans: f(x1),
+      wrong: [x0 + eta * g, x0 - eta * (a * x0 + b), x0 - g, x0 - eta * 2 * a * x0, x1 + eta].map(f),
+      exp: M("f'(x)=" + 2 * a + 'x' + (b ? (b > 0 ? '+' : '') + b : '')) + ', so ' + M("f'(" + x0 + ')=' + g) + '.\n' + M('x_1=x_0-\\eta f\'(x_0)=' + x0 + '-' + eta + '\\cdot' + P(g) + '=' + num(x1, 4)) + '. Step against the gradient.' };
+  } },
+  { id: 'quadmin', topic: 'calc', diff: 'm', title: 'Minimiser of a 2-D quadratic (fresh numbers)', make(r) {
+    const a = ri(r, 1, 4), b = ri(r, 1, 4), c = ri(r, -8, 8) || 4, d = ri(r, -8, 8) || -2;
+    const v = (p, q) => M(vec(p, q)); const t = (k, s) => (k ? (k > 0 ? '+' : '-') + (Math.abs(k) === 1 ? '' : Math.abs(k)) + s : '');
+    return { q: 'Find the minimiser of ' + M('f(x,y)=' + (a === 1 ? '' : a) + 'x^2' + t(b, 'y^2') + t(c, 'x') + t(d, 'y')) + '.', ans: v(fr(-c, 2 * a), fr(-d, 2 * b)),
+      wrong: [v(fr(c, 2 * a), fr(d, 2 * b)), v(fr(-c, a), fr(-d, b)), v(fr(-c, 2 * b), fr(-d, 2 * a)), v(fr(-d, 2 * b), fr(-c, 2 * a)), v(fr(-c, 2 * a), fr(d, 2 * b))],
+      exp: 'Set the gradient to zero: ' + M('\\partial_x f=' + 2 * a + 'x' + t(c, '') + '=0\\Rightarrow x=' + fr(-c, 2 * a)) + ' and ' + M('\\partial_y f=' + 2 * b + 'y' + t(d, '') + '=0\\Rightarrow y=' + fr(-d, 2 * b)) + '.\nThe Hessian ' + M('\\operatorname{diag}(' + 2 * a + ',' + 2 * b + ')') + ' is positive definite, so this is the global minimum.' };
+  } },
+  { id: 'lagr', topic: 'calc', diff: 'm', title: 'Lagrange multipliers (fresh numbers)', make(r) {
+    const a = ri(r, 1, 4), b = ri(r, 1, 4), c = ri(r, 2, 12);
+    return { q: 'Maximise ' + M('xy') + ' subject to ' + M((a === 1 ? '' : a) + 'x+' + (b === 1 ? '' : b) + 'y=' + c) + ' (with ' + M('x,y>0') + ').', ans: M(fr(c * c, 4 * a * b)),
+      wrong: [fr(c * c, a * b), fr(c * c, 4), fr(c * c, 2 * a * b), fr(c * c, 4 * (a + b)), fr(c, 4 * a * b)].map(M),
+      exp: M('\\mathcal L=xy-\\lambda(' + a + 'x+' + b + 'y-' + c + ')') + ': ' + M('y=' + a + '\\lambda') + ', ' + M('x=' + b + '\\lambda') + ', so ' + M(a + 'x=' + b + 'y') + ' and each term is half the budget.\n' + M('x=' + fr(c, 2 * a) + ',\\ y=' + fr(c, 2 * b)) + ', giving ' + M('xy=\\dfrac{c^2}{4ab}=' + fr(c * c, 4 * a * b)) + '.' };
+  } },
+  { id: 'newton', topic: 'calc', diff: 'h', title: 'Two steps of Newton’s method (fresh numbers)', make(r) {
+    const c = pick(r, [2, 3, 5, 6, 7, 10, 11]), x0 = ri(r, 1, 3);
+    let p = x0 * x0 + c, q = 2 * x0; let g = gcd(p, q); p /= g; q /= g; // x1 = p/q
+    let p2 = p * p + c * q * q, q2 = 2 * p * q; g = gcd(p2, q2); p2 /= g; q2 /= g;
+    const wrongs = [fr(p, q), fr(p * p - c * q * q, 2 * p * q), fr(x0 * x0 - c, 2 * x0), fr(p2 + q2, q2), fr(p2 * 2, q2 * 2 + 1)].map(M);
+    return { q: 'Apply Newton’s method to ' + M('f(x)=x^2-' + c) + ' starting at ' + M('x_0=' + x0) + '. What is ' + M('x_2') + '?', ans: M(fr(p2, q2)), wrong: wrongs,
+      exp: 'Newton: ' + M('x_{n+1}=x_n-\\dfrac{x_n^2-' + c + '}{2x_n}=\\dfrac{x_n^2+' + c + '}{2x_n}') + '.\n' + M('x_1=\\dfrac{' + (x0 * x0) + '+' + c + '}{' + 2 * x0 + '}=' + fr(p, q)) + ', ' + M('x_2=' + fr(p2, q2) + '\\approx' + num(p2 / q2, 5)) + ' (true root ' + M('\\sqrt{' + c + '}\\approx' + num(Math.sqrt(c), 5)) + ').' };
+  } },
+  { id: 'zscore', topic: 'stat', diff: 'e', title: 'z-score (fresh numbers)', make(r) {
+    const mu = ri(r, 40, 80), s = pick(r, [4, 5, 8, 10, 12]), z0 = pick(r, [-2, -1.5, -1, -0.5, 0.5, 1, 1.25, 1.5, 2, 2.5]); const x = mu + z0 * s; const f = v => M(num(v, 3));
+    return { q: 'A variable has mean ' + M(mu) + ' and standard deviation ' + M(s) + '. What is the z-score of ' + M(num(x, 2)) + '?', ans: f(z0),
+      wrong: [(x - mu) / (s * s), -z0, x - mu, (x - mu) / Math.sqrt(s), z0 + 1].map(f),
+      exp: M('z=\\dfrac{x-\\mu}{\\sigma}=\\dfrac{' + num(x, 2) + '-' + mu + '}{' + s + '}=' + num(z0, 3)) + '.' };
+  } },
+  { id: 'svar', topic: 'stat', diff: 'm', title: 'Sample variance (fresh numbers)', make(r) {
+    const n = ri(r, 4, 5); let xs; do { xs = Array.from({ length: n }, () => ri(r, 1, 12)); } while (xs.reduce((a, b) => a + b, 0) % n !== 0);
+    const mean = xs.reduce((a, b) => a + b, 0) / n; const ss = xs.reduce((a, x) => a + (x - mean) ** 2, 0); const f = v => M(num(v, 3));
+    return { q: 'Find the sample variance ' + M('s^2') + ' (denominator ' + M('n-1') + ') of ' + M('\\{' + xs.join(',') + '\\}') + '.', ans: f(ss / (n - 1)),
+      wrong: [ss / n, Math.sqrt(ss / (n - 1)), ss, ss / (n - 2), mean].map(f),
+      exp: 'Mean ' + M('\\bar x=' + mean) + '. Squared deviations: ' + M(xs.map(x => (x - mean) ** 2).join(',\\ ')) + ', summing to ' + M(ss) + '.\n' + M('s^2=\\dfrac{' + ss + '}{' + (n - 1) + '}\\approx' + num(ss / (n - 1), 3)) + '. Dividing by ' + M('n') + ' gives the biased MLE.' };
+  } },
+  { id: 'ci', topic: 'stat', diff: 'm', title: 'Confidence interval for a mean (fresh numbers)', make(r) {
+    const xb = ri(r, 20, 120), s = pick(r, [4, 6, 8, 10, 12, 15]), n = pick(r, [16, 25, 36, 49, 64, 100]); const se = s / Math.sqrt(n);
+    const ci = z => M('(' + num(xb - z * se, 2) + ',\\ ' + num(xb + z * se, 2) + ')');
+    return { q: 'A sample of ' + M('n=' + n) + ' has mean ' + M(xb) + '. The population SD is known to be ' + M(s) + '. What is the 95% confidence interval for ' + M('\\mu') + '?', ans: ci(1.96),
+      wrong: [ci(1.645), ci(2.576), M('(' + num(xb - 1.96 * s, 2) + ',\\ ' + num(xb + 1.96 * s, 2) + ')'), ci(1.96 / Math.sqrt(n))],
+      exp: M('\\text{SE}=\\sigma/\\sqrt n=' + s + '/' + Math.sqrt(n) + '=' + num(se, 4)) + '. Margin ' + M('=1.96\\times' + num(se, 4) + '=' + num(1.96 * se, 3)) + '.\n' + M('\\bar x\\pm1.96\\,\\text{SE}') + ' gives the interval. 1.645 is for 90%, 2.576 for 99%.' };
+  } },
+  { id: 'slope', topic: 'stat', diff: 'm', title: 'Regression slope and intercept (fresh numbers)', make(r) {
+    const rr = pick(r, [-0.8, -0.6, -0.5, 0.4, 0.5, 0.6, 0.75, 0.9]), sx = pick(r, [2, 4, 5, 8]), sy = pick(r, [3, 6, 10, 12]), mx = ri(r, 2, 10), my = ri(r, 10, 40);
+    const b = rr * sy / sx, a = my - b * mx; const f = v => M(num(v, 3));
+    return { q: 'For paired data, ' + M('\\bar x=' + mx) + ', ' + M('\\bar y=' + my) + ', ' + M('s_x=' + sx) + ', ' + M('s_y=' + sy) + ', and ' + M('r=' + rr) + '. What is the intercept of the least-squares line ' + M('\\hat y=a+bx') + '?', ans: f(a),
+      wrong: [my - (rr * sx / sy) * mx, my + b * mx, my - rr * mx, b, mx - b * my].map(f),
+      exp: 'Slope ' + M('b=r\\,s_y/s_x=' + rr + '\\cdot' + sy + '/' + sx + '=' + num(b, 4)) + '. The line passes through ' + M('(\\bar x,\\bar y)') + ', so\n' + M('a=\\bar y-b\\bar x=' + my + '-' + P(num(b, 4)) + '\\cdot' + mx + '=' + num(a, 3)) + '.' };
+  } },
+  { id: 'totvar', topic: 'stat', diff: 'h', title: 'Law of total variance (fresh numbers)', make(r) {
+    const w = pick(r, [0.2, 0.25, 0.4, 0.5, 0.6, 0.75]), m1 = ri(r, 0, 10), m2 = m1 + ri(r, 2, 10), v1 = ri(r, 1, 9), v2 = ri(r, 1, 9);
+    const within = w * v1 + (1 - w) * v2, between = w * (1 - w) * (m1 - m2) ** 2, ans = within + between; const f = v => M(num(v, 3));
+    return { q: 'A population is ' + num(w * 100) + '% group A (mean ' + M(m1) + ', variance ' + M(v1) + ') and ' + num((1 - w) * 100) + '% group B (mean ' + M(m2) + ', variance ' + M(v2) + '). What is the overall variance?', ans: f(ans),
+      wrong: [within, between, v1 + v2, within + (m2 - m1) ** 2, (v1 + v2) / 2 + between].map(f),
+      exp: M('\\operatorname{Var}(Y)=E[\\operatorname{Var}(Y\\mid G)]+\\operatorname{Var}(E[Y\\mid G])') + '.\nWithin: ' + M(w + '\\cdot' + v1 + '+' + num(1 - w, 2) + '\\cdot' + v2 + '=' + num(within, 3)) + '. Between: ' + M('w(1-w)(\\mu_A-\\mu_B)^2=' + num(between, 3)) + '.\nTotal ' + M('=' + num(ans, 3)) + '.' };
+  } },
+  { id: 'handshake', topic: 'graph', diff: 'e', title: 'Edges of a regular graph (fresh numbers)', make(r) {
+    let n, k; do { n = ri(r, 5, 20); k = ri(r, 2, Math.min(7, n - 1)); } while ((n * k) % 2);
+    return { q: 'A simple graph has ' + M(n) + ' vertices, each of degree ' + M(k) + '. How many edges does it have?', ans: M(n * k / 2),
+      wrong: [n * k, n + k, n * (n - 1) / 2, n * k / 2 + 1, n * k / 4].map(v => M(num(v))),
+      exp: 'Handshake lemma: ' + M('\\sum\\deg v=2|E|') + ', so ' + M('|E|=\\dfrac{' + n + '\\cdot' + k + '}{2}=' + n * k / 2) + '.' };
+  } },
+  { id: 'cayley', topic: 'graph', diff: 'm', title: 'Spanning trees of a complete graph (fresh numbers)', make(r) {
+    const n = ri(r, 3, 7); const ans = n ** (n - 2); const fact = k => (k <= 1 ? 1 : k * fact(k - 1));
+    return { q: 'How many labelled spanning trees does ' + M('K_{' + n + '}') + ' have?', ans: M(ans),
+      wrong: [n * (n - 1) / 2, n ** (n - 1), fact(n), fact(n - 1), n - 1].map(M),
+      exp: 'Cayley’s formula: ' + M('K_n') + ' has ' + M('n^{n-2}') + ' spanning trees, so ' + M(n + '^{' + (n - 2) + '}=' + ans) + '. (Every spanning tree has ' + M('n-1=' + (n - 1)) + ' edges.)' };
+  } },
+  { id: 'dijkstra', topic: 'graph', diff: 'm', title: 'Shortest path with Dijkstra (fresh numbers)', make(r) {
+    const n = 5; const es = randGraph(r, n, 3).map(e => ({ ...e, w: ri(r, 1, 9) }));
+    const dist = Array(n).fill(Infinity), prev = Array(n).fill(-1), done = Array(n).fill(false); dist[0] = 0;
+    for (let it = 0; it < n; it++) { let u = -1; for (let i = 0; i < n; i++) if (!done[i] && (u < 0 || dist[i] < dist[u])) u = i; done[u] = true;
+      for (const e of es) { const v = e.u === u ? e.v : e.v === u ? e.u : -1; if (v >= 0 && dist[u] + e.w < dist[v]) { dist[v] = dist[u] + e.w; prev[v] = u; } } }
+    const T = n - 1; const path = []; for (let v = T; v >= 0; v = prev[v]) path.unshift(LET[v]);
+    const direct = es.find(e => e.u === 0 && e.v === T); const tot = es.reduce((s, e) => s + e.w, 0);
+    return { q: 'An undirected weighted graph has edges ' + edgeList(es) + '. What is the shortest distance from A to ' + LET[T] + '?', ans: M(dist[T]),
+      wrong: [direct ? direct.w : dist[T] + 2, dist[T] + 1, dist[T] - 1, path.length - 1, dist[T] + 3, tot].filter(v => v > 0 && v !== dist[T]).map(M),
+      exp: 'Dijkstra from A gives final distances: ' + dist.map((d, i) => LET[i] + '=' + d).join(', ') + '.\nShortest path: ' + path.join('→') + ' with length ' + M(dist[T]) + '. Always settle the closest unsettled vertex next, then relax its edges.' };
+  } },
+  { id: 'mst', topic: 'graph', diff: 'h', title: 'Minimum spanning tree with Kruskal (fresh numbers)', make(r) {
+    const n = 5; const raw = randGraph(r, n, 3); const ws = shuffle(r, [...Array(14).keys()].map(i => i + 1)).slice(0, raw.length);
+    const es = raw.map((e, i) => ({ ...e, w: ws[i] })); const sorted = es.slice().sort((a, b) => a.w - b.w);
+    const par = [...Array(n).keys()]; const find = x => (par[x] === x ? x : (par[x] = find(par[x])));
+    let total = 0; const steps = [];
+    for (const e of sorted) { const a = find(e.u), b = find(e.v); if (a !== b) { par[a] = b; total += e.w; steps.push(LET[e.u] + '–' + LET[e.v] + ' (' + e.w + ') ✓'); } else steps.push(LET[e.u] + '–' + LET[e.v] + ' (' + e.w + ') skip, makes a cycle'); }
+    const naive = sorted.slice(0, n - 1).reduce((s, e) => s + e.w, 0);
+    const star = es.filter(e => e.u === 0 || e.v === 0).reduce((s, e) => s + e.w, 0);
+    return { q: 'An undirected graph has weighted edges ' + edgeList(es) + '. What is the total weight of its minimum spanning tree?', ans: M(total),
+      wrong: [naive, total + 1, total + 2, total - 1, star, total + 3].filter(v => v > 0 && v !== total).map(M),
+      exp: 'Kruskal: scan edges by increasing weight and add each one that joins two different components.\n' + steps.join('; ') + '.\nTotal ' + M('=' + total) + '.' + (naive !== total ? ' Summing the 4 lightest edges (' + naive + ') is wrong here because they contain a cycle.' : '') };
+  } },
+];
+const GEN_SUB = { det2: 'determinants', matvec: 'matrix-ops', eig2: 'eigen', inv2: 'matrix-ops', polyeig: 'eigen',
+  union: 'independence', expect: 'expectation-variance', binom: 'discrete-dists', bayes: 'conditional-bayes', markov: 'markov-chains',
+  grad: 'gradients-multivariable', gdstep: 'gradient-descent', quadmin: 'maxima-minima', lagr: 'constrained-optimization', newton: 'single-var-optimization',
+  zscore: 'descriptive', svar: 'descriptive', ci: 'confidence-intervals', slope: 'regression-correlation', totvar: 'descriptive',
+  handshake: 'basics-degree', cayley: 'trees', dijkstra: 'shortest-paths', mst: 'mst' };
+for (const g of GENS) g.sub = GEN_SUB[g.id] || '';
+const GENMAP = Object.fromEntries(GENS.map(g => [g.id, g]));
+
+function buildGenerated(gid, seed) {
+  const g = GENMAP[gid]; if (!g) return null;
+  for (let t = 0; t < 30; t++) {
+    const r = mulberry32(seed * 31 + t * 7919 + 1);
+    let o; try { o = g.make(r); } catch (e) { continue; }
+    const seen = new Set([o.ans]); const wrong = [];
+    for (const w of o.wrong) { if (wrong.length === 3) break; if (!w || /NaN|Infinity|undefined/.test(w) || seen.has(w)) continue; seen.add(w); wrong.push(w); }
+    if (wrong.length < 3) continue;
+    const order = shuffle(mulberry32(seed + 17), [0, 1, 2, 3]); const base = [o.ans, ...wrong];
+    return { id: 'g_' + gid + '_' + seed, gen: gid, type: 'mcq', topic: g.topic, diff: g.diff, sub: g.sub, title: g.title, q: o.q, options: order.map(i => base[i]), correct: order.indexOf(0), exp: o.exp };
+  }
+  return null;
+}
+
+if (typeof module !== 'undefined') module.exports = { parseBank, GENS, buildGenerated, TOPICS, SUBTOPICS, QTYPES };
+
+/* ---------- app ---------- */
+const BANK = parseBank(document.getElementById('bank').textContent);
+const BYID = Object.fromEntries(BANK.map(q => [q.id, q]));
+const KEY = 'mlmath-progress-v1';
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+const rich = s => esc(s).replace(/\n/g, '<br>');
+
+function ymd(d = new Date()) { return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); }
+function addDays(s, n) { const [y, m, d] = s.split('-').map(Number); return ymd(new Date(y, m - 1, d + n)); }
+
+// gsub (added later, optional): fresh-numbers answers per "topic/subtopic". Old saves simply lack it and get {}.
+function blank() { return { v: 1, ts: 0, att: {}, bm: {}, days: {}, daily: {}, gs: {}, gsub: {}, streak: { cur: 0, best: 0, last: '' } }; }
+function normalize(o) { const b = blank(); if (!o || typeof o !== 'object') return b; for (const k in b) if (o[k] !== undefined && typeof o[k] === typeof b[k]) b[k] = o[k]; return b; }
+let S = blank();
+try { S = normalize(JSON.parse(localStorage.getItem(KEY) || 'null')); } catch (e) { S = blank(); }
+
+/* ---------- persistence: browser only ---------- */
+function save() { S.ts = Date.now(); try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {} }
+
+/* ---------- questions ---------- */
+function getQ(id) {
+  if (id.startsWith('g_')) { const [, gid, seed] = id.split('_'); return buildGenerated(gid, Number(seed)); }
+  const b = BYID[id]; if (!b) return null;
+  const base = { id, type: b.type, topic: b.topic, diff: b.diff, sub: b.sub, title: b.title, q: b.q, exp: b.exp };
+  if (b.type === 'nat') return Object.assign(base, { options: [], ans: b.ans, tol: b.tol });
+  const order = shuffle(mulberry32(hashStr(id)), [0, 1, 2, 3]);
+  base.options = order.map(i => b.opts[i]);
+  // mcq: correct = display index. msq: correct = sorted display indices.
+  base.correct = b.type === 'msq' ? b.ans.map(i => order.indexOf(i)).sort((x, y) => x - y) : order.indexOf(b.ans);
+  return base;
+}
+function meta(id) {
+  if (id.startsWith('g_')) { const g = GENMAP[id.split('_')[1]]; return g ? { id, type: 'mcq', topic: g.topic, diff: g.diff, sub: g.sub, title: g.title, gen: true } : null; }
+  const b = BYID[id]; return b ? { id, type: b.type, topic: b.topic, diff: b.diff, sub: b.sub, title: b.title } : null;
+}
+// Is the current answer in `sel` correct for question q?
+function isCorrect(q, sel) {
+  if (q.type === 'nat') { const x = parseNum(sel); return x !== null && Math.abs(x - q.ans) <= q.tol + 1e-9; }
+  if (q.type === 'msq') { const a = (sel || []).slice().sort((x, y) => x - y); return a.length === q.correct.length && a.every((v, i) => v === q.correct[i]); }
+  return sel === q.correct;
+}
+function parseNum(s) { const t = String(s == null ? '' : s).trim(); if (!/^[-+]?(\d+\.?\d*|\.\d+)([eE][-+]?\d+)?$/.test(t)) return null; return Number(t); }
+function hasAnswer(q, sel) { if (q.type === 'nat') return parseNum(sel) !== null; if (q.type === 'msq') return !!(sel && sel.length); return sel !== null && sel !== undefined; }
+const status = id => { const a = S.att[id]; if (!a) return 'new'; return a.last === 'w' ? 'wrong' : 'solved'; };
+const solvedEver = id => !!(S.att[id] && S.att[id].sv);
+
+function record(q, ok) {
+  const t = ymd();
+  if (q.gen) {
+    const k = q.topic + q.diff; const g = S.gs[k] || (S.gs[k] = { c: 0, w: 0 }); ok ? g.c++ : g.w++;
+    if (q.sub) { const sk = q.topic + '/' + q.sub; const gsb = S.gsub[sk] || (S.gsub[sk] = { c: 0, w: 0 }); ok ? gsb.c++ : gsb.w++; }
+    if (!ok) S.att[q.id] = Object.assign(S.att[q.id] || { c: 0, w: 0 }, { last: 'w', d: t, g: 1 });
+    else if (S.att[q.id]) Object.assign(S.att[q.id], { last: 'c', d: t, sv: 1 });
+    if (S.att[q.id]) ok ? S.att[q.id].c++ : S.att[q.id].w++;
+  } else {
+    const a = S.att[q.id] || (S.att[q.id] = { c: 0, w: 0 });
+    ok ? a.c++ : a.w++; a.last = ok ? 'c' : 'w'; a.d = t; if (ok) a.sv = 1;
+  }
+  const day = S.days[t] || (S.days[t] = { n: 0, c: 0 }); day.n++; if (ok) day.c++;
+  const dl = S.daily[t];
+  if (dl && dl.ids.includes(q.id) && !(dl.ans && dl.ans[q.id])) {
+    dl.ans = dl.ans || {}; dl.ans[q.id] = ok ? 'c' : 'w';
+    if (!dl.done && dl.ids.every(i => dl.ans[i])) {
+      dl.done = true;
+      const st = S.streak;
+      if (st.last !== t) { st.cur = st.last === addDays(t, -1) ? st.cur + 1 : 1; st.last = t; st.best = Math.max(st.best, st.cur); }
+      justCompleted = true;
+    }
+  }
+  prune(); save();
+}
+function prune() {
+  const cut = addDays(ymd(), -40), cut2 = addDays(ymd(), -400);
+  for (const d in S.daily) if (d < cut) delete S.daily[d];
+  for (const d in S.days) if (d < cut2) delete S.days[d];
+}
+function curStreak() { const st = S.streak, t = ymd(); return st.last === t || st.last === addDays(t, -1) ? st.cur : 0; }
+
+/* ---------- per-subtopic stats ---------- */
+// key "topic/sub" -> { total, solved, c, w, n }. Counts bank answers plus fresh-numbers answers (S.gsub).
+function subStats() {
+  const st = {}; const get = k => st[k] || (st[k] = { total: 0, solved: 0, c: 0, w: 0, n: 0 });
+  for (const q of BANK) {
+    const s = get(q.topic + '/' + q.sub); s.total++; if (solvedEver(q.id)) s.solved++;
+    const a = S.att[q.id]; if (a) { s.c += a.c || 0; s.w += a.w || 0; }
+  }
+  for (const k in S.gsub) { const s = get(k); s.c += S.gsub[k].c || 0; s.w += S.gsub[k].w || 0; }
+  for (const k in st) st[k].n = st[k].c + st[k].w;
+  return st;
+}
+
+/* ---------- daily set ---------- */
+function getDaily() {
+  const t = ymd();
+  if (S.daily[t]) return S.daily[t];
+  const r = mulberry32(hashStr('daily-' + t));
+  // One bank problem per topic plus one fresh-numbers problem. Within each topic, use the subtopic
+  // with the fewest answers so far (ties broken at random), so practice spreads across the syllabus.
+  const diffs = shuffle(r, ['e', 'm', 'm', 'h', 'e']); const ids = []; const st = subStats(); const used = new Set();
+  const answers = (tp, sub) => (st[tp + '/' + sub] ? st[tp + '/' + sub].n : 0);
+  const leastAttempted = (items, keyOf) => { const min = Math.min(...items.map(keyOf)); return pick(r, items.filter(x => keyOf(x) === min)); };
+  Object.keys(TOPICS).forEach((tp, i) => {
+    const subs = Object.keys(SUBTOPICS[tp]).filter(s => BANK.some(q => q.topic === tp && q.sub === s));
+    if (!subs.length) return;
+    const sub = leastAttempted(subs, s => answers(tp, s)); used.add(tp + '/' + sub);
+    const pool = BANK.filter(q => q.topic === tp && q.sub === sub);
+    const tiers = [pool.filter(q => !solvedEver(q.id) && q.diff === diffs[i]), pool.filter(q => !solvedEver(q.id)), pool.filter(q => q.diff === diffs[i]), pool];
+    ids.push(pick(r, tiers.find(x => x.length)).id);
+  });
+  const gpool = GENS.filter(g => g.diff !== 'e' && !used.has(g.topic + '/' + g.sub));
+  const g = leastAttempted(gpool.length ? gpool : GENS.filter(x => x.diff !== 'e'), x => answers(x.topic, x.sub));
+  ids.push('g_' + g.id + '_' + (hashStr(t) % 900000 + 1000));
+  S.daily[t] = { ids, ans: {}, done: false }; prune(); save();
+  return S.daily[t];
+}
+
+/* ---------- state for views ---------- */
+let view = 'today', solve = null, justCompleted = false;
+const filt = { topic: 'all', sub: 'all', diff: 'all', st: 'all' };
+let reviewTab = 'wrong', progTopic = 'la';
+
+function filteredBank() {
+  return BANK.filter(q => (filt.topic === 'all' || q.topic === filt.topic) && (filt.sub === 'all' || q.sub === filt.sub) && (filt.diff === 'all' || q.diff === filt.diff) &&
+    (filt.st === 'all' || (filt.st === 'unsolved' && !solvedEver(q.id)) || (filt.st === 'solved' && solvedEver(q.id)) || (filt.st === 'wrong' && status(q.id) === 'wrong') || (filt.st === 'bookmarked' && S.bm[q.id])));
+}
+const genPool = f => GENS.filter(g => (f.topic === 'all' || g.topic === f.topic) && (!f.sub || f.sub === 'all' || g.sub === f.sub) && (f.diff === 'all' || g.diff === f.diff));
+function wrongIds() { return Object.keys(S.att).filter(id => S.att[id].last === 'w' && meta(id)).sort((a, b) => (S.att[b].d || '').localeCompare(S.att[a].d || '')); }
+function bmIds() { return Object.keys(S.bm).filter(id => S.bm[id] && meta(id)); }
+
+/* ---------- rendering ---------- */
+const diffPill = d => `<span class="pill d-${d}">${DIFF[d]}</span>`;
+const topicTag = t => `<span class="tag t-${t}">${TOPICS[t]}</span>`;
+const typeTag = type => (type === 'nat' || type === 'msq' ? `<span class="tag qtype">${QTYPES[type]}</span>` : '');
+function statusIcon(id) {
+  const s = status(id);
+  if (s === 'solved') return '<span class="st st-ok" title="Solved" aria-label="Solved">✓</span>';
+  if (s === 'wrong') return '<span class="st st-bad" title="Last attempt wrong" aria-label="Last attempt wrong">✗</span>';
+  return '<span class="st st-new" aria-label="Not attempted">○</span>';
+}
+function rows(ids, ctx) {
+  if (!ids.length) return '<p class="empty">No problems match these filters.</p>';
+  return '<ol class="plist">' + ids.map((id, i) => { const m = meta(id); return `<li><button class="prow" data-open="${i}" data-ctx="${ctx}">
+    ${statusIcon(id)}<span class="pnum">${m.gen ? '∞' : esc(id.split('-').pop())}</span><span class="ptitle">${esc(m.title)}</span>
+    <span class="pmeta">${typeTag(m.type)}${topicTag(m.topic)}${diffPill(m.diff)}${S.bm[id] ? '<span class="star on" aria-label="Bookmarked">★</span>' : ''}</span></button></li>`; }).join('') + '</ol>';
+}
+
+function header() {
+  const solved = BANK.filter(q => solvedEver(q.id)).length;
+  const navs = [['today', 'Today'], ['practice', 'Problems'], ['review', 'Review'], ['progress', 'Progress']];
+  $('#nav').innerHTML = navs.map(([k, l]) => `<a href="#${k}" class="${(solve ? solve.back : view) === k ? 'on' : ''}">${l}</a>`).join('');
+  $('#hstats').innerHTML = `<span class="hs" title="Daily streak"><b>${curStreak()}</b> day streak</span><span class="hs"><b>${solved}</b>/${BANK.length} solved</span>`;
+}
+
+function render() {
+  header();
+  const main = $('#main');
+  if (window.MathJax && MathJax.typesetClear) { try { MathJax.typesetClear([main]); } catch (e) {} }
+  if (solve) main.innerHTML = renderSolve();
+  else if (view === 'today') main.innerHTML = renderToday();
+  else if (view === 'practice') main.innerHTML = renderPractice();
+  else if (view === 'review') main.innerHTML = renderReview();
+  else main.innerHTML = renderProgress();
+  typeset(main);
+}
+function typeset(el) { if (window.MathJax && MathJax.typesetPromise) MathJax.typesetPromise([el]).catch(() => {}); }
+
+function renderToday() {
+  const d = getDaily(); const t = ymd(); const n = d.ids.length; const done = d.ids.filter(i => d.ans && d.ans[i]).length;
+  const correct = d.ids.filter(i => d.ans && d.ans[i] === 'c').length;
+  const nice = new Date().toLocaleDateString(undefined, { weekday: 'long', day: 'numeric', month: 'long' });
+  const next = d.ids.findIndex(i => !(d.ans && d.ans[i]));
+  const segs = d.ids.map(i => `<span class="seg ${d.ans && d.ans[i] ? (d.ans[i] === 'c' ? 'ok' : 'bad') : ''}"></span>`).join('');
+  return `<section class="hero">
+    <div><p class="eyebrow">${esc(nice)}</p><h1>Today’s set</h1>
+    <p class="lede">One problem from each topic plus one with fresh numbers, picked from the subtopics you have practised least. Finish all ${n} to keep your streak.</p></div>
+    <div class="streakbox"><div class="big">${curStreak()}</div><div>day streak</div><div class="sub">best ${S.streak.best}</div></div>
+  </section>
+  <div class="segs" aria-label="${done} of ${n} answered">${segs}</div>
+  <div class="todaybar"><span>${done}/${n} answered · ${correct} correct</span>
+    ${d.done ? '<span class="done">Set complete</span>' : `<button class="btn primary" data-start="${next < 0 ? 0 : next}">${done ? 'Continue' : 'Start today’s set'}</button>`}</div>
+  ${d.done ? `<div class="banner">Set complete for ${esc(t)}. Come back tomorrow for a new one, or keep practising in Problems.</div>` : ''}
+  ${rows(d.ids, 'daily')}`;
+}
+
+function chipGroup(name, opts, cur) {
+  return `<div class="chips" role="group" aria-label="${name}">` + opts.map(([v, l]) => `<button class="chip ${cur === v ? 'on' : ''}" data-f="${name}" data-v="${v}" aria-pressed="${cur === v}">${l}</button>`).join('') + '</div>';
+}
+function renderPractice() {
+  const ids = filteredBank().map(q => q.id);
+  const genAvail = genPool(filt).length;
+  let subRow = '';
+  if (filt.topic !== 'all') {
+    const cnt = s => BANK.filter(q => q.topic === filt.topic && q.sub === s).length;
+    subRow = `<div class="chips subchips" role="group" aria-label="Subtopic">` +
+      [['all', 'All subtopics', BANK.filter(q => q.topic === filt.topic).length], ...Object.entries(SUBTOPICS[filt.topic]).map(([s, l]) => [s, l, cnt(s)])]
+        .map(([v, l, n]) => `<button class="chip ${filt.sub === v ? 'on' : ''}" data-f="sub" data-v="${v}" aria-pressed="${filt.sub === v}" ${n || v === filt.sub ? '' : 'disabled title="No problems yet"'}>${esc(l)} <span class="cn">${n}</span></button>`).join('') + '</div>';
+  }
+  return `<section class="phead"><h1>Problems</h1><p class="lede">${BANK.length} worked problems in GATE DA style, plus ${GENS.length} generators that produce new numbers every time.</p></section>
+  <div class="filters">
+    ${chipGroup('topic', [['all', 'All topics'], ...Object.entries(TOPICS)], filt.topic)}
+    ${subRow}
+    ${chipGroup('diff', [['all', 'All levels'], ['e', 'Easy'], ['m', 'Medium'], ['h', 'Hard']], filt.diff)}
+    <div class="frow"><label for="stsel">Show</label>
+      <select id="stsel">${[['all', 'All'], ['unsolved', 'Unsolved'], ['solved', 'Solved'], ['wrong', 'Last attempt wrong'], ['bookmarked', 'Bookmarked']].map(([v, l]) => `<option value="${v}" ${filt.st === v ? 'selected' : ''}>${l}</option>`).join('')}</select>
+      <span class="count">${ids.length} problems</span>
+      <span class="grow"></span>
+      <button class="btn" data-random="1" ${ids.length ? '' : 'disabled'}>Pick one at random</button>
+      <button class="btn primary" data-fresh="1" ${genAvail ? '' : 'disabled'}>Fresh-numbers problem</button>
+    </div>
+  </div>
+  ${rows(ids, 'practice')}`;
+}
+
+function renderReview() {
+  const w = wrongIds(), b = bmIds(); const list = reviewTab === 'wrong' ? w : b;
+  return `<section class="phead"><h1>Review</h1><p class="lede">Problems you got wrong stay here until you answer them correctly. Bookmarks stay until you remove them.</p></section>
+  <div class="tabs" role="tablist">
+    <button role="tab" class="tab ${reviewTab === 'wrong' ? 'on' : ''}" aria-selected="${reviewTab === 'wrong'}" data-rtab="wrong">Got wrong <span class="n">${w.length}</span></button>
+    <button role="tab" class="tab ${reviewTab === 'bm' ? 'on' : ''}" aria-selected="${reviewTab === 'bm'}" data-rtab="bm">Bookmarked <span class="n">${b.length}</span></button>
+    <span class="grow"></span>
+    ${list.length ? `<button class="btn primary" data-retry="1">${reviewTab === 'wrong' ? 'Retry all wrong' : 'Practise bookmarks'}</button>` : ''}
+  </div>
+  ${list.length ? rows(list, 'review') : `<p class="empty">${reviewTab === 'wrong' ? 'Nothing to retry. Wrong answers will collect here.' : 'No bookmarks yet. Use the star on any problem to save it here.'}</p>`}`;
+}
+
+function renderProgress() {
+  let tc = 0, tw = 0; for (const id in S.att) { if (!S.att[id].g) { tc += S.att[id].c; tw += S.att[id].w; } }
+  for (const k in S.gs) { tc += S.gs[k].c; tw += S.gs[k].w; }
+  const acc = tc + tw ? Math.round(100 * tc / (tc + tw)) : null; const solved = BANK.filter(q => solvedEver(q.id)).length;
+  const cells = Object.keys(TOPICS).map(tp => {
+    const tds = ['e', 'm', 'h'].map(df => {
+      const pool = BANK.filter(q => q.topic === tp && q.diff === df); const s = pool.filter(q => solvedEver(q.id)).length;
+      const g = S.gs[tp + df]; const pct = Math.round(100 * s / pool.length);
+      return `<td><div class="cell"><span class="frac">${s}<small>/${pool.length}</small></span><span class="bar"><i class="d-${df}" style="width:${pct}%"></i></span>${g ? `<span class="gstat">fresh: ${g.c}/${g.c + g.w}</span>` : ''}</div></td>`;
+    }).join('');
+    return `<tr><th scope="row">${TOPICS[tp]}</th>${tds}</tr>`;
+  }).join('');
+  // heatmap: last 20 weeks, columns = weeks, rows = weekday
+  const t = ymd(); const today = new Date(); const dow = (today.getDay() + 6) % 7; // Mon=0
+  const start = addDays(t, -(19 * 7 + dow)); let hm = ''; let total = 0, active = 0;
+  for (let w = 0; w < 20; w++) { hm += '<div class="hcol">'; for (let d = 0; d < 7; d++) { const day = addDays(start, w * 7 + d); if (day > t) { hm += '<span class="hc fut"></span>'; continue; }
+    const n = (S.days[day] && S.days[day].n) || 0; total += n; if (n) active++; const lv = n === 0 ? 0 : n < 3 ? 1 : n < 6 ? 2 : n < 10 ? 3 : 4;
+    hm += `<span class="hc l${lv}" title="${day}: ${n} answered"></span>`; } hm += '</div>'; }
+  return `<section class="phead"><h1>Progress</h1></section>
+  <div class="tiles">
+    <div class="tile"><span class="k">Solved</span><span class="v">${solved}<small>/${BANK.length}</small></span></div>
+    <div class="tile"><span class="k">Accuracy</span><span class="v">${acc === null ? '–' : acc + '<small>%</small>'}</span><span class="s">${tc + tw} answers</span></div>
+    <div class="tile"><span class="k">Current streak</span><span class="v">${curStreak()}<small> days</small></span></div>
+    <div class="tile"><span class="k">Best streak</span><span class="v">${S.streak.best}<small> days</small></span></div>
+  </div>
+  <h2 class="h2">By topic and level</h2>
+  <div class="tblwrap"><table class="grid"><thead><tr><th></th><th>${diffPill('e')}</th><th>${diffPill('m')}</th><th>${diffPill('h')}</th></tr></thead><tbody>${cells}</tbody></table></div>
+  <h2 class="h2">By subtopic</h2>
+  ${renderSubTable()}
+  <h2 class="h2">Activity, last 20 weeks</h2>
+  <div class="heat"><div class="hdays"><span>Mon</span><span></span><span>Wed</span><span></span><span>Fri</span><span></span><span>Sun</span></div><div class="hgrid">${hm}</div></div>
+  <p class="note">${total} answers on ${active} days. Darker squares mean more problems answered that day.</p>
+  <div class="danger"><button class="btn ghost" data-reset="1">Reset all progress</button></div>`;
+}
+
+function renderSubTable() {
+  const st = subStats(); const tp = progTopic;
+  const chips = `<div class="chips" role="group" aria-label="Topic for subtopic table">` + Object.entries(TOPICS).map(([v, l]) =>
+    `<button class="chip ${tp === v ? 'on' : ''}" data-ptopic="${v}" aria-pressed="${tp === v}">${l}</button>`).join('') + '</div>';
+  const body = Object.entries(SUBTOPICS[tp]).map(([sub, label]) => {
+    const s = st[tp + '/' + sub] || { total: 0, solved: 0, c: 0, w: 0, n: 0 };
+    const pct = s.total ? Math.round(100 * s.solved / s.total) : 0; const acc = s.n ? Math.round(100 * s.c / s.n) : null;
+    return `<tr class="${s.total ? '' : 'nodata'}"><th scope="row">${esc(label)}</th>
+      <td><div class="cell"><span class="frac">${s.solved}<small>/${s.total}</small></span><span class="bar"><i class="d-acc" style="width:${pct}%"></i></span></div></td>
+      <td class="num">${acc === null ? '–' : acc + '%'}</td><td class="num">${s.n}</td></tr>`;
+  }).join('');
+  return `<div class="subtopic-head">${chips}</div>
+  <div class="tblwrap"><table class="grid subgrid"><thead><tr><th>${esc(TOPICS[tp])}</th><th>Solved</th><th>Accuracy</th><th>Answers</th></tr></thead><tbody>${body}</tbody></table></div>
+  <p class="note">Accuracy counts every answer in the subtopic, including fresh-numbers problems answered from now on.</p>`;
+}
+
+function renderSolve() {
+  const s = solve; const q = s.q; const L = 'ABCD';
+  const pos = s.gen ? 'Fresh numbers' : `${s.idx + 1} / ${s.ids.length}`;
+  const multi = q.type === 'msq';
+  const picked = i => (multi ? s.sel.includes(i) : i === s.sel);
+  const isRight = i => (multi ? q.correct.includes(i) : i === q.correct);
+  let answerUI;
+  if (q.type === 'nat') {
+    const cls = s.done ? (s.ok ? ' right' : ' wrongpick') : '';
+    answerUI = `<div class="natwrap"><label for="natin">Your answer</label>
+      <input id="natin" class="natin${cls}" type="number" step="any" inputmode="decimal" autocomplete="off" value="${esc(s.sel)}" ${s.done ? 'disabled' : ''}>
+      <span class="nathint">${q.tol ? `Numerical answer. Accepted within ±${esc(q.tol)}.` : 'Numerical answer. Enter the exact value.'}</span></div>`;
+  } else {
+    const opts = q.options.map((o, i) => {
+      let cls = 'opt' + (multi ? ' multi' : '');
+      if (s.done) { if (isRight(i)) cls += ' right' + (multi && !picked(i) ? ' missed' : ''); else if (picked(i)) cls += ' wrongpick'; } else if (picked(i)) cls += ' sel';
+      return `<button class="${cls}" data-opt="${i}" ${s.done ? 'disabled' : ''} role="${multi ? 'checkbox' : 'radio'}" aria-checked="${picked(i)}"><span class="ol">${L[i]}</span><span class="ot">${rich(o)}</span></button>`;
+    }).join('');
+    answerUI = (multi ? '<p class="selhint">Select all options that are correct. You need the exact set.</p>' : '') +
+      `<div class="opts" role="${multi ? 'group' : 'radiogroup'}" aria-label="Answer options">${opts}</div>`;
+  }
+  const ok = s.done && s.ok;
+  const answerText = q.type === 'nat' ? `The answer is ${esc(q.ans)}${q.tol ? ` (±${esc(q.tol)} accepted)` : ''}.`
+    : multi ? `The correct option${q.correct.length > 1 ? 's are' : ' is'} ${q.correct.map(i => L[i]).join(', ')}.` : `The answer is ${L[q.correct]}.`;
+  const keys = q.type === 'nat' ? 'Keys: Enter to check' : multi ? 'Keys: A–D to tick, Enter to check' : 'Keys: A–D to choose, Enter to check';
+  const hasNext = s.gen || s.idx < s.ids.length - 1;
+  return `<div class="sbar"><button class="btn ghost" data-back="1">← Back</button><span class="pos">${pos}</span>
+    <button class="star ${S.bm[q.id] ? 'on' : ''}" data-bm="1" aria-pressed="${!!S.bm[q.id]}" title="Bookmark">${S.bm[q.id] ? '★ Bookmarked' : '☆ Bookmark'}</button></div>
+  <article class="card">
+    <div class="qmeta">${topicTag(q.topic)}${q.sub ? `<span class="tag">${esc(subLabel(q.topic, q.sub))}</span>` : ''}${diffPill(q.diff)}${typeTag(q.type)}${q.gen ? '<span class="tag fresh">Fresh numbers</span>' : ''}${s.prev ? `<span class="tag prev">${s.prev === 'w' ? 'You missed this before' : 'Solved before'}</span>` : ''}</div>
+    <h1 class="qtitle">${esc(q.title)}</h1>
+    <div class="qtext">${rich(q.q)}</div>
+    ${answerUI}
+    <div class="actions">
+      ${s.done ? '' : `<button class="btn primary" data-submit="1" ${hasAnswer(q, s.sel) ? '' : 'disabled'}>Check answer</button>`}
+      ${s.done && hasNext ? `<button class="btn primary" data-next="1">${s.gen ? 'Another fresh problem →' : 'Next problem →'}</button>` : ''}
+      ${s.done && !hasNext ? '<button class="btn primary" data-back="1">Back to list</button>' : ''}
+      ${!s.done && hasNext ? '<button class="btn ghost" data-next="1">Skip</button>' : ''}
+      <span class="kbd">${keys}</span>
+    </div>
+    ${s.done ? `<div class="result ${ok ? 'ok' : 'bad'}"><p class="verdict">${ok ? 'Correct.' + (q.type === 'nat' && parseNum(s.sel) !== q.ans ? ` Exact answer: ${esc(q.ans)}.` : '') : `Not quite. ${answerText}`}</p><div class="exp">${rich(q.exp)}</div></div>` : ''}
+  </article>
+  ${justCompleted ? `<div class="banner">Today’s set is complete. Your streak is now ${curStreak()} day${curStreak() === 1 ? '' : 's'}.</div>` : ''}`;
+}
+
+/* ---------- navigation ---------- */
+function openQueue(ids, idx, back, gen) {
+  justCompleted = false;
+  if (gen) { solve = { gen, ids: [], idx: 0, back, q: null, sel: null, done: false }; nextGen(); return; }
+  const q = getQ(ids[idx]); if (!q) return;
+  solve = { ids, idx, back, q, sel: initSel(q), done: false, ok: false, prev: S.att[q.id] ? S.att[q.id].last : null };
+  render(); window.scrollTo(0, 0);
+  if (q.type === 'nat') { const el = document.getElementById('natin'); if (el) el.focus({ preventScroll: true }); }
+}
+const initSel = q => (q.type === 'msq' ? [] : q.type === 'nat' ? '' : null);
+function nextGen() {
+  const pool = genPool(solve.gen); if (!pool.length) return;
+  const gg = pool[Math.floor(Math.random() * pool.length)]; const seed = Math.floor(Math.random() * 900000) + 1000;
+  solve.q = buildGenerated(gg.id, seed); solve.sel = null; solve.done = false; solve.ok = false; solve.prev = null; render(); window.scrollTo(0, 0);
+}
+function goNext() {
+  justCompleted = false;
+  if (solve.gen) return nextGen();
+  if (solve.idx < solve.ids.length - 1) openQueue(solve.ids, solve.idx + 1, solve.back);
+}
+function submit() {
+  if (!solve || solve.done || !hasAnswer(solve.q, solve.sel)) return;
+  solve.done = true; solve.ok = isCorrect(solve.q, solve.sel); record(solve.q, solve.ok); render();
+  const r = document.querySelector('.result'); if (r) r.scrollIntoView({ block: 'nearest', behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+}
+function listFor(ctx) {
+  if (ctx === 'daily') return getDaily().ids;
+  if (ctx === 'review') return reviewTab === 'wrong' ? wrongIds() : bmIds();
+  return filteredBank().map(q => q.id);
+}
+
+document.addEventListener('click', e => {
+  const a = e.target.closest('#nav a'); if (a && a.getAttribute('href') === location.hash) { e.preventDefault(); route(); return; }
+  const b = e.target.closest('button'); if (!b) return;
+  if (b.dataset.open !== undefined) return openQueue(listFor(b.dataset.ctx), Number(b.dataset.open), view);
+  if (b.dataset.start !== undefined) return openQueue(getDaily().ids, Number(b.dataset.start), 'today');
+  if (b.dataset.f) { filt[b.dataset.f] = b.dataset.v; if (b.dataset.f === 'topic') filt.sub = 'all'; return render(); }
+  if (b.dataset.ptopic) { progTopic = b.dataset.ptopic; return render(); }
+  if (b.dataset.fresh) return openQueue([], 0, 'practice', { topic: filt.topic, sub: filt.sub, diff: filt.diff });
+  if (b.dataset.random) { const ids = filteredBank().map(q => q.id); if (ids.length) openQueue(shuffle(Math.random, ids), 0, 'practice'); return; }
+  if (b.dataset.rtab) { reviewTab = b.dataset.rtab; return render(); }
+  if (b.dataset.retry) { const ids = reviewTab === 'wrong' ? wrongIds() : bmIds(); return openQueue(ids.slice(), 0, 'review'); }
+  if (b.dataset.opt !== undefined && solve && !solve.done) { choose(Number(b.dataset.opt)); return render(); }
+  if (b.dataset.submit) return submit();
+  if (b.dataset.next) return goNext();
+  if (b.dataset.back) { const back = solve ? solve.back : 'today'; solve = null; justCompleted = false; view = back; if (location.hash !== '#' + back) location.hash = back; return render(); }
+  if (b.dataset.bm && solve) { const id = solve.q.id; if (S.bm[id]) delete S.bm[id]; else S.bm[id] = 1; save(); return render(); }
+  if (b.dataset.reset) { if (b.dataset.confirm) { S = blank(); save(); render(); } else { b.dataset.confirm = '1'; b.textContent = 'Click again to erase everything'; b.classList.add('warn'); } }
+});
+// mcq: pick one option. msq: toggle the option in the selected set.
+function choose(i) {
+  if (solve.q.type === 'msq') { const s = solve.sel; const at = s.indexOf(i); if (at >= 0) s.splice(at, 1); else s.push(i); }
+  else if (solve.q.type !== 'nat') solve.sel = i;
+}
+document.addEventListener('change', e => { if (e.target.id === 'stsel') { filt.st = e.target.value; render(); } });
+// Numerical input: update state without re-rendering, so the field keeps focus while typing.
+document.addEventListener('input', e => {
+  if (e.target.id !== 'natin' || !solve || solve.done) return;
+  solve.sel = e.target.value; const btn = document.querySelector('[data-submit]'); if (btn) btn.disabled = !hasAnswer(solve.q, solve.sel);
+});
+document.addEventListener('keydown', e => {
+  if (!solve || e.metaKey || e.ctrlKey || e.altKey) return;
+  if (document.activeElement && document.activeElement.id === 'natin') { if (e.key === 'Enter') { solve.sel = document.activeElement.value; submit(); e.preventDefault(); } return; }
+  if (/^(INPUT|SELECT|TEXTAREA)$/.test(document.activeElement.tagName)) return;
+  const k = e.key.toLowerCase(); const i = 'abcd'.indexOf(k) >= 0 ? 'abcd'.indexOf(k) : '1234'.indexOf(k);
+  if (i >= 0 && !solve.done && solve.q.type !== 'nat') { choose(i); render(); e.preventDefault(); return; }
+  if (e.key === 'Enter') { if (document.activeElement && document.activeElement.tagName === 'BUTTON' && !document.activeElement.dataset.opt) return; if (!solve.done) submit(); else goNext(); e.preventDefault(); }
+});
+function route() { const h = location.hash.replace('#', ''); const v = ['today', 'practice', 'review', 'progress'].includes(h) ? h : 'today'; view = v; solve = null; justCompleted = false; render(); }
+window.addEventListener('hashchange', route);
+route();
+
+</script>
+</body>
+</html>

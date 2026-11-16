@@ -1,0 +1,379 @@
+@ graph e graph-e-001
+T: Handshake lemma
+S: basics-degree
+Q: An undirected graph has 10 edges. What is the sum of all vertex degrees?
+A: $10$
+B: $20$
+C: $5$
+D: $40$
+ANS: B
+EXP: Each edge adds 1 to the degree of each of its two endpoints, so $\sum\deg(v)=2|E|=20$.
+
+
+@ graph e graph-e-002
+T: Edges in a complete graph
+S: basics-degree
+Q: How many edges does the complete graph $K_6$ have?
+A: $30$
+B: $15$
+C: $36$
+D: $21$
+ANS: B
+EXP: Every pair of vertices is joined: $\binom62=\tfrac{6\cdot5}{2}=15$. ($21$ is $K_7$; $30$ counts ordered pairs.)
+
+
+@ graph e graph-e-003
+T: Edges in a tree
+S: trees
+Q: A tree has 12 vertices. How many edges does it have?
+A: $12$
+B: $11$
+C: $13$
+D: $66$
+ANS: B
+EXP: Every tree on $n$ vertices has exactly $n-1$ edges: connected with no cycles. Adding any edge creates a cycle.
+
+
+@ graph e graph-e-004
+T: Data structures for BFS and DFS
+S: traversal
+Q: Which pairing of traversal and data structure is correct?
+A: BFS uses a queue; DFS uses a stack
+B: BFS uses a stack; DFS uses a queue
+C: both use a queue
+D: both use a priority queue
+ANS: A
+EXP: BFS explores level by level, first in first out, so it uses a queue. DFS goes deep first, last in first out, so it uses a stack (or recursion).
+Dijkstra is the one that uses a priority queue.
+
+
+@ graph e graph-e-005
+T: Adjacency matrix of an undirected graph
+S: basics-degree
+Q: The adjacency matrix of any simple undirected graph is:
+A: symmetric with zero diagonal
+B: upper triangular
+C: always invertible
+D: orthogonal
+ANS: A
+EXP: Edge $\{i,j\}$ sets $A_{ij}=A_{ji}=1$, so $A$ is symmetric. "Simple" means no self-loops, so the diagonal is zero.
+It is often singular (e.g. any graph with two vertices that have identical neighbourhoods).
+
+
+@ graph e graph-e-006
+T: Impossible degree sequence
+S: basics-degree
+Q: Which degree sequence cannot belong to any simple graph?
+A: $(2,2,2)$
+B: $(3,3,2,2)$
+C: $(3,2,2,1,1)$
+D: $(1,1,1,1)$
+ANS: C
+EXP: The degree sum must be even ($=2|E|$). $3+2+2+1+1=9$ is odd, so (C) is impossible.
+(A) is a triangle, (D) is two disjoint edges, and (B) is $K_4$ minus one edge.
+
+
+@ graph e graph-e-007
+T: Which graph is bipartite
+S: matching-coloring
+Q: Which graph is bipartite?
+A: $K_3$
+B: $C_5$
+C: $C_6$
+D: $K_4$
+ANS: C
+EXP: A graph is bipartite if and only if it has no odd cycle. $C_6$ is an even cycle, so you can alternate two colours around it.
+$K_3$ and $C_5$ are odd cycles, and $K_4$ contains triangles.
+
+
+@ graph e graph-e-008
+T: Shortest paths with negative edges
+S: shortest-paths
+Q: Which algorithm finds single-source shortest paths when some edge weights are negative (but there is no negative cycle)?
+A: Dijkstra
+B: Bellman–Ford
+C: Prim
+D: BFS
+ANS: B
+EXP: Bellman–Ford relaxes every edge $V-1$ times in $O(VE)$, and a $V$-th pass detects negative cycles.
+Dijkstra's greedy finalisation can be wrong with negative edges. Prim builds a minimum spanning tree, not shortest paths. BFS only handles unweighted graphs.
+
+
+@ graph e graph-e-009
+T: Space for an adjacency list
+S: basics-degree
+Q: How much space does an adjacency-list representation of a graph use?
+A: $O(V^2)$
+B: $O(V+E)$
+C: $O(E^2)$
+D: $O(V\log V)$
+ANS: B
+EXP: One list per vertex ($V$) plus one entry per edge endpoint ($2E$ undirected). An adjacency matrix always uses $O(V^2)$, which wastes space on sparse graphs.
+
+
+@ graph e graph-e-010
+T: When a topological order exists
+S: dag-toposort
+Q: A directed graph has a topological ordering if and only if it:
+A: is strongly connected
+B: is a directed acyclic graph (DAG)
+C: has no isolated vertices
+D: is a tree
+ANS: B
+EXP: A cycle $u\to\dots\to u$ would require $u$ to come before itself. Every DAG has a topological order (Kahn's algorithm or DFS finish times).
+Neural network computation graphs are DAGs, which is why backprop can process them in reverse topological order.
+
+
+@ graph m graph-m-001
+T: Spanning trees of K₄
+S: trees
+Q: How many spanning trees does $K_4$ have?
+A: $4$
+B: $6$
+C: $12$
+D: $16$
+ANS: D
+EXP: Cayley's formula: $K_n$ has $n^{n-2}$ labelled spanning trees, so $4^2=16$.
+Breakdown: 4 stars plus 12 paths.
+
+
+@ graph m graph-m-002
+T: Counting triangles with the adjacency matrix
+S: spectral
+Q: $A$ is the adjacency matrix of $K_4$. What is $\operatorname{tr}(A^3)$?
+A: $4$
+B: $12$
+C: $24$
+D: $64$
+ANS: C
+EXP: $(A^3)_{ii}$ counts closed walks of length 3 from $i$. Each triangle gives $6$ such walks (3 starting vertices × 2 directions).
+$K_4$ has $\binom43=4$ triangles, so $\operatorname{tr}(A^3)=24$. (Check: eigenvalues $3,-1,-1,-1$ give $27-3=24$.)
+
+
+@ graph m graph-m-003
+T: Zero eigenvalues of the Laplacian
+S: spectral
+Q: The graph Laplacian $L=D-A$ of a graph with 3 connected components has eigenvalue $0$ with multiplicity:
+A: $0$
+B: $1$
+C: $3$
+D: depends on the number of edges
+ANS: C
+EXP: $x^TLx=\sum_{(i,j)\in E}(x_i-x_j)^2=0$ exactly when $x$ is constant on each component.
+That gives one independent null vector per component, so the multiplicity is 3. Spectral clustering uses this fact.
+
+
+@ graph m graph-m-004
+T: Condition for an Euler circuit
+S: connectivity
+Q: A connected undirected graph has an Euler circuit (a closed walk using every edge exactly once) if and only if:
+A: every vertex has even degree
+B: exactly two vertices have odd degree
+C: it is a complete graph
+D: it has a Hamiltonian cycle
+ANS: A
+EXP: Each pass through a vertex uses one edge in and one edge out, so degrees must be even.
+With exactly two odd vertices you get an Euler path (open trail) instead.
+
+
+@ graph m graph-m-005
+T: Weight of a minimum spanning tree
+S: mst
+Q: Undirected weighted edges: A–B (1), B–C (2), A–C (3), C–D (4), B–D (5). What is the total weight of the minimum spanning tree?
+A: $7$
+B: $6$
+C: $10$
+D: $8$
+ANS: A
+EXP: Kruskal: take A–B (1), take B–C (2), skip A–C (3) because it would form a cycle, take C–D (4). Now all 4 vertices are connected.
+Total $=1+2+4=7$. ($6$ wrongly includes A–C.)
+
+
+@ graph m graph-m-006
+T: Dijkstra on a small directed graph
+S: shortest-paths
+Q: Directed weighted edges: A→B (4), A→C (1), C→B (2), B→D (1), C→D (5). What is the shortest distance from A to D?
+A: $4$
+B: $5$
+C: $6$
+D: $3$
+ANS: A
+EXP: Dijkstra from A: $d(C)=1$, then $d(B)=\min(4,\ 1+2)=3$, then $d(D)=\min(1+5,\ 3+1)=4$.
+Path A→C→B→D. The more direct-looking A→B→D costs 5.
+
+
+@ graph m graph-m-007
+T: Running time of Dijkstra with a heap
+S: shortest-paths
+Q: The running time of Dijkstra's algorithm with a binary heap is:
+A: $O(V^2)$
+B: $O((V+E)\log V)$
+C: $O(VE)$
+D: $O(V+E)$
+ANS: B
+EXP: Each vertex is extracted once ($V\log V$) and each edge may cause a decrease-key ($E\log V$).
+$O(V^2)$ is the array version, which is better for dense graphs; $O(VE)$ is Bellman–Ford.
+
+
+@ graph m graph-m-008
+T: Maximum edges in a bipartite graph
+S: matching-coloring
+Q: What is the maximum number of edges in a simple bipartite graph on 10 vertices?
+A: $45$
+B: $25$
+C: $24$
+D: $20$
+ANS: B
+EXP: With parts of size $a$ and $10-a$, the maximum is $a(10-a)$, achieved by the complete bipartite graph. It peaks at $a=5$: $25$. ($45=\binom{10}{2}$ ignores bipartiteness.)
+
+
+@ graph m graph-m-009
+T: Chromatic number of an odd cycle
+S: matching-coloring
+Q: What is the chromatic number of the cycle $C_7$?
+A: $2$
+B: $3$
+C: $4$
+D: $7$
+ANS: B
+EXP: Alternating 2 colours fails on an odd cycle: the last vertex clashes with the first. Using a third colour for one vertex fixes it, so $\chi(C_{odd})=3$.
+
+
+@ graph m graph-m-010
+T: Edges in a 3-regular graph
+S: basics-degree
+Q: A graph has 8 vertices and every vertex has degree 3. How many edges does it have?
+A: $24$
+B: $12$
+C: $11$
+D: $8$
+ANS: B
+EXP: Handshake: $2|E|=8\cdot3=24\Rightarrow|E|=12$. (The cube graph $Q_3$ is an example.)
+
+
+@ graph h graph-h-001
+T: Adjacency eigenvalues of K₅
+S: spectral
+Q: What are the eigenvalues of the adjacency matrix of $K_5$?
+A: $4$ (once) and $-1$ (four times)
+B: $5$ (once) and $0$ (four times)
+C: $4$ (once) and $0$ (four times)
+D: $1$ (five times)
+ANS: A
+EXP: $A=J-I$. $J$ has eigenvalues $5$ (once) and $0$ (four times), so $A$ has $4$ and $-1\ (\times4)$.
+Check: the trace is $4-4=0$, matching the zero diagonal. The top eigenvalue equals the degree, as it does for any regular graph.
+
+
+@ graph h graph-h-002
+T: Number of labelled graphs
+S: basics-degree
+Q: How many distinct simple graphs are there on 4 labelled vertices?
+A: $16$
+B: $64$
+C: $11$
+D: $4096$
+ANS: B
+EXP: Each of the $\binom42=6$ possible edges is present or absent, so $2^6=64$.
+$11$ is the count of unlabelled graphs (up to isomorphism), a common confusion.
+
+
+@ graph h graph-h-003
+T: Planarity of K₅
+S: basics-degree
+Q: Is $K_5$ planar?
+A: Yes, it can be drawn without crossings
+B: No, because $|E|=10>3|V|-6=9$
+C: No, because it is bipartite
+D: Yes, because every vertex has degree 4
+ANS: B
+EXP: Euler's formula $V-E+F=2$ implies every simple planar graph with $V\ge3$ has $E\le3V-6$.
+$K_5$ has $10>9$, so it is not planar. By Kuratowski's theorem, $K_5$ and $K_{3,3}$ are the obstructions to planarity.
+
+
+@ graph h graph-h-004
+T: Algebraic connectivity of a path
+S: spectral
+Q: What is the algebraic connectivity (second smallest Laplacian eigenvalue) of the path $P_3$ (3 vertices, 2 edges)?
+A: $0$
+B: $1$
+C: $2$
+D: $3$
+ANS: B
+EXP: $L=\begin{pmatrix}1&-1&0\\-1&2&-1\\0&-1&1\end{pmatrix}$ has eigenvalues $0,1,3$ (trace $4$ ✓).
+$\lambda_2=1>0$ confirms the graph is connected. Its eigenvector (the Fiedler vector) $(1,0,-1)$ is used in spectral partitioning.
+
+
+@ graph h graph-h-005
+T: Perfect matchings in K₆
+S: matching-coloring
+Q: How many perfect matchings does $K_6$ have?
+A: $15$
+B: $720$
+C: $90$
+D: $6$
+ANS: A
+EXP: Vertex 1 can pair with 5 others; then the smallest remaining vertex has 3 choices; then 1 choice. $5\cdot3\cdot1=15=(2n-1)!!$ for $n=3$.
+
+
+@ graph h graph-h-006
+T: Stationary distribution of a random walk
+S: random-walks
+Q: A random walk on the star graph with one centre and 4 leaves moves to a uniformly random neighbour at each step. What is the stationary probability of the centre?
+A: $\frac15$
+B: $\frac12$
+C: $\frac45$
+D: $\frac14$
+ANS: B
+EXP: For a random walk on an undirected graph, $\pi_v=\dfrac{\deg v}{2|E|}$. Here $|E|=4$, so $\pi_{centre}=\tfrac48=\tfrac12$ (each leaf gets $\tfrac18$).
+This degree-proportional stationary distribution underlies PageRank without teleportation.
+
+
+@ graph h graph-h-007
+T: Closed walks in a bipartite graph
+S: spectral
+Q: How many closed walks of length 3 start and end at a given vertex of the cycle $C_4$?
+A: $0$
+B: $2$
+C: $4$
+D: $8$
+ANS: A
+EXP: $C_4$ is bipartite, so every walk alternates sides and any closed walk has even length. So $(A^3)_{ii}=0$.
+Equivalently, a graph is bipartite iff $\operatorname{tr}(A^k)=0$ for all odd $k$.
+
+
+@ graph h graph-h-008
+T: Complexity of finding SCCs
+S: connectivity
+Q: Kosaraju's algorithm for strongly connected components runs in:
+A: $O(V+E)$
+B: $O(V^2)$
+C: $O(VE)$
+D: $O(E\log V)$
+ANS: A
+EXP: Two DFS passes: one on $G$ to get finish order, one on the reversed graph $G^T$ in decreasing finish time. Each is $O(V+E)$, and so is reversing the graph. Tarjan's algorithm achieves the same in one pass.
+
+
+@ graph h graph-h-009
+T: Counting leaves in a tree
+S: trees
+Q: A tree has 3 vertices of degree 3, 2 vertices of degree 2, and all other vertices have degree 1. How many leaves does it have?
+A: $3$
+B: $4$
+C: $5$
+D: $6$
+ANS: C
+EXP: Let $L$ be the number of leaves. Then $n=5+L$ and $|E|=n-1=4+L$.
+Handshake: $3\cdot3+2\cdot2+L=2(4+L)\Rightarrow13+L=8+2L\Rightarrow L=5$.
+
+
+@ graph h graph-h-010
+T: Spectrum of the normalised adjacency
+S: spectral
+Q: In graph neural networks, $\hat A=D^{-1/2}AD^{-1/2}$ (graph with no isolated vertices). Its eigenvalues always lie in:
+A: $[-1,\ 1]$
+B: $[0,\ 1]$
+C: $[0,\ 2]$
+D: $[-d_{max},\ d_{max}]$
+ANS: A
+EXP: $\hat A=I-L_{sym}$, and the normalised Laplacian $L_{sym}$ has eigenvalues in $[0,2]$, so $\hat A$'s lie in $[-1,1]$.
+The value $-1$ occurs exactly for bipartite components. Bounded spectrum keeps repeated GCN propagation numerically stable, which is why GCNs add self-loops and renormalise.
