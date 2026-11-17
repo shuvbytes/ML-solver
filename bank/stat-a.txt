@@ -1,0 +1,1062 @@
+@ stat e stat-e-011
+T: Where the t distribution comes from
+S: sampling-distributions
+Q: $Z\sim N(0,1)$ and $V\sim\chi^2_k$ are independent. What is the distribution of $T=\dfrac{Z}{\sqrt{V/k}}$?
+A: $\chi^2_k$
+B: $t_{k-1}$
+C: $t_k$
+D: $F(1,k)$
+ANS: C
+EXP: By definition, a standard normal divided by the square root of an independent $\chi^2_k$ over its degrees of freedom is Student's $t$ with $k$ degrees of freedom.
+The $k-1$ in the one-sample $t$ statistic appears only because there $V=(n-1)S^2/\sigma^2\sim\chi^2_{n-1}$, so $k=n-1$. $F(1,k)$ is the distribution of $T^2$, not $T$.
+
+
+@ stat e stat-e-012
+T: Variance of a chi-squared variable
+S: sampling-distributions
+TYPE: nat
+TOL: 0
+Q: $X\sim\chi^2_8$. What is $\operatorname{Var}(X)$? Enter an integer.
+ANS: 16
+EXP: A $\chi^2_k$ variable is a sum of $k$ independent $Z_i^2$ with $E[Z_i^2]=1$ and $\operatorname{Var}(Z_i^2)=E[Z^4]-1=3-1=2$.
+So $E[X]=k=8$ and $\operatorname{Var}(X)=2k=16$. A common slip is to answer $8$, which is the mean.
+
+
+@ stat e stat-e-013
+T: Tails of the t distribution
+S: sampling-distributions
+Q: Compared with the standard normal $N(0,1)$, the $t$ distribution with $5$ degrees of freedom:
+A: has lighter tails and a smaller variance
+B: has heavier tails and a larger variance
+C: has the same variance but is skewed to the right
+D: is identical, because both are symmetric about 0
+ANS: B
+EXP: The $t$ distribution is symmetric about 0 like $N(0,1)$, but it accounts for the extra uncertainty of estimating $\sigma$ by $S$, so it has heavier tails.
+Its variance is $\dfrac{\nu}{\nu-2}=\dfrac53>1$. This is why $t$ critical values (e.g. $t_{0.025,5}=2.571$) exceed $z_{0.025}=1.96$. As $\nu\to\infty$, $t_\nu\to N(0,1)$.
+
+
+@ stat e stat-e-014
+T: Sum of squared standard normals
+S: sampling-distributions
+Q: $Z_1,Z_2,Z_3$ are independent $N(0,1)$. What is the distribution of $Z_1^2+Z_2^2+Z_3^2$?
+A: $\chi^2_3$
+B: $\chi^2_2$
+C: $N(0,3)$
+D: $t_3$
+ANS: A
+EXP: The chi-squared distribution with $k$ degrees of freedom is defined as the sum of $k$ independent squared standard normals. Here $k=3$.
+$\chi^2_2$ would be the answer only if one degree of freedom were lost to estimating a mean, as in $\sum(Z_i-\bar Z)^2$. $N(0,3)$ is the distribution of $Z_1+Z_2+Z_3$ (no squares); a sum of squares is never negative, so it cannot be normal.
+
+
+@ stat e stat-e-015
+T: MLE of a Poisson rate from counts
+S: estimation-mle
+Q: Daily counts of server errors are modelled as iid Poisson$(\lambda)$. Over 5 days you observe $2,0,3,1,4$. What is the maximum likelihood estimate of $\lambda$?
+A: $2.5$
+B: $10$
+C: $\sqrt2$
+D: $2$
+ANS: D
+EXP: $\ell(\lambda)=\sum x_i\ln\lambda-n\lambda+\text{const}$. Setting $\ell'(\lambda)=\dfrac{\sum x_i}{\lambda}-n=0$ gives $\hat\lambda=\bar x=\dfrac{10}{5}=2$.
+$2.5$ divides by $n-1$, which belongs to the sample variance, not the mean. $10$ is the total count, not the per-day rate.
+
+
+@ stat e stat-e-016
+T: Method of moments for a power density
+S: estimation-mle
+Q: $X$ has density $f(x)=(\theta+1)x^{\theta}$ for $0<x<1$ ($\theta>-1$). A sample has mean $\bar x=0.75$. What is the method-of-moments estimate of $\theta$?
+A: $3$
+B: $2$
+C: $1$
+D: $0.75$
+ANS: B
+EXP: First moment: $E[X]=\int_0^1(\theta+1)x^{\theta+1}\,dx=\dfrac{\theta+1}{\theta+2}$.
+Method of moments sets $E[X]=\bar x$: $\dfrac{\theta+1}{\theta+2}=0.75\Rightarrow\theta+1=0.75\theta+1.5\Rightarrow\theta=2$.
+$3$ comes from using $E[X]=\dfrac{\theta}{\theta+1}$, which is the mean of the density $\theta x^{\theta-1}$, a different parametrisation.
+
+
+@ stat e stat-e-017
+T: Invariance property of the MLE
+S: estimation-mle
+Q: The MLE of a Bernoulli success probability is $\hat p=0.2$. What is the MLE of the odds $\dfrac{p}{1-p}$?
+A: $0.25$
+B: $0.2$
+C: $4$
+D: $0.8$
+ANS: A
+EXP: Invariance: if $\hat\theta$ is the MLE of $\theta$, then $g(\hat\theta)$ is the MLE of $g(\theta)$.
+So the MLE of the odds is $\dfrac{0.2}{0.8}=0.25$. $4$ is the odds against, $\dfrac{1-p}{p}$. In logistic regression the model is linear in the log-odds $\ln\frac{p}{1-p}$.
+
+
+@ stat e stat-e-018
+T: Gaussian noise MLE and the loss function
+S: estimation-mle
+Q: In the model $y_i=f_w(x_i)+\varepsilon_i$ with $\varepsilon_i$ iid $N(0,\sigma^2)$ and $\sigma$ fixed, maximising the likelihood over $w$ is equivalent to minimising which loss?
+A: mean absolute error
+B: cross-entropy loss
+C: sum of squared errors
+D: hinge loss
+ANS: C
+EXP: $\ln L(w)=-\dfrac{1}{2\sigma^2}\sum_i\big(y_i-f_w(x_i)\big)^2+\text{const}$, so maximising it is the same as minimising $\sum_i(y_i-f_w(x_i))^2$.
+Mean absolute error is what you get with Laplace noise instead. Cross-entropy is the negative log-likelihood for Bernoulli or categorical labels (classification).
+
+
+@ stat e stat-e-019
+T: What a likelihood function is
+S: estimation-mle
+Q: For observed data $x_1,\dots,x_n$, the likelihood $L(\theta)=\prod_i f(x_i;\theta)$ is best described as:
+A: a probability distribution over $\theta$ that integrates to 1
+B: a function of the data with $\theta$ held fixed
+C: the posterior probability of $\theta$ given the data
+D: a function of $\theta$ with the observed data held fixed
+ANS: D
+EXP: The same formula $f(x;\theta)$ is a density in $x$ when $\theta$ is fixed; the likelihood reads it the other way, as a function of $\theta$ for the data you actually saw.
+It need not integrate to 1 over $\theta$, so it is not a distribution over $\theta$. Turning it into a posterior requires multiplying by a prior and normalising (Bayes' rule).
+
+
+@ stat e stat-e-020
+T: Diagnosing underfitting
+S: bias-variance
+Q: A model has training error $30\%$ and validation error $31\%$, while a well-tuned model on the same task reaches $5\%$. The model most likely suffers from:
+A: high bias (underfitting)
+B: high variance (overfitting)
+C: data leakage from validation to training
+D: too little regularisation
+ANS: A
+EXP: Training and validation errors are close (small variance gap) but both are high, so the model cannot even fit the training data: high bias.
+High variance shows the opposite pattern, low training error with a large gap to validation error. Too little regularisation would lead to overfitting, not this.
+
+
+@ stat e stat-e-021
+T: MSE of the sample mean
+S: bias-variance
+TYPE: nat
+TOL: 0
+Q: $X_1,\dots,X_5$ are iid with mean $\mu$ and variance $\sigma^2=20$. What is the mean squared error of $\bar X$ as an estimator of $\mu$? Enter an integer.
+ANS: 4
+EXP: $\bar X$ is unbiased, so $\text{MSE}=\text{Bias}^2+\operatorname{Var}=0+\dfrac{\sigma^2}{n}=\dfrac{20}{5}=4$.
+The answer is the variance $\sigma^2/n$, not the standard error $\sigma/\sqrt n=2$.
+
+
+@ stat e stat-e-022
+T: Which linear estimators are unbiased
+S: bias-variance
+TYPE: msq
+Q: $X_1,X_2$ are iid with mean $\mu$. Which of the following are unbiased estimators of $\mu$? More than one option may be correct.
+A: $X_1$
+B: $\dfrac{X_1+X_2}{2}$
+C: $2X_1-X_2$
+D: $\dfrac{X_1+X_2}{3}$
+ANS: A,B,C
+EXP: By linearity, $E[aX_1+bX_2]=(a+b)\mu$, so the estimator is unbiased exactly when the weights sum to 1.
+$X_1$: $1$. $\frac{X_1+X_2}{2}$: $\frac12+\frac12=1$. $2X_1-X_2$: $2-1=1$. All unbiased.
+$\frac{X_1+X_2}{3}$: weights sum to $\frac23$, so $E=\frac23\mu$, biased.
+Unbiasedness says nothing about quality: $\operatorname{Var}(2X_1-X_2)=5\sigma^2$, far worse than $\sigma^2/2$ for the average.
+
+
+@ stat e stat-e-023
+T: Model complexity and bias–variance
+S: bias-variance
+Q: As you increase the degree of a polynomial regression model (with a fixed training set), what typically happens?
+A: bias increases and variance decreases
+B: bias and variance both decrease
+C: bias decreases and variance increases
+D: bias and variance both increase
+ANS: C
+EXP: A more flexible model can fit the true function more closely (lower bias) but also fits the noise in the particular training set, so its predictions change more from sample to sample (higher variance).
+Test error is therefore U-shaped in model complexity. Regularisation moves the other way: more bias, less variance.
+
+
+@ stat e stat-e-024
+T: Meaning of a 95% confidence interval
+S: confidence-intervals
+Q: A 95% confidence interval for a population mean $\mu$ is computed as $(48,\ 56)$. Which statement is correct?
+A: There is a 95% probability that $\mu$ lies between 48 and 56.
+B: 95% of the sample values lie between 48 and 56.
+C: If the sampling were repeated many times, about 95% of the intervals built this way would contain $\mu$.
+D: There is a 95% probability that the sample mean lies between 48 and 56.
+ANS: C
+EXP: In the frequentist view $\mu$ is fixed and the interval is random. "95%" is the long-run coverage rate of the procedure.
+Once computed, $(48,56)$ either contains $\mu$ or not; a probability statement about $\mu$ itself needs a Bayesian credible interval. The interval is about the mean, not about individual values, and the sample mean ($52$) is certainly inside it.
+
+
+@ stat e stat-e-025
+T: Making a confidence interval narrower
+S: confidence-intervals
+Q: For a $z$-interval $\bar x\pm z_{\alpha/2}\dfrac{\sigma}{\sqrt n}$, which change makes the interval narrower?
+A: increasing the sample size from $50$ to $200$
+B: raising the confidence level from 95% to 99%
+C: sampling from a population with a larger $\sigma$
+D: decreasing the sample size from $50$ to $25$
+ANS: A
+EXP: The half-width is $z_{\alpha/2}\,\sigma/\sqrt n$. Increasing $n$ by 4× halves it.
+A higher confidence level uses a larger $z$ ($2.576$ instead of $1.96$), so the interval gets wider. A larger $\sigma$ or a smaller $n$ also widens it.
+
+
+@ stat e stat-e-026
+T: Margin of error from a reported interval
+S: confidence-intervals
+TYPE: nat
+TOL: 0
+Q: A symmetric 95% confidence interval for a mean is reported as $(42,\ 58)$. What is the margin of error? Enter an integer.
+ANS: 8
+EXP: A symmetric interval is $\bar x\pm E$. The centre is $\bar x=\frac{42+58}{2}=50$ and the margin is $E=\frac{58-42}{2}=8$.
+The full width is $16$; the margin of error is half of it.
+
+
+@ stat e stat-e-027
+T: z critical value for 90% confidence
+S: confidence-intervals
+Q: Which $z$ critical value is used for a two-sided 90% confidence interval?
+A: $1.282$
+B: $1.96$
+C: $1.645$
+D: $2.576$
+ANS: C
+EXP: A two-sided 90% interval leaves $5\%$ in each tail, so it uses $z_{0.05}=1.645$.
+$1.282=z_{0.10}$ would put all 10% in one tail and is for a one-sided 90% bound. $1.96$ is for 95% and $2.576$ for 99%.
+
+
+@ stat e stat-e-028
+T: Critical value when sigma is unknown
+S: confidence-intervals
+Q: A sample of $n=16$ comes from a normal population with unknown $\sigma$. The confidence interval for $\mu$ uses $\bar x\pm c\cdot\dfrac{s}{\sqrt n}$. The critical value $c$ comes from:
+A: the standard normal distribution
+B: the $t$ distribution with 16 degrees of freedom
+C: the $\chi^2$ distribution with 15 degrees of freedom
+D: the $t$ distribution with 15 degrees of freedom
+ANS: D
+EXP: Replacing $\sigma$ by $s$ makes $\dfrac{\bar X-\mu}{S/\sqrt n}\sim t_{n-1}=t_{15}$. One degree of freedom is used up by estimating the mean in $s$.
+Using $z$ would understate the width for small $n$. $\chi^2_{15}$ is what you use for a CI for $\sigma^2$, not for $\mu$.
+
+
+@ stat m stat-m-011
+T: Linear transformation of mean and SD
+S: descriptive
+Q: A dataset has mean $20$ and standard deviation $5$. Each value is transformed by $y=3x-4$. What are the mean and standard deviation of $y$?
+A: mean $56$, SD $11$
+B: mean $56$, SD $15$
+C: mean $60$, SD $15$
+D: mean $56$, SD $45$
+ANS: B
+EXP: The mean follows the transformation exactly: $\bar y=3\cdot20-4=56$.
+A shift does not change spread, and scaling multiplies the SD by $|a|$: $s_y=3\cdot5=15$.
+SD $11$ wrongly applies the shift $-4$ to the SD. SD $45$ multiplies by $a^2=9$, which is the rule for the variance ($225=9\cdot25$), not the SD.
+
+
+@ stat m stat-m-012
+T: Combined mean of two groups
+S: descriptive
+Q: Class A has 20 students with mean score $60$. Class B has 30 students with mean score $70$. What is the mean score of all 50 students?
+A: $65$
+B: $64$
+C: $66$
+D: $68$
+ANS: C
+EXP: The combined mean is the mean weighted by group size: $\dfrac{20\cdot60+30\cdot70}{50}=\dfrac{1200+2100}{50}=66$.
+$65$ is the unweighted average of the two means, correct only when the groups are the same size. $64$ attaches the weights to the wrong groups.
+
+
+@ stat m stat-m-013
+T: Interquartile range by the median-of-halves rule
+S: descriptive
+TYPE: nat
+TOL: 0
+Q: Find the interquartile range of $\{3,5,7,8,12,13,14,18,21\}$. Use this convention: $Q_1$ is the median of the values below the overall median, and $Q_3$ is the median of the values above it (the overall median is excluded from both halves). Enter an integer.
+ANS: 10
+EXP: There are 9 sorted values; the median is the 5th, $12$.
+Lower half $\{3,5,7,8\}$: $Q_1=\frac{5+7}{2}=6$. Upper half $\{13,14,18,21\}$: $Q_3=\frac{14+18}{2}=16$.
+$\text{IQR}=16-6=10$. Other quartile conventions (e.g. linear interpolation in software) can give slightly different values, which is why the convention is stated.
+
+
+@ stat m stat-m-014
+T: Effect of an outlier on mean and median
+S: descriptive
+Q: The data $\{10,12,14,16,18\}$ have mean and median $14$. The value $18$ is mistyped as $68$. What are the new mean and median?
+A: mean $24$, median $14$
+B: mean $14$, median $14$
+C: mean $24$, median $24$
+D: mean $24$, median $16$
+ANS: A
+EXP: The sum rises by $50$, so the mean rises by $\frac{50}{5}=10$ to $24$.
+The sorted data are $\{10,12,14,16,68\}$; the middle value is still $14$. The median depends only on order, so moving the largest value further out does not change it.
+This robustness is why the median (and L1 loss) is preferred when data contain outliers.
+
+
+@ stat m stat-m-015
+T: Median from a frequency table
+S: descriptive
+Q: A survey records the number of devices per household:
+$$\begin{array}{c|ccccc}\text{devices} & 1 & 2 & 3 & 4 & 5\\\hline\text{households} & 3 & 7 & 5 & 4 & 1\end{array}$$
+What is the median number of devices?
+A: $2$
+B: $3$
+C: $2.65$
+D: $2.5$
+ANS: D
+EXP: There are $n=20$ households, so the median is the average of the 10th and 11th sorted values.
+Cumulative counts: $3,\ 10,\ 15,\ 19,\ 20$. The 10th value is $2$ (positions 4–10) and the 11th is $3$ (positions 11–15). Median $=\frac{2+3}{2}=2.5$.
+$2$ is the mode and $2.65$ is the mean ($53/20$).
+
+
+@ stat m stat-m-016
+T: Sample variance from summary sums
+S: descriptive
+Q: For $n=10$ observations, $\sum x_i=50$ and $\sum x_i^2=340$. What is the sample variance $s^2$ (denominator $n-1$)?
+A: $9$
+B: $10$
+C: $29$
+D: $\sqrt{10}$
+ANS: B
+EXP: Use $\sum(x_i-\bar x)^2=\sum x_i^2-n\bar x^2$. Here $\bar x=5$, so $\sum(x_i-\bar x)^2=340-10\cdot25=90$.
+$s^2=\dfrac{90}{9}=10$. Dividing by $n$ gives $9$, the population (MLE) version. $29=34-5$ forgets to square the mean. $\sqrt{10}$ is the SD.
+
+
+@ stat m stat-m-017
+T: Adding an observation equal to the mean
+S: descriptive
+TYPE: nat
+TOL: 0.01
+Q: A sample of $n=9$ values has mean $50$ and sample variance $s^2=16$ (denominator $n-1$). A 10th value equal to $50$ is added. What is the new sample variance (denominator $n-1$)? Give your answer to 2 decimal places.
+ANS: 14.22
+EXP: The sum of squared deviations is $(n-1)s^2=8\cdot16=128$.
+The new value equals the mean, so the mean stays $50$ and the new value adds $0$ to the sum of squares.
+New $s^2=\dfrac{128}{10-1}=\dfrac{128}{9}\approx14.22$. The spread looks smaller because the same total squared deviation is shared over more degrees of freedom. (This is why imputing missing values with the mean shrinks the variance.)
+
+
+@ stat m stat-m-018
+T: Probability for a sample mean
+S: sampling-distributions
+Q: IQ scores have mean $100$ and SD $15$ and are normally distributed. For a random sample of $25$ people, what is $P(\bar X>106)$? Use $\Phi(2)=0.9772$ and $\Phi(0.4)=0.6554$.
+A: $0.0228$
+B: $0.3446$
+C: $0.9772$
+D: $0.0456$
+ANS: A
+EXP: $\bar X\sim N\!\left(100,\ \tfrac{15^2}{25}\right)$, so $\text{SE}=\tfrac{15}{5}=3$.
+$z=\tfrac{106-100}{3}=2$, and $P(Z>2)=1-0.9772=0.0228$.
+$0.3446$ uses the SD of a single person ($z=6/15=0.4$) instead of the SE. $0.0456$ is the two-sided probability $P(|Z|>2)$.
+
+
+@ stat m stat-m-019
+T: Variance of the sample variance
+S: sampling-distributions
+TYPE: nat
+TOL: 0.01
+Q: $X_1,\dots,X_{10}$ are iid $N(\mu,4)$ (the second parameter is the variance). What is $\operatorname{Var}(S^2)$, where $S^2$ is the sample variance with denominator $n-1$? Give your answer to 2 decimal places.
+ANS: 3.56
+EXP: For normal data, $\dfrac{(n-1)S^2}{\sigma^2}\sim\chi^2_{n-1}$, which has variance $2(n-1)$.
+So $\operatorname{Var}(S^2)=\dfrac{\sigma^4}{(n-1)^2}\cdot2(n-1)=\dfrac{2\sigma^4}{n-1}=\dfrac{2\cdot16}{9}\approx3.56$.
+Remember to square $\sigma^2=4$: using $\sigma^2$ instead of $\sigma^4$ gives $0.89$.
+
+
+@ stat m stat-m-020
+T: SD of a difference of sample means
+S: sampling-distributions
+Q: Independent samples are drawn from two populations: $n_1=16$ with $\sigma_1=8$, and $n_2=9$ with $\sigma_2=3$. What is the standard deviation of $\bar X_1-\bar X_2$?
+A: $3$
+B: $\sqrt3$
+C: $5$
+D: $\sqrt5$
+ANS: D
+EXP: $\operatorname{Var}(\bar X_1)=\tfrac{64}{16}=4$ and $\operatorname{Var}(\bar X_2)=\tfrac{9}{9}=1$.
+For independent variables, variances add even for a difference: $\operatorname{Var}(\bar X_1-\bar X_2)=4+1=5$, so the SD is $\sqrt5\approx2.24$.
+$3$ adds the standard deviations $2+1$; $\sqrt3$ subtracts the variances; $5$ is the variance, not the SD.
+
+
+@ stat m stat-m-021
+T: Standard error of a sample proportion
+S: sampling-distributions
+Q: In a population, 40% of users click an ad. For a random sample of $150$ users, what is the standard error of the sample proportion $\hat p$?
+A: $0.04$
+B: $0.0016$
+C: $0.49$
+D: $0.0516$
+ANS: A
+EXP: $\hat p$ is a mean of Bernoulli$(p)$ variables, so $\operatorname{Var}(\hat p)=\dfrac{p(1-p)}{n}=\dfrac{0.24}{150}=0.0016$ and $\text{SE}=\sqrt{0.0016}=0.04$.
+$0.0016$ is the variance. $0.49\approx\sqrt{0.24}$ is the SD of one click. $0.0516=\sqrt{0.4/150}$ drops the $(1-p)$ factor.
+
+
+@ stat m stat-m-022
+T: Properties of the t distribution
+S: sampling-distributions
+TYPE: msq
+Q: Which of the following statements about Student's $t_\nu$ distribution are true? More than one option may be correct.
+A: It is symmetric about $0$.
+B: For $\nu>2$ its variance is $\dfrac{\nu}{\nu-2}$.
+C: For $\nu=1$ its mean is $0$.
+D: As $\nu\to\infty$ it converges to $N(0,1)$.
+ANS: A,B,D
+EXP: Symmetric about 0: true, since $T=Z/\sqrt{V/\nu}$ and $Z$ is symmetric.
+Variance $\frac{\nu}{\nu-2}$ for $\nu>2$: true (it is infinite for $\nu\le2$).
+Mean 0 for $\nu=1$: false. $t_1$ is the Cauchy distribution, whose tails are so heavy that $E|T|=\infty$, so the mean does not exist, even though the distribution is symmetric.
+Convergence to $N(0,1)$: true, because $V/\nu\to1$ by the law of large numbers.
+
+
+@ stat m stat-m-023
+T: Ratio of two sample variances
+S: sampling-distributions
+Q: Independent samples of sizes $n_1=8$ and $n_2=11$ come from normal populations with equal variance. What is the distribution of $S_1^2/S_2^2$?
+A: $F(8,11)$
+B: $F(7,10)$
+C: $F(10,7)$
+D: $\chi^2_{17}$
+ANS: B
+EXP: $\dfrac{(n_i-1)S_i^2}{\sigma^2}\sim\chi^2_{n_i-1}$, and an $F$ variable is a ratio of independent chi-squareds each divided by its df:
+$\dfrac{S_1^2}{S_2^2}=\dfrac{\chi^2_7/7}{\chi^2_{10}/10}\sim F(7,10)$ (numerator df first).
+$F(8,11)$ forgets to subtract 1 for the estimated means. $F(10,7)$ swaps numerator and denominator. This ratio is the statistic of the $F$-test for equal variances and the basis of ANOVA.
+
+
+@ stat m stat-m-024
+T: MLE of a geometric parameter
+S: estimation-mle
+Q: $X$ counts the number of trials up to and including the first success, so $P(X=k)=(1-p)^{k-1}p$ for $k=1,2,\dots$. Observations: $2,4,1,5$. What is the MLE of $p$?
+A: $\frac14$
+B: $3$
+C: $\frac13$
+D: $\frac23$
+ANS: C
+EXP: $\ell(p)=n\ln p+\left(\sum x_i-n\right)\ln(1-p)$ with $n=4$, $\sum x_i=12$.
+$\ell'(p)=\dfrac{4}{p}-\dfrac{8}{1-p}=0\Rightarrow4(1-p)=8p\Rightarrow\hat p=\dfrac13=\dfrac{1}{\bar x}$.
+$\frac14=\frac{n}{\sum x_i+n}$ is the answer for the other convention (counting failures before the success, support $0,1,2,\dots$). $3$ is $\bar x$ itself.
+
+
+@ stat m stat-m-025
+T: MLE with measurements of unequal precision
+S: estimation-mle
+Q: Two instruments measure the same quantity $\mu$. The first reads $10$ with error $N(0,1)$; the second reads $16$ with error $N(0,4)$ (second parameter is the variance). The errors are independent. What is the MLE of $\mu$?
+A: $13$
+B: $12$
+C: $14.8$
+D: $11.2$
+ANS: D
+EXP: $\ell(\mu)=-\dfrac{(10-\mu)^2}{2\cdot1}-\dfrac{(16-\mu)^2}{2\cdot4}$. Setting $\ell'(\mu)=0$: $(10-\mu)+\dfrac{16-\mu}{4}=0$.
+So $\hat\mu=\dfrac{10/1+16/4}{1/1+1/4}=\dfrac{14}{1.25}=11.2$: an inverse-variance weighted mean.
+$13$ is the plain average, which ignores precision. $12$ weights by $1/\sigma$ instead of $1/\sigma^2$. $14.8$ weights the noisy instrument more, the wrong way round. (Weighted least squares uses the same $1/\sigma_i^2$ weights.)
+
+
+@ stat m stat-m-026
+T: Poisson rate with different exposure times
+S: estimation-mle
+Q: Three machines are observed for $1$, $2$ and $3$ hours and show $2$, $3$ and $7$ failures. Failures on machine $i$ are Poisson with mean $\lambda t_i$, where $t_i$ is its observation time. What is the MLE of the hourly rate $\lambda$?
+A: $1.94$
+B: $2$
+C: $4$
+D: $0.5$
+ANS: B
+EXP: $\ell(\lambda)=\sum_i\big[y_i\ln(\lambda t_i)-\lambda t_i\big]+\text{const}$, so $\ell'(\lambda)=\dfrac{\sum y_i}{\lambda}-\sum t_i=0$.
+$\hat\lambda=\dfrac{\sum y_i}{\sum t_i}=\dfrac{12}{6}=2$ failures per hour: total events over total exposure.
+$1.94$ averages the three individual rates $2,\ 1.5,\ 2.33$, which gives a short observation the same weight as a long one. $4$ is the mean count per machine, ignoring exposure.
+
+
+@ stat m stat-m-027
+T: Method of moments for a uniform interval
+S: estimation-mle
+Q: Data are modelled as $U(a,b)$. The sample mean is $5$ and the sample variance is $3$. What are the method-of-moments estimates of $(a,b)$?
+A: $(2,\ 8)$
+B: $(3.27,\ 6.73)$
+C: $(3.5,\ 6.5)$
+D: $(-0.20,\ 10.20)$
+ANS: A
+EXP: For $U(a,b)$: mean $\frac{a+b}{2}$ and variance $\frac{(b-a)^2}{12}$.
+Match: $a+b=10$ and $(b-a)^2=36\Rightarrow b-a=6$. So $a=2$, $b=8$.
+$(3.27,6.73)$ uses $(b-a)^2/4$; $(3.5,6.5)$ sets $b-a$ equal to the variance; $(-0.20,10.20)$ treats $3$ as the SD, giving $b-a=3\sqrt{12}$.
+
+
+@ stat m stat-m-028
+T: MLE for a Rayleigh distribution
+S: estimation-mle
+Q: $X$ has density $f(x;\theta)=\dfrac{x}{\theta}e^{-x^2/(2\theta)}$ for $x>0$. Observations: $1,2,3$. What is the MLE of $\theta$?
+A: $\frac{14}{3}$
+B: $\frac73$
+C: $2$
+D: $\frac72$
+ANS: B
+EXP: $\ell(\theta)=\sum\ln x_i-n\ln\theta-\dfrac{\sum x_i^2}{2\theta}$.
+$\ell'(\theta)=-\dfrac n\theta+\dfrac{\sum x_i^2}{2\theta^2}=0\Rightarrow\hat\theta=\dfrac{\sum x_i^2}{2n}=\dfrac{14}{6}=\dfrac73$.
+$\frac{14}{3}$ drops the factor $2$ in the exponent. $\frac72$ divides by $2(n-1)$, a variance-style correction that the MLE does not use. $2$ is just $\bar x$.
+
+
+@ stat m stat-m-029
+T: Bias of a shrunken mean
+S: bias-variance
+Q: $X_1,\dots,X_9$ are iid with mean $\mu=20$. What is the bias of $T=\dfrac{1}{n+1}\sum_{i=1}^n X_i$ as an estimator of $\mu$?
+A: $-2$
+B: $2$
+C: $0$
+D: $-\frac{20}{9}$
+ANS: A
+EXP: $E[T]=\dfrac{n\mu}{n+1}=\dfrac{9\cdot20}{10}=18$, so $\text{Bias}=E[T]-\mu=18-20=-2$.
+In general the bias is $-\dfrac{\mu}{n+1}$, which shrinks to 0 as $n$ grows (asymptotically unbiased). $-\frac{20}{9}$ divides by $n$ instead of $n+1$. Its variance $\frac{n\sigma^2}{(n+1)^2}$ is smaller than that of $\bar X$, a small-scale bias–variance trade-off.
+
+
+@ stat m stat-m-030
+T: Correcting the bias of the sample maximum
+S: bias-variance
+TYPE: nat
+TOL: 0.01
+Q: $X_1,\dots,X_4$ are iid $U(0,\theta)$ and $M=\max X_i$. Find the constant $c$ such that $cM$ is an unbiased estimator of $\theta$. Give your answer to 2 decimal places.
+ANS: 1.25
+EXP: $P(M\le m)=(m/\theta)^n$, so $M$ has density $\dfrac{n m^{n-1}}{\theta^n}$ on $(0,\theta)$ and $E[M]=\dfrac{n}{n+1}\theta$.
+For $E[cM]=\theta$ we need $c=\dfrac{n+1}{n}=\dfrac54=1.25$.
+The maximum always falls short of $\theta$, so it must be scaled up; this is the "German tank" estimator.
+
+
+@ stat m stat-m-031
+T: Effects of increasing the ridge penalty
+S: bias-variance
+TYPE: msq
+Q: In ridge regression, $\hat w_\lambda=\arg\min_w\|y-Xw\|^2+\lambda\|w\|^2$. As $\lambda$ increases from $0$, which of the following happen? More than one option may be correct.
+A: The squared bias of the predictions typically increases.
+B: The variance of the predictions decreases.
+C: The training error decreases.
+D: The norm $\|\hat w_\lambda\|$ shrinks toward $0$.
+ANS: A,B,D
+EXP: The penalty pulls the weights toward 0: $\|\hat w_\lambda\|$ is non-increasing in $\lambda$ and tends to 0 as $\lambda\to\infty$. True.
+Shrinking makes the fit less sensitive to the particular training sample, so variance falls; it also moves the fit away from the least-squares solution, so bias typically rises. Both true.
+Training error does not decrease: $\lambda=0$ gives the least-squares fit, which minimises training error, so any $\lambda>0$ can only raise it. The hoped-for gain is in test error.
+
+
+@ stat m stat-m-032
+T: Solving the test error decomposition
+S: bias-variance
+TYPE: nat
+TOL: 0.01
+Q: At a test point $x_0$, a model's expected squared prediction error is $1.5$. The irreducible noise variance is $0.5$, and the model's bias at $x_0$ is $E[\hat f(x_0)]-f(x_0)=0.4$. What is the variance of $\hat f(x_0)$? Give your answer to 2 decimal places.
+ANS: 0.84
+EXP: Decomposition: $E\big[(Y-\hat f(x_0))^2\big]=\sigma^2_{\text{noise}}+\text{Bias}^2+\operatorname{Var}(\hat f(x_0))$.
+$1.5=0.5+0.4^2+\operatorname{Var}\Rightarrow\operatorname{Var}=1.5-0.5-0.16=0.84$.
+Subtracting the bias without squaring it gives $0.6$, a common slip.
+
+
+@ stat m stat-m-033
+T: Relative efficiency of two unbiased estimators
+S: bias-variance
+Q: $X_1,X_2$ are iid with mean $\mu$ and variance $\sigma^2$. Consider $T_1=\dfrac{X_1+X_2}{2}$ and $T_2=\dfrac{X_1+2X_2}{3}$. What is $\dfrac{\operatorname{Var}(T_2)}{\operatorname{Var}(T_1)}$?
+A: $\frac{9}{10}$
+B: $\frac{5}{9}$
+C: $1$
+D: $\frac{10}{9}$
+ANS: D
+EXP: Both are unbiased (weights sum to 1).
+$\operatorname{Var}(T_1)=\tfrac14(\sigma^2+\sigma^2)=\tfrac{\sigma^2}{2}$ and $\operatorname{Var}(T_2)=\tfrac19(\sigma^2+4\sigma^2)=\tfrac{5\sigma^2}{9}$.
+Ratio $=\dfrac{5/9}{1/2}=\dfrac{10}{9}>1$, so equal weights are more efficient. Among unbiased linear combinations of iid data, the equal-weight mean has the smallest variance. $\frac59$ is $\operatorname{Var}(T_2)/\sigma^2$, not the ratio.
+
+
+@ stat m stat-m-034
+T: Fixing a large train–validation gap
+S: bias-variance
+Q: A deep network reaches 2% training error but 20% validation error. Which action is most likely to reduce the validation error?
+A: add more input features
+B: collect more training data
+C: reduce the weight-decay (L2) penalty
+D: train for more epochs to push training error lower
+ANS: B
+EXP: A low training error with a large gap to validation error signals high variance (overfitting).
+Remedies reduce variance: more data, stronger regularisation, early stopping, simpler models, or ensembling.
+More features, less weight decay and longer training all increase the model's effective flexibility, which widens the gap.
+
+
+@ stat m stat-m-035
+T: t-interval for a mean
+S: confidence-intervals
+Q: A random sample of $n=16$ from a normal population has $\bar x=30$ and $s=8$. Find the 95% confidence interval for $\mu$. Use $t_{0.025,15}=2.131$ and $t_{0.05,15}=1.753$.
+A: $(25.74,\ 34.26)$
+B: $(26.08,\ 33.92)$
+C: $(12.95,\ 47.05)$
+D: $(26.49,\ 33.51)$
+ANS: A
+EXP: $\sigma$ is unknown, so use $t_{n-1}=t_{15}$. $\text{SE}=\dfrac{s}{\sqrt n}=\dfrac84=2$.
+$30\pm2.131\cdot2=30\pm4.262$, giving $(25.74,\ 34.26)$.
+$(26.08,33.92)$ uses $z=1.96$, too narrow for $n=16$. $(26.49,33.51)$ uses $t_{0.05}$, which is the 90% value. $(12.95,47.05)$ forgets to divide $s$ by $\sqrt n$.
+
+
+@ stat m stat-m-036
+T: Confidence interval for a proportion
+S: confidence-intervals
+Q: In a poll of $400$ people, $120$ support a policy. Using the normal approximation and $z_{0.025}=1.96$, what is the 95% confidence interval for the true proportion?
+A: $(0.262,\ 0.338)$
+B: $(0.246,\ 0.354)$
+C: $(0.299,\ 0.301)$
+D: $(0.255,\ 0.345)$
+ANS: D
+EXP: $\hat p=\tfrac{120}{400}=0.3$. $\text{SE}=\sqrt{\dfrac{\hat p(1-\hat p)}{n}}=\sqrt{\dfrac{0.21}{400}}\approx0.0229$.
+Margin $=1.96\cdot0.0229\approx0.045$, so the interval is $(0.255,\ 0.345)$.
+$(0.262,0.338)$ uses $1.645$ (90%). $(0.246,0.354)$ drops the $(1-\hat p)$ factor. $(0.299,0.301)$ forgets the square root and uses the variance $0.000525$ as the SE.
+
+
+@ stat m stat-m-037
+T: Converting a 95% interval width to 99%
+S: confidence-intervals
+Q: From some data, a 95% $z$-interval for $\mu$ has width $7.84$. What is the width of the 99% $z$-interval from the same data? Use $z_{0.025}=1.96$, $z_{0.005}=2.576$.
+A: $8.17$
+B: $10.30$
+C: $6.58$
+D: $13.54$
+ANS: B
+EXP: Width $=2z\,\sigma/\sqrt n$, so with the same data the width is proportional to $z$.
+$7.84\cdot\dfrac{2.576}{1.96}=7.84\cdot1.314\approx10.30$. (Here $2\sigma/\sqrt n=4$.)
+$6.58$ scales by $1.645/1.96$, the 90% value, and gives a narrower interval although 99% must be wider. $8.17$ scales by $99/95$. $13.54$ scales by $(2.576/1.96)^2$, as if width grew with $z^2$.
+
+
+@ stat m stat-m-038
+T: Sample size for a proportion, worst case
+S: confidence-intervals
+TYPE: nat
+TOL: 0
+Q: You want a 95% confidence interval for a proportion with margin of error at most $0.03$, and you have no prior guess for $p$. Using $z_{0.025}=1.96$ and the normal approximation, what is the minimum sample size? Enter an integer.
+ANS: 1068
+EXP: The margin is $z\sqrt{p(1-p)/n}$. With no prior guess, use the worst case $p=0.5$, which maximises $p(1-p)=0.25$.
+$n\ge\dfrac{z^2\,p(1-p)}{E^2}=\dfrac{1.96^2\cdot0.25}{0.03^2}=\dfrac{0.9604}{0.0009}=1067.1$.
+Round up to $1068$; rounding down to $1067$ would give a margin slightly above $0.03$.
+
+
+@ stat m stat-m-039
+T: Recovering sigma from a reported interval
+S: confidence-intervals
+TYPE: nat
+TOL: 0
+Q: A 95% confidence interval for $\mu$ with known $\sigma$, based on $n=25$ observations, is $(46.08,\ 53.92)$. Using $z_{0.025}=1.96$, what is $\sigma$? Enter an integer.
+ANS: 10
+EXP: The margin is half the width: $E=\dfrac{53.92-46.08}{2}=3.92$.
+$E=1.96\cdot\dfrac{\sigma}{\sqrt{25}}\Rightarrow3.92=1.96\cdot\dfrac{\sigma}{5}\Rightarrow\sigma=10$.
+Forgetting the $\sqrt n$ gives $\sigma=2$, which is the standard error, not the population SD.
+
+
+@ stat m stat-m-040
+T: One-sided lower confidence bound
+S: confidence-intervals
+Q: Battery lifetimes have known $\sigma=30$ hours. A sample of $36$ batteries has mean $200$ hours. What is the 95% one-sided lower confidence bound for $\mu$ (the value $L$ in the interval $(L,\infty)$)? Use $z_{0.05}=1.645$, $z_{0.025}=1.96$, $z_{0.10}=1.282$.
+A: $190.20$
+B: $150.65$
+C: $191.78$
+D: $193.59$
+ANS: C
+EXP: $\text{SE}=\dfrac{30}{\sqrt{36}}=5$. A one-sided 95% bound puts all 5% in one tail, so it uses $z_{0.05}=1.645$.
+$L=200-1.645\cdot5\approx191.78$.
+$190.20$ uses $1.96$, the lower end of the two-sided 95% interval (a 97.5% one-sided bound). $193.59$ uses $1.282$, a 90% bound. $150.65$ forgets the $\sqrt n$.
+
+
+@ stat h stat-h-011
+T: Minimiser of total absolute deviation
+S: descriptive
+Q: For the data $\{1,2,4,7,20\}$, which value of $c$ minimises $\sum_i|x_i-c|$?
+A: $6.8$
+B: $4$
+C: $10.5$
+D: $2$
+ANS: B
+EXP: The sum of absolute deviations is minimised at the median. Moving $c$ to the right of the median increases the distance to more points than it decreases, and vice versa.
+Sorted, the median is $4$, and $\sum|x_i-4|=3+2+0+3+16=24$. At the mean $6.8$ the sum is $26.8$.
+The mean minimises the sum of squared deviations, not absolute ones. This is why L1 loss (MAE) predicts a conditional median and L2 loss (MSE) a conditional mean; the outlier $20$ drags the mean but not the median.
+
+
+@ stat h stat-h-012
+T: Negative linear transformation of summaries
+S: descriptive
+TYPE: msq
+Q: Each value of a dataset is transformed by $y=-2x+10$. Which of the following are true? More than one option may be correct.
+A: $\text{SD}_y=2\,\text{SD}_x$
+B: $Q_1(y)=-2\,Q_1(x)+10$
+C: $\text{IQR}_y=2\,\text{IQR}_x$
+D: Every observation keeps the same z-score.
+ANS: A,C
+EXP: SD: scaling by $a$ multiplies the SD by $|a|=2$; the shift does nothing. True.
+Quartiles: a negative scale reverses the order, so the lower quartile of $y$ comes from the upper quartile of $x$: $Q_1(y)=-2\,Q_3(x)+10$. False in general.
+IQR: $Q_3(y)-Q_1(y)=(-2Q_1(x)+10)-(-2Q_3(x)+10)=2\,\text{IQR}_x$. True.
+z-scores: $z_y=\dfrac{-2x+10-(-2\bar x+10)}{2s_x}=-z_x$, so the sign flips. False.
+
+
+@ stat h stat-h-013
+T: Variance after removing one observation
+S: descriptive
+TYPE: nat
+TOL: 0.01
+Q: A sample of $10$ values has mean $50$ and sample variance $100$ (denominator $n-1$). One value is removed and the mean of the remaining $9$ values is $48$. What is the sample variance (denominator $n-1$) of the remaining 9 values? Give your answer to 2 decimal places.
+ANS: 67.5
+EXP: Removed value: $10\cdot50-9\cdot48=500-432=68$.
+Original $\sum x^2=(n-1)s^2+n\bar x^2=900+25000=25900$. After removal: $25900-68^2=25900-4624=21276$.
+New sum of squared deviations: $21276-9\cdot48^2=21276-20736=540$, so $s^2=\dfrac{540}{8}=67.5$.
+Check: removing a point at distance $18$ from the mean reduces the sum of squares by $\frac{n}{n-1}\cdot18^2=360$ ($900\to540$). A single far point can carry a large share of the variance.
+
+
+@ stat h stat-h-014
+T: Average speed over equal distances
+S: descriptive
+Q: A car drives $60$ km at $30$ km/h and then another $60$ km at $60$ km/h. What is its average speed over the whole trip?
+A: $45$ km/h
+B: $42.4$ km/h
+C: $40$ km/h
+D: $50$ km/h
+ANS: C
+EXP: Average speed $=\dfrac{\text{total distance}}{\text{total time}}=\dfrac{120}{2+1}=40$ km/h.
+For equal distances this is the harmonic mean $\dfrac{2}{1/30+1/60}=40$. The arithmetic mean $45$ would be right only for equal times; $42.4$ is the geometric mean.
+The F1 score is the harmonic mean of precision and recall for the same reason: it is dominated by the smaller value.
+
+
+@ stat h stat-h-015
+T: Min–max scaling of mean and SD
+S: descriptive
+Q: A feature has mean $40$, SD $8$, minimum $20$ and maximum $70$. It is min–max scaled to $[0,1]$ by $x'=\dfrac{x-\min}{\max-\min}$. What are the mean and SD of $x'$?
+A: mean $0.4$, SD $0.16$
+B: mean $0.5$, SD $0.16$
+C: mean $0.4$, SD $0.0256$
+D: mean $0$, SD $1$
+ANS: A
+EXP: Min–max scaling is the linear map $x'=\dfrac{x-20}{50}$.
+Mean: $\dfrac{40-20}{50}=0.4$. SD: $\dfrac{8}{50}=0.16$ (the shift has no effect, the scale divides).
+$0.5$ assumes the mean lands in the middle of $[0,1]$, which happens only for symmetric data. $0.0256=0.16^2$ is the variance. Mean $0$, SD $1$ is the result of z-score standardisation, a different scaler.
+
+
+@ stat h stat-h-016
+T: Duplicating every observation
+S: descriptive
+Q: A sample of $n=5$ values has sample variance $s^2=10$ (denominator $n-1$). Every observation is duplicated, giving $10$ values (as in naive oversampling). What is the new sample variance (denominator $n-1$)?
+A: $10$
+B: $8$
+C: $4.44$
+D: $8.89$
+ANS: D
+EXP: Original sum of squared deviations: $(5-1)\cdot10=40$. Duplicating keeps the mean, and each squared deviation appears twice, so the new sum is $80$.
+New $s^2=\dfrac{80}{10-1}\approx8.89$.
+The population variance (divide by $n$) is unchanged at $8$, which is why $10$ feels natural, but $s^2$ changes because $n-1$ does not double. $4.44=40/9$ forgets that the deviations are duplicated too. Duplicated rows also make the data look more certain than it is: the SE of the mean drops by $\sqrt2$ with no new information.
+
+
+@ stat h stat-h-017
+T: Upper 5% point of the sample variance
+S: sampling-distributions
+Q: $X_1,\dots,X_{11}$ are iid $N(\mu,4)$ (second parameter is the variance). Find $c$ such that $P(S^2>c)=0.05$, where $S^2$ uses denominator $n-1$. Use $\chi^2_{0.05,10}=18.307$ and $\chi^2_{0.05,11}=19.675$ (upper-tail points).
+A: $7.15$
+B: $6.66$
+C: $7.32$
+D: $3.66$
+ANS: C
+EXP: $\dfrac{(n-1)S^2}{\sigma^2}=\dfrac{10S^2}{4}\sim\chi^2_{10}$.
+$P(S^2>c)=P\left(\chi^2_{10}>\tfrac{10c}{4}\right)=0.05\Rightarrow\tfrac{10c}{4}=18.307\Rightarrow c=7.32$.
+$7.15=4\cdot19.675/11$ uses $n$ instead of $n-1$ for the df. $6.66$ mixes the right table value with the wrong multiplier $n$. $3.66$ uses $\sigma=2$ instead of $\sigma^2=4$.
+
+
+@ stat h stat-h-018
+T: Facts about normal sample mean and variance
+S: sampling-distributions
+TYPE: msq
+Q: $X_1,\dots,X_n$ are iid $N(\mu,\sigma^2)$ with $n\ge2$. Which of the following are true? More than one option may be correct.
+A: $\bar X$ and $S^2$ are independent.
+B: $\dfrac{(n-1)S^2}{\sigma^2}\sim\chi^2_{n-1}$.
+C: $\dfrac{\bar X-\mu}{S/\sqrt n}\sim N(0,1)$ exactly.
+D: $\dfrac{1}{\sigma^2}\sum_{i=1}^n(X_i-\mu)^2\sim\chi^2_{n-1}$.
+ANS: A,B
+EXP: Independence of $\bar X$ and $S^2$ is a special property of the normal distribution (Cochran's theorem). True; it is what makes the $t$ statistic work.
+$(n-1)S^2/\sigma^2\sim\chi^2_{n-1}$: true; one df is lost to estimating $\mu$ by $\bar X$.
+With $S$ in place of $\sigma$ the ratio is $t_{n-1}$, not $N(0,1)$; it only approaches $N(0,1)$ as $n\to\infty$. False.
+$\sum(X_i-\mu)^2/\sigma^2$ uses the true $\mu$, so it is a sum of $n$ squared standard normals: $\chi^2_n$, not $\chi^2_{n-1}$. False.
+
+
+@ stat h stat-h-019
+T: CLT for a sum of uniforms
+S: sampling-distributions
+Q: $U_1,\dots,U_{48}$ are iid $U(0,1)$. Using the central limit theorem, approximate $P\left(\sum U_i>26\right)$. Use $\Phi(1)=0.8413$, $\Phi(0.5)=0.6915$, $\Phi(0.58)=0.7190$.
+A: $0.1587$
+B: $0.3085$
+C: $0.281$
+D: $0.8413$
+ANS: A
+EXP: For $U(0,1)$: mean $\tfrac12$, variance $\tfrac1{12}$. The sum has mean $24$ and variance $\tfrac{48}{12}=4$, so SD $2$.
+$P(S>26)\approx P\left(Z>\tfrac{26-24}{2}\right)=P(Z>1)=0.1587$.
+$0.3085$ divides by the variance $4$ instead of the SD. $0.281$ uses $\operatorname{Var}(U)=\tfrac14$ (SD $\approx3.46$, $z\approx0.58$). $0.8413$ is the left tail.
+
+
+@ stat h stat-h-020
+T: Finite population correction
+S: sampling-distributions
+Q: A sample of $n=36$ is drawn without replacement from a population of $N=100$ with $\sigma=12$. Using the finite population correction $\sqrt{\frac{N-n}{N-1}}$, what is the standard error of $\bar X$ (to 2 decimal places)?
+A: $2$
+B: $1.61$
+C: $1.21$
+D: $1.29$
+ANS: B
+EXP: Without replacement, $\text{SE}=\dfrac{\sigma}{\sqrt n}\sqrt{\dfrac{N-n}{N-1}}=2\sqrt{\dfrac{64}{99}}\approx2\cdot0.804=1.61$.
+$2$ ignores the correction; that is right for sampling with replacement or when $N\gg n$, but here a third of the population is sampled. $1.21$ uses the sampled fraction, $\sqrt{36/99}$, where the unsampled fraction $\frac{N-n}{N-1}$ belongs. $1.29$ forgets the square root on the correction factor. (The simpler factor $\sqrt{1-n/N}$, used when $N$ is large, would give $1.60$; that is why the question names the factor.)
+
+
+@ stat h stat-h-021
+T: Square of a t variable
+S: sampling-distributions
+Q: $T\sim t_9$. What is the distribution of $T^2$?
+A: $\chi^2_1$
+B: $F(1,9)$
+C: $\chi^2_9$
+D: $F(9,1)$
+ANS: B
+EXP: $T=\dfrac{Z}{\sqrt{V/9}}$ with $V\sim\chi^2_9$, so $T^2=\dfrac{Z^2/1}{V/9}$.
+$Z^2\sim\chi^2_1$, so this is a ratio of independent chi-squareds over their df: $F(1,9)$ (numerator df first).
+$\chi^2_1$ would be right only if the denominator were exactly 1, i.e. $\sigma$ known. This is why a two-sided $t$-test and an $F$-test with 1 numerator df give the same p-value.
+
+
+@ stat h stat-h-022
+T: Sample mean of Cauchy data
+S: sampling-distributions
+Q: $X_1,\dots,X_n$ are iid standard Cauchy (density $\frac{1}{\pi(1+x^2)}$). What is the distribution of $\bar X$?
+A: approximately $N(0,1/n)$ for large $n$
+B: Cauchy with scale $1/n$
+C: $t_{n-1}$
+D: standard Cauchy, for every $n$
+ANS: D
+EXP: The Cauchy characteristic function is $e^{-|t|}$. For the mean, $\varphi_{\bar X}(t)=\left(e^{-|t|/n}\right)^n=e^{-|t|}$, so $\bar X$ is again standard Cauchy.
+The CLT does not apply because the Cauchy distribution has no finite mean or variance. Averaging more data does not concentrate $\bar X$ at all.
+A scale of $1/n$ would be right for a sum divided by $n^2$. With heavy-tailed data, robust statistics such as the median behave far better than the mean.
+
+
+@ stat h stat-h-023
+T: Expected minimum of exponential lifetimes
+S: sampling-distributions
+Q: Five components have independent Exponential lifetimes, each with rate $2$ per year. A system fails when the first component fails. What is the expected time to system failure (in years)?
+A: $0.1$
+B: $0.5$
+C: $2.5$
+D: $10$
+ANS: A
+EXP: $P(\min X_i>t)=\prod P(X_i>t)=(e^{-2t})^5=e^{-10t}$, so the minimum is Exponential with rate $5\cdot2=10$.
+Its mean is $\frac1{10}=0.1$ years.
+$0.5$ is the mean of a single component. $10$ is the rate of the minimum, not its mean. $2.5=5/2$ multiplies the single mean by $n$ instead of dividing.
+
+
+@ stat h stat-h-024
+T: Non-unique MLE for a shifted uniform
+S: estimation-mle
+TYPE: msq
+Q: $X_1,\dots,X_n$ are iid $U(\theta,\theta+1)$. The observations are $2.3,\ 2.9,\ 2.6$. Which of the following values are maximum likelihood estimates of $\theta$? More than one option may be correct.
+A: $2.3$
+B: $1.9$
+C: $2.1$
+D: $2.4$
+ANS: A,B,C
+EXP: The likelihood is $1$ if every $x_i\in[\theta,\theta+1]$ and $0$ otherwise.
+This needs $\theta\le\min x_i=2.3$ and $\theta+1\ge\max x_i=2.9$, i.e. $\theta\in[1.9,\ 2.3]$. Every value in this interval maximises the likelihood, so the MLE is not unique.
+$2.3$, $1.9$ and $2.1$ (which is also the method-of-moments estimate $\bar x-\tfrac12$) all lie in it. $2.4>\min x_i$, so it would leave $2.3$ outside the support: likelihood $0$.
+
+
+@ stat h stat-h-025
+T: MLE of the zero probability for Poisson data
+S: estimation-mle
+Q: Counts $0,1,0,3,2,4,1,5$ are modelled as iid Poisson$(\lambda)$. What is the MLE of $P(X=0)$?
+A: $0.25$
+B: $0.135$
+C: $0.5$
+D: $0.368$
+ANS: B
+EXP: $\hat\lambda=\bar x=\frac{16}{8}=2$. By the invariance property, the MLE of $P(X=0)=e^{-\lambda}$ is $e^{-\hat\lambda}=e^{-2}\approx0.135$.
+$0.25$ is the observed fraction of zeros. It is a valid estimate but not the MLE under the Poisson model, which uses all the counts, not just the zeros. $0.368=e^{-1}$ and $0.5=1/\hat\lambda$ plug in the wrong quantity.
+
+
+@ stat h stat-h-026
+T: Exponential rate with censored data
+S: estimation-mle
+Q: Five devices with Exponential$(\lambda)$ lifetimes are tested. Three fail at times $2$, $3$ and $5$. The other two are still working when the test stops at time $10$ (right-censored). What is the MLE of $\lambda$?
+A: $0.3$
+B: $\frac16$
+C: $0.1$
+D: $10$
+ANS: C
+EXP: A failure at $t$ contributes $\lambda e^{-\lambda t}$; a censored unit contributes $P(T>10)=e^{-10\lambda}$.
+$\ell(\lambda)=3\ln\lambda-\lambda(2+3+5+10+10)=3\ln\lambda-30\lambda\Rightarrow\hat\lambda=\dfrac{3}{30}=0.1$.
+Rule: number of failures divided by total time on test. $0.3$ discards the censored units, which overstates the failure rate. $\frac16$ treats the censored times as failures. $10$ is the MLE of the mean lifetime $1/\lambda$, not the rate.
+
+
+@ stat h stat-h-027
+T: Asymptotic standard error of an MLE
+S: estimation-mle
+Q: $n=100$ observations from Exponential$(\lambda)$ have $\bar x=0.5$. Using the Fisher information, what is the approximate standard error of the MLE $\hat\lambda$?
+A: $0.04$
+B: $0.05$
+C: $0.02$
+D: $0.2$
+ANS: D
+EXP: $\hat\lambda=1/\bar x=2$. Per observation, $\ln f=\ln\lambda-\lambda x$, so $-\dfrac{\partial^2}{\partial\lambda^2}\ln f=\dfrac1{\lambda^2}$ and $I(\lambda)=\dfrac{1}{\lambda^2}$.
+Asymptotically $\operatorname{Var}(\hat\lambda)\approx\dfrac{1}{nI(\lambda)}=\dfrac{\lambda^2}{n}$, so $\text{SE}\approx\dfrac{\hat\lambda}{\sqrt n}=\dfrac{2}{10}=0.2$.
+$0.04$ is the variance, not the SE. $0.05=\bar x/\sqrt n$ is the SE of $\bar x$, the estimate of the mean $1/\lambda$, not of $\lambda$.
+
+
+@ stat h stat-h-028
+T: Allele frequency by maximum likelihood
+S: estimation-mle
+Q: Under Hardy–Weinberg equilibrium, genotypes AA, Aa, aa have probabilities $\theta^2$, $2\theta(1-\theta)$, $(1-\theta)^2$. A sample of 100 individuals has 50 AA, 40 Aa and 10 aa. What is the MLE of $\theta$?
+A: $0.7$
+B: $0.5$
+C: $0.707$
+D: $0.9$
+ANS: A
+EXP: $\ell(\theta)=50\cdot2\ln\theta+40\left[\ln\theta+\ln(1-\theta)\right]+10\cdot2\ln(1-\theta)+\text{const}=140\ln\theta+60\ln(1-\theta)+\text{const}$.
+$\ell'=0\Rightarrow\hat\theta=\dfrac{140}{200}=0.7$: count the A alleles ($2$ per AA, $1$ per Aa) out of $200$ alleles.
+$0.5$ is the fraction of AA individuals, and $0.707=\sqrt{0.5}$ uses only the AA count. Both ignore the information in the Aa and aa counts. $0.9$ counts everyone carrying an A.
+
+
+@ stat h stat-h-029
+T: MSE-optimal shrinkage of the sample mean
+S: bias-variance
+TYPE: nat
+TOL: 0.01
+Q: $X_1,\dots,X_4$ are iid with mean $\mu=2$ and variance $\sigma^2=4$. Among estimators of the form $c\bar X$, which $c$ minimises the MSE for estimating $\mu$? Give your answer to 2 decimal places.
+ANS: 0.8
+EXP: $E[c\bar X]=c\mu$ and $\operatorname{Var}(c\bar X)=c^2\sigma^2/n$, so $\text{MSE}(c)=c^2\dfrac{\sigma^2}{n}+(c-1)^2\mu^2$.
+Setting the derivative to 0: $c\dfrac{\sigma^2}{n}+(c-1)\mu^2=0\Rightarrow c^*=\dfrac{\mu^2}{\mu^2+\sigma^2/n}=\dfrac{4}{4+1}=0.8$.
+MSE at $c=0.8$: $0.64+0.16=0.8$, below the unbiased choice $c=1$ (MSE $1$). Shrinking toward 0 trades a little bias for a larger cut in variance, the idea behind ridge regression. (In practice $c^*$ depends on the unknown $\mu$, so it has to be estimated.)
+
+
+@ stat h stat-h-030
+T: MSE of the normal-variance MLE
+S: bias-variance
+Q: $X_1,\dots,X_5$ are iid $N(\mu,1)$. What is the MSE of the MLE $\hat\sigma^2=\frac1n\sum(X_i-\bar X)^2$ as an estimator of $\sigma^2=1$?
+A: $0.5$
+B: $0.32$
+C: $0.36$
+D: $0.04$
+ANS: C
+EXP: $n\hat\sigma^2/\sigma^2\sim\chi^2_{n-1}$, so $E[\hat\sigma^2]=\tfrac{n-1}{n}=0.8$ and $\operatorname{Var}(\hat\sigma^2)=\tfrac{2(n-1)}{n^2}=\tfrac{8}{25}=0.32$.
+$\text{Bias}=-0.2$, so $\text{MSE}=0.04+0.32=0.36$.
+$0.5=\tfrac{2}{n-1}$ is the MSE of the unbiased $S^2$. So the biased MLE has the smaller MSE. $0.32$ and $0.04$ are only the variance and only the squared bias.
+
+
+@ stat h stat-h-031
+T: Unbiasedness of nonlinear estimators
+S: bias-variance
+TYPE: msq
+Q: $X_1,\dots,X_n$ are iid with mean $\mu$ and variance $\sigma^2>0$, $n\ge2$. $S^2$ is the sample variance with denominator $n-1$. Which of the following are true? More than one option may be correct.
+A: $S^2$ is unbiased for $\sigma^2$.
+B: $S$ is unbiased for $\sigma$.
+C: $\bar X^2$ is unbiased for $\mu^2$.
+D: $\bar X^2-\dfrac{S^2}{n}$ is unbiased for $\mu^2$.
+ANS: A,D
+EXP: $E[S^2]=\sigma^2$ for any distribution with finite variance. True.
+$S=\sqrt{S^2}$ and $\sqrt{\cdot}$ is strictly concave, so by Jensen $E[S]<\sqrt{E[S^2]}=\sigma$ (strict since $S^2$ is not constant). False.
+$E[\bar X^2]=\operatorname{Var}(\bar X)+\mu^2=\mu^2+\dfrac{\sigma^2}{n}$, biased upward. False.
+$E\left[\bar X^2-\tfrac{S^2}{n}\right]=\mu^2+\tfrac{\sigma^2}{n}-\tfrac{\sigma^2}{n}=\mu^2$. True.
+Unbiasedness does not survive nonlinear transformations, unlike the invariance property of MLEs.
+
+
+@ stat h stat-h-032
+T: Test error of k-nearest-neighbour regression
+S: bias-variance
+TYPE: nat
+TOL: 0.01
+Q: Data follow $Y=f(x)+\varepsilon$ with $\operatorname{Var}(\varepsilon)=1$, and the training inputs are fixed. A $k$-NN regressor with $k=4$ predicts at $x_0$ by averaging the training $Y$ values of its 4 nearest neighbours. The average of $f$ at those neighbours differs from $f(x_0)$ by $0.5$. What is the expected squared error $E\big[(Y_0-\hat f(x_0))^2\big]$ for a new response $Y_0$ at $x_0$? Give your answer to 2 decimal places.
+ANS: 1.5
+EXP: Decompose: noise $+$ bias$^2$ $+$ variance.
+Noise: $\operatorname{Var}(\varepsilon)=1$. Bias: $0.5$, so bias$^2=0.25$. Variance: the prediction averages $k$ independent noise terms, so $\operatorname{Var}(\hat f(x_0))=\dfrac{1}{k}=0.25$.
+Total $=1+0.25+0.25=1.5$.
+Raising $k$ shrinks the variance $\sigma^2/k$ but pulls in farther neighbours, which usually increases the bias: $k$ is the bias–variance dial for $k$-NN.
+
+
+@ stat h stat-h-033
+T: Variance of a bagged ensemble
+S: bias-variance
+Q: An ensemble averages the predictions of $B=10$ models. Each model's prediction has variance $1$, and every pair of models has correlation $0.2$. What is the variance of the ensemble's prediction?
+A: $0.1$
+B: $0.2$
+C: $0.28$
+D: $1$
+ANS: C
+EXP: $\operatorname{Var}\left(\tfrac1B\sum f_b\right)=\dfrac{1}{B^2}\left[B\sigma^2+B(B-1)\rho\sigma^2\right]=\rho\sigma^2+\dfrac{(1-\rho)\sigma^2}{B}$.
+$=0.2+\dfrac{0.8}{10}=0.28$.
+$0.1=\sigma^2/B$ assumes independent models. $0.2$ is the limit as $B\to\infty$: correlation sets a floor that more models cannot remove. Random forests reduce $\rho$ by subsampling features at each split.
+
+
+@ stat h stat-h-034
+T: MSE of a one-dimensional ridge estimate
+S: bias-variance
+Q: In $y_i=wx_i+\varepsilon_i$ with $\varepsilon_i$ iid with variance $1$, the inputs are fixed with $\sum x_i^2=8$, and the true $w=1$. The ridge estimate is $\hat w=\dfrac{\sum x_iy_i}{\sum x_i^2+\lambda}$ with $\lambda=2$. What is the MSE of $\hat w$?
+A: $0.125$
+B: $0.12$
+C: $0.08$
+D: $0.04$
+ANS: B
+EXP: $E[\hat w]=\dfrac{w\sum x_i^2}{\sum x_i^2+\lambda}=\dfrac{8}{10}=0.8$, so bias $=-0.2$ and bias$^2=0.04$.
+$\operatorname{Var}(\hat w)=\dfrac{\sigma^2\sum x_i^2}{(\sum x_i^2+\lambda)^2}=\dfrac{8}{100}=0.08$.
+$\text{MSE}=0.04+0.08=0.12$, slightly below the unbiased OLS estimate, whose MSE is its variance $\dfrac{1}{8}=0.125$.
+$0.08$ and $0.04$ are only the variance and only the squared bias.
+
+
+@ stat h stat-h-035
+T: Confidence interval for a normal variance
+S: confidence-intervals
+Q: A sample of $n=10$ from a normal population has $s^2=20$. Find the 95% confidence interval for $\sigma^2$. Use the upper-tail points $\chi^2_{0.025,9}=19.023$, $\chi^2_{0.975,9}=2.700$, $\chi^2_{0.025,10}=20.483$, $\chi^2_{0.975,10}=3.247$.
+A: $(9.46,\ 66.67)$
+B: $(9.76,\ 61.60)$
+C: $(6.00,\ 42.27)$
+D: $(3.08,\ 8.16)$
+ANS: A
+EXP: Pivot: $\dfrac{(n-1)S^2}{\sigma^2}\sim\chi^2_9$. Solving $2.700\le\dfrac{180}{\sigma^2}\le19.023$ for $\sigma^2$:
+$\left(\dfrac{180}{19.023},\ \dfrac{180}{2.700}\right)=(9.46,\ 66.67)$. The interval is not symmetric about $s^2=20$ because $\chi^2$ is skewed.
+$(9.76,61.60)$ uses $n=10$ in both the multiplier and the df. $(6.00,42.27)$ multiplies by the table values instead of dividing. $(3.08,8.16)$ is the interval for $\sigma$, not $\sigma^2$.
+
+
+@ stat h stat-h-036
+T: Confidence intervals and two-sided tests
+S: confidence-intervals
+TYPE: msq
+Q: From one sample, a 95% two-sided $z$-interval for $\mu$ is $(12.1,\ 17.9)$. Which of the following are true? More than one option may be correct.
+A: A two-sided $z$-test of $H_0:\mu=18$ at $\alpha=0.05$ on the same data rejects $H_0$.
+B: A two-sided $z$-test of $H_0:\mu=15$ at $\alpha=0.05$ on the same data does not reject $H_0$.
+C: The 99% $z$-interval from the same data contains the whole interval $(12.1,\ 17.9)$.
+D: $P(12.1<\mu<17.9)=0.95$.
+ANS: A,B,C
+EXP: Duality: a two-sided test at level $\alpha$ rejects $H_0:\mu=\mu_0$ exactly when $\mu_0$ lies outside the $(1-\alpha)$ interval.
+$18$ is outside, so it is rejected: true. $15$ is inside, so it is not rejected: true.
+The 99% interval has the same centre and a larger $z$ ($2.576$ vs $1.96$), so it contains the 95% one: true.
+$\mu$ is a fixed constant, so once the interval is computed it either contains $\mu$ or not; the 95% describes the procedure over repeated samples. False.
+
+
+@ stat h stat-h-037
+T: Exact interval for an exponential rate
+S: confidence-intervals
+Q: $X_1,\dots,X_5$ are iid Exponential$(\lambda)$ with $\sum x_i=20$. Using the fact that $2\lambda\sum X_i\sim\chi^2_{10}$, find the 95% confidence interval for $\lambda$. Upper-tail points: $\chi^2_{0.975,10}=3.247$, $\chi^2_{0.025,10}=20.483$.
+A: $(0.162,\ 1.024)$
+B: $(0.031,\ 0.469)$
+C: $(0.081,\ 0.512)$
+D: $(3.247,\ 20.483)$
+ANS: C
+EXP: $P\left(3.247\le2\lambda\cdot20\le20.483\right)=0.95$, so $\lambda\in\left(\dfrac{3.247}{40},\ \dfrac{20.483}{40}\right)=(0.081,\ 0.512)$.
+The interval is skewed around $\hat\lambda=0.25$, as it should be for a positive rate.
+$(0.162,1.024)$ forgets the factor $2$. $(0.031,0.469)$ is the normal approximation $\hat\lambda\pm1.96\,\hat\lambda/\sqrt n$, which is poor for $n=5$. $(3.247,20.483)$ is the interval for the pivot $40\lambda$, not for $\lambda$.
+
+
+@ stat h stat-h-038
+T: Bonferroni critical value for joint intervals
+S: confidence-intervals
+Q: You report two-sided $z$-intervals for 3 different means and want all three to cover their true means simultaneously with probability at least 95%. Using the Bonferroni correction, which critical value should each interval use? $z_{0.025}=1.96$, $z_{0.0167}=2.128$, $z_{0.00833}=2.394$, $z_{0.005}=2.576$.
+A: $2.394$
+B: $1.96$
+C: $2.128$
+D: $2.576$
+ANS: A
+EXP: Bonferroni: $P(\text{some interval misses})\le\sum P(\text{miss}_j)$. Giving each interval miss probability $0.05/3$ keeps the total at most $0.05$.
+Each interval is then a two-sided $(1-0.05/3)$ interval, with $\tfrac{0.05}{6}\approx0.00833$ in each tail: $z_{0.00833}=2.394$.
+$2.128$ puts all $0.05/3$ in one tail, forgetting the two-sided split. $1.96$ ignores the multiplicity: for three independent intervals the joint coverage is only $0.95^3\approx0.86$.
+
+
+@ stat h stat-h-039
+T: Overlapping intervals and a difference in means
+S: confidence-intervals
+Q: Two independent groups have sample means $10$ and $13$, each with standard error $1$. Their individual 95% intervals are $(8.04,\ 11.96)$ and $(11.04,\ 14.96)$, which overlap. Using $z_{0.025}=1.96$, which statement is correct?
+A: The 95% CI for the difference is $(-0.92,\ 6.92)$, so the difference is not significant at 5%.
+B: The 95% CI for the difference is $(0.23,\ 5.77)$, so the difference is significant at 5%.
+C: Because the two intervals overlap, the difference is not significant at 5%.
+D: The 95% CI for the difference is $(1.04,\ 4.96)$, so the difference is significant at 5%.
+ANS: B
+EXP: $\text{SE}(\bar X_2-\bar X_1)=\sqrt{1^2+1^2}=\sqrt2\approx1.414$, so the interval is $3\pm1.96\cdot1.414=3\pm2.77=(0.23,\ 5.77)$. It excludes 0, so the difference is significant.
+Overlap is a much stricter criterion: it amounts to adding the margins $1.96+1.96$ instead of combining them as $1.96\sqrt2$. That is the $(-0.92,6.92)$ interval. Overlapping intervals do not imply "no significant difference".
+$(1.04,4.96)$ uses SE $1$, forgetting that both means are uncertain.
+
+
+@ stat h stat-h-040
+T: Upper bound when no events are observed
+S: confidence-intervals
+Q: A model makes $0$ critical errors in $300$ independent test cases. What is an approximate 95% one-sided upper confidence bound for its true error rate $p$? (Use the exact condition $(1-p)^{300}=0.05$ and $\ln0.05\approx-3$.)
+A: $0$
+B: $0.0033$
+C: $0.0065$
+D: $0.01$
+ANS: D
+EXP: The upper bound is the largest $p$ for which seeing 0 errors still has probability at least $0.05$: $(1-p)^{300}=0.05$.
+Taking logs: $300\ln(1-p)=\ln0.05\approx-3$, and $\ln(1-p)\approx-p$, so $p\approx\frac{3}{300}=0.01$ (exactly $0.00994$). This is the "rule of three".
+The Wald interval $\hat p\pm1.96\sqrt{\hat p(1-\hat p)/n}$ collapses to $[0,0]$ because $\hat p=0$, absurdly claiming certainty. $0.0033=1/300$ is a point-estimate-style guess, not a 95% bound.

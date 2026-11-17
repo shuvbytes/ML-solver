@@ -1,0 +1,1189 @@
+@ prob e prob-e-011
+T: Arrangements of the letters of BANANA
+S: counting
+Q: How many distinct arrangements are there of the letters of the word BANANA?
+A: $720$
+B: $120$
+C: $60$
+D: $360$
+ANS: C
+EXP: BANANA has 6 letters: A three times, N twice, B once.
+Permutations of a multiset: $\dfrac{6!}{3!\,2!\,1!}=\dfrac{720}{12}=60$.
+$720$ treats all letters as distinct. $120=6!/3!$ only removes the repeats of A, and $360=6!/2!$ only those of N; both letters repeat, so divide by both factorials.
+
+
+@ prob e prob-e-012
+T: Committee with exactly two women
+S: counting
+Q: A committee of 3 is chosen at random from 5 men and 4 women. What is the probability that it contains exactly 2 women?
+A: $\frac{5}{42}$
+B: $\frac{5}{14}$
+C: $\frac{80}{243}$
+D: $\frac49$
+ANS: B
+EXP: All $\binom93=84$ committees are equally likely.
+Favourable: choose 2 of the 4 women and 1 of the 5 men: $\binom42\binom51=6\cdot5=30$.
+$P=\tfrac{30}{84}=\tfrac5{14}$.
+$\tfrac5{42}=\tfrac49\cdot\tfrac38\cdot\tfrac57$ is the probability of one particular order (W, W, M) only; there are 3 orders, and $3\cdot\tfrac5{42}=\tfrac5{14}$. $\tfrac{80}{243}$ is the binomial answer, which wrongly samples with replacement.
+
+
+@ prob e prob-e-013
+T: Three people born on different weekdays
+S: counting
+Q: Three people are each equally likely to have been born on any of the 7 days of the week, independently. What is the probability that all three were born on different days of the week?
+A: $\frac{30}{49}$
+B: $\frac{5}{49}$
+C: $\frac{19}{49}$
+D: $\frac{1}{49}$
+ANS: A
+EXP: There are $7^3=343$ equally likely ordered outcomes.
+All different: $7\cdot6\cdot5=210$ (the first person has 7 choices, the next 6, the last 5).
+$P=\tfrac{210}{343}=\tfrac{30}{49}$.
+$\tfrac5{49}=\binom73/343$ counts unordered sets of days against ordered outcomes, mixing two sample spaces. $\tfrac{19}{49}$ is the complement (at least two share a day). This is the birthday problem with 7 "days".
+
+
+@ prob e prob-e-014
+T: Probability of neither event
+S: axioms-events
+Q: $P(A)=0.6$, $P(B)=0.4$ and $P(A\cap B^c)=0.4$. Find $P(A^c\cap B^c)$.
+A: $0.24$
+B: $0$
+C: $0.4$
+D: $0.2$
+ANS: D
+EXP: $A$ splits into disjoint parts: $P(A)=P(A\cap B)+P(A\cap B^c)$, so $P(A\cap B)=0.6-0.4=0.2$.
+$P(A\cup B)=0.6+0.4-0.2=0.8$.
+By De Morgan, $A^c\cap B^c=(A\cup B)^c$, so $P=1-0.8=0.2$.
+$0.24=0.4\cdot0.6$ assumes independence, which was not given. $0$ comes from $1-P(A)-P(B)$, which ignores the overlap.
+
+
+@ prob e prob-e-015
+T: Spotting an impossible probability assignment
+S: axioms-events
+Q: Which of the following assignments is impossible for two events $A$ and $B$?
+A: $P(A)=0.7,\ P(B)=0.6,\ P(A\cap B)=0.3$
+B: $P(A)=0.3,\ P(B)=0.4,\ P(A\cap B)=0.35$
+C: $P(A)=0.5,\ P(B)=0.5,\ P(A\cap B)=0$
+D: $P(A)=0.2,\ P(B)=0.9,\ P(A\cap B)=0.2$
+ANS: B
+EXP: Since $A\cap B\subseteq A$, monotonicity gives $P(A\cap B)\le\min(P(A),P(B))$. In [[B]], $0.35>0.3=P(A)$, which is impossible.
+The others are fine: [[A]] has $P(A\cup B)=1.0\le1$; [[C]] is two disjoint halves of the sample space; [[D]] is $A\subseteq B$.
+
+
+@ prob e prob-e-016
+T: Conditional probability from a joint
+S: conditional-bayes
+Q: $P(A)=0.2$, $P(B)=0.4$ and $P(A\cap B)=0.12$. Find $P(A\mid B)$.
+A: $0.3$
+B: $0.6$
+C: $0.12$
+D: $0.048$
+ANS: A
+EXP: Definition: $P(A\mid B)=\dfrac{P(A\cap B)}{P(B)}=\dfrac{0.12}{0.4}=0.3$.
+$0.6=0.12/0.2$ is $P(B\mid A)$: dividing by the wrong event's probability. $0.12$ is the joint probability, not the conditional one.
+
+
+@ prob e prob-e-017
+T: Second card is an ace given the first is
+S: conditional-bayes
+Q: Two cards are drawn without replacement from a standard 52-card deck. Given that the first card is an ace, what is the probability that the second card is also an ace?
+A: $\frac1{13}$
+B: $\frac4{51}$
+C: $\frac1{17}$
+D: $\frac1{221}$
+ANS: C
+EXP: After an ace is removed, 51 cards remain and 3 of them are aces.
+$P(\text{2nd ace}\mid\text{1st ace})=\tfrac3{51}=\tfrac1{17}$.
+$\tfrac1{13}$ ignores that the first card was not replaced. $\tfrac1{221}=\tfrac4{52}\cdot\tfrac3{51}$ is $P(\text{both aces})$, the joint, not the conditional.
+
+
+@ prob e prob-e-018
+T: Two children, at least one is a boy
+S: conditional-bayes
+Q: A family has two children. Each child is a boy or a girl with probability $\frac12$, independently. Given that at least one child is a boy, what is the probability that both are boys?
+A: $\frac12$
+B: $\frac13$
+C: $\frac14$
+D: $\frac23$
+ANS: B
+EXP: Equally likely outcomes: BB, BG, GB, GG.
+Conditioning on "at least one boy" removes GG and leaves BB, BG, GB.
+$P(BB\mid\ge1\text{ boy})=\dfrac{1/4}{3/4}=\dfrac13$.
+$\tfrac12$ would be right if we were told a specific child (say the elder) is a boy. "At least one" is weaker information.
+
+
+@ prob e prob-e-019
+T: Defect rate across two machines
+S: conditional-bayes
+TYPE: nat
+TOL: 0.001
+Q: Machine $M_1$ makes 60% of a factory's items and machine $M_2$ makes the other 40%. The defect rates are 2% for $M_1$ and 5% for $M_2$. An item is picked at random. What is the probability that it is defective? Enter a decimal (e.g. 0.123).
+ANS: 0.032
+EXP: Law of total probability over the partition $\{M_1,M_2\}$:
+$P(D)=P(D\mid M_1)P(M_1)+P(D\mid M_2)P(M_2)=0.02\cdot0.6+0.05\cdot0.4=0.012+0.020=0.032$.
+The plain average of the rates, $0.035$, ignores that $M_1$ makes more of the items.
+
+
+@ prob e prob-e-020
+T: Which pair of die events is independent
+S: independence
+Q: A fair die is rolled once. Which pair of events is independent?
+A: $\{2,4,6\}$ and $\{1,2,3\}$
+B: $\{2,4,6\}$ and $\{4,5,6\}$
+C: $\{1,2\}$ and $\{2,3\}$
+D: $\{2,4,6\}$ and $\{1,2,3,4\}$
+ANS: D
+EXP: Test $P(E\cap F)=P(E)P(F)$ for each pair.
+[[D]]: intersection $\{2,4\}$, $\tfrac26=\tfrac13$; product $\tfrac12\cdot\tfrac23=\tfrac13$. Independent.
+[[A]]: $\{2\}$ gives $\tfrac16$ vs $\tfrac12\cdot\tfrac12=\tfrac14$. [[B]]: $\{4,6\}$ gives $\tfrac13$ vs $\tfrac14$. [[C]]: $\{2\}$ gives $\tfrac16$ vs $\tfrac19$. All dependent.
+Independence is a numerical property, not about the events "looking unrelated": among $\{1,2,3,4\}$, exactly half the outcomes are even, the same as in the whole die.
+
+
+@ prob e prob-e-021
+T: Two backup servers in parallel
+S: independence
+Q: A service stays up if at least one of two servers is up. The servers are up with probabilities $0.9$ and $0.8$, independently. What is the probability that the service is up?
+A: $0.72$
+B: $0.98$
+C: $0.85$
+D: $0.9$
+ANS: B
+EXP: The service fails only if both servers fail. By independence, $P(\text{both down})=0.1\cdot0.2=0.02$.
+$P(\text{up})=1-0.02=0.98$.
+$0.72=0.9\cdot0.8$ is the series system (both must be up). Redundancy pushes reliability above either single server.
+
+
+@ prob e prob-e-022
+T: Normalising a linear PMF
+S: random-variables
+Q: A random variable $X$ has PMF $P(X=k)=ck$ for $k=1,2,3,4$ and $0$ otherwise. What is $c$?
+A: $\frac1{10}$
+B: $\frac14$
+C: $\frac1{24}$
+D: $\frac1{30}$
+ANS: A
+EXP: A PMF must sum to 1: $c(1+2+3+4)=10c=1$, so $c=\tfrac1{10}$.
+$\tfrac14$ treats the values as equally likely. $\tfrac1{24}$ uses the product $1\cdot2\cdot3\cdot4$ instead of the sum, and $\tfrac1{30}$ sums $k^2$.
+
+
+@ prob e prob-e-023
+T: Normalising constant of a parabolic PDF
+S: random-variables
+TYPE: nat
+TOL: 0.01
+Q: $X$ has PDF $f(x)=c\,x(2-x)$ for $0\le x\le2$ and $0$ otherwise. Enter the value of $c$.
+ANS: 0.75
+EXP: A PDF must integrate to 1.
+$\int_0^2 x(2-x)\,dx=\left[x^2-\tfrac{x^3}3\right]_0^2=4-\tfrac83=\tfrac43$.
+So $c\cdot\tfrac43=1\Rightarrow c=\tfrac34=0.75$.
+
+
+@ prob e prob-e-024
+T: Reading a point mass off a step CDF
+S: random-variables
+Q: A discrete random variable has CDF
+$$F(x)=\begin{cases}0,&x<1\\0.3,&1\le x<2\\0.7,&2\le x<4\\1,&x\ge4\end{cases}$$
+What is $P(X=2)$?
+A: $0.7$
+B: $0.3$
+C: $0.4$
+D: $0$
+ANS: C
+EXP: For a discrete variable, $P(X=a)$ is the size of the jump of $F$ at $a$: $F(a)-F(a^-)$.
+At $x=2$: $0.7-0.3=0.4$.
+$0.7=F(2)=P(X\le2)$, a cumulative value. $0$ would be right only for a continuous variable, whose CDF has no jumps.
+
+
+@ prob e prob-e-025
+T: Which function is a valid PDF
+S: random-variables
+Q: Each function below is $0$ outside the interval shown. Which one is a valid probability density function?
+A: $f(x)=x$ on $[0,1]$
+B: $f(x)=2x$ on $[0,1]$
+C: $f(x)=1-x$ on $[0,2]$
+D: $f(x)=3x^2$ on $[-1,1]$
+ANS: B
+EXP: A PDF needs $f\ge0$ everywhere and $\int f=1$.
+[[B]]: $2x\ge0$ on $[0,1]$ and $\int_0^1 2x\,dx=1$. Valid.
+[[A]] integrates to $\tfrac12$. [[C]] integrates to $0$ and is negative on $(1,2]$. [[D]] is non-negative but integrates to $x^3\big|_{-1}^{1}=2$.
+
+
+@ prob e prob-e-026
+T: Second moment from mean and variance
+S: expectation-variance
+Q: $E[X]=3$ and $\operatorname{Var}(X)=4$. What is $E[X^2]$?
+A: $5$
+B: $7$
+C: $9$
+D: $13$
+ANS: D
+EXP: $\operatorname{Var}(X)=E[X^2]-(E[X])^2$, so $E[X^2]=\operatorname{Var}(X)+(E[X])^2=4+9=13$.
+$5=9-4$ subtracts instead of adds. $9=(E[X])^2$ forgets the spread; $E[X^2]\ge(E[X])^2$ always, with equality only for a constant.
+
+
+@ prob e prob-e-027
+T: Variance of a difference of independent variables
+S: expectation-variance
+Q: $X$ and $Y$ are independent with $\operatorname{Var}(X)=3$ and $\operatorname{Var}(Y)=2$. What is $\operatorname{Var}(2X-Y)$?
+A: $14$
+B: $10$
+C: $4$
+D: $8$
+ANS: A
+EXP: For independent variables, $\operatorname{Var}(aX+bY)=a^2\operatorname{Var}(X)+b^2\operatorname{Var}(Y)$.
+$\operatorname{Var}(2X-Y)=4\cdot3+(-1)^2\cdot2=12+2=14$.
+$10=12-2$ subtracts the variances; but $b^2=1$ even when $b=-1$, so noise from $Y$ always adds. $8=2\cdot3+2$ forgets to square the coefficient 2.
+
+
+@ prob m prob-m-011
+T: Sharing chocolates so everyone gets one
+S: counting
+Q: In how many ways can 10 identical chocolates be distributed among 3 children so that every child gets at least one?
+A: $66$
+B: $36$
+C: $120$
+D: $45$
+ANS: B
+EXP: Give each child one chocolate first. That leaves 7 to distribute freely.
+Stars and bars: non-negative solutions of $y_1+y_2+y_3=7$ number $\binom{7+2}{2}=\binom92=36$.
+Equivalently, place 2 dividers in the 9 gaps between 10 chocolates: $\binom92=36$.
+$66=\binom{12}{2}$ allows a child to get nothing. $45=\binom{10}2$ uses the wrong number of gaps.
+
+
+@ prob m prob-m-012
+T: Two people side by side at a round table
+S: counting
+Q: Six people, including Asha and Ben, sit at random around a circular table with 6 seats. What is the probability that Asha and Ben sit next to each other?
+A: $\frac13$
+B: $\frac15$
+C: $\frac25$
+D: $\frac1{15}$
+ANS: C
+EXP: Seat Asha anywhere; by symmetry only Ben's seat matters. Ben is equally likely to be in any of the other 5 seats, and 2 of them are next to Asha.
+$P=\tfrac25$.
+Counting check: glue the pair into one block, giving $(5-1)!\cdot2=48$ of the $(6-1)!=120$ circular arrangements, and $\tfrac{48}{120}=\tfrac25$.
+$\tfrac13$ is the answer for a straight row, where the end seats have only one neighbour.
+
+
+@ prob m prob-m-013
+T: Passwords with a repeated digit
+S: counting
+TYPE: nat
+TOL: 0
+Q: A 5-digit PIN uses the digits 0–9, and leading zeros are allowed. How many PINs contain at least one repeated digit? Enter an integer.
+ANS: 69760
+EXP: Count the complement. All PINs: $10^5=100000$.
+PINs with all digits different: $10\cdot9\cdot8\cdot7\cdot6=30240$.
+At least one repeat: $100000-30240=69760$.
+Counting "at least one repeat" directly gets tangled in overlapping cases. The complement rule avoids that.
+
+
+@ prob m prob-m-014
+T: Letters in envelopes with no match
+S: counting
+Q: Four letters are placed at random into four addressed envelopes, one letter per envelope. What is the probability that no letter is in its correct envelope?
+A: $\frac38$
+B: $\frac{81}{256}$
+C: $\frac13$
+D: $\frac{23}{24}$
+ANS: A
+EXP: Count derangements by inclusion–exclusion: $D_4=4!\left(1-\tfrac1{1!}+\tfrac1{2!}-\tfrac1{3!}+\tfrac1{4!}\right)=24-24+12-4+1=9$.
+$P=\tfrac9{24}=\tfrac38$.
+$\left(\tfrac34\right)^4=\tfrac{81}{256}$ treats the four letters as independent, but they are not: once one letter takes an envelope, no other can. $\tfrac13$ is $P(\text{exactly one correct})=\tfrac8{24}$. $\tfrac{23}{24}$ is $P(\text{not all correct})$.
+
+
+@ prob m prob-m-015
+T: Committee with at least one woman
+S: counting
+TYPE: nat
+TOL: 0
+Q: A committee of 4 is chosen from 6 men and 5 women. In how many ways can it be chosen so that it contains at least one woman? Enter an integer.
+ANS: 315
+EXP: Complement: all committees minus all-men committees.
+$\binom{11}4-\binom64=330-15=315$.
+The tempting count "pick one woman ($5$ ways), then any 3 of the remaining 10 ($\binom{10}3=120$)" gives $600$. It overcounts: a committee with two women is counted once for each woman picked as "the" woman.
+
+
+@ prob m prob-m-016
+T: Lattice path through a given point
+S: counting
+Q: A path from $(0,0)$ to $(4,3)$ uses unit steps right or up, and all such shortest paths are equally likely. What is the probability that the path passes through $(2,1)$?
+A: $\frac9{35}$
+B: $\frac{18}{35}$
+C: $\frac3{35}$
+D: $\frac9{64}$
+ANS: B
+EXP: A shortest path to $(a,b)$ is a choice of which $b$ of the $a+b$ steps go up: $\binom{a+b}{b}$ paths.
+Total: $\binom73=35$.
+Through $(2,1)$: $\binom31$ ways to get there, then $\binom42$ ways to go from $(2,1)$ to $(4,3)$. Multiplication rule: $3\cdot6=18$.
+$P=\tfrac{18}{35}$.
+$\tfrac9{35}$ adds the two stages ($3+6$) instead of multiplying. $\tfrac9{64}=\tfrac{18}{2^7}$ divides by all $2^7$ step sequences, most of which do not end at $(4,3)$.
+
+
+@ prob m prob-m-017
+T: Combining odds for exclusive events
+S: axioms-events
+Q: The odds in favour of event $A$ are $3:5$ and the odds against event $B$ are $2:3$. $A$ and $B$ are mutually exclusive. Find $P(A\cup B)$.
+A: $\frac{31}{40}$
+B: $\frac{9}{40}$
+C: $\frac34$
+D: $\frac{39}{40}$
+ANS: D
+EXP: Odds in favour $a:b$ means $P=\tfrac{a}{a+b}$, so $P(A)=\tfrac38$.
+Odds against $a:b$ means $P=\tfrac{b}{a+b}$, so $P(B)=\tfrac35$.
+Mutually exclusive, so the addition axiom applies directly: $P(A\cup B)=\tfrac38+\tfrac35=\tfrac{15+24}{40}=\tfrac{39}{40}$.
+$\tfrac{31}{40}$ reads the odds against $B$ as odds in favour. $\tfrac34$ subtracts $P(A)P(B)$ as if the events were independent, but exclusive events have $P(A\cap B)=0$.
+
+
+@ prob m prob-m-018
+T: Exactly one of three events
+S: axioms-events
+TYPE: nat
+TOL: 0.01
+Q: Events $A,B,C$ have $P(A)=P(B)=P(C)=0.4$, each pairwise intersection has probability $0.15$, and $P(A\cap B\cap C)=0.05$. What is the probability that exactly one of the three events occurs? Enter a decimal.
+ANS: 0.45
+EXP: $P(\text{only }A)=P(A)-P(A\cap B)-P(A\cap C)+P(A\cap B\cap C)=0.4-0.15-0.15+0.05=0.15$. The triple overlap was subtracted twice, so it is added back once.
+By symmetry the same holds for $B$ and $C$, so $P(\text{exactly one})=3\cdot0.15=0.45$.
+General formula: $\sum P(A_i)-2\sum P(A_i\cap A_j)+3P(A\cap B\cap C)=1.2-0.9+0.15=0.45$.
+Do not confuse this with the union, $1.2-0.45+0.05=0.8$, which also counts outcomes in two or three events.
+
+
+@ prob m prob-m-019
+T: Recovering P(B) from union and intersection
+S: axioms-events
+Q: $P(A\cup B)=0.8$, $P(A\cap B)=0.3$ and $P(A^c)=0.6$. Find $P(B)$.
+A: $0.5$
+B: $0.4$
+C: $0.7$
+D: $0.1$
+ANS: C
+EXP: Complement rule: $P(A)=1-0.6=0.4$.
+Inclusion–exclusion: $P(A\cup B)=P(A)+P(B)-P(A\cap B)\Rightarrow0.8=0.4+P(B)-0.3\Rightarrow P(B)=0.7$.
+$0.5$ plugs in $P(A^c)=0.6$ as if it were $P(A)$. $0.4=0.8-0.4$ forgets to add back the intersection.
+
+
+@ prob m prob-m-020
+T: Exclusive, exhaustive, or a partition
+S: axioms-events
+TYPE: msq
+Q: A fair die is rolled. Let $A=\{1,2,3\}$, $B=\{3,4\}$ and $C=\{5,6\}$. Which statements are true? More than one option may be correct.
+A: $A$ and $C$ are mutually exclusive
+B: $A$, $B$, $C$ are collectively exhaustive
+C: $A$, $B$, $C$ form a partition of the sample space
+D: $P(A\cup B)=\frac56$
+ANS: A,B
+EXP: [[A]] True: $A\cap C=\varnothing$.
+[[B]] True: $A\cup B\cup C=\{1,2,3,4,5,6\}$.
+[[C]] False: a partition needs the events to be exhaustive and pairwise disjoint, but $A\cap B=\{3\}$.
+[[D]] False: $A\cup B=\{1,2,3,4\}$, so $P=\tfrac46=\tfrac23$. Adding $\tfrac36+\tfrac26=\tfrac56$ double-counts the outcome 3.
+
+
+@ prob m prob-m-021
+T: Divisible by 4 or by 6
+S: axioms-events
+Q: An integer is chosen uniformly at random from $1,2,\dots,60$. What is the probability that it is divisible by 4 or by 6?
+A: $\frac13$
+B: $\frac5{12}$
+C: $\frac{23}{60}$
+D: $\frac1{12}$
+ANS: A
+EXP: Multiples of 4: $15$. Multiples of 6: $10$.
+Divisible by both means divisible by $\operatorname{lcm}(4,6)=12$: $5$ numbers.
+Inclusion–exclusion: $15+10-5=20$, so $P=\tfrac{20}{60}=\tfrac13$.
+$\tfrac{23}{60}$ subtracts multiples of $4\cdot6=24$; the product is the lcm only for coprime numbers. $\tfrac5{12}$ forgets the overlap entirely.
+
+
+@ prob m prob-m-022
+T: Outcomes that are not equally likely
+S: axioms-events
+Q: A fair coin is tossed until a head appears or until 3 tosses have been made, whichever comes first. The possible results are H, TH, TTH, TTT. What is the probability that at least one head appears?
+A: $\frac34$
+B: $\frac12$
+C: $\frac78$
+D: $\frac23$
+ANS: C
+EXP: The four results are not equally likely: $P(H)=\tfrac12$, $P(TH)=\tfrac14$, $P(TTH)=\tfrac18$, $P(TTT)=\tfrac18$ (they sum to 1).
+At least one head means anything except TTT: $1-\tfrac18=\tfrac78$.
+$\tfrac34$ counts 3 favourable results out of 4. The "favourable over total" rule needs equally likely outcomes, which this sample space does not have.
+
+
+@ prob m prob-m-023
+T: Transfer a ball, then draw
+S: conditional-bayes
+Q: Urn 1 has 3 red and 2 blue balls; urn 2 has 2 red and 3 blue balls. One ball is moved at random from urn 1 to urn 2, and then a ball is drawn at random from urn 2. What is the probability that it is red?
+A: $\frac25$
+B: $\frac{13}{30}$
+C: $\frac12$
+D: $\frac13$
+ANS: B
+EXP: Condition on the colour of the moved ball (law of total probability).
+Red moved (prob $\tfrac35$): urn 2 has 3 red of 6, so $P(R)=\tfrac36$.
+Blue moved (prob $\tfrac25$): urn 2 has 2 red of 6, so $P(R)=\tfrac26$.
+$P(R)=\tfrac35\cdot\tfrac36+\tfrac25\cdot\tfrac26=\tfrac{9+4}{30}=\tfrac{13}{30}$.
+$\tfrac25$ ignores the transfer. $\tfrac12$ and $\tfrac13$ each assume one particular colour was moved instead of averaging over both.
+
+
+@ prob m prob-m-024
+T: Naive Bayes spam posterior with two words
+S: conditional-bayes
+Q: In a naive Bayes spam filter, $P(\text{spam})=0.4$. Words $w_1,w_2$ are conditionally independent given the class, with $P(w_1\mid\text{spam})=0.5$, $P(w_2\mid\text{spam})=0.6$, $P(w_1\mid\text{ham})=0.1$, $P(w_2\mid\text{ham})=0.2$. An email contains both words. What is $P(\text{spam}\mid w_1,w_2)$?
+A: $\frac{15}{16}$
+B: $0.12$
+C: $\frac{10}{11}$
+D: $0.3$
+ANS: C
+EXP: Conditional independence gives the likelihoods: $P(w_1,w_2\mid\text{spam})=0.5\cdot0.6=0.3$ and $P(w_1,w_2\mid\text{ham})=0.1\cdot0.2=0.02$.
+Bayes: $P(\text{spam}\mid w_1,w_2)=\dfrac{0.4\cdot0.3}{0.4\cdot0.3+0.6\cdot0.02}=\dfrac{0.12}{0.132}=\dfrac{10}{11}\approx0.909$.
+$\tfrac{15}{16}=\tfrac{0.3}{0.3+0.02}$ drops the prior (it treats spam and ham as equally common). $0.12$ is the unnormalised joint, and $0.3$ is the likelihood $P(w_1,w_2\mid\text{spam})$.
+
+
+@ prob m prob-m-025
+T: Conditioning on the complement of the evidence
+S: conditional-bayes
+Q: $P(A)=0.5$, $P(B\mid A)=0.4$ and $P(B\mid A^c)=0.2$. Find $P(A\mid B^c)$.
+A: $\frac23$
+B: $\frac37$
+C: $0.6$
+D: $0.5$
+ANS: B
+EXP: $P(B^c\mid A)=0.6$ and $P(B^c\mid A^c)=0.8$.
+Total probability: $P(B^c)=0.5\cdot0.6+0.5\cdot0.8=0.7$.
+Bayes: $P(A\mid B^c)=\dfrac{0.5\cdot0.6}{0.7}=\dfrac37\approx0.43$.
+$\tfrac23=\tfrac{0.2}{0.3}$ is $P(A\mid B)$, the posterior after seeing $B$ rather than not seeing it. $0.6$ is $P(B^c\mid A)$, the reversed conditional.
+
+
+@ prob m prob-m-026
+T: Which coin gave two heads
+S: conditional-bayes
+Q: A box has 2 fair coins and 1 coin with heads on both sides. A coin is picked at random and tossed twice, giving two heads. What is the probability that it is the two-headed coin?
+A: $\frac13$
+B: $\frac12$
+C: $\frac23$
+D: $\frac45$
+ANS: C
+EXP: Likelihoods: $P(HH\mid\text{two-headed})=1$, $P(HH\mid\text{fair})=\tfrac14$.
+Bayes: $\dfrac{\tfrac13\cdot1}{\tfrac13\cdot1+\tfrac23\cdot\tfrac14}=\dfrac{1/3}{1/2}=\dfrac23$.
+$\tfrac13$ is the prior, ignoring the evidence. $\tfrac12$ is the posterior after one head, not two. Each extra head multiplies the odds for the two-headed coin by 2, so $\tfrac45$ would be the answer after three heads.
+
+
+@ prob m prob-m-027
+T: Identities for conditional probability
+S: conditional-bayes
+TYPE: msq
+Q: $A$ and $B$ are events with $0<P(A)<1$ and $0<P(B)<1$. Which statements are always true? More than one option may be correct.
+A: $P(A\mid B)+P(A^c\mid B)=1$
+B: $P(A\mid B)+P(A\mid B^c)=1$
+C: $P(A\cap B\mid B)=P(A\mid B)$
+D: $P(A\mid B)\,P(B)=P(B\mid A)\,P(A)$
+ANS: A,C,D
+EXP: [[A]] True. $P(\cdot\mid B)$ is itself a probability measure, so the complement rule holds inside it.
+[[B]] False. These condition on different events. Counterexample: a fair die, $A=\{1,2,3,4,5\}$, $B=\{1\}$: $P(A\mid B)=1$ and $P(A\mid B^c)=\tfrac45$, sum $\tfrac95$.
+[[C]] True. $P(A\cap B\cap B)/P(B)=P(A\cap B)/P(B)$.
+[[D]] True. Both sides equal $P(A\cap B)$. This is the identity behind Bayes' theorem.
+
+
+@ prob m prob-m-028
+T: Pairwise but not mutually independent
+S: independence
+Q: Two fair coins are tossed. $A$ = first coin is heads, $B$ = second coin is heads, $C$ = the two coins show the same face. Which statement is correct?
+A: $A,B,C$ are mutually independent
+B: $A$ and $B$ are independent, but $C$ is dependent on each of them
+C: $A,B,C$ are pairwise independent but not mutually independent
+D: No two of the three events are independent
+ANS: C
+EXP: Each event has probability $\tfrac12$.
+$P(A\cap B)=P(HH)=\tfrac14$, $P(A\cap C)=P(HH)=\tfrac14$, $P(B\cap C)=P(HH)=\tfrac14$. Each equals $\tfrac12\cdot\tfrac12$, so every pair is independent.
+But $P(A\cap B\cap C)=P(HH)=\tfrac14\ne\tfrac18$. Knowing $A$ and $B$ fixes $C$ completely.
+Mutual independence needs the product rule for every subcollection, including all three together. Pairwise checks are not enough.
+
+
+@ prob m prob-m-029
+T: Finding P(B) from the union of independents
+S: independence
+TYPE: nat
+TOL: 0.01
+Q: $A$ and $B$ are independent, $P(A)=0.3$ and $P(A\cup B)=0.65$. Enter $P(B)$ as a decimal.
+ANS: 0.5
+EXP: Use $P(A^c\cap B^c)=P(A^c)P(B^c)$ (complements of independent events are independent).
+$1-0.65=0.7\,(1-p)\Rightarrow0.35=0.7(1-p)\Rightarrow p=0.5$.
+Check: $0.3+0.5-0.15=0.65$.
+Answering $0.35=0.65-0.3$ treats the events as mutually exclusive, which contradicts independence when both have positive probability.
+
+
+@ prob m prob-m-030
+T: Exactly one of three shooters hits
+S: independence
+Q: Three shooters fire at a target independently. They hit with probabilities $\frac12$, $\frac13$ and $\frac14$. What is the probability that exactly one of them hits?
+A: $\frac34$
+B: $\frac14$
+C: $\frac1{24}$
+D: $\frac{11}{24}$
+ANS: D
+EXP: Add the three disjoint cases "only shooter $i$ hits", each a product by independence:
+Only 1st: $\tfrac12\cdot\tfrac23\cdot\tfrac34=\tfrac6{24}$. Only 2nd: $\tfrac12\cdot\tfrac13\cdot\tfrac34=\tfrac3{24}$. Only 3rd: $\tfrac12\cdot\tfrac23\cdot\tfrac14=\tfrac2{24}$.
+Total $\tfrac{11}{24}$.
+$\tfrac34=1-\tfrac12\cdot\tfrac23\cdot\tfrac34$ is $P(\text{at least one hit})$, which also counts two or three hits. $\tfrac14$ is $P(\text{no hit})$.
+
+
+@ prob m prob-m-031
+T: Tosses of a randomly chosen coin
+S: independence
+Q: One of two coins is picked with probability $\frac12$ each: coin 1 has $P(H)=0.9$, coin 2 has $P(H)=0.1$. The chosen coin is tossed twice. What is $P(\text{2nd toss is H}\mid\text{1st toss is H})$?
+A: $0.5$
+B: $0.82$
+C: $0.9$
+D: $0.41$
+ANS: B
+EXP: $P(H_1)=\tfrac12(0.9)+\tfrac12(0.1)=0.5$.
+$P(H_1\cap H_2)=\tfrac12(0.81)+\tfrac12(0.01)=0.41$.
+$P(H_2\mid H_1)=\tfrac{0.41}{0.5}=0.82$.
+$0.5$ assumes the tosses are independent. They are independent given the coin, but not unconditionally: a head is evidence for coin 1, which makes the next head likelier. $0.9$ assumes we already know it is coin 1. In naive Bayes, conditional independence given the class is likewise not ordinary independence.
+
+
+@ prob m prob-m-032
+T: Conditions for mutual independence of 4 events
+S: independence
+TYPE: nat
+TOL: 0
+Q: To verify that 4 events $A_1,A_2,A_3,A_4$ are mutually independent, the product rule $P\left(\bigcap_{i\in S}A_i\right)=\prod_{i\in S}P(A_i)$ must be checked for every subset $S$ of size at least 2. How many such product conditions are there? Enter an integer.
+ANS: 11
+EXP: Count the subsets of $\{1,2,3,4\}$ with at least 2 elements: $2^4-\binom40-\binom41=16-1-4=11$.
+That is $\binom42+\binom43+\binom44=6+4+1$.
+Checking only the 6 pairs gives pairwise independence, which is strictly weaker. In general there are $2^n-n-1$ conditions.
+
+
+@ prob m prob-m-033
+T: Which event is dependent on a sum of 7
+S: independence
+Q: Two fair dice are rolled. Let $A$ = the sum is 7. Which of the following events is NOT independent of $A$?
+A: The first die shows 3
+B: The second die shows at most 2
+C: At least one die shows 6
+D: The first die is even
+ANS: C
+EXP: $P(A)=\tfrac6{36}=\tfrac16$. Whatever the first die shows, exactly one value of the second die makes the sum 7, so $P(A\mid\text{first die}=k)=\tfrac16$ for every $k$. Hence $A$ is independent of any event about one die alone.
+[[A]], [[B]], [[D]]: events about a single die. Independent (e.g. $P(A\cap B)=\tfrac2{36}=\tfrac16\cdot\tfrac13$).
+[[C]]: $P(\text{at least one 6})=\tfrac{11}{36}$ and $A\cap C=\{(1,6),(6,1)\}$, so $P=\tfrac2{36}\ne\tfrac16\cdot\tfrac{11}{36}$. Dependent, because $C$ involves both dice.
+(With sum 6 instead of 7 this fails: a first roll of 6 makes sum 6 impossible.)
+
+
+@ prob m prob-m-034
+T: Reading a mixed CDF
+S: random-variables
+TYPE: msq
+Q: $X$ has CDF
+$$F(x)=\begin{cases}0,&x<0\\ \dfrac{x+1}{4},&0\le x<1\\ 1,&x\ge1\end{cases}$$
+Which statements are true? More than one option may be correct.
+A: $P(X=0)=\frac14$
+B: $P(X=1)=\frac12$
+C: $P(0<X<1)=\frac12$
+D: $P(X\le\frac12)=\frac38$
+ANS: A,B,D
+EXP: Point masses are the jumps of $F$; probabilities of intervals are differences of $F$.
+[[A]] True: jump at 0 is $F(0)-F(0^-)=\tfrac14-0$.
+[[B]] True: jump at 1 is $F(1)-F(1^-)=1-\tfrac24=\tfrac12$.
+[[C]] False: $P(0<X<1)=F(1^-)-F(0)=\tfrac12-\tfrac14=\tfrac14$. The value $\tfrac12$ is $F(1^-)=P(X<1)$, which includes the mass at 0.
+[[D]] True: $F(\tfrac12)=\tfrac{1.5}{4}=\tfrac38$.
+$X$ is mixed: point masses $\tfrac14$ and $\tfrac12$ plus density $\tfrac14$ on $(0,1)$, total 1.
+
+
+@ prob m prob-m-035
+T: Median of a cubic-CDF density
+S: random-variables
+Q: $X$ has PDF $f(x)=3x^2$ for $0\le x\le1$ and $0$ otherwise. What is the median of $X$?
+A: $\frac34$
+B: $\frac12$
+C: $2^{-1/2}$
+D: $2^{-1/3}$
+ANS: D
+EXP: CDF: $F(x)=\int_0^x3t^2\,dt=x^3$ on $[0,1]$.
+Median $m$ solves $F(m)=\tfrac12$: $m^3=\tfrac12\Rightarrow m=2^{-1/3}\approx0.794$.
+$\tfrac34$ is the mean $\int_0^1x\cdot3x^2\,dx$. The distribution is skewed left (mass piled near 1), so the median exceeds the mean. $\tfrac12$ is the midpoint of the support, the median only for a symmetric density.
+
+
+@ prob m prob-m-036
+T: Tail probability of a Laplace density
+S: random-variables
+Q: $X$ has PDF $f(x)=k\,e^{-2|x|}$ for all real $x$. What is $P(|X|>1)$?
+A: $e^{-2}$
+B: $\frac12e^{-2}$
+C: $2e^{-2}$
+D: $1-e^{-2}$
+ANS: A
+EXP: Normalise: $\int_{-\infty}^{\infty}e^{-2|x|}\,dx=2\int_0^\infty e^{-2x}\,dx=2\cdot\tfrac12=1$, so $k=1$.
+By symmetry, $P(|X|>1)=2\int_1^\infty e^{-2x}\,dx=2\cdot\tfrac12e^{-2}=e^{-2}\approx0.135$.
+$\tfrac12e^{-2}$ is only one tail, $P(X>1)$. $2e^{-2}$ comes from assuming $k=2$ (the exponential density's constant) and then doubling. This Laplace density is the noise model whose MLE gives L1 (absolute) loss.
+
+
+@ prob m prob-m-037
+T: Conditional probability from a quadratic CDF
+S: random-variables
+TYPE: nat
+TOL: 0.005
+Q: $X$ has CDF $F(x)=\dfrac{x^2+x}{6}$ for $0\le x\le2$, with $F(x)=0$ for $x<0$ and $F(x)=1$ for $x>2$. Find $P(X\le1\mid X\le1.5)$. Enter a decimal to 3 places.
+ANS: 0.533
+EXP: $\{X\le1\}\subseteq\{X\le1.5\}$, so $P(X\le1\mid X\le1.5)=\dfrac{F(1)}{F(1.5)}$.
+$F(1)=\tfrac26=\tfrac13$ and $F(1.5)=\tfrac{2.25+1.5}{6}=0.625$.
+Ratio $=\tfrac{1/3}{0.625}=\tfrac8{15}\approx0.533$.
+Answering $F(1)=0.333$ ignores the conditioning.
+
+
+@ prob m prob-m-038
+T: Telescoping PMF tail probability
+S: random-variables
+Q: $X$ takes values $1,2,3,\dots$ with $P(X=k)=\dfrac{c}{k(k+1)}$. Find $P(X\ge5)$.
+A: $\frac16$
+B: $\frac15$
+C: $\frac1{30}$
+D: $\frac45$
+ANS: B
+EXP: Partial fractions: $\dfrac1{k(k+1)}=\dfrac1k-\dfrac1{k+1}$, so the sum telescopes.
+$\sum_{k\ge1}\tfrac1{k(k+1)}=1$, so $c=1$.
+$P(X\ge5)=\sum_{k\ge5}\left(\tfrac1k-\tfrac1{k+1}\right)=\tfrac15$.
+$\tfrac16$ is $P(X\ge6)=P(X>5)$; watch the boundary. $\tfrac1{30}$ is $P(X=5)$. (This $X$ has $E[X]=\sum\tfrac1{k+1}=\infty$: a valid PMF with an infinite mean.)
+
+
+@ prob m prob-m-039
+T: Expected number of hats returned correctly
+S: expectation-variance
+Q: Ten people check their hats, and the hats are handed back in a uniformly random order. What is the expected number of people who get their own hat back?
+A: $1$
+B: $0.1$
+C: $\frac1e$
+D: $5$
+ANS: A
+EXP: Let $I_j=1$ if person $j$ gets their own hat. $P(I_j=1)=\tfrac1{10}$.
+By linearity of expectation, $E\left[\sum I_j\right]=\sum E[I_j]=10\cdot\tfrac1{10}=1$.
+Linearity holds even though the $I_j$ are dependent. The answer is 1 for any number of people.
+$\tfrac1e\approx0.37$ is the limiting probability that nobody gets their hat, not an expectation. $0.1$ is the chance for one person.
+
+
+@ prob m prob-m-040
+T: Expected number of distinct faces in six rolls
+S: expectation-variance
+TYPE: nat
+TOL: 0.01
+Q: A fair die is rolled 6 times. What is the expected number of distinct faces that appear? Enter a decimal to 2 places.
+ANS: 3.99
+EXP: Indicator method: let $I_f=1$ if face $f$ appears at least once.
+$P(I_f=1)=1-\left(\tfrac56\right)^6\approx1-0.3349=0.6651$.
+Linearity: $E[\#\text{distinct}]=6\left(1-\left(\tfrac56\right)^6\right)\approx3.99$.
+Six rolls do not usually show all six faces; that happens with probability only $6!/6^6\approx0.015$.
+
+
+@ prob m prob-m-041
+T: Jensen's inequality directions
+S: expectation-variance
+TYPE: msq
+Q: $X$ takes finitely many positive values and is not constant. Which inequalities always hold? More than one option may be correct.
+A: $E[X^2]\ge(E[X])^2$
+B: $E\left[\frac1X\right]\ge\frac1{E[X]}$
+C: $E\left[\sqrt X\right]\ge\sqrt{E[X]}$
+D: $E[\ln X]\le\ln E[X]$
+ANS: A,B,D
+EXP: Jensen: for convex $g$, $E[g(X)]\ge g(E[X])$; for concave $g$ the inequality reverses.
+[[A]] True: $x^2$ is convex (equivalently, $\operatorname{Var}(X)\ge0$).
+[[B]] True: $1/x$ is convex for $x>0$. For $X\in\{1,4\}$ equally likely: $E[1/X]=0.625\ge0.4$.
+[[C]] False: $\sqrt x$ is concave. For $X\in\{1,9\}$ equally likely: $E[\sqrt X]=2<\sqrt5\approx2.24$.
+[[D]] True: $\ln$ is concave. This is the step that turns a log-likelihood into the evidence lower bound (ELBO) in variational inference.
+
+
+@ prob m prob-m-042
+T: Variance from a factorial moment
+S: expectation-variance
+Q: $E[X]=2$ and $E[X(X-1)]=5$. What is $\operatorname{Var}(X)$?
+A: $1$
+B: $3$
+C: $5$
+D: $7$
+ANS: B
+EXP: $E[X(X-1)]=E[X^2]-E[X]$, so $E[X^2]=5+2=7$.
+$\operatorname{Var}(X)=E[X^2]-(E[X])^2=7-4=3$.
+$1=5-4$ treats $E[X(X-1)]$ as if it were $E[X^2]$. $7$ is $E[X^2]$ itself. Factorial moments are the natural ones for counting distributions such as the Poisson.
+
+
+@ prob m prob-m-043
+T: Expectation from tail probabilities
+S: expectation-variance
+Q: $X$ takes values in $\{0,1,2,3\}$ with $P(X\ge1)=0.8$, $P(X\ge2)=0.5$ and $P(X\ge3)=0.2$. What is $E[X]$?
+A: $2.4$
+B: $0.5$
+C: $1.5$
+D: $2.5$
+ANS: C
+EXP: Tail-sum formula for non-negative integer variables: $E[X]=\sum_{k\ge1}P(X\ge k)=0.8+0.5+0.2=1.5$.
+Check with the PMF: $P(0)=0.2$, $P(1)=0.3$, $P(2)=0.3$, $P(3)=0.2$, so $E[X]=0.3+0.6+0.6=1.5$.
+$2.4=\sum k\,P(X\ge k)$ weights tail probabilities as if they were point probabilities. $2.5$ starts the tail sum at $k=0$, adding $P(X\ge0)=1$.
+
+
+@ prob h prob-h-011
+T: MISSISSIPPI with no two S adjacent
+S: counting
+Q: The letters of MISSISSIPPI are arranged at random (all distinct arrangements equally likely). What is the probability that no two S's are adjacent?
+A: $\frac7{66}$
+B: $\frac1{22}$
+C: $\frac7{33}$
+D: $\frac{26}{33}$
+ANS: C
+EXP: Key insight: only the set of positions of the four S's matters, and each 4-subset of the 11 positions is equally likely. So $P=\dfrac{\#\text{non-adjacent 4-subsets}}{\binom{11}4}$.
+Gap method: the 7 other letters create 8 gaps (including both ends); choose 4 of them: $\binom84=70$.
+$P=\tfrac{70}{330}=\tfrac7{33}$.
+$\tfrac7{66}=\binom74/330$ uses only 7 gaps (forgetting one end). $\tfrac1{22}=\binom64/330$ uses only the 6 interior gaps. $\tfrac{26}{33}$ is the complement.
+
+
+@ prob h prob-h-012
+T: Five balls into three boxes, none empty
+S: counting
+Q: Five distinguishable balls are each placed in one of 3 boxes, independently and uniformly at random. What is the probability that no box is empty?
+A: $\frac{50}{81}$
+B: $\frac{49}{81}$
+C: $\frac27$
+D: $\frac{80}{81}$
+ANS: A
+EXP: Total outcomes: $3^5=243$. Count onto assignments by inclusion–exclusion on the empty boxes:
+$3^5-\binom31 2^5+\binom32 1^5=243-96+3=150$.
+$P=\tfrac{150}{243}=\tfrac{50}{81}$.
+$\tfrac{49}{81}$ stops after subtracting $3\cdot2^5$; the "all in one box" cases were subtracted twice and must be added back. $\tfrac27=\binom42/\binom72$ counts stars-and-bars patterns of identical balls, which are not equally likely. $\tfrac{80}{81}$ excludes only "all in one box", missing the cases where exactly one box is empty.
+
+
+@ prob h prob-h-013
+T: Counting full-house poker hands
+S: counting
+Q: How many 5-card hands from a standard 52-card deck are a full house (three cards of one rank and two cards of another rank)?
+A: $1872$
+B: $3744$
+C: $7488$
+D: $58656$
+ANS: B
+EXP: Choose the rank of the triple: $13$; its 3 suits: $\binom43=4$.
+Choose a different rank for the pair: $12$; its 2 suits: $\binom42=6$.
+Total: $13\cdot4\cdot12\cdot6=3744$.
+$1872=\binom{13}2\cdot4\cdot6$ chooses the two ranks as an unordered pair. But the ranks play different roles (kings over 3s differs from 3s over kings), so order matters here. $58656=13\cdot4\cdot\binom{48}2$ lets the last two cards be any two of the other ranks, which also counts plain three-of-a-kind hands.
+
+
+@ prob h prob-h-014
+T: Binary strings with no two adjacent 1s
+S: counting
+TYPE: nat
+TOL: 0
+Q: How many binary strings of length 8 contain no two consecutive 1s? Enter an integer.
+ANS: 55
+EXP: Let $a_n$ be the count for length $n$. Split on the first symbol:
+it is 0, followed by any valid string of length $n-1$; or it is 1, which forces the next symbol to be 0, followed by any valid string of length $n-2$.
+So $a_n=a_{n-1}+a_{n-2}$ with $a_1=2$ (0, 1) and $a_2=3$ (00, 01, 10).
+$a_3=5,\ a_4=8,\ a_5=13,\ a_6=21,\ a_7=34,\ a_8=55$ (Fibonacci numbers).
+
+
+@ prob h prob-h-015
+T: Lattice path that never crosses the diagonal
+S: counting
+Q: A shortest lattice path from $(0,0)$ to $(4,4)$ with unit right/up steps is chosen uniformly at random. What is the probability that it never goes strictly above the line $y=x$ (touching the line is allowed)?
+A: $\frac12$
+B: $\frac14$
+C: $\frac1{14}$
+D: $\frac15$
+ANS: D
+EXP: Total paths: $\binom84=70$.
+Paths that never go above the diagonal are counted by the Catalan number $C_4=\dfrac1{5}\binom84=14$. (Reflection principle: each bad path reflects, after its first visit to $y=x+1$, to a path ending at $(3,5)$; there are $\binom83=56$ such paths, and $70-56=14$.)
+$P=\tfrac{14}{70}=\tfrac15=\tfrac1{n+1}$.
+$\tfrac12$ is the tempting symmetry argument "above or below", but most paths cross the diagonal, so they are neither. $\tfrac1{14}=\tfrac5{70}$ counts paths that stay strictly below, touching only at the ends.
+
+
+@ prob h prob-h-016
+T: Three friends in three different groups
+S: counting
+Q: Twelve students are split at random into three groups of 4 (all splits equally likely). What is the probability that three particular friends end up in three different groups?
+A: $\frac{16}{55}$
+B: $\frac29$
+C: $\frac8{11}$
+D: $\frac{32}{121}$
+ANS: A
+EXP: Place the friends one at a time, tracking free seats.
+Friend 1 goes anywhere. Of the 11 remaining seats, 8 are outside friend 1's group: $\tfrac8{11}$.
+Of the 10 remaining seats, 4 are in the third group: $\tfrac4{10}$.
+$P=\tfrac8{11}\cdot\tfrac4{10}=\tfrac{32}{110}=\tfrac{16}{55}$.
+$\tfrac29=\tfrac23\cdot\tfrac13$ assigns each friend to a group independently, ignoring that seats run out. $\tfrac8{11}$ only ensures friend 2 avoids friend 1. $\tfrac{32}{121}$ forgets that the denominator shrinks.
+
+
+@ prob h prob-h-017
+T: Range of a triple union from pairwise data
+S: axioms-events
+Q: $P(A)=P(B)=P(C)=\frac12$ and $P(A\cap B)=P(A\cap C)=P(B\cap C)=\frac14$. Nothing else is known. What are the possible values of $P(A\cup B\cup C)$?
+A: Exactly $\frac34$
+B: Exactly $\frac78$
+C: Any value in $\left[\frac34,1\right]$
+D: Any value in $\left[\frac12,1\right]$
+ANS: C
+EXP: Let $t=P(A\cap B\cap C)$. Inclusion–exclusion: $P(\cup)=\tfrac32-\tfrac34+t=\tfrac34+t$.
+Constraints from the Venn regions (all must be $\ge0$): "only $A$" $=\tfrac12-\tfrac14-\tfrac14+t=t\ge0$; "$A\cap B$ only" $=\tfrac14-t\ge0$; outside $=1-(\tfrac34+t)\ge0$. So $0\le t\le\tfrac14$, and every such $t$ works.
+Hence $P(\cup)\in[\tfrac34,1]$. Example: $t=0$ is a uniform pick from $\{1,2,3,4\}$ with $A=\{1,2\}$, $B=\{1,3\}$, $C=\{2,3\}$.
+$\tfrac78$ assumes mutual independence ($t=\tfrac18$), which was not given. Pairwise data alone do not pin down a triple union.
+
+
+@ prob h prob-h-018
+T: Meeting within twenty minutes
+S: axioms-events
+Q: Two friends arrive at a café independently, each at a time uniformly distributed between 12:00 and 13:00. Each waits 20 minutes for the other and then leaves. What is the probability that they meet?
+A: $\frac13$
+B: $\frac59$
+C: $\frac49$
+D: $\frac23$
+ANS: B
+EXP: Measure time in hours: arrivals $(x,y)$ are uniform on the unit square, so probability equals area.
+They meet iff $|x-y|\le\tfrac13$. The complement is two corner triangles, each with legs $\tfrac23$, total area $2\cdot\tfrac12\left(\tfrac23\right)^2=\tfrac49$.
+$P=1-\tfrac49=\tfrac59$.
+$\tfrac49$ is the probability they miss each other. $\tfrac13$ wrongly scales the 20-minute window linearly; the meeting band is a strip, not a fraction of a line.
+
+
+@ prob h prob-h-019
+T: Size of a generated sigma-algebra
+S: axioms-events
+TYPE: nat
+TOL: 0
+Q: Let $\Omega=\{1,2,3,4\}$. How many sets are in the smallest $\sigma$-algebra on $\Omega$ that contains both $\{1\}$ and $\{2\}$? Enter an integer.
+ANS: 8
+EXP: A $\sigma$-algebra is closed under complements and unions, so it must contain $\{1\}$, $\{2\}$ and $\{1,2\}^c=\{3,4\}$.
+These three sets are the atoms: they are disjoint, they cover $\Omega$, and nothing can split $\{3,4\}$.
+Every event is a union of atoms, so there are $2^3=8$ sets: $\varnothing$, $\{1\}$, $\{2\}$, $\{3,4\}$, $\{1,2\}$, $\{1,3,4\}$, $\{2,3,4\}$, $\Omega$.
+$16$ would be the full power set, which would need $\{3\}$ or $\{4\}$ as a generator.
+
+
+@ prob h prob-h-020
+T: Bounds on at least one failure
+S: axioms-events
+Q: A system has 20 components, and each one fails with probability $0.01$. Nothing is known about dependence between failures. Over all possible dependence structures, what is the exact range of values that $p=P(\text{at least one component fails})$ can take?
+A: $p=1-0.99^{20}\approx0.182$
+B: $0.182\le p\le0.2$
+C: $0\le p\le0.2$
+D: $0.01\le p\le0.2$, and both ends are possible
+ANS: D
+EXP: Upper bound (union bound / Boole): $P\left(\bigcup F_i\right)\le\sum P(F_i)=0.2$. It is attained when the failures are disjoint.
+Lower bound: the union contains each $F_i$, so $p\ge\max P(F_i)=0.01$. It is attained when all components fail together ($F_1=\dots=F_{20}$).
+$0.182$ assumes independence, which is just one point inside the range. $0\le p\le0.2$ is true but is not the exact range: $p=0$ is impossible, because each component fails with probability $0.01>0$. The union bound is the same tool used in PAC learning bounds, precisely because it needs no independence.
+
+
+@ prob h prob-h-021
+T: P(A) from two unions
+S: axioms-events
+Q: For events $A$ and $B$, $P(A\cup B)=0.7$ and $P(A\cup B^c)=0.9$. Find $P(A)$.
+A: $0.6$
+B: $0.2$
+C: $0.3$
+D: $0.8$
+ANS: A
+EXP: Split each union into disjoint pieces:
+$A\cup B=A\ \dot\cup\ (A^c\cap B)$ and $A\cup B^c=A\ \dot\cup\ (A^c\cap B^c)$.
+Adding: $0.7+0.9=2P(A)+P(A^c\cap B)+P(A^c\cap B^c)=2P(A)+P(A^c)=P(A)+1$.
+So $P(A)=0.6$.
+Check: $P(A^c\cap B)=0.1$ and $P(A^c\cap B^c)=0.3$, which sum to $P(A^c)=0.4$.
+$0.2=0.9-0.7$ is only $P(A^c\cap B^c)-P(A^c\cap B)$, and $0.3$ is $P(A^c\cap B^c)$ alone.
+
+
+@ prob h prob-h-022
+T: Alternate rolls until someone throws a six
+S: axioms-events
+TYPE: nat
+TOL: 0.002
+Q: Players $A$ and $B$ take turns rolling a fair die, $A$ first. The first to roll a 6 wins. What is the probability that $A$ wins? Enter a decimal to 3 places.
+ANS: 0.545
+EXP: $A$ wins on round $k$ (rolls $1,3,5,\dots$) if the first $2(k-1)$ rolls are not 6 and then $A$ rolls a 6.
+Countable additivity over these disjoint events:
+$P(A)=\tfrac16\sum_{k\ge0}\left(\tfrac{25}{36}\right)^k=\dfrac{1/6}{1-25/36}=\dfrac{6}{11}\approx0.545$.
+Shortcut: $P(A)=\tfrac16+\tfrac56\cdot\tfrac56\,P(A)$ gives the same.
+Going first is an advantage. The answer is not $\tfrac12$.
+
+
+@ prob h prob-h-023
+T: Posterior after two independent positive tests
+S: conditional-bayes
+Q: A condition has prevalence 1%. A test has sensitivity $0.9$ and false-positive rate $0.1$. A person takes the test twice, and the results are conditionally independent given their true status. Both are positive. What is $P(\text{condition}\mid ++)$?
+A: $\approx0.083$
+B: $0.81$
+C: $0.45$
+D: $0.9$
+ANS: C
+EXP: Odds form of Bayes: posterior odds = prior odds $\times$ likelihood ratio.
+Prior odds $=\tfrac1{99}$. Each positive has likelihood ratio $\tfrac{0.9}{0.1}=9$; with conditional independence the ratios multiply: $81$.
+Posterior odds $=\tfrac{81}{99}$, so $P=\dfrac{81}{81+99}=\dfrac{81}{180}=0.45$.
+$\approx0.083=\tfrac1{12}$ is the posterior after one positive test. $0.81=0.9^2$ is $P(++\mid\text{condition})$, the reversed conditional. Sequential updating like this is how naive Bayes combines features.
+
+
+@ prob h prob-h-024
+T: Host opens a door without knowing
+S: conditional-bayes
+Q: Three doors hide 1 car and 2 goats. You pick door 1. The host does NOT know where the car is; he opens one of doors 2 and 3 uniformly at random, and it happens to reveal a goat. If you now switch to the other unopened door, what is your probability of winning?
+A: $\frac23$
+B: $\frac13$
+C: $\frac12$
+D: $\frac34$
+ANS: C
+EXP: Condition on the evidence $G$ = "the opened door shows a goat".
+Car behind door 1 (prob $\tfrac13$): $P(G)=1$. Car behind door 2 or 3 (prob $\tfrac23$): $P(G)=\tfrac12$.
+$P(G)=\tfrac13+\tfrac23\cdot\tfrac12=\tfrac23$.
+$P(\text{car at door 1}\mid G)=\dfrac{1/3}{2/3}=\dfrac12$, so switching wins with probability $\tfrac12$.
+$\tfrac23$ is the classic Monty Hall answer. It relies on the host always revealing a goat on purpose. Here the reveal is luck, and a lucky goat is more likely when your door hides the car, which cancels the advantage.
+
+
+@ prob h prob-h-025
+T: Bit through two noisy channels
+S: conditional-bayes
+TYPE: nat
+TOL: 0.01
+Q: A bit is sent as 1 with probability $0.6$ and as 0 with probability $0.4$. It passes through two noisy links in sequence; each link flips the bit with probability $0.1$, independently. The received bit is 1. What is the probability that a 1 was sent? Enter a decimal to 2 places.
+ANS: 0.87
+EXP: The bit arrives flipped overall only if exactly one link flips it: $2\cdot0.1\cdot0.9=0.18$ (two flips cancel).
+So $P(\text{recv }1\mid\text{sent }1)=0.82$ and $P(\text{recv }1\mid\text{sent }0)=0.18$.
+Bayes: $P(\text{sent }1\mid\text{recv }1)=\dfrac{0.6\cdot0.82}{0.6\cdot0.82+0.4\cdot0.18}=\dfrac{0.492}{0.564}\approx0.872$.
+Using a single link (flip prob $0.1$) gives $0.931$. Using $0.2$ as the overall flip prob forgets that two flips restore the bit.
+
+
+@ prob h prob-h-026
+T: Simpson's paradox in treatment success rates
+S: conditional-bayes
+TYPE: msq
+Q: Two treatments for kidney stones gave these success counts:
+Treatment 1: small stones 81/87, large stones 192/263 (total 350 patients).
+Treatment 2: small stones 234/270, large stones 55/80 (total 350 patients).
+Which statements are true? More than one option may be correct.
+A: Treatment 1 has a higher success rate than Treatment 2 among small-stone patients
+B: Treatment 1 has a higher success rate than Treatment 2 among large-stone patients
+C: Treatment 1 has a higher overall success rate than Treatment 2
+D: Most of Treatment 1's patients had large stones, which have lower success rates under both treatments
+ANS: A,B,D
+EXP: [[A]] True: $81/87\approx0.931>234/270\approx0.867$.
+[[B]] True: $192/263\approx0.730>55/80\approx0.688$.
+[[C]] False: overall Treatment 1 is $273/350=0.78$ and Treatment 2 is $289/350\approx0.826$.
+[[D]] True: 263 of Treatment 1's 350 patients had large stones, versus 80 of Treatment 2's 350.
+Law of total probability: each overall rate is a weighted average of the subgroup rates, weighted by that treatment's own case mix. Treatment 1 gets the harder cases, so its average is dragged down. This is Simpson's paradox; a confounder (stone size) reverses the comparison.
+
+
+@ prob h prob-h-027
+T: Coin bias making two events independent
+S: independence
+Q: A coin with $P(H)=p$ is tossed twice. $A$ = first toss is heads; $B$ = both tosses show the same face. For which values of $p\in[0,1]$ are $A$ and $B$ independent?
+A: Only $p=\frac12$
+B: $p\in\{0,\frac12,1\}$
+C: $p\in\{\frac12,1\}$
+D: Every $p\in[0,1]$
+ANS: B
+EXP: $P(A)=p$, $P(B)=p^2+(1-p)^2$, $P(A\cap B)=P(HH)=p^2$.
+Independence: $p^2=p\left(p^2+(1-p)^2\right)$.
+Either $p=0$, or divide by $p$: $p=2p^2-2p+1\Rightarrow2p^2-3p+1=0\Rightarrow p=\tfrac12$ or $p=1$.
+So $p\in\{0,\tfrac12,1\}$.
+Only $p=\tfrac12$ is the tempting answer, but at $p=0$ or $1$ the event $A$ has probability 0 or 1, and such an event is independent of every event.
+
+
+@ prob h prob-h-028
+T: At least one of n rare independent events
+S: independence
+Q: Events $A_1,\dots,A_n$ are mutually independent with $P(A_i)=\frac1n$ each. As $n\to\infty$, $P(\text{at least one }A_i\text{ occurs})$ tends to:
+A: $1$
+B: $\frac1e$
+C: $\frac12$
+D: $1-\frac1e$
+ANS: D
+EXP: By independence, $P(\text{none})=\prod(1-\tfrac1n)=\left(1-\tfrac1n\right)^n\to e^{-1}$.
+So $P(\text{at least one})\to1-\tfrac1e\approx0.632$.
+$1$ comes from the union bound $\sum P(A_i)=1$, which is only an upper bound. $\tfrac1e$ is the probability that none occurs. This is also why a bootstrap sample contains about 63.2% of the distinct original points.
+
+
+@ prob h prob-h-029
+T: Events built from mutually independent ones
+S: independence
+TYPE: msq
+Q: $A$, $B$, $C$ are mutually independent events. Which pairs of events are necessarily independent? More than one option may be correct.
+A: $A$ and $B\cup C$
+B: $A^c$ and $B\cap C$
+C: $A\cap B$ and $A\cap C$
+D: $A\cup B$ and $C$
+ANS: A,B,D
+EXP: Rule: events built from disjoint groups of mutually independent events are independent.
+[[A]] True: $A$ uses only $A$; $B\cup C$ uses only $B,C$. Directly: $P(A\cap(B\cup C))=P(A)(P(B)+P(C)-P(B)P(C))=P(A)P(B\cup C)$.
+[[B]] True: complements keep independence, and the groups $\{A\}$ and $\{B,C\}$ are disjoint.
+[[C]] False: both events involve $A$. With all three of probability $\tfrac12$: $P(A\cap B\cap C)=\tfrac18$ but $P(A\cap B)P(A\cap C)=\tfrac1{16}$.
+[[D]] True: $\{A,B\}$ and $\{C\}$ are disjoint groups.
+
+
+@ prob h prob-h-030
+T: Majority vote of three classifiers
+S: independence
+TYPE: nat
+TOL: 0.001
+Q: Three classifiers make errors independently. Their accuracies are $0.9$, $0.8$ and $0.7$. An ensemble predicts by majority vote (at least 2 of 3 correct means the ensemble is correct). What is the ensemble's accuracy? Enter a decimal to 3 places.
+ANS: 0.902
+EXP: Add the disjoint cases, each a product by independence.
+All three correct: $0.9\cdot0.8\cdot0.7=0.504$.
+Exactly two correct: $0.9\cdot0.8\cdot0.3+0.9\cdot0.2\cdot0.7+0.1\cdot0.8\cdot0.7=0.216+0.126+0.056=0.398$.
+Total: $0.504+0.398=0.902$.
+The ensemble barely beats its best member (0.9), even with independent errors. With three equally good members it would gain much more. In practice errors are correlated, which shrinks the gain further.
+
+
+@ prob h prob-h-031
+T: An event independent of its superset
+S: independence
+Q: $A\subseteq B$, $0<P(B)<1$, and $A$ and $B$ are independent. What is $P(A)$?
+A: $0$
+B: $P(B)$
+C: $P(B)^2$
+D: $1$
+ANS: A
+EXP: Since $A\subseteq B$, $A\cap B=A$, so independence says $P(A)=P(A)P(B)$.
+Then $P(A)(1-P(B))=0$, and $P(B)<1$ forces $P(A)=0$.
+Intuition: if $A$ had positive probability, learning that $B$ did not happen would rule $A$ out, so $B$ would carry information about $A$.
+$P(B)$ would mean $A$ and $B$ coincide up to probability zero, but then $P(A\cap B)=P(B)\ne P(B)^2$. $P(A)=1$ is impossible because $P(A)\le P(B)<1$.
+
+
+@ prob h prob-h-032
+T: Recovering probabilities of independent events
+S: independence
+Q: $A$ and $B$ are independent with $P(A\cap B)=\frac16$ and $P(A^c\cap B^c)=\frac13$. What is the larger of $P(A)$ and $P(B)$?
+A: $\frac13$
+B: $\frac56$
+C: $\frac12$
+D: $\frac23$
+ANS: C
+EXP: Let $a=P(A)$, $b=P(B)$. Independence gives $ab=\tfrac16$ and $(1-a)(1-b)=\tfrac13$.
+Expand: $1-(a+b)+ab=\tfrac13\Rightarrow a+b=1+\tfrac16-\tfrac13=\tfrac56$.
+So $a,b$ are the roots of $t^2-\tfrac56t+\tfrac16=0$, i.e. $t=\tfrac12$ and $t=\tfrac13$.
+The larger is $\tfrac12$.
+$\tfrac56$ is the sum $a+b$, not either probability. $\tfrac23=1-\tfrac13$ wrongly reads $P(A^c\cap B^c)$ as $P(A^c)$.
+
+
+@ prob h prob-h-033
+T: Mean of a mixed random variable
+S: random-variables
+TYPE: nat
+TOL: 0.005
+Q: $X$ has CDF
+$$F(x)=\begin{cases}0,&x<0\\ x^2/2,&0\le x<1\\ 3/4,&1\le x<2\\ 1,&x\ge2\end{cases}$$
+Find $E[X]$. Enter a decimal to 3 places.
+ANS: 1.083
+EXP: Split $X$ into its continuous and discrete parts.
+Continuous part: density $F'(x)=x$ on $(0,1)$, carrying mass $\tfrac12$.
+Jumps: at $x=1$, $\tfrac34-\tfrac12=\tfrac14$; at $x=2$, $1-\tfrac34=\tfrac14$. Total mass $\tfrac12+\tfrac14+\tfrac14=1$.
+$E[X]=\int_0^1x\cdot x\,dx+1\cdot\tfrac14+2\cdot\tfrac14=\tfrac13+\tfrac34=\tfrac{13}{12}\approx1.083$.
+Differentiating $F$ and integrating only the density gives $\tfrac13$, missing the point masses.
+
+
+@ prob h prob-h-034
+T: Which functions are valid CDFs
+S: random-variables
+TYPE: msq
+Q: Which of the following define a valid cumulative distribution function on $\mathbb R$? More than one option may be correct.
+A: $F(x)=1-e^{-x}$ for $x\ge0$, and $F(x)=0$ for $x<0$
+B: $F(x)=0$ for $x<0$; $F(x)=\frac{x+1}{2}$ for $0\le x<1$; $F(x)=1$ for $x\ge1$
+C: $F(x)=0$ for $x\le0$, and $F(x)=1$ for $x>0$
+D: $F(x)=0$ for $x<0$; $F(x)=\sin x$ for $0\le x<\pi$; $F(x)=1$ for $x\ge\pi$
+ANS: A,B
+EXP: A CDF must be non-decreasing, right-continuous, and tend to 0 at $-\infty$ and 1 at $+\infty$.
+[[A]] Valid: the exponential CDF.
+[[B]] Valid: a jump of $\tfrac12$ at 0 plus a uniform part on $(0,1)$. Mixed distributions are allowed.
+[[C]] Not valid: $F(0)=0$, but $F(x)=1$ for every $x>0$, so $F$ is not right-continuous at 0. The correct version puts the jump at 0 itself: $F(x)=1$ for $x\ge0$.
+[[D]] Not valid: $\sin x$ decreases on $(\tfrac\pi2,\pi)$, so $F$ is not non-decreasing.
+
+
+@ prob h prob-h-035
+T: Distance of a random point from the centre
+S: random-variables
+Q: A point is chosen uniformly at random inside a disc of radius 1. Let $R$ be its distance from the centre. What is $P(R>\frac12)$?
+A: $\frac12$
+B: $\frac34$
+C: $\frac14$
+D: $\frac78$
+ANS: B
+EXP: Uniform on the disc means probability is proportional to area.
+CDF: $F_R(r)=P(R\le r)=\dfrac{\pi r^2}{\pi}=r^2$ for $0\le r\le1$, so the PDF is $f_R(r)=2r$, not uniform.
+$P(R>\tfrac12)=1-\tfrac14=\tfrac34$.
+$\tfrac12$ assumes $R$ is uniform on $[0,1]$. But there is more area far from the centre: the outer ring holds three times the area of the inner disc. (This is why sampling a uniform radius and angle does not give uniform points in a disc.)
+
+
+@ prob h prob-h-036
+T: Percentile of a capped variable
+S: random-variables
+Q: A loss $L$ is uniform on $[0,5]$, and an insurer pays $X=\min(L,3)$. What is the 70th percentile of $X$, i.e. the smallest $x$ with $P(X\le x)\ge0.7$?
+A: $3.5$
+B: $2.1$
+C: $2.5$
+D: $3$
+ANS: D
+EXP: CDF of $X$: for $0\le x<3$, $P(X\le x)=P(L\le x)=\tfrac x5$; for $x\ge3$, $F_X(x)=1$.
+So $F_X$ rises to $0.6$ just below 3 and then jumps to 1: $P(X=3)=P(L\ge3)=0.4$, a point mass.
+No $x<3$ reaches $0.7$, and $F_X(3)=1\ge0.7$, so the 70th percentile is $3$.
+$3.5$ is the 70th percentile of $L$; capping changes the distribution. $2.1=0.7\cdot3$ pretends $X$ is uniform on $[0,3]$. A quantile can sit at a jump, and many quantile levels map to the same value.
+
+
+@ prob h prob-h-037
+T: Rolling until a face repeats
+S: random-variables
+Q: A fair die is rolled until some face appears for the second time. Let $X$ be the number of rolls. What is $P(X=4)$?
+A: $\frac5{18}$
+B: $\frac59$
+C: $\frac5{54}$
+D: $\frac12$
+ANS: A
+EXP: $X=4$ means rolls 1–3 are all different and roll 4 repeats one of them.
+$P(\text{rolls 2, 3 new})=\tfrac56\cdot\tfrac46$, and then $P(\text{roll 4 repeats})=\tfrac36$.
+$P(X=4)=\tfrac56\cdot\tfrac46\cdot\tfrac36=\tfrac{60}{216}=\tfrac5{18}$.
+$\tfrac59=\tfrac56\cdot\tfrac46$ is $P(X>3)=P(X\ge4)$, a tail probability rather than the PMF value. $\tfrac5{54}$ requires roll 4 to match one specific earlier face.
+
+
+@ prob h prob-h-038
+T: Pareto density with infinite variance
+S: random-variables
+TYPE: msq
+Q: $X$ has PDF $f(x)=\dfrac{c}{x^3}$ for $x\ge1$ and $0$ otherwise. Which statements are true? More than one option may be correct.
+A: $c=2$
+B: $E[X]=2$
+C: $\operatorname{Var}(X)$ is finite
+D: The median of $X$ is $2$
+ANS: A,B
+EXP: [[A]] True: $\int_1^\infty x^{-3}\,dx=\tfrac12$, so $c=2$.
+[[B]] True: $E[X]=\int_1^\infty x\cdot2x^{-3}\,dx=\int_1^\infty2x^{-2}\,dx=2$.
+[[C]] False: $E[X^2]=\int_1^\infty2x^{-1}\,dx=\infty$, so the variance is infinite even though the mean is finite.
+[[D]] False: $F(x)=1-x^{-2}$; $F(m)=\tfrac12$ gives $m=\sqrt2\approx1.41$. The value 2 is the 75th percentile ($F(2)=\tfrac34$).
+Heavy tails like this make sample variances unstable, which matters for gradient noise and outlier-sensitive losses.
+
+
+@ prob h prob-h-039
+T: Expected number of runs in coin tosses
+S: expectation-variance
+Q: A fair coin is tossed 10 times. A run is a maximal block of identical consecutive outcomes (HHTHH has 3 runs). What is the expected number of runs?
+A: $5$
+B: $5.5$
+C: $6$
+D: $4.5$
+ANS: B
+EXP: The number of runs is $1+(\text{number of positions }i\in\{1,\dots,9\}\text{ where toss }i+1\ne\text{toss }i)$.
+Let $I_i$ indicate a change between tosses $i$ and $i+1$; $P(I_i=1)=\tfrac12$.
+Linearity: $E[\text{runs}]=1+9\cdot\tfrac12=5.5$.
+$4.5$ counts the expected changes but forgets the first run. $5$ uses 10 boundaries instead of 9 and also drops the $+1$.
+
+
+@ prob h prob-h-040
+T: Variance of the number of fixed points
+S: expectation-variance
+Q: A uniformly random permutation of $\{1,\dots,10\}$ is chosen, and $X$ is its number of fixed points ($i$ with $\sigma(i)=i$). What is $\operatorname{Var}(X)$?
+A: $0.9$
+B: $0.1$
+C: $1$
+D: $2$
+ANS: C
+EXP: $X=\sum I_i$ with $P(I_i=1)=\tfrac1{10}$, so $E[X]=1$.
+$E[X^2]=\sum_iE[I_i]+\sum_{i\ne j}E[I_iI_j]=10\cdot\tfrac1{10}+10\cdot9\cdot\tfrac1{10\cdot9}=1+1=2$, since $P(\sigma(i)=i,\ \sigma(j)=j)=\tfrac1{10\cdot9}$.
+$\operatorname{Var}(X)=2-1^2=1$ (true for every $n\ge2$).
+$0.9=10\cdot\tfrac1{10}\cdot\tfrac9{10}$ treats the indicators as independent (a binomial). They are slightly positively correlated: $\operatorname{Cov}(I_i,I_j)=\tfrac1{90}-\tfrac1{100}>0$, and the 90 covariance terms add exactly $0.1$. $2$ is $E[X^2]$.
+
+
+@ prob h prob-h-041
+T: Best constant under squared vs absolute loss
+S: expectation-variance
+Q: $X$ takes the values $1$, $2$ and $10$ with probabilities $0.4$, $0.4$ and $0.2$. Let $c_1$ minimise $E[(X-c)^2]$ and $c_2$ minimise $E|X-c|$. What is $(c_1,c_2)$?
+A: $(2,\ 3.2)$
+B: $(3.2,\ 3.2)$
+C: $\left(\frac{13}3,\ 2\right)$
+D: $(3.2,\ 2)$
+ANS: D
+EXP: Squared loss is minimised by the mean: $E[(X-c)^2]=\operatorname{Var}(X)+(E[X]-c)^2$. So $c_1=E[X]=0.4+0.8+2=3.2$.
+Absolute loss is minimised by a median. $F(1)=0.4<0.5$ and $F(2)=0.8\ge0.5$, so the median is $2$ and $c_2=2$.
+The outlier 10 pulls the mean up but leaves the median alone. This is why MSE regression predicts the conditional mean, while MAE regression predicts the conditional median and is more robust to outliers.
+$\tfrac{13}3$ averages the values without their probabilities. The pair $(2,\ 3.2)$ swaps the two minimisers.

@@ -1,0 +1,781 @@
+@ graph e graph-e-011
+T: Edges to delete to leave a spanning tree
+S: trees
+TYPE: nat
+TOL: 0
+Q: A connected simple graph has 10 vertices and 15 edges. What is the smallest number of edges you must delete so that the remaining graph (on all 10 vertices) is a tree? Enter an integer.
+ANS: 6
+EXP: A spanning tree on $n=10$ vertices keeps exactly $n-1=9$ edges, so you delete $15-9=6$.
+In general a connected graph needs $m-n+1$ deletions; this number (the cyclomatic number) is also the count of independent cycles.
+Deleting only $5$ would leave $10$ edges on $10$ vertices, which must still contain a cycle.
+
+@ graph e graph-e-012
+T: Edges in a forest
+S: trees
+Q: A forest (an acyclic graph) has 20 vertices and consists of exactly 4 trees. How many edges does it have?
+A: $19$
+B: $16$
+C: $4$
+D: $17$
+ANS: B
+EXP: Each tree with $n_i$ vertices has $n_i-1$ edges. Summing over the $k=4$ trees: $\sum(n_i-1)=20-4=16$.
+$19$ is the count for a single tree on 20 vertices; it ignores that each extra component saves one edge.
+
+@ graph e graph-e-013
+T: Cycles in a connected graph with n edges
+S: trees
+Q: A connected simple graph has 8 vertices and 8 edges. How many cycles does it contain?
+A: None; it is a tree
+B: Exactly one
+C: Exactly two
+D: It cannot be determined from this information
+ANS: B
+EXP: Take any spanning tree: it uses $7$ edges. The one remaining edge joins two vertices that are already connected by a unique tree path, so it closes exactly one cycle.
+A second cycle would need a second non-tree edge. Such a graph is called unicyclic. It is not a tree, because a tree on 8 vertices has only 7 edges.
+
+@ graph e graph-e-014
+T: Leaves of a full binary tree
+S: trees
+Q: In a full binary tree every node has either 0 or 2 children. If such a tree has 10 internal nodes, how many leaves does it have?
+A: $10$
+B: $20$
+C: $11$
+D: $21$
+ANS: C
+EXP: Count edges two ways. Each internal node has 2 children, so there are $2I=20$ edges. A tree with $n$ nodes has $n-1$ edges, so $n=21$.
+Leaves $=n-I=21-10=11$, i.e. $L=I+1$.
+$21$ is the total number of nodes, not the number of leaves.
+
+@ graph e graph-e-015
+T: BFS order with alphabetical neighbours
+S: traversal
+Q: An undirected graph has edges $A$–$B$, $A$–$C$, $B$–$D$, $C$–$D$, $C$–$E$, $D$–$F$, $E$–$F$. Run breadth-first search from $A$, visiting neighbours in alphabetical order. In what order are the vertices visited?
+A: $A,B,D,C,E,F$
+B: $A,B,D,F,E,C$
+C: $A,B,C,D,E,F$
+D: $A,C,B,E,D,F$
+ANS: C
+EXP: BFS uses a queue. Dequeue $A$: enqueue $B,C$. Dequeue $B$: enqueue $D$. Dequeue $C$: enqueue $E$ ($D$ is already discovered). Dequeue $D$: enqueue $F$. Then $E$ and $F$ add nothing new.
+Order: $A,B,C,D,E,F$ (levels $\{A\},\{B,C\},\{D,E\},\{F\}$).
+$A,B,D,C,E,F$ is the recursive DFS order: it goes from $B$ straight down to $D$ before visiting $C$.
+
+@ graph e graph-e-016
+T: Recursive DFS order with alphabetical neighbours
+S: traversal
+Q: An undirected graph has edges $A$–$B$, $A$–$D$, $B$–$C$, $B$–$E$, $C$–$F$, $D$–$E$, $E$–$F$. Run recursive depth-first search from $A$, always moving to the alphabetically smallest unvisited neighbour. In what order are the vertices first visited?
+A: $A,B,C,F,E,D$
+B: $A,B,D,C,E,F$
+C: $A,B,C,E,F,D$
+D: $A,D,E,B,C,F$
+ANS: A
+EXP: DFS goes as deep as possible before backtracking.
+$A\to B$ (smallest neighbour of $A$), $B\to C$, $C\to F$ ($B$ is visited), $F\to E$, $E\to D$. All six vertices are reached without backtracking.
+Order: $A,B,C,F,E,D$. The order $A,B,D,C,E,F$ is BFS (level by level). $A,B,C,E,F,D$ wrongly jumps from $C$ to $E$, which is not a neighbour of $C$.
+
+@ graph e graph-e-017
+T: BFS level of a vertex
+S: traversal
+TYPE: nat
+TOL: 0
+Q: An undirected, unweighted graph has edges $A$–$B$, $B$–$C$, $C$–$D$, $D$–$E$, $A$–$F$, $F$–$E$, $B$–$F$, $C$–$G$, $E$–$G$. Run BFS from $A$, with $A$ at level $0$. What is the level of $D$? Enter an integer.
+ANS: 3
+EXP: The BFS level of a vertex equals its shortest-path distance (number of edges) from the source.
+Level 1: $B,F$. Level 2: $C$ (from $B$) and $E$ (from $F$). Level 3: $D$ (from $C$ or $E$) and $G$.
+So $D$ is at level $3$. Following the chain $A\!-\!B\!-\!C\!-\!D$ or $A\!-\!F\!-\!E\!-\!D$ both give 3 edges; there is no 2-edge route.
+
+@ graph e graph-e-018
+T: BFS running time with an adjacency matrix
+S: traversal
+Q: BFS is run on a graph with $V$ vertices and $E$ edges stored as an adjacency matrix. What is its running time?
+A: $O(V+E)$
+B: $O(VE)$
+C: $O(E\log V)$
+D: $O(V^2)$
+ANS: D
+EXP: When a vertex is dequeued, BFS must scan its whole row of the matrix ($V$ entries) to find its neighbours. Every vertex is dequeued once, so the total is $V\cdot V=O(V^2)$, even if the graph is sparse.
+$O(V+E)$ is the bound with an adjacency list, where scanning the neighbours of $u$ costs only $\deg(u)$.
+
+@ graph e graph-e-019
+T: Shortest paths when all edges cost the same
+S: shortest-paths
+Q: In an unweighted graph (every edge has length 1), which method finds the shortest distance from a source to every vertex in $O(V+E)$ time?
+A: Breadth-first search
+B: Depth-first search
+C: Floyd–Warshall
+D: Kruskal's algorithm
+ANS: A
+EXP: BFS discovers vertices in order of their distance from the source: all of level 1, then all of level 2, and so on. So the level of each vertex is its shortest distance, found in $O(V+E)$.
+DFS can reach a vertex first by a long detour, so its discovery depth is not the distance. Floyd–Warshall is correct but costs $O(V^3)$ and computes all pairs. Kruskal builds a minimum spanning tree.
+
+@ graph e graph-e-020
+T: Running time of Floyd–Warshall
+S: shortest-paths
+Q: What is the running time of the Floyd–Warshall all-pairs shortest-path algorithm on a graph with $V$ vertices?
+A: $O(V^2)$
+B: $O(V^3)$
+C: $O(VE)$
+D: $O(V^2\log V)$
+ANS: B
+EXP: Three nested loops, over the intermediate vertex $k$ and over every pair $(i,j)$: $d_{ij}\leftarrow\min(d_{ij},\,d_{ik}+d_{kj})$. That is $V\cdot V\cdot V=O(V^3)$ constant-time updates, independent of $E$.
+$O(VE)$ is the cost of Bellman–Ford from a single source.
+
+@ graph e graph-e-021
+T: Rounds needed by Bellman–Ford
+S: shortest-paths
+Q: A directed graph has 8 vertices and 20 edges, some with negative weights but no negative cycle. Bellman–Ford relaxes every edge once per round. How many rounds are enough to guarantee every shortest distance from the source is correct, whatever the edge order?
+A: $7$
+B: $8$
+C: $20$
+D: $3$
+ANS: A
+EXP: With no negative cycle, every shortest path can be taken simple, so it has at most $V-1=7$ edges. After round $k$, every vertex whose shortest path uses at most $k$ edges is correct. So $7$ rounds suffice.
+An $8$th round is only used to detect a negative cycle: if anything still improves, one exists. The edge count $20$ is the work per round, not the number of rounds.
+
+@ graph e graph-e-022
+T: A piece of a shortest path
+S: shortest-paths
+Q: In a graph with non-negative weights, a shortest path from $s$ to $t$ is $s\to a\to b\to t$ with total length $10$. Along it, the part from $s$ to $a$ has length $2$ and the edge $a\to b$ has length $3$. What is the shortest distance from $s$ to $b$?
+A: At most $5$, but it could be less
+B: $3$
+C: $8$
+D: Exactly $5$
+ANS: D
+EXP: Optimal substructure: every subpath of a shortest path is itself a shortest path. If there were a route from $s$ to $b$ shorter than $2+3=5$, replacing the first part with it would give an $s$–$t$ path shorter than $10$, a contradiction.
+So $d(s,b)=5$ exactly. This property is what lets Dijkstra and Bellman–Ford build distances from smaller subproblems.
+
+@ graph e graph-e-023
+T: First edge Kruskal rejects
+S: mst
+Q: An undirected graph has edges $A$–$B$ (2), $A$–$C$ (3), $B$–$C$ (4), $B$–$D$ (5), $C$–$D$ (6), $D$–$E$ (1). Kruskal's algorithm considers edges in increasing weight. Which edge is the first one it rejects?
+A: $C$–$D$ (6)
+B: $B$–$D$ (5)
+C: $B$–$C$ (4)
+D: $A$–$C$ (3)
+ANS: C
+EXP: Kruskal adds an edge unless its endpoints are already in the same component (that edge would close a cycle).
+$D$–$E$ (1): accept. $A$–$B$ (2): accept. $A$–$C$ (3): accept, now $\{A,B,C\}$ is one component. $B$–$C$ (4): both ends already in $\{A,B,C\}$, reject.
+$C$–$D$ (6) is also rejected, but later, after $B$–$D$ (5) has joined $\{D,E\}$ to the rest.
+
+@ graph e graph-e-024
+T: Data structure inside Kruskal
+S: mst
+Q: Which data structure lets Kruskal's algorithm quickly check whether adding an edge would create a cycle?
+A: A FIFO queue
+B: A disjoint-set (union–find) structure
+C: A stack
+D: A hash table of visited edges
+ANS: B
+EXP: Kruskal keeps the current forest as a collection of components. An edge $(u,v)$ makes a cycle exactly when $\text{find}(u)=\text{find}(v)$. If not, it is accepted and $\text{union}(u,v)$ merges the two components.
+With union by rank and path compression these operations are almost constant time, so the sort ($O(E\log E)$) dominates.
+A queue is what BFS uses, and remembering visited edges does not tell you whether two vertices are already connected.
+
+@ graph e graph-e-025
+T: Edge that is in every MST
+S: mst
+Q: In a connected graph with all edge weights distinct, which edge is guaranteed to be in the minimum spanning tree?
+A: The edge with the smallest weight
+B: The edge with the largest weight
+C: An edge incident to the vertex of largest degree
+D: The edge chosen first by a DFS from any vertex
+ANS: A
+EXP: Cut property: for any cut, the lightest edge crossing it belongs to the MST. Take the cut that separates one endpoint of the globally lightest edge $e$ from everything else; $e$ crosses it and nothing crossing it is lighter. So $e$ is in the MST (Kruskal also picks it first).
+The heaviest edge can be in the MST, but only if it is a bridge, so it is not guaranteed. Degree and DFS order have nothing to do with weights.
+
+@ graph e graph-e-026
+T: Heaviest edge on a cycle
+S: mst
+Q: In a connected weighted graph, the edge $e$ is strictly heavier than every other edge on some cycle $C$. What can you conclude?
+A: $e$ is in every minimum spanning tree
+B: $e$ is in the MST only if Prim starts at one of its endpoints
+C: $e$ is in no minimum spanning tree
+D: Nothing; it depends on the rest of the graph
+ANS: C
+EXP: Cycle property: if a spanning tree contained $e$, delete $e$. The tree splits into two parts, and the rest of cycle $C$ must contain another edge $f$ crossing between them. Adding $f$ gives a spanning tree that is strictly lighter, since $w(f)<w(e)$.
+So no MST contains $e$, whatever the rest of the graph looks like. Prim and Kruskal produce an MST from any start, so the start vertex is irrelevant.
+
+@ graph e graph-e-027
+T: MST weight after adding a constant
+S: mst
+TYPE: nat
+TOL: 0
+Q: A connected graph has 6 vertices, and its minimum spanning tree has total weight 20. Every edge weight in the graph is increased by 5. What is the total weight of the minimum spanning tree of the new graph? Enter an integer.
+ANS: 45
+EXP: Adding the same constant to every edge does not change the order of the edges, so Kruskal makes exactly the same choices and the same tree stays minimum.
+Every spanning tree has $V-1=5$ edges, so its weight rises by $5\times5=25$: $20+25=45$.
+$25$ (adding 5 once) forgets that each of the 5 tree edges gets the increase. Contrast shortest paths, where adding a constant can change which path is shortest because paths have different numbers of edges.
+
+@ graph m graph-m-011
+T: Which degree sequence is graphical
+S: basics-degree
+Q: Each sequence below has an even sum. Which one is the degree sequence of some simple undirected graph?
+A: $(3,3,3,1)$
+B: $(4,4,4,1,1)$
+C: $(5,4,3,2,2)$
+D: $(3,3,2,2,2)$
+ANS: D
+EXP: Use Havel–Hakimi: remove the largest degree $d$ and subtract 1 from the next $d$ degrees; the sequence is graphical iff this ends in all zeros.
+$(3,3,2,2,2)\to(2,1,1,2)=(2,2,1,1)\to(1,0,1)=(1,1,0)\to(0,0)$. Graphical (e.g. a 5-cycle plus one chord).
+$(3,3,3,1)$: $\to(2,2,0)\to(1,-1)$, fails. Directly: three vertices of degree 3 on 4 vertices must each be adjacent to all others, forcing the last degree to be 3.
+$(4,4,4,1,1)$: three vertices of degree 4 would each be adjacent to both degree-1 vertices, giving them degree 3.
+$(5,4,3,2,2)$: a degree of 5 needs 5 other vertices, but there are only 4.
+An even sum is necessary but not sufficient.
+
+@ graph m graph-m-012
+T: Edges in the complement
+S: basics-degree
+TYPE: nat
+TOL: 0
+Q: A simple graph $G$ has 10 vertices and 18 edges. How many edges does its complement $\bar G$ have? (The complement joins two distinct vertices exactly when $G$ does not.) Enter an integer.
+ANS: 27
+EXP: $G$ and $\bar G$ together form the complete graph $K_{10}$, which has $\binom{10}{2}=45$ edges.
+So $|E(\bar G)|=45-18=27$.
+A common slip is to use $10^2=100$ or $10\cdot9=90$ ordered pairs instead of $\binom{10}{2}$.
+
+@ graph m graph-m-013
+T: Size of a self-complementary graph
+S: basics-degree
+Q: A graph is self-complementary if it is isomorphic to its complement. For which number of vertices $n$ below can a self-complementary graph exist?
+A: $n=5$
+B: $n=6$
+C: $n=7$
+D: $n=10$
+ANS: A
+EXP: $G$ and $\bar G$ split the $\binom n2$ edges of $K_n$, and isomorphic graphs have the same number of edges, so $\binom n2$ must be even.
+$\binom52=10$ (even), $\binom62=15$, $\binom72=21$, $\binom{10}2=45$ (all odd). So only $n=5$ is possible, and indeed $C_5$ is self-complementary (its complement is another 5-cycle).
+In general this needs $n\equiv0$ or $1\pmod 4$.
+
+@ graph m graph-m-014
+T: Number of vertices from degrees and edges
+S: basics-degree
+Q: A simple graph has 15 edges. Three of its vertices have degree 4 and every other vertex has degree 3. How many vertices does it have?
+A: $10$
+B: $9$
+C: $8$
+D: $6$
+ANS: B
+EXP: Handshake lemma: the degree sum is $2|E|=30$.
+With $n$ vertices: $3\cdot4+3(n-3)=30\Rightarrow 3n+3=30\Rightarrow n=9$.
+Such a graph exists (Havel–Hakimi accepts $(4,4,4,3,3,3,3,3,3)$).
+$10$ comes from $30/3$, which treats every vertex as degree 3; $6$ comes from dividing 15 (not 30) among the degrees.
+
+@ graph m graph-m-015
+T: Edges of the 4-dimensional hypercube
+S: basics-degree
+Q: The hypercube $Q_4$ has the 16 binary strings of length 4 as vertices, with an edge between two strings that differ in exactly one bit. How many edges does $Q_4$ have?
+A: $16$
+B: $64$
+C: $32$
+D: $24$
+ANS: C
+EXP: Each vertex can flip any one of its 4 bits, so $Q_4$ is 4-regular.
+Handshake: $|E|=\dfrac{16\cdot4}{2}=32$. In general $Q_n$ has $n\,2^{n-1}$ edges.
+$64=16\cdot4$ counts each edge from both ends; it forgets to halve.
+
+@ graph m graph-m-016
+T: Degree facts true in every graph
+S: basics-degree
+TYPE: msq
+Q: Which statements are true for every simple undirected graph with $n\ge2$ vertices? More than one option may be correct.
+A: Some two vertices have the same degree
+B: The number of vertices of odd degree is even
+C: Some vertex has degree $0$ or some vertex has degree $n-1$
+D: If the graph has at least $n$ edges, it is connected
+ANS: A,B
+EXP: [[A]] True (pigeonhole). Degrees lie in $\{0,\dots,n-1\}$, but $0$ and $n-1$ cannot both occur (a vertex adjacent to all others rules out an isolated vertex). So at most $n-1$ values for $n$ vertices; two must coincide.
+[[B]] True. The degree sum $2|E|$ is even, so the odd degrees must come in an even number.
+[[C]] False. In the 4-cycle $C_4$ every degree is $2$, neither $0$ nor $3$.
+[[D]] False. $K_4$ plus an isolated vertex has $n=5$ vertices and $6\ge5$ edges but is disconnected.
+
+@ graph m graph-m-017
+T: Missing in-degree in a digraph
+S: basics-degree
+Q: A simple directed graph has 7 vertices with out-degrees $3,2,2,1,4,0,3$. Six of the vertices have in-degrees $2,3,1,2,3,2$. What is the in-degree of the seventh vertex?
+A: $2$
+B: $0$
+C: $13$
+D: $15$
+ANS: A
+EXP: Every directed edge leaves exactly one vertex and enters exactly one vertex, so $\sum\text{out-deg}=\sum\text{in-deg}=|E|$.
+$\sum\text{out}=3+2+2+1+4+0+3=15$, and the known in-degrees sum to $13$, so the last one is $15-13=2$.
+There is no factor 2 here: the undirected handshake lemma $\sum\deg=2|E|$ counts each edge at both ends, but in a digraph each end is counted in a different sum.
+
+@ graph m graph-m-018
+T: Prüfer code of a labelled tree
+S: trees
+Q: A tree on vertices $\{1,\dots,6\}$ has edges $1$–$4$, $2$–$4$, $3$–$5$, $4$–$5$, $5$–$6$. Its Prüfer code is built by repeatedly deleting the smallest-labelled leaf and writing down its neighbour, until two vertices remain. What is the code?
+A: $(1,2,3,4)$
+B: $(4,5,5,6)$
+C: $(4,4,5,5)$
+D: $(5,5,4,4)$
+ANS: C
+EXP: Leaves are $1,2,3,6$. Delete $1$, write $4$. Delete $2$, write $4$. Now $4$ has only neighbour $5$, so leaves are $3,4,6$. Delete $3$, write $5$. Delete $4$, write $5$. Vertices $5,6$ remain: stop.
+Code $(4,4,5,5)$, of length $n-2=4$. Each vertex appears $\deg-1$ times: $\deg 4=\deg 5=3$.
+$(1,2,3,4)$ lists the deleted leaves instead of their neighbours. This bijection between trees and sequences in $\{1,\dots,n\}^{n-2}$ proves Cayley's formula $n^{n-2}$.
+
+@ graph m graph-m-019
+T: Leaves from a Prüfer code
+S: trees
+Q: A labelled tree on vertices $\{1,\dots,7\}$ has Prüfer code $(3,3,3,5,5)$. How many leaves does the tree have?
+A: $2$
+B: $3$
+C: $4$
+D: $5$
+ANS: D
+EXP: In a Prüfer code every vertex appears exactly $\deg(v)-1$ times. So the leaves are exactly the labels that never appear.
+Only $3$ and $5$ appear, so the other $7-2=5$ vertices are leaves. (Degrees: $\deg 3=4$, $\deg 5=3$; check $4+3+5=12=2\cdot6$ edges.)
+$2$ counts the distinct labels in the code, which are the internal vertices, not the leaves.
+
+@ graph m graph-m-020
+T: Minimum height of a binary tree
+S: trees
+Q: A binary tree has 100 nodes. Height is the number of edges on the longest root-to-leaf path. What is the smallest possible height?
+A: $6$
+B: $7$
+C: $50$
+D: $99$
+ANS: A
+EXP: A binary tree of height $h$ has at most $1+2+\dots+2^h=2^{h+1}-1$ nodes. We need $2^{h+1}-1\ge100$: $h=5$ gives $63$ (too few), $h=6$ gives $127$. So the minimum is $6=\lfloor\log_2 100\rfloor$.
+$7$ counts levels (nodes on the path) rather than edges. $99$ is the maximum height, reached by a chain.
+
+@ graph m graph-m-021
+T: Unlabelled trees on six vertices
+S: trees
+Q: How many non-isomorphic (unlabelled) trees are there on 6 vertices?
+A: $1296$
+B: $6$
+C: $11$
+D: $5$
+ANS: B
+EXP: Sort by the longest path (diameter).
+Diameter 5: the path $P_6$ (1 tree). Diameter 2: the star $K_{1,5}$ (1 tree).
+Diameter 3: a path of 4 vertices plus 2 more leaves on its two middle vertices: both on one middle vertex, or one on each (2 trees).
+Diameter 4: a path of 5 vertices plus one leaf on its second or its centre vertex (2 trees).
+Total $1+1+2+2=6$. $1296=6^4$ is Cayley's count of labelled trees; $11$ is the count for 7 vertices.
+
+@ graph m graph-m-022
+T: Spanning trees of a bowtie
+S: trees
+Q: The bowtie graph is two triangles sharing one vertex: edges $a$–$b$, $b$–$c$, $a$–$c$, $c$–$d$, $d$–$e$, $c$–$e$. How many spanning trees does it have?
+A: $6$
+B: $5$
+C: $9$
+D: $16$
+ANS: C
+EXP: A spanning tree on 5 vertices has 4 of the 6 edges, and it must break both triangles. The triangles share no edge, so it drops exactly one edge from each.
+Each triangle offers 3 choices, independently: $3\times3=9$.
+$6=3+3$ adds the choices instead of multiplying them. In general, for blocks joined at cut vertices, the spanning-tree counts multiply.
+
+@ graph m graph-m-023
+T: Leaves forced by a high-degree vertex
+S: trees
+Q: A tree has a vertex of degree 5. What is the smallest number of leaves it can have?
+A: $2$
+B: $4$
+C: $6$
+D: $5$
+ANS: D
+EXP: Remove the degree-5 vertex $v$. The tree splits into 5 subtrees, one per neighbour. Each subtree contains a leaf of the original tree: either it is a single vertex (a leaf adjacent to $v$), or it has at least two leaves of its own and at most one of them is the neighbour of $v$.
+So there are at least $5$ leaves, and the star $K_{1,5}$ (or 5 paths hanging from $v$) has exactly 5.
+$2$ is the bound for every tree with at least 2 vertices, but it ignores the high degree. In general a tree has at least $\Delta$ leaves.
+
+@ graph m graph-m-024
+T: Null pointers in a binary tree
+S: trees
+Q: A binary tree with 20 nodes is stored with a left-child and a right-child pointer in each node. How many of these 40 pointers are null?
+A: $19$
+B: $20$
+C: $21$
+D: $10$
+ANS: C
+EXP: Every node except the root is pointed to by exactly one non-null pointer from its parent, so there are $n-1=19$ non-null pointers.
+Null pointers $=2n-(n-1)=n+1=21$, whatever the shape of the tree.
+$19$ is the number of non-null pointers (the edges). Threaded binary trees reuse these $n+1$ spare pointers.
+
+@ graph m graph-m-025
+T: Classifying a DFS edge in a digraph
+S: traversal
+Q: A directed graph has edges $A\to B$, $B\to C$, $C\to A$, $A\to D$, $D\to C$, $B\to E$, $A\to C$. Run DFS starting at $A$, exploring out-neighbours in alphabetical order. What type of edge is $D\to C$ in this DFS?
+A: Tree edge
+B: Back edge
+C: Forward edge
+D: Cross edge
+ANS: D
+EXP: Trace with [discovery, finish] times: $A$ [1,10] $\to B$ [2,7] $\to C$ [3,4]; $C\to A$ points to an ancestor still open (back edge). Back to $B$: $B\to E$ [5,6]. Back to $A$: $A\to C$ goes to a finished descendant (forward edge). $A\to D$ [8,9].
+At $D$, the edge $D\to C$ goes to $C$, which finished at time 4, before $D$ was discovered, and $C$ is neither an ancestor nor a descendant of $D$. That is a cross edge.
+It is not a back edge: $C$ is not on the current path $A\to D$, so this edge does not reveal a cycle through $D$.
+
+@ graph m graph-m-026
+T: Finish time in a directed DFS
+S: traversal
+TYPE: nat
+TOL: 0
+Q: A directed graph has edges $A\to B$, $A\to C$, $B\to D$, $C\to B$, $C\to E$, $D\to A$, $E\to D$. Run recursive DFS from $A$, exploring out-neighbours in alphabetical order. A single clock starts at $1$ when $A$ is discovered and goes up by 1 at every discovery and every finish. What is the finish time of $C$? Enter an integer.
+ANS: 9
+EXP: $A$ discovered at 1. $A\to B$: $B$ at 2. $B\to D$: $D$ at 3. $D\to A$: $A$ is open (back edge). $D$ finishes at 4, $B$ finishes at 5.
+$A\to C$: $C$ at 6. $C\to B$: $B$ is finished (cross edge). $C\to E$: $E$ at 7. $E\to D$: finished (cross edge). $E$ finishes at 8, $C$ finishes at 9. $A$ finishes at 10.
+A frequent slip is to go from $C$ into $B$ again; DFS never revisits a vertex that is already discovered.
+
+@ graph m graph-m-027
+T: Which sequences are DFS orders
+S: traversal
+TYPE: msq
+Q: An undirected graph has edges $A$–$B$, $A$–$C$, $B$–$D$, $C$–$D$, $D$–$E$. DFS starts at $A$, and neighbours may be explored in any order. Which sequences are possible DFS visiting orders? More than one option may be correct.
+A: $A,B,D,C,E$
+B: $A,B,C,D,E$
+C: $A,C,D,E,B$
+D: $A,C,B,D,E$
+ANS: A,C
+EXP: Rule: after visiting a vertex, DFS must next visit an unvisited neighbour of the deepest vertex on the current path that still has one.
+[[A]] $A\to B\to D\to C$ ($C$ is a neighbour of $D$), back to $D$, then $E$. Valid.
+[[C]] $A\to C\to D\to E$, back to $D$, then $B$ (a neighbour of $D$). Valid.
+[[B]] After $A,B$, vertex $B$ still has unvisited neighbour $D$, so DFS must go to $D$, not $C$. This is the BFS order.
+[[D]] After $A,C$, vertex $C$ has unvisited neighbour $D$; jumping to $B$ is not allowed.
+
+@ graph m graph-m-028
+T: BFS layer sizes in a grid
+S: traversal
+Q: The $5\times5$ grid graph has 25 vertices $(i,j)$ with $0\le i,j\le4$, and an edge between cells that differ by 1 in exactly one coordinate. BFS starts at the centre $(2,2)$. How many vertices are at level 2?
+A: $4$
+B: $8$
+C: $12$
+D: $6$
+ANS: B
+EXP: In a grid, the BFS level is the Manhattan distance $|i-2|+|j-2|$.
+Distance 2 from the centre: $(\pm2,0)$, $(0,\pm2)$ and $(\pm1,\pm1)$ offsets, which gives $4+4=8$ cells, all inside the grid.
+$4$ forgets the diagonal-looking cells $(\pm1,\pm1)$, which take two steps. $12$ is the total at levels 1 and 2 combined.
+
+@ graph m graph-m-029
+T: DFS with an explicit stack
+S: traversal
+Q: An undirected graph has edges $A$–$B$, $A$–$C$, $B$–$D$, $C$–$D$, $D$–$E$. A DFS uses an explicit stack: push $A$; repeatedly pop a vertex, skip it if already visited, otherwise mark it visited and push all its unvisited neighbours in alphabetical order (so the alphabetically last is on top). In what order are vertices visited?
+A: $A,B,D,C,E$
+B: $A,B,C,D,E$
+C: $A,C,D,E,B$
+D: $A,C,D,B,E$
+ANS: C
+EXP: Stack (top at right). Pop $A$, push $B,C$. Pop $C$, push $D$: stack $B,D$. Pop $D$, push $B,E$: stack $B,B,E$. Pop $E$ (nothing new). Pop $B$: visit. Pop $B$: skip.
+Order $A,C,D,E,B$. This is a valid DFS, but not the same as recursive DFS with alphabetical order ($A,B,D,C,E$), because the stack reverses the neighbour order.
+$A,C,D,B,E$ forgets that $E$ was pushed after $B$ and so is popped first.
+
+@ graph m graph-m-030
+T: BFS layers of the Petersen graph
+S: traversal
+TYPE: nat
+TOL: 0
+Q: The Petersen graph has the 10 two-element subsets of $\{1,2,3,4,5\}$ as vertices, with two subsets adjacent when they are disjoint. Run BFS from the vertex $\{1,2\}$. How many vertices are at level 2? Enter an integer.
+ANS: 6
+EXP: Level 1: the subsets disjoint from $\{1,2\}$, i.e. the 2-subsets of $\{3,4,5\}$: $\{3,4\},\{3,5\},\{4,5\}$ (3 vertices; the graph is 3-regular).
+Every other vertex meets $\{1,2\}$ in exactly one element, e.g. $\{1,3\}$: it is disjoint from $\{4,5\}$, which is at level 1. So all remaining $10-1-3=6$ vertices are at level 2.
+The Petersen graph has diameter 2, and the BFS layers are $1,3,6$.
+
+@ graph m graph-m-031
+T: Non-tree edges in an undirected BFS
+S: traversal
+TYPE: msq
+Q: BFS is run on a connected undirected graph from a source $s$, and $\ell(v)$ is the level (distance from $s$) of vertex $v$. Which statements are always true? More than one option may be correct.
+A: Every edge $\{u,v\}$ satisfies $|\ell(u)-\ell(v)|\le1$
+B: Every non-tree edge joins two vertices on the same level
+C: If some edge joins two vertices on the same level, the graph contains an odd cycle
+D: The BFS tree has the minimum possible depth among all spanning trees rooted at $s$
+ANS: A,C,D
+EXP: [[A]] True: if $\ell(u)=k$, then when $u$ was processed every undiscovered neighbour got level $k+1$, and a neighbour already found has level at most $k+1$. Symmetrically $\ell(u)\le \ell(v)+1$.
+[[B]] False: non-tree edges can join adjacent levels. In the 4-cycle $s,a,c,b$ with $a,b$ at level 1 and $c$ at level 2, the edge $b$–$c$ is a non-tree edge between levels 1 and 2.
+[[C]] True: if $\ell(u)=\ell(v)$, the tree paths from $u$ and $v$ to their lowest common ancestor have equal length, and together with the edge $u$–$v$ they form an odd cycle. This is the BFS bipartiteness test.
+[[D]] True: in any spanning tree the depth of $v$ is at least its distance $\ell(v)$, and the BFS tree achieves exactly that.
+
+@ graph m graph-m-032
+T: Postorder from preorder and inorder
+S: traversal
+Q: A binary tree with distinct labels has preorder $F,B,A,D,C,E,G,I,H$ and inorder $A,B,C,D,E,F,G,H,I$. What is its postorder?
+A: $A,C,E,D,B,H,I,G,F$
+B: $A,C,E,D,B,I,H,G,F$
+C: $F,G,I,H,B,D,E,C,A$
+D: $A,B,C,D,E,H,I,G,F$
+ANS: A
+EXP: Preorder starts with the root $F$. In the inorder, $A..E$ are left of $F$ and $G,H,I$ are right.
+Left subtree: preorder $B,A,D,C,E$, so root $B$ with left child $A$ and right subtree rooted at $D$ (children $C$, $E$).
+Right subtree: preorder $G,I,H$ with inorder $G,H,I$, so $G$ has right child $I$, and $I$ has left child $H$.
+Postorder (left, right, root): $A,C,E,D,B$, then $H,I,G$, then $F$.
+$\dots I,H,G,F$ places $H$ as the right child of $I$; the inorder $G,H,I$ shows $H$ comes before $I$, so it is $I$'s left child.
+
+@ graph m graph-m-033
+T: Order in which Dijkstra finalises vertices
+S: shortest-paths
+Q: An undirected graph has edges $s$–$a$ (4), $s$–$b$ (1), $b$–$a$ (2), $b$–$c$ (5), $a$–$c$ (1), $c$–$d$ (3), $a$–$d$ (6). Dijkstra's algorithm is run from $s$. In what order are the vertices removed from the priority queue (finalised)?
+A: $s,a,b,c,d$
+B: $s,b,a,c,d$
+C: $s,b,c,a,d$
+D: $s,b,a,d,c$
+ANS: B
+EXP: Start $d(s)=0$. Finalise $s$: $d(a)=4$, $d(b)=1$.
+Finalise $b$ (1): $d(a)=\min(4,1+2)=3$, $d(c)=6$.
+Finalise $a$ (3): $d(c)=\min(6,3+1)=4$, $d(d)=9$.
+Finalise $c$ (4): $d(d)=\min(9,4+3)=7$. Finalise $d$ (7).
+Order $s,b,a,c,d$; Dijkstra always removes vertices in non-decreasing order of distance ($0,1,3,4,7$).
+$s,a,b,\dots$ follows the input order of edges rather than the smallest tentative distance.
+
+@ graph m graph-m-034
+T: Bellman–Ford after one pass
+S: shortest-paths
+Q: A directed graph has edges, listed in the order Bellman–Ford relaxes them in each pass: $b\to c$ (2), $a\to b$ (1), $s\to a$ (4), $s\to b$ (6), $a\to c$ (5). Initially $d(s)=0$ and all other estimates are $\infty$; updates take effect immediately. After the first pass, what are $(d(a),d(b),d(c))$?
+A: $(4,5,7)$
+B: $(4,6,9)$
+C: $(4,6,\infty)$
+D: $(4,5,9)$
+ANS: B
+EXP: Pass 1 in the given order: $b\to c$: $d(b)=\infty$, no change. $a\to b$: $d(a)=\infty$, no change. $s\to a$: $d(a)=4$. $s\to b$: $d(b)=6$. $a\to c$: $d(c)=4+5=9$.
+Result $(4,6,9)$. In pass 2, $a\to b$ gives $d(b)=5$ and $b\to c$ gives $d(c)=7$, so the true distances $(4,5,7)$ appear only later.
+The edge order matters: if $s\to a$, $a\to b$, $b\to c$ came first, one pass would already give the final answer. That is why the guarantee needs $V-1$ passes.
+
+@ graph m graph-m-035
+T: Adding a constant to every edge length
+S: shortest-paths
+TYPE: nat
+TOL: 0
+Q: An undirected graph has edges $S$–$A$ (1), $A$–$B$ (1), $B$–$T$ (1), $S$–$T$ (4). Every edge weight is increased by 2. What is the shortest distance from $S$ to $T$ in the new graph? Enter an integer.
+ANS: 6
+EXP: New weights: $S$–$A$, $A$–$B$, $B$–$T$ become 3 each and $S$–$T$ becomes 6.
+Path $S,A,B,T$: $3+3+3=9$. Direct edge: $6$. So the answer is $6$, and the shortest path has changed (originally $S,A,B,T$ with length $3<4$).
+A path with $k$ edges grows by $2k$, so paths with many edges are penalised more. Answering $5$ ($=3+2$) assumes the old path survives and adds the constant once.
+This is why you cannot fix negative edges for Dijkstra by adding a constant to every weight.
+
+@ graph m graph-m-036
+T: Counting shortest paths with BFS
+S: shortest-paths
+Q: An unweighted undirected graph has edges $s$–$a$, $s$–$b$, $s$–$c$, $a$–$d$, $b$–$d$, $b$–$e$, $c$–$e$, $d$–$t$, $e$–$t$. How many distinct shortest paths are there from $s$ to $t$?
+A: $2$
+B: $3$
+C: $6$
+D: $4$
+ANS: D
+EXP: BFS levels: $s$ (0); $a,b,c$ (1); $d,e$ (2); $t$ (3).
+Count paths level by level: $N(v)=\sum N(u)$ over neighbours $u$ one level up.
+$N(a)=N(b)=N(c)=1$; $N(d)=N(a)+N(b)=2$; $N(e)=N(b)+N(c)=2$; $N(t)=N(d)+N(e)=4$.
+The paths are $s,a,d,t$; $s,b,d,t$; $s,b,e,t$; $s,c,e,t$. Answering $3$ counts only the three first steps and misses that $b$ leads to both $d$ and $e$. This count is the basis of betweenness centrality.
+
+@ graph m graph-m-037
+T: Floyd–Warshall after two phases
+S: shortest-paths
+Q: Floyd–Warshall is run on a directed graph with vertices $1,2,3,4$ and edges $1\to2$ (3), $1\to4$ (7), $2\to1$ (8), $2\to3$ (2), $3\to1$ (5), $3\to4$ (1), $4\to1$ (2). After the phases for $k=1$ and $k=2$ (so only vertices 1 and 2 may be used as intermediate vertices), what is the entry $D[2][4]$?
+A: $3$
+B: $\infty$
+C: $15$
+D: $10$
+ANS: C
+EXP: After phase $k$, $D[i][j]$ is the shortest $i\to j$ path whose intermediate vertices all lie in $\{1,\dots,k\}$.
+Initially $D[2][4]=\infty$ (no direct edge). Phase $k=1$: $D[2][4]=\min(\infty,\,D[2][1]+D[1][4])=8+7=15$. Phase $k=2$: going through vertex 2 cannot help a path that starts at 2, so it stays $15$.
+The true distance $3$ (path $2\to3\to4$) appears only in phase $k=3$, because it uses vertex 3 as an intermediate.
+
+@ graph m graph-m-038
+T: Dijkstra misled by a negative edge
+S: shortest-paths
+Q: A directed graph has edges $s\to a$ (2), $s\to b$ (5), $b\to a$ ($-4$). Dijkstra's algorithm is run from $s$ and never updates a vertex after it has been removed from the priority queue. What distance does it report for $a$, and what is the true shortest distance to $a$?
+A: Reports $2$; true distance $1$
+B: Reports $1$; true distance $1$
+C: Reports $2$; true distance $2$
+D: Reports $5$; true distance $1$
+ANS: A
+EXP: Dijkstra removes $s$ (0), then $a$ with tentative distance $2$, the smallest, and finalises it. Then it removes $b$ (5); the edge $b\to a$ would give $5-4=1$, but $a$ is already final.
+True distance: $s\to b\to a$ costs $5+(-4)=1$.
+Dijkstra's greedy step assumes no later path can be cheaper than the current minimum, which needs non-negative edges. Here there is no negative cycle, so Bellman–Ford would return the correct $1$.
+
+@ graph m graph-m-039
+T: Third edge added by Prim
+S: mst
+Q: An undirected graph has edges $A$–$B$ (4), $A$–$C$ (1), $C$–$B$ (2), $B$–$D$ (5), $C$–$D$ (8), $D$–$E$ (3), $C$–$E$ (9). Prim's algorithm starts at $A$. Which edge does it add third?
+A: $D$–$E$ (3)
+B: $A$–$B$ (4)
+C: $C$–$D$ (8)
+D: $B$–$D$ (5)
+ANS: D
+EXP: Prim grows one tree and always adds the lightest edge leaving it.
+Tree $\{A\}$: lightest leaving edge $A$–$C$ (1). Tree $\{A,C\}$: $C$–$B$ (2). Tree $\{A,B,C\}$: leaving edges $B$–$D$ (5), $C$–$D$ (8), $C$–$E$ (9); add $B$–$D$ (5). Then $D$–$E$ (3).
+$D$–$E$ (3) is Kruskal's third edge: Kruskal takes the globally lightest edge, but Prim cannot use $D$–$E$ until $D$ is in its tree. Both end with the same MST of weight $11$.
+
+@ graph m graph-m-040
+T: Maximum spanning tree
+S: mst
+Q: An undirected graph has edges $A$–$B$ (1), $A$–$C$ (2), $B$–$C$ (3), $B$–$D$ (4), $C$–$D$ (5). What is the total weight of a maximum-weight spanning tree?
+A: $7$
+B: $11$
+C: $12$
+D: $15$
+ANS: B
+EXP: Run Kruskal with edges in decreasing order. $C$–$D$ (5): take. $B$–$D$ (4): take. $B$–$C$ (3): would close the cycle $B,C,D$, skip. $A$–$C$ (2): take. Now 3 edges span all 4 vertices.
+Total $5+4+2=11$. (Equivalently, negate the weights and find an MST.)
+$7$ is the minimum spanning tree weight. $12=5+4+3$ takes the three heaviest edges, which form a cycle and miss $A$.
+
+@ graph m graph-m-041
+T: Prim's key values after one step
+S: mst
+Q: An undirected graph has edges $A$–$B$ (5), $A$–$C$ (2), $C$–$B$ (1), $C$–$D$ (4), $B$–$D$ (3). Prim's algorithm starts at $A$ and stores for each outside vertex a key: the lightest edge weight joining it to the tree. Right after $C$ is added to the tree, what are $\text{key}(B)$ and $\text{key}(D)$?
+A: $\text{key}(B)=1$, $\text{key}(D)=4$
+B: $\text{key}(B)=5$, $\text{key}(D)=4$
+C: $\text{key}(B)=1$, $\text{key}(D)=3$
+D: $\text{key}(B)=3$, $\text{key}(D)=6$
+ANS: A
+EXP: After $A$: $\text{key}(B)=5$, $\text{key}(C)=2$, $\text{key}(D)=\infty$. $C$ has the smallest key, so it joins.
+Update from $C$: $\text{key}(B)=\min(5,1)=1$, $\text{key}(D)=\min(\infty,4)=4$.
+Keys are single edge weights to the tree, not path lengths from $A$. $\text{key}(B)=3$, $\text{key}(D)=6$ adds $2$, which is Dijkstra's update. $\text{key}(D)=3$ uses the edge $B$–$D$, but $B$ is not in the tree yet.
+
+@ graph m graph-m-042
+T: Shortest-path tree versus MST
+S: mst
+Q: An undirected graph has edges $s$–$a$ (3), $s$–$b$ (3), $s$–$c$ (3), $a$–$b$ (1), $b$–$c$ (1). What are the total weight of the shortest-path tree from $s$ (built by Dijkstra) and the total weight of the minimum spanning tree?
+A: Both are $5$
+B: Both are $9$
+C: Shortest-path tree $9$, MST $5$
+D: Shortest-path tree $5$, MST $9$
+ANS: C
+EXP: Dijkstra: each of $a,b,c$ is at distance $3$ by its direct edge (going round via $a$–$b$ costs $3+1=4$). So the shortest-path tree is the star $s$–$a$, $s$–$b$, $s$–$c$, weight $9$.
+MST (Kruskal): $a$–$b$ (1), $b$–$c$ (1), then one edge from $s$ (3): weight $5$.
+The two trees answer different questions: the MST minimises total wiring, the shortest-path tree minimises each distance from $s$. In the MST, $c$ is at distance $5$ from $s$.
+
+@ graph m graph-m-043
+T: Running times of MST algorithms
+S: mst
+TYPE: msq
+Q: Which running times are correct for the stated MST algorithm on a connected graph with $V$ vertices and $E$ edges? More than one option may be correct.
+A: Kruskal with sorting and union–find: $O(E\log V)$
+B: Prim with a binary heap and adjacency lists: $O((V+E)\log V)$
+C: Prim with an adjacency matrix and an unsorted key array: $O(V^2)$
+D: Kruskal with arbitrary real weights: $O(V+E)$
+ANS: A,B,C
+EXP: [[A]] True: sorting costs $O(E\log E)$, and $\log E\le 2\log V$, so this is $O(E\log V)$; the union–find work is almost linear.
+[[B]] True: $V$ extract-min operations and up to $E$ decrease-key operations, each $O(\log V)$.
+[[C]] True: $V$ rounds, each scanning an array of $V$ keys and one matrix row. This is best for dense graphs, where $E\approx V^2$.
+[[D]] False: Kruskal must sort the edges, and comparison sorting of arbitrary reals needs $\Omega(E\log E)$.
+
+@ graph m graph-m-044
+T: MST after lowering a non-tree edge
+S: mst
+TYPE: nat
+TOL: 0
+Q: An undirected graph has edges $A$–$B$ (1), $B$–$C$ (2), $C$–$D$ (3), $D$–$A$ (10), $A$–$C$ (6). Its MST is $\{A\text{–}B, B\text{–}C, C\text{–}D\}$ with weight 6. The weight of $D$–$A$ is lowered from 10 to 2. What is the weight of the new MST? Enter an integer.
+ANS: 5
+EXP: Adding the lowered edge $D$–$A$ (2) to the old MST creates the cycle $A,B,C,D$. By the cycle property, drop the heaviest edge on it: $C$–$D$ (3).
+New MST $\{A\text{–}B, B\text{–}C, D\text{–}A\}$: $1+2+2=5$.
+Answering $6$ assumes the tree stays the same because $D$–$A$ was not in it; any lowered non-tree edge must be compared with the heaviest edge on the tree path between its ends.
+
+@ graph m graph-m-045
+T: Cut property on a given cut
+S: mst
+Q: In a connected graph with distinct edge weights, the vertices are split into $S=\{A,B,C\}$ and $\bar S=\{D,E\}$. The only edges between the two sides are $A$–$D$ (7), $B$–$E$ (4), $C$–$D$ (6), $C$–$E$ (9). Which of these edges must belong to the minimum spanning tree?
+A: $B$–$E$ (4)
+B: $C$–$D$ (6)
+C: $A$–$D$ (7)
+D: $C$–$E$ (9)
+ANS: A
+EXP: Cut property: the lightest edge crossing any cut is in the MST (unique here, since weights are distinct). Among the crossing edges the lightest is $B$–$E$ (4).
+The cut property says nothing about the other crossing edges: $C$–$D$ (6) may or may not be in the MST, depending on whether $D$ and $E$ are joined by a cheap edge inside $\bar S$.
+
+@ graph h graph-h-011
+T: Labelled graphs with all degrees even
+S: basics-degree
+TYPE: nat
+TOL: 0
+Q: How many simple graphs on the 5 labelled vertices $\{1,2,3,4,5\}$ have every vertex of even degree? (The empty graph counts.) Enter an integer.
+ANS: 64
+EXP: Key bijection: choose any graph $H$ on vertices $1,2,3,4$ (there are $2^{\binom42}=2^6=64$ choices). Then join vertex $5$ to exactly those of $1,\dots,4$ that have odd degree in $H$.
+This makes vertices $1$–$4$ even. Vertex $5$ is then even too, because the number of odd-degree vertices in $H$ is even (handshake lemma).
+Conversely, deleting vertex 5 from an even graph recovers $H$. So there are $2^{\binom{n-1}{2}}=64$.
+The total number of graphs on 5 vertices is $2^{10}=1024$; the even ones are those in the cycle space of $K_5$, of dimension $10-5+1=6$.
+
+@ graph h graph-h-012
+T: Completing a degree sequence
+S: basics-degree
+Q: For which value of $x$ is $(5,5,3,2,2,x)$ the degree sequence of a simple graph on 6 vertices?
+A: $x=1$
+B: $x=3$
+C: $x=4$
+D: $x=5$
+ANS: B
+EXP: $x=4$ gives an odd sum ($21$), impossible.
+Two vertices of degree $5$ are each adjacent to all 5 others, so every other vertex has degree at least $2$. That rules out $x=1$.
+$x=5$: three vertices of degree $5$ would give every other vertex degree at least $3$, contradicting the $2$s.
+$x=3$: Havel–Hakimi on $(5,5,3,3,2,2)$: $\to(4,2,2,1,1)\to(1,1,0,0)\to(0,0,0)$. Graphical.
+Parity alone leaves $1,3,5$; the degree-$5$ vertices are what decide it.
+
+@ graph h graph-h-013
+T: Most edges without a triangle
+S: basics-degree
+Q: What is the largest number of edges in a simple graph on 9 vertices that contains no triangle?
+A: $36$
+B: $21$
+C: $20$
+D: $8$
+ANS: C
+EXP: Mantel's theorem: a triangle-free graph on $n$ vertices has at most $\lfloor n^2/4\rfloor$ edges, reached by the complete bipartite graph with parts as equal as possible.
+$n=9$: parts 4 and 5 give $4\cdot5=20=\lfloor 81/4\rfloor$. Bipartite graphs have no odd cycles, so no triangles.
+$21$ rounds $20.25$ up, which no graph can reach. $36=\binom92$ is the complete graph, which is full of triangles.
+
+@ graph h graph-h-014
+T: Which regular graphs exist
+S: basics-degree
+TYPE: msq
+Q: For which pairs $(n,k)$ does a simple $k$-regular graph on $n$ vertices exist? More than one option may be correct.
+A: $(n,k)=(9,4)$
+B: $(n,k)=(7,3)$
+C: $(n,k)=(8,7)$
+D: $(n,k)=(6,6)$
+ANS: A,C
+EXP: A $k$-regular graph on $n$ vertices exists iff $k\le n-1$ and $nk$ is even (handshake: $nk=2|E|$).
+[[A]] $9\cdot4=36$ is even and $4\le8$: e.g. join each vertex $i$ of a 9-cycle arrangement to $i\pm1$ and $i\pm2$ (mod 9). Exists.
+[[B]] $7\cdot3=21$ is odd: impossible.
+[[C]] $K_8$ is 7-regular. Exists.
+[[D]] A vertex can have at most $n-1=5$ neighbours in a simple graph, so degree 6 is impossible.
+
+@ graph h graph-h-015
+T: Edges of a line graph
+S: basics-degree
+Q: A simple graph $G$ has degree sequence $(3,3,2,2,2)$. Its line graph $L(G)$ has one vertex per edge of $G$, with two vertices adjacent when the edges share an endpoint. How many edges does $L(G)$ have?
+A: $6$
+B: $9$
+C: $12$
+D: $18$
+ANS: B
+EXP: Two edges of $G$ share an endpoint $v$ exactly when both are among the $\deg v$ edges at $v$. In a simple graph two distinct edges share at most one endpoint, so
+$|E(L(G))|=\sum_v\binom{\deg v}{2}=3+3+1+1+1=9$.
+$18=\sum\deg v(\deg v-1)$ counts ordered pairs. $6$ is the number of edges of $G$, which is the number of vertices of $L(G)$.
+
+@ graph h graph-h-016
+T: Two 2-regular graphs on six vertices
+S: basics-degree
+TYPE: msq
+Q: $G$ and $H$ are simple 2-regular graphs, each on 6 vertices. Which statements must be true? More than one option may be correct.
+A: $G$ and $H$ have the same number of edges
+B: $G$ and $H$ are isomorphic
+C: $G$ is connected
+D: Every connected component of $G$ is a cycle
+ANS: A,D
+EXP: [[A]] True: by the handshake lemma both have $6\cdot2/2=6$ edges.
+[[D]] True: in a finite graph where every vertex has degree 2, walking along edges from any vertex must return to its start, so each component is a cycle (of length at least 3, since the graph is simple).
+[[B]] False: the 6-cycle $C_6$ and two disjoint triangles are both 2-regular on 6 vertices, but one is connected and the other is not. Equal degree sequences do not imply isomorphism.
+[[C]] False for the same reason: two disjoint triangles.
+
+@ graph h graph-h-017
+T: Labelled trees where vertex 1 is a leaf
+S: trees
+Q: How many labelled trees on the vertex set $\{1,2,3,4,5,6\}$ have vertex $1$ as a leaf?
+A: $1296$
+B: $625$
+C: $256$
+D: $125$
+ANS: B
+EXP: Use Prüfer codes: trees on $\{1,\dots,6\}$ correspond one-to-one to sequences of length $4$ over $\{1,\dots,6\}$, and a vertex appears $\deg-1$ times.
+Vertex 1 is a leaf iff it never appears, so each of the 4 entries has 5 choices: $5^4=625$.
+Alternative: a tree on $\{2,\dots,6\}$ ($5^3=125$ ways, Cayley) plus a choice of neighbour for 1 (5 ways) gives $625$ again. Answering $125$ forgets that second factor; $1296=6^4$ counts all trees.
+
+@ graph h graph-h-018
+T: Labelled trees containing a given edge
+S: trees
+Q: How many of the labelled trees on $\{1,2,3,4,5\}$ contain the edge $\{1,2\}$?
+A: $25$
+B: $125$
+C: $50$
+D: $75$
+ANS: C
+EXP: Double count pairs (tree, edge in tree). There are $5^3=125$ trees (Cayley), each with $4$ edges, so $500$ pairs.
+By symmetry each of the $\binom52=10$ possible edges lies in the same number of trees: $500/10=50$.
+General formula: $n^{n-2}(n-1)/\binom n2=2n^{n-3}$. Answering $25=n^{n-3}$ drops the factor 2; $125$ is all trees.
+

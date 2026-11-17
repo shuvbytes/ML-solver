@@ -1,0 +1,1212 @@
+@ calc e calc-e-030
+T: Largest rectangle with a fixed perimeter
+S: single-var-optimization
+Q: A rectangle has perimeter $40$. What is the largest area it can have?
+A: $400$
+B: $200$
+C: $100$
+D: $75$
+ANS: C
+EXP: With sides $x$ and $20-x$, the area is $A(x)=x(20-x)=20x-x^2$.
+Set $A'(x)=20-2x=0$, so $x=10$, and $A''=-2<0$ confirms a maximum.
+The best rectangle is the $10\times10$ square, area $100$.
+$400$ comes from taking a side of $20$ (half the perimeter) for both sides, which is not a rectangle with perimeter $40$.
+
+
+@ calc e calc-e-031
+T: The constant that minimises squared error
+S: single-var-optimization
+Q: For the data $2,4,9$, which value of $c$ minimises $f(c)=\sum_{i=1}^{3}(x_i-c)^2$?
+A: $4$
+B: $5$
+C: $5.5$
+D: $15$
+ANS: B
+EXP: $f'(c)=-2\sum_i(x_i-c)=0$ gives $c=\frac1n\sum_ix_i$, the mean.
+Here $c=\frac{2+4+9}{3}=5$, and $f''(c)=2n>0$ so it is a minimum.
+The median $4$ minimises the sum of absolute errors, not squared errors. This is why a regression model trained with MSE predicts the conditional mean.
+
+
+@ calc e calc-e-032
+T: Maximum on a closed interval
+S: single-var-optimization
+TYPE: nat
+TOL: 0
+Q: What is the maximum value of $f(x)=x^2-2x$ on the closed interval $[0,3]$? Enter the value.
+ANS: 3
+EXP: Closed interval method: check the critical points and the endpoints.
+$f'(x)=2x-2=0$ at $x=1$, where $f(1)=-1$. That is the minimum (the parabola opens upward).
+Endpoints: $f(0)=0$ and $f(3)=9-6=3$.
+The largest of $\{-1,0,3\}$ is $3$, at $x=3$. Stopping at the critical point would give the minimum, not the maximum.
+
+
+@ calc e calc-e-033
+T: Newton's method for minimising a quadratic
+S: single-var-optimization
+Q: Minimise $f(x)=3x^2-12x+1$ with Newton's method $x_{k+1}=x_k-\dfrac{f'(x_k)}{f''(x_k)}$, starting at $x_0=10$. What is $x_1$?
+A: $2$
+B: $-38$
+C: $18$
+D: $9.875$
+ANS: A
+EXP: $f'(x)=6x-12$, so $f'(10)=48$, and $f''(x)=6$.
+$x_1=10-\frac{48}{6}=10-8=2$.
+Check: $f'(2)=0$, so Newton lands on the minimiser in one step. For any quadratic the second-order model is exact, so one Newton step always suffices.
+$-38$ is a plain gradient step with learning rate $1$ ($10-48$); $18$ has the sign flipped; $9.875$ inverts the ratio.
+
+
+@ calc m calc-m-043
+T: Open box from a square sheet
+S: single-var-optimization
+Q: An open-top box is made from a $12\times12$ square sheet by cutting a square of side $x$ from each corner and folding up the sides. Which $x$ gives the largest volume?
+A: $6$
+B: $3$
+C: $4$
+D: $2$
+ANS: D
+EXP: Volume $V(x)=x(12-2x)^2$ for $0<x<6$.
+$V'(x)=(12-2x)^2-4x(12-2x)=(12-2x)(12-6x)$.
+$V'=0$ at $x=6$ or $x=2$. At $x=6$ the base vanishes and $V=0$, so it is the minimum on the interval.
+At $x=2$: $V=2\cdot8^2=128$, the maximum.
+Picking $x=6$ just because it solves $V'=0$ is the trap: always check which critical point is the maximum.
+
+
+@ calc m calc-m-044
+T: Minimum of x + 9/x
+S: single-var-optimization
+TYPE: nat
+TOL: 0
+Q: What is the minimum value of $f(x)=x+\dfrac{9}{x}$ over $x>0$? Enter the minimum value of $f$.
+ANS: 6
+EXP: $f'(x)=1-\dfrac{9}{x^2}=0$ gives $x=3$ (we need $x>0$).
+$f''(x)=\dfrac{18}{x^3}>0$, so $x=3$ is the minimiser.
+Minimum value $f(3)=3+3=6$. AM-GM gives the same bound: $x+\frac9x\ge2\sqrt9=6$.
+Entering $3$ would give the minimiser, not the minimum value.
+
+
+@ calc m calc-m-045
+T: Exact line search step size
+S: single-var-optimization
+Q: For $f(x,y)=x^2+2y^2$ at the point $(2,1)$, take the descent direction $d=-\nabla f(2,1)$ and choose the step $t>0$ that minimises $\phi(t)=f\big((2,1)+t\,d\big)$ (exact line search). What is $t$?
+A: $\frac14$
+B: $\frac13$
+C: $\frac12$
+D: $3$
+ANS: B
+EXP: $\nabla f=(2x,4y)$, so $g=\nabla f(2,1)=(4,4)$ and $d=(-4,-4)$.
+$\phi(t)=(2-4t)^2+2(1-4t)^2$.
+$\phi'(t)=-8(2-4t)-16(1-4t)=-32+96t=0$, so $t=\frac13$.
+This is the one-variable formula $t=\dfrac{g^Tg}{g^THg}=\dfrac{32}{96}$ with $H=\operatorname{diag}(2,4)$.
+$\frac14=1/L$ is the safe fixed step for the largest curvature $L=4$, not the exact minimiser along this line. The new point is $(\frac23,-\frac13)$.
+
+
+@ calc m calc-m-046
+T: One Newton step on e^x - 2x
+S: single-var-optimization
+Q: Minimise $f(x)=e^x-2x$ using Newton's method $x_{k+1}=x_k-f'(x_k)/f''(x_k)$, starting at $x_0=0$. What is $x_1$?
+A: $1$
+B: $-1$
+C: $\ln2$
+D: $2$
+ANS: A
+EXP: $f'(x)=e^x-2$, $f''(x)=e^x$.
+At $x_0=0$: $f'(0)=-1$, $f''(0)=1$, so $x_1=0-\frac{-1}{1}=1$.
+The true minimiser is $\ln2\approx0.693$ (where $e^x=2$). Newton gets there only in the limit because $f$ is not quadratic, so $\ln 2$ is not $x_1$.
+$-1$ comes from dropping the minus sign in the update.
+
+
+@ calc m calc-m-047
+T: Profit-maximising price
+S: single-var-optimization
+Q: Demand at price $p$ is $q=100-2p$ units, and each unit costs $10$ to make. Profit is $(p-10)(100-2p)$. Which price maximises profit?
+A: $25$
+B: $\frac{110}{3}$
+C: $30$
+D: $50$
+ANS: C
+EXP: $P(p)=(p-10)(100-2p)$. Product rule: $P'(p)=(100-2p)+(p-10)(-2)=120-4p$.
+$P'=0$ at $p=30$, and $P''=-4<0$, so it is the maximum. Profit $=20\cdot40=800$.
+$25$ maximises revenue $p(100-2p)$, ignoring cost. $\frac{110}{3}$ comes from forgetting the factor $-2$ when differentiating $100-2p$. At $p=50$ demand is zero.
+
+
+@ calc m calc-m-048
+T: Maximise p³(1−p)² on [0,1]
+S: single-var-optimization
+Q: Which $p\in[0,1]$ maximises $L(p)=p^3(1-p)^2$?
+A: $\frac25$
+B: $\frac12$
+C: $\frac34$
+D: $\frac35$
+ANS: D
+EXP: Maximise $\log L=3\ln p+2\ln(1-p)$ instead (log is increasing, so the maximiser is the same).
+$\dfrac{3}{p}-\dfrac{2}{1-p}=0\Rightarrow3(1-p)=2p\Rightarrow p=\frac35$.
+$L(0)=L(1)=0$, so this interior point is the maximum.
+This is the MLE of a Bernoulli parameter after $3$ successes and $2$ failures: successes over trials. $\frac25$ swaps the roles; $\frac34$ treats $(1-p)^2$ as $(1-p)$.
+
+
+@ calc m calc-m-049
+T: Closest point on a parabola
+S: single-var-optimization
+TYPE: nat
+TOL: 0.01
+Q: What is the smallest value of the squared distance from the point $(0,2)$ to a point on the parabola $y=x^2$? Enter the squared distance to 2 decimal places.
+ANS: 1.75
+EXP: Squared distance from $(x,x^2)$ to $(0,2)$: $D(x)=x^2+(x^2-2)^2=x^4-3x^2+4$.
+$D'(x)=4x^3-6x=2x(2x^2-3)=0$ at $x=0$ or $x^2=\frac32$.
+$D(0)=4$ (a local maximum of $D$) and $D=\frac94-\frac92+4=\frac74$ at $x^2=\frac32$.
+So the minimum squared distance is $1.75$ (distance $\frac{\sqrt7}{2}$). The vertex $(0,0)$ at distance $2$ is not the closest point.
+
+
+@ calc h calc-h-046
+T: Newton's method on sqrt(1 + x²)
+S: single-var-optimization
+TYPE: msq
+Q: Newton's method $x_{k+1}=x_k-f'(x_k)/f''(x_k)$ is used to minimise the convex function $f(x)=\sqrt{1+x^2}$, whose minimiser is $0$. Which statements are true? (More than one may be correct.)
+A: Starting at $x_0=0.5$, the iterates converge to $0$.
+B: Starting at $x_0=2$, the first iterate is $x_1=-8$.
+C: Because $f$ is convex, Newton's method converges from every starting point.
+D: Starting at $x_0=1$, the iterates converge to $0$.
+ANS: A,B
+EXP: $f'(x)=\dfrac{x}{\sqrt{1+x^2}}$, $f''(x)=(1+x^2)^{-3/2}$, so $\dfrac{f'}{f''}=x(1+x^2)$ and the update is $x_{k+1}=x-x-x^3=-x^3$.
+[[A]] is true: $0.5\to-0.125\to0.00195\to\dots\to0$, since $|x|<1$ makes $|x|^3$ shrink fast.
+[[B]] is true: $-2^3=-8$, and then $512$, so it diverges.
+[[C]] is false: convexity does not save pure Newton. It converges only when $|x_0|<1$; [[B]] is a counterexample.
+[[D]] is false: $1\to-1\to1\to\dots$ oscillates forever. This is why practical Newton methods add a line search (damped Newton).
+
+
+@ calc h calc-h-047
+T: Minimisers of the sum of absolute deviations
+S: single-var-optimization
+Q: For the data $1,3,8,28$, which values of $c$ minimise $f(c)=\sum_{i=1}^4|x_i-c|$?
+A: Only $c=5.5$
+B: Only $c=10$
+C: Every $c$ in $[3,8]$
+D: Only $c=3$ and $c=8$
+ANS: C
+EXP: $f$ is piecewise linear. Away from the data points, $f'(c)=(\#\text{points below }c)-(\#\text{points above }c)$.
+For $3<c<8$ there are 2 points below and 2 above, so $f'(c)=0$: $f$ is flat on $[3,8]$. For example $f(3)=2+0+5+25=32$ and $f(8)=7+5+0+20=32$.
+For $c<3$ the slope is negative and for $c>8$ it is positive, so the whole interval $[3,8]$ minimises $f$.
+$5.5$ is the usual "median" convention, a minimiser but not the only one. $10$ is the mean, which minimises squared error and is pulled toward the outlier $28$; $f(10)=36>32$. This robustness is why the L1 loss is used for outlier-heavy data.
+
+
+@ calc h calc-h-048
+T: Soft thresholding with an L1 penalty
+S: single-var-optimization
+Q: What is the minimiser of $g(x)=\frac12(x-1)^2+2|x|$ over all real $x$?
+A: $-1$
+B: $0$
+C: $3$
+D: $\frac15$
+ANS: B
+EXP: $|x|$ is not differentiable at $0$, so check each piece and the kink.
+For $x>0$: $g'(x)=x-1+2=x+1>0$, so $g$ increases; no minimiser there.
+For $x<0$: $g'(x)=x-1-2=x-3<0$, so $g$ decreases toward $0$; no minimiser there.
+So the minimum is at the kink $x=0$, with $g(0)=\frac12$. In general the answer is the soft-thresholding rule $\operatorname{sign}(z)\max(|z|-\lambda,0)$ with $z=1$, $\lambda=2$, which gives $0$.
+$-1$ comes from solving $x-1+2=0$ without checking that it lies in the region $x>0$ where that derivative holds. $\frac15$ treats the penalty as $2x^2$ (ridge). This exact zero is why the Lasso produces sparse weights.
+
+
+@ calc h calc-h-049
+T: Backtracking line search on x⁴
+S: single-var-optimization
+Q: Minimise $f(x)=x^4$ from $x_0=1$ along $d=-f'(x_0)$. Backtracking tries $t=1,\frac12,\frac14,\dots$ and accepts the first $t$ satisfying the Armijo condition $f(x_0+t\,d)\le f(x_0)-0.1\,t\,f'(x_0)^2$. Which $t$ is accepted?
+A: $1$
+B: $\frac12$
+C: $\frac18$
+D: $\frac14$
+ANS: D
+EXP: $f'(1)=4$, so $d=-4$, $x_0+td=1-4t$ and the right side is $1-0.1\cdot t\cdot16=1-1.6t$.
+$t=1$: $f(-3)=81>-0.6$, reject.
+$t=\frac12$: $f(-1)=1>0.2$, reject. The value did not drop at all; it only matched $f(x_0)$, which fails "sufficient decrease".
+$t=\frac14$: $f(0)=0\le0.6$, accept.
+$\frac12$ is the trap for anyone who only checks $f(x_0+td)\le f(x_0)$. $\frac18$ also satisfies Armijo, but backtracking stops at the first success.
+
+
+@ calc h calc-h-050
+T: Newton's method on x − ln x: steps needed
+S: single-var-optimization
+TYPE: nat
+TOL: 0
+Q: Minimise $f(x)=x-\ln x$ ($x>0$, minimiser $x^*=1$) with Newton's method $x_{k+1}=x_k-f'(x_k)/f''(x_k)$ from $x_0=0.5$. What is the smallest $k$ with $|x_k-1|<10^{-6}$? Enter $k$.
+ANS: 5
+EXP: $f'(x)=1-\frac1x$, $f''(x)=\frac1{x^2}$, so $x_{k+1}=x-x^2\left(1-\frac1x\right)=2x-x^2$.
+Then $1-x_{k+1}=1-2x+x^2=(1-x_k)^2$: the error squares every step (quadratic convergence).
+Errors: $e_0=\frac12$, $e_1=\frac14$, $e_2=\frac1{16}$, $e_3=\frac1{256}\approx3.9\times10^{-3}$, $e_4=\frac1{65536}\approx1.5\times10^{-5}$, $e_5\approx2.3\times10^{-10}$.
+So $k=5$. A linearly convergent method that halves the error would need about $20$ steps.
+
+
+@ calc h calc-h-051
+T: Open-top cylinder of least surface area
+S: single-var-optimization
+Q: An open-top cylindrical tank (base but no lid) must hold a fixed volume $V$. To use the least material (base area plus side area), how should its height $h$ compare with its radius $r$?
+A: $h=2r$
+B: $h=r$
+C: $h=\frac r2$
+D: $h=4r$
+ANS: B
+EXP: Surface $S=\pi r^2+2\pi rh$ with $\pi r^2h=V$, so $h=\dfrac{V}{\pi r^2}$ and $S(r)=\pi r^2+\dfrac{2V}{r}$.
+$S'(r)=2\pi r-\dfrac{2V}{r^2}=0\Rightarrow\pi r^3=V$.
+Then $h=\dfrac{V}{\pi r^2}=\dfrac{\pi r^3}{\pi r^2}=r$. $S''=2\pi+4V/r^3>0$, so it is a minimum.
+$h=2r$ is the answer for a closed can (two circular ends). Removing the lid makes a shorter, wider shape optimal.
+
+
+@ calc e calc-e-034
+T: Normalising constant of a linear PDF
+S: integrals
+Q: $f(x)=cx$ for $0\le x\le2$ (and $0$ elsewhere) is a probability density. What is $c$?
+A: $2$
+B: $\frac14$
+C: $1$
+D: $\frac12$
+ANS: D
+EXP: A density must integrate to $1$: $\displaystyle\int_0^2cx\,dx=c\left[\frac{x^2}{2}\right]_0^2=2c=1$.
+So $c=\frac12$.
+$\frac14$ forgets the $\frac12$ from integrating $x$ (uses $c\cdot x^2\big|_0^2=4c$).
+
+
+@ calc e calc-e-035
+T: Area between y = x and y = x²
+S: integrals
+Q: What is the area of the region between the curves $y=x$ and $y=x^2$ for $0\le x\le1$?
+A: $\frac16$
+B: $\frac12$
+C: $\frac13$
+D: $\frac56$
+ANS: A
+EXP: On $[0,1]$, $x\ge x^2$, so area $=\displaystyle\int_0^1(x-x^2)\,dx=\frac12-\frac13=\frac16$.
+$\frac12$ is the area under $y=x$ alone and $\frac13$ the area under $y=x^2$ alone; $\frac56$ adds them instead of subtracting.
+
+
+@ calc e calc-e-036
+T: Substitution with e^(x²)
+S: integrals
+Q: $\displaystyle\int_0^1 2x\,e^{x^2}\,dx=$
+A: $e$
+B: $e-1$
+C: $2(e-1)$
+D: $\frac{e-1}{2}$
+ANS: B
+EXP: Substitute $u=x^2$, $du=2x\,dx$; the limits $x=0,1$ become $u=0,1$.
+$\displaystyle\int_0^1e^u\,du=e^1-e^0=e-1$.
+$e$ forgets the lower limit ($e^0=1$). $2(e-1)$ keeps the $2x$ factor after it was already absorbed into $du$.
+
+
+@ calc m calc-m-050
+T: Integral of ln x by parts
+S: integrals
+Q: $\displaystyle\int_1^e\ln x\,dx=$
+A: $e$
+B: $2e-1$
+C: $1$
+D: $0$
+ANS: C
+EXP: By parts with $u=\ln x$, $dv=dx$: $\int\ln x\,dx=x\ln x-\int x\cdot\frac1x\,dx=x\ln x-x$.
+$\left[x\ln x-x\right]_1^e=(e-e)-(0-1)=1$.
+$e$ keeps only $x\ln x$ (drops the $-x$ term). $2e-1$ comes from a sign slip, $x\ln x+x$.
+
+
+@ calc m calc-m-051
+T: Second moment of an exponential by integration
+S: integrals
+Q: $X$ has density $f(x)=2e^{-2x}$ for $x\ge0$. Compute $E[X^2]=\displaystyle\int_0^\infty x^2\cdot2e^{-2x}\,dx$.
+A: $\frac14$
+B: $\frac12$
+C: $1$
+D: $2$
+ANS: B
+EXP: Use $\displaystyle\int_0^\infty x^ne^{-\lambda x}dx=\frac{n!}{\lambda^{n+1}}$ (repeated integration by parts, or the Gamma function).
+$E[X^2]=2\cdot\dfrac{2!}{2^3}=\dfrac{4}{8}=\dfrac12$.
+Check: $E[X]=\frac12$ and $\operatorname{Var}(X)=\frac14$, so $E[X^2]=\frac14+\frac14=\frac12$.
+$\frac14$ is the variance (or $(E[X])^2$), not the second moment.
+
+
+@ calc m calc-m-052
+T: Normalising constant of x(1 − x)
+S: integrals
+TYPE: nat
+TOL: 0
+Q: $f(x)=c\,x(1-x)$ on $[0,1]$ (and $0$ elsewhere) is a probability density. Enter $c$.
+ANS: 6
+EXP: $\displaystyle\int_0^1x(1-x)\,dx=\int_0^1(x-x^2)\,dx=\frac12-\frac13=\frac16$.
+So $c\cdot\frac16=1$ and $c=6$.
+This is the Beta$(2,2)$ density, $\dfrac{x^{a-1}(1-x)^{b-1}}{B(a,b)}$ with $B(2,2)=\frac{1!\,1!}{3!}=\frac16$.
+
+
+@ calc m calc-m-053
+T: Which improper integrals converge?
+S: integrals
+TYPE: msq
+Q: Which of these improper integrals converge (are finite)? More than one may be correct.
+A: $\displaystyle\int_1^\infty x^{-3/2}\,dx$
+B: $\displaystyle\int_0^1 x^{-1/2}\,dx$
+C: $\displaystyle\int_1^\infty \frac{1}{x}\,dx$
+D: $\displaystyle\int_0^1 x^{-2}\,dx$
+ANS: A,B
+EXP: $p$-test: $\int_1^\infty x^{-p}dx$ converges iff $p>1$; $\int_0^1x^{-p}dx$ converges iff $p<1$.
+[[A]]: $p=\frac32>1$, value $\left[-2x^{-1/2}\right]_1^\infty=2$. Converges.
+[[B]]: $p=\frac12<1$, value $\left[2x^{1/2}\right]_0^1=2$. Converges.
+[[C]]: $\ln x\to\infty$. Diverges (the boundary case $p=1$ diverges at both ends).
+[[D]]: $\left[-x^{-1}\right]_0^1$ blows up at $0$. Diverges.
+The two tests point in opposite directions: fast decay helps at infinity, slow blow-up helps at $0$.
+
+
+@ calc m calc-m-054
+T: Normalising the Cauchy density
+S: integrals
+Q: For which $c$ is $f(x)=\dfrac{c}{1+x^2}$, $x\in\mathbb R$, a probability density?
+A: $\frac{1}{2\pi}$
+B: $\frac{2}{\pi}$
+C: $\frac{1}{\sqrt{2\pi}}$
+D: $\frac{1}{\pi}$
+ANS: D
+EXP: $\displaystyle\int_{-\infty}^{\infty}\frac{dx}{1+x^2}=\left[\arctan x\right]_{-\infty}^{\infty}=\frac\pi2-\left(-\frac\pi2\right)=\pi$.
+So $c\pi=1$, $c=\frac1\pi$: the standard Cauchy density.
+$\frac2\pi$ integrates only over $[0,\infty)$. $\frac{1}{\sqrt{2\pi}}$ is the normal constant. The Cauchy has heavy tails: its mean $\int\frac{x}{\pi(1+x^2)}dx$ does not exist.
+
+
+@ calc m calc-m-055
+T: Using odd symmetry in a definite integral
+S: integrals
+TYPE: nat
+TOL: 0
+Q: Evaluate $\displaystyle\int_{-2}^{2}\left(x^3+x^5\cos x+3\right)dx$. Enter the value.
+ANS: 12
+EXP: On a symmetric interval $[-a,a]$, an odd function integrates to $0$.
+$x^3$ is odd, and $x^5\cos x$ is odd (odd times even). Both contribute $0$.
+Only the constant remains: $\int_{-2}^2 3\,dx=3\cdot4=12$.
+No antiderivative of $x^5\cos x$ is needed; trying to integrate it by parts is the slow route.
+
+
+@ calc h calc-h-052
+T: Gamma function at 3/2
+S: integrals
+Q: $\displaystyle\int_0^\infty\sqrt{x}\,e^{-x}\,dx=$
+A: $\sqrt\pi$
+B: $\frac{\sqrt\pi}{2}$
+C: $\frac12$
+D: $\frac{\pi}{2}$
+ANS: B
+EXP: This is $\Gamma(s)=\int_0^\infty x^{s-1}e^{-x}dx$ with $s=\frac32$.
+Use $\Gamma(s+1)=s\,\Gamma(s)$ and $\Gamma(\frac12)=\sqrt\pi$: $\Gamma(\frac32)=\frac12\Gamma(\frac12)=\frac{\sqrt\pi}{2}$.
+($\Gamma(\frac12)=\sqrt\pi$ follows from the Gaussian integral with $x=u^2/2$.)
+$\sqrt\pi$ is $\Gamma(\frac12)$, one step too early. The Gamma function is the normalising constant of the Gamma and chi-squared densities.
+
+
+@ calc h calc-h-053
+T: Gaussian integral by completing the square
+S: integrals
+Q: $\displaystyle\int_{-\infty}^{\infty}e^{-(x^2-2x)}\,dx=$
+A: $\sqrt\pi$
+B: $e\sqrt{2\pi}$
+C: $e\sqrt\pi$
+D: $\frac{\sqrt\pi}{e}$
+ANS: C
+EXP: Complete the square: $-(x^2-2x)=-(x-1)^2+1$.
+So the integral is $e\displaystyle\int_{-\infty}^\infty e^{-(x-1)^2}dx=e\sqrt\pi$, using $\int e^{-u^2}du=\sqrt\pi$ (shifting by $1$ does not change the integral over the whole line).
+$\sqrt\pi$ forgets the leftover factor $e^{1}$; $\frac{\sqrt\pi}{e}$ gets its sign wrong. $\sqrt{2\pi}$ belongs to $e^{-u^2/2}$, not $e^{-u^2}$.
+The same trick computes Gaussian normalising constants and the marginal likelihood in Bayesian linear regression.
+
+
+@ calc h calc-h-054
+T: Reversing the order of integration
+S: integrals
+Q: $\displaystyle\int_0^1\int_x^1e^{y^2}\,dy\,dx=$
+A: $e-1$
+B: $\frac{e}{2}$
+C: It has no closed form, since $e^{y^2}$ has no elementary antiderivative
+D: $\frac{e-1}{2}$
+ANS: D
+EXP: The inner integral cannot be done in elementary terms, so reverse the order.
+The region is $0\le x\le y\le1$. For fixed $y$, $x$ runs from $0$ to $y$:
+$\displaystyle\int_0^1\int_0^y e^{y^2}\,dx\,dy=\int_0^1ye^{y^2}\,dy=\left[\tfrac12e^{y^2}\right]_0^1=\frac{e-1}{2}$.
+The "no closed form" choice is the trap: the double integral is elementary even though the inner one is not. $e-1$ forgets the $\frac12$ from the substitution $u=y^2$.
+
+
+@ calc h calc-h-055
+T: Normalising a joint density on a triangle
+S: integrals
+TYPE: nat
+TOL: 0
+Q: $f(x,y)=c\,xy$ on the triangle $0<y<x<1$ (and $0$ elsewhere) is a joint probability density. Enter $c$.
+ANS: 8
+EXP: $\displaystyle\int_0^1\int_0^x xy\,dy\,dx=\int_0^1x\cdot\frac{x^2}{2}\,dx=\int_0^1\frac{x^3}{2}dx=\frac18$.
+So $c=8$.
+Integrating over the whole unit square instead gives $\int_0^1\int_0^1xy=\frac14$ and $c=4$; the support is only the triangle under $y=x$.
+
+
+@ calc h calc-h-056
+T: Integral of x² ln x by differentiating a parameter
+S: integrals
+Q: $\displaystyle\int_0^1x^2\ln x\,dx=$
+A: $\frac19$
+B: $-\frac13$
+C: $-\frac19$
+D: $-\frac1{27}$
+ANS: C
+EXP: Trick: $I(a)=\int_0^1x^a\,dx=\dfrac{1}{a+1}$, and $\dfrac{d}{da}x^a=x^a\ln x$.
+So $\int_0^1x^a\ln x\,dx=I'(a)=-\dfrac{1}{(a+1)^2}$, and at $a=2$ this is $-\frac19$.
+By parts agrees: $\int x^2\ln x\,dx=\frac{x^3}{3}\ln x-\frac{x^3}{9}$; at $1$ it is $-\frac19$ and the limit at $0$ is $0$.
+The answer must be negative, since $\ln x<0$ on $(0,1)$, so $\frac19$ has the wrong sign.
+
+
+@ calc e calc-e-037
+T: Fastest rate of increase
+S: gradients-multivariable
+Q: For $f(x,y)=x^2+3y$, what is the largest directional derivative of $f$ at $(2,1)$ over all unit directions?
+A: $7$
+B: $25$
+C: $5$
+D: $3$
+ANS: C
+EXP: The directional derivative in unit direction $u$ is $\nabla f\cdot u$, which is largest when $u$ points along $\nabla f$. The maximum is $\|\nabla f\|$.
+$\nabla f=(2x,3)=(4,3)$ at $(2,1)$, so the maximum rate is $\sqrt{16+9}=5$.
+$7$ adds the components; $25$ is $\|\nabla f\|^2$. Gradient descent steps along $-\nabla f$ because it is the direction of fastest decrease.
+
+
+@ calc e calc-e-038
+T: Gradient of the squared norm
+S: gradients-multivariable
+Q: For $x\in\mathbb R^n$, $\nabla_x\|x\|_2^2=$
+A: $2x$
+B: $x$
+C: $\dfrac{x}{\|x\|_2}$
+D: $2\|x\|_2$
+ANS: A
+EXP: $\|x\|_2^2=\sum_ix_i^2$, so $\dfrac{\partial}{\partial x_i}=2x_i$, giving $\nabla=2x$ (a vector).
+$\dfrac{x}{\|x\|_2}$ is the gradient of the norm $\|x\|_2$ itself, not its square. $2\|x\|_2$ is a scalar, so it cannot be a gradient in $\mathbb R^n$.
+This is the gradient of the L2 (ridge / weight-decay) penalty.
+
+
+@ calc e calc-e-039
+T: Tangent to a level curve
+S: gradients-multivariable
+Q: For $f(x,y)=x^2+y^2$, which vector is tangent to the level curve $f=25$ at the point $(3,4)$?
+A: $(3,4)$
+B: $(4,-3)$
+C: $(6,8)$
+D: $(1,1)$
+ANS: B
+EXP: The gradient is perpendicular to the level curve. $\nabla f(3,4)=(6,8)$.
+A tangent vector $t$ must satisfy $t\cdot(6,8)=0$: $(4,-3)\cdot(6,8)=24-24=0$.
+$(6,8)$ and $(3,4)$ are along the gradient, i.e. normal to the curve (they point straight out of the circle).
+
+
+@ calc m calc-m-056
+T: Chain rule along a curve
+S: gradients-multivariable
+TYPE: nat
+TOL: 0
+Q: Let $f(x,y)=x^2+xy$ and move along the curve $x=\cos t$, $y=\sin t$. Find $\dfrac{d}{dt}f(x(t),y(t))$ at $t=0$. Enter the value.
+ANS: 1
+EXP: Multivariable chain rule: $\dfrac{df}{dt}=f_x\dfrac{dx}{dt}+f_y\dfrac{dy}{dt}$.
+At $t=0$: $(x,y)=(1,0)$, $f_x=2x+y=2$, $f_y=x=1$, $\dfrac{dx}{dt}=-\sin0=0$, $\dfrac{dy}{dt}=\cos0=1$.
+So $\dfrac{df}{dt}=2\cdot0+1\cdot1=1$.
+Check directly: $f=\cos^2t+\cos t\sin t$, derivative $-2\cos t\sin t+\cos^2t-\sin^2t=1$ at $t=0$.
+
+
+@ calc m calc-m-057
+T: Gradient of the least-squares loss
+S: gradients-multivariable
+Q: $X$ is $n\times d$, $y\in\mathbb R^n$, $w\in\mathbb R^d$, and $L(w)=\|Xw-y\|_2^2$ (no factor $\frac12$). Then $\nabla_wL=$
+A: $2X(Xw-y)$
+B: $X^T(Xw-y)$
+C: $-2X^Ty$
+D: $2X^T(Xw-y)$
+ANS: D
+EXP: Write $r=Xw-y$, so $L=r^Tr$. Then $dL=2r^T\,dr=2r^TX\,dw$, so $\nabla_wL=2X^Tr=2X^T(Xw-y)$.
+Shape check: $X^T$ is $d\times n$ and $r$ is $n\times1$, giving $d\times1$ like $w$. $2X(Xw-y)$ fails this check.
+$X^T(Xw-y)$ is the gradient of $\frac12\|Xw-y\|^2$; here there is no $\frac12$. Setting the gradient to zero gives the normal equations $X^TXw=X^Ty$.
+
+
+@ calc m calc-m-058
+T: Hessian of x³ + 2xy²
+S: gradients-multivariable
+Q: What is the Hessian of $f(x,y)=x^3+2xy^2$ at $(1,1)$?
+A: $\begin{pmatrix}6&4\\4&4\end{pmatrix}$
+B: $\begin{pmatrix}6&2\\2&4\end{pmatrix}$
+C: $\begin{pmatrix}3&4\\4&4\end{pmatrix}$
+D: $\begin{pmatrix}6&4\\4&2\end{pmatrix}$
+ANS: A
+EXP: First derivatives: $f_x=3x^2+2y^2$, $f_y=4xy$.
+Second derivatives: $f_{xx}=6x$, $f_{xy}=4y$, $f_{yy}=4x$.
+At $(1,1)$: $f_{xx}=6$, $f_{xy}=f_{yx}=4$, $f_{yy}=4$.
+The off-diagonal $2$ forgets the factor from differentiating $y^2$; the $3$ in the corner uses $3x^2$ (the first derivative) instead of $f_{xx}=6x$.
+
+
+@ calc m calc-m-059
+T: Common gradient identities
+S: gradients-multivariable
+TYPE: msq
+Q: Let $a,x\in\mathbb R^n$ with $x\ne0$. Which gradient identities are correct? More than one may be correct.
+A: $\nabla_x\left(a^Tx\right)=a$
+B: $\nabla_x\|x\|_2=2x$
+C: $\nabla_x\,e^{a^Tx}=e^{a^Tx}\,a$
+D: $\nabla_x\left(a^Tx\right)^2=2a$
+ANS: A,C
+EXP: [[A]] is true: $\partial(a^Tx)/\partial x_i=a_i$.
+[[B]] is false: $2x$ is the gradient of $\|x\|_2^2$. For the norm, $\nabla\|x\|_2=\dfrac{x}{\|x\|_2}$ (e.g. at $x=(1,0)$ it is $(1,0)$, not $(2,0)$).
+[[C]] is true: chain rule, outer derivative $e^{u}$ times $\nabla u=a$.
+[[D]] is false: chain rule gives $2(a^Tx)\,a$; the factor $a^Tx$ was dropped. With $a=(1,0)$ and $x=(2,0)$ the true gradient is $2\cdot2\cdot(1,0)=(4,0)\ne2a=(2,0)$.
+
+
+@ calc h calc-h-057
+T: Gradient of the logistic loss with ±1 labels
+S: gradients-multivariable
+Q: With label $y\in\{-1,+1\}$, feature vector $x$ and sigmoid $\sigma(t)=\dfrac{1}{1+e^{-t}}$, the logistic loss is $L(w)=\log\left(1+e^{-y\,w^Tx}\right)$. Then $\nabla_wL=$
+A: $-y\,\sigma(-y\,w^Tx)\,x$
+B: $\big(\sigma(w^Tx)-y\big)\,x$
+C: $-y\,\sigma(y\,w^Tx)\,x$
+D: $y\,\sigma(-y\,w^Tx)\,x$
+ANS: A
+EXP: Let $m=y\,w^Tx$ (the margin). $\dfrac{d}{dm}\log(1+e^{-m})=\dfrac{-e^{-m}}{1+e^{-m}}=-\sigma(-m)$.
+Chain rule with $\nabla_wm=y\,x$: $\nabla_wL=-\sigma(-y\,w^Tx)\,y\,x$.
+Sanity check: a confidently correct point ($m\gg0$) has $\sigma(-m)\approx0$, so it contributes almost no gradient.
+$\big(\sigma(w^Tx)-y\big)x$ is the right formula for labels $y\in\{0,1\}$, not $\pm1$. $\sigma(y\,w^Tx)$ uses $\sigma(m)$ in place of $\sigma(-m)=1-\sigma(m)$, which would push hardest on points that are already right.
+
+
+@ calc h calc-h-058
+T: Gradient of a trace with respect to a matrix
+S: gradients-multivariable
+Q: For fixed $A\in\mathbb R^{n\times n}$, let $f(X)=\operatorname{tr}(AX)$. Taking $\nabla_Xf$ to be the matrix with entries $\partial f/\partial X_{ij}$, which is it?
+A: $A$
+B: $A^T$
+C: $\operatorname{tr}(A)\,I$
+D: $X^TA$
+ANS: B
+EXP: $\operatorname{tr}(AX)=\sum_i(AX)_{ii}=\sum_i\sum_jA_{ij}X_{ji}$.
+The entry $X_{ij}$ appears only in the term $A_{ji}X_{ij}$, so $\dfrac{\partial f}{\partial X_{ij}}=A_{ji}$, i.e. $\nabla_Xf=A^T$.
+$A$ would be right for $\operatorname{tr}(A^TX)=\sum_{ij}A_{ij}X_{ij}$, the Frobenius inner product $\langle A,X\rangle$. The transpose is the whole point of the question.
+
+
+@ calc h calc-h-059
+T: Second directional derivative from the Hessian
+S: gradients-multivariable
+Q: For $f(x,y)=x^2y$, what is the second derivative of $f$ along the unit direction $u=\frac{1}{\sqrt2}(1,1)$ at $(1,1)$, i.e. $\dfrac{d^2}{dt^2}f\big((1,1)+tu\big)$ at $t=0$?
+A: $6$
+B: $\frac{3}{\sqrt2}$
+C: $1$
+D: $3$
+ANS: D
+EXP: The second directional derivative is $u^T\nabla^2f\,u$.
+$f_{xx}=2y$, $f_{xy}=2x$, $f_{yy}=0$, so at $(1,1)$: $H=\begin{pmatrix}2&2\\2&0\end{pmatrix}$.
+$u^THu=\frac12(2+2\cdot2+0)=\frac12\cdot6=3$.
+Check: $f(1+s,1+s)=(1+s)^3$ with $s=t/\sqrt2$, second derivative in $t$ is $\frac12\cdot6=3$.
+$6$ uses the unnormalised $(1,1)$; $\frac3{\sqrt2}$ is the first directional derivative $\nabla f\cdot u$; $1$ keeps only the diagonal of $H$ (forgets the cross term $2u_1u_2f_{xy}$).
+
+
+@ calc h calc-h-060
+T: Change of variables u = x + y, v = x − y
+S: gradients-multivariable
+Q: $R$ is the square in the $xy$-plane with vertices $(0,0)$, $(\frac12,\frac12)$, $(1,0)$, $(\frac12,-\frac12)$. Using $u=x+y$, $v=x-y$ (which maps $R$ onto $[0,1]\times[0,1]$), evaluate $\displaystyle\iint_R(x+y)\,dx\,dy$.
+A: $1$
+B: $\frac12$
+C: $\frac14$
+D: $-1$
+ANS: C
+EXP: The Jacobian of the forward map is $\left|\dfrac{\partial(u,v)}{\partial(x,y)}\right|=\left|\det\begin{pmatrix}1&1\\1&-1\end{pmatrix}\right|=2$.
+We need the inverse one: $dx\,dy=\left|\dfrac{\partial(x,y)}{\partial(u,v)}\right|du\,dv=\frac12\,du\,dv$.
+$\displaystyle\iint_R(x+y)\,dx\,dy=\int_0^1\!\!\int_0^1u\cdot\frac12\,du\,dv=\frac14$.
+Check: $R$ has side $\frac{1}{\sqrt2}$, area $\frac12$, and $x+y$ averages $\frac12$ over it, giving $\frac14$.
+$1$ multiplies by $2$ (the forward Jacobian) instead of dividing; $\frac12$ drops the Jacobian; $-1$ uses the signed determinant.
+
+
+@ calc h calc-h-061
+T: Backpropagation through a ReLU unit
+S: gradients-multivariable
+TYPE: nat
+TOL: 0
+Q: A tiny network computes $h=\operatorname{ReLU}(w_1x)$, $\hat y=w_2h$, and loss $L=\frac12(\hat y-y)^2$. With $x=2$, $y=1$, $w_1=1.5$, $w_2=-1$, compute $\dfrac{\partial L}{\partial w_1}$. Enter the value.
+ANS: 8
+EXP: Forward: $w_1x=3$, $h=3$, $\hat y=-3$, error $\hat y-y=-4$.
+Backward (chain rule): $\dfrac{\partial L}{\partial w_1}=(\hat y-y)\cdot w_2\cdot\operatorname{ReLU}'(w_1x)\cdot x$.
+$\operatorname{ReLU}'(3)=1$, so $\dfrac{\partial L}{\partial w_1}=(-4)(-1)(1)(2)=8$.
+A gradient step $w_1\leftarrow w_1-\eta\cdot8$ lowers $h$, which raises $\hat y=-h$ toward $y=1$, as it should. If $w_1x$ had been negative, the ReLU derivative $0$ would block the gradient entirely.
+
+
+@ calc e calc-e-040
+T: One gradient step in two dimensions
+S: gradient-descent
+Q: Run one step of gradient descent on $f(x,y)=x^2+2y^2$ from $(1,1)$ with learning rate $\eta=0.1$. Where does it land?
+A: $(1.2,\ 1.4)$
+B: $(0.8,\ 0.8)$
+C: $(0.8,\ 0.6)$
+D: $(0.9,\ 0.8)$
+ANS: C
+EXP: $\nabla f=(2x,4y)=(2,4)$ at $(1,1)$.
+$(x,y)\leftarrow(1,1)-0.1\,(2,4)=(0.8,0.6)$.
+$(1.2,1.4)$ adds the gradient (ascent). $(0.8,0.8)$ uses the $x$-derivative for both coordinates. Note $y$ moves more because $f$ is steeper in $y$.
+
+
+@ calc e calc-e-041
+T: A learning rate that is too large
+S: gradient-descent
+Q: Run gradient descent on $f(x)=x^2$ from $x_0=1$ with learning rate $\eta=1.5$. What is $x_2$?
+A: $-2$
+B: $0.25$
+C: $-8$
+D: $4$
+ANS: D
+EXP: $f'(x)=2x$, so $x_{t+1}=x_t-1.5\cdot2x_t=-2x_t$.
+$x_1=-2$, $x_2=4$. The iterates flip sign and double: gradient descent diverges.
+For $f(x)=x^2$ the step is stable only when $|1-2\eta|<1$, i.e. $0<\eta<1$. $0.25$ comes from forgetting the $2$ in $f'(x)=2x$; $-2$ is only $x_1$.
+
+
+@ calc e calc-e-042
+T: Basic facts about mini-batch SGD
+S: gradient-descent
+TYPE: msq
+Q: In mini-batch SGD, each step uses the average gradient over a batch of training examples drawn uniformly at random. Which statements are true? More than one may be correct.
+A: The mini-batch gradient is an unbiased estimate of the full-batch gradient.
+B: The variance of the mini-batch gradient decreases as the batch size grows.
+C: Every SGD step decreases the full training loss.
+D: With a fixed learning rate, SGD converges exactly to the minimiser.
+ANS: A,B
+EXP: [[A]] is true: averaging over a uniformly random sample gives the full average in expectation.
+[[B]] is true: with independent samples, the variance falls like $\frac1B$ in the batch size $B$.
+[[C]] is false: a single noisy batch can point uphill for the full loss, so individual steps can increase it.
+[[D]] is false: the gradient noise does not vanish at the minimiser, so with a constant step the iterates keep bouncing in a neighbourhood. That is why learning-rate decay is used.
+
+
+@ calc m calc-m-060
+T: Two steps of heavy-ball momentum
+S: gradient-descent
+TYPE: nat
+TOL: 0.001
+Q: Minimise $f(x)=x^2$ with momentum: $v_{t+1}=\beta v_t+f'(x_t)$, $x_{t+1}=x_t-\eta v_{t+1}$, using $\eta=0.1$, $\beta=0.9$, $x_0=1$, $v_0=0$. Enter $x_2$ to 2 decimal places.
+ANS: 0.46
+EXP: Step 1: $f'(1)=2$, $v_1=0.9\cdot0+2=2$, $x_1=1-0.1\cdot2=0.8$.
+Step 2: $f'(0.8)=1.6$, $v_2=0.9\cdot2+1.6=3.4$, $x_2=0.8-0.1\cdot3.4=0.46$.
+Plain gradient descent would give $x_2=0.8\cdot0.8=0.64$; the stored velocity makes momentum move further along a consistent direction.
+
+
+@ calc m calc-m-061
+T: Learning rate that solves a quadratic in one step
+S: gradient-descent
+Q: Gradient descent on $f(x)=5x^2$. Which fixed learning rate $\eta$ reaches the minimiser $x=0$ in exactly one step from every starting point?
+A: $0.2$
+B: $0.05$
+C: $0.1$
+D: $10$
+ANS: C
+EXP: $f'(x)=10x$, so $x_1=x_0-10\eta x_0=(1-10\eta)x_0$.
+This is $0$ for every $x_0$ exactly when $\eta=\frac1{10}=\frac{1}{f''}$, which is Newton's step.
+$0.2=\frac2{f''}$ is the edge of stability: $x_1=-x_0$, so it oscillates forever. $0.05$ converges but only halves the error each step.
+
+
+@ calc m calc-m-062
+T: Iterations to reach a tolerance
+S: gradient-descent
+TYPE: nat
+TOL: 0
+Q: Gradient descent on $f(x)=x^2$ with learning rate $\eta=0.25$ starts at $x_0=1$. What is the smallest $t$ with $|x_t|<0.01$? Enter $t$.
+ANS: 7
+EXP: $x_{t+1}=x_t-0.25\cdot2x_t=0.5\,x_t$, so $x_t=0.5^t$.
+$0.5^6=0.015625\ge0.01$ and $0.5^7=0.0078125<0.01$, so $t=7$.
+This is linear convergence: the error shrinks by a constant factor $|1-\eta f''|$ each step, so the steps needed grow like $\log(1/\varepsilon)$.
+
+
+@ calc m calc-m-063
+T: Stable step size on a 2-D quadratic
+S: gradient-descent
+Q: Gradient descent with fixed step $\eta>0$ on $f(x,y)=3x^2+y^2$ converges from every starting point if and only if:
+A: $0<\eta<1$
+B: $0<\eta<\frac23$
+C: $0<\eta<\frac16$
+D: $0<\eta<\frac13$
+ANS: D
+EXP: The Hessian is $\operatorname{diag}(6,2)$, and the updates decouple: $x\leftarrow(1-6\eta)x$, $y\leftarrow(1-2\eta)y$.
+Both factors need $|1-\lambda\eta|<1$, i.e. $\eta<\frac2\lambda$. The binding one is the largest eigenvalue $L=6$: $\eta<\frac26=\frac13$.
+$\eta<1$ uses the smallest eigenvalue $2$, which lets $x$ diverge. $\eta<\frac23$ uses the coefficient $3$ instead of the curvature $6$. $\eta<\frac16=\frac1L$ is sufficient but not necessary.
+
+
+@ calc m calc-m-064
+T: One SGD step on a single example
+S: gradient-descent
+Q: Linear model $\hat y=wx$ with per-example loss $(wx-y)^2$. One SGD step on the example $(x,y)=(2,3)$ from $w=0$ with learning rate $\eta=0.05$ gives:
+A: $w=0.3$
+B: $w=-0.6$
+C: $w=0.6$
+D: $w=0.15$
+ANS: C
+EXP: $\dfrac{d}{dw}(wx-y)^2=2(wx-y)\,x=2(0-3)(2)=-12$.
+$w\leftarrow0-0.05\cdot(-12)=0.6$.
+$0.3$ drops one factor of $2$ (either the $2$ from the square or the input $x=2$ from the chain rule). $-0.6$ steps along the gradient instead of against it.
+
+
+@ calc m calc-m-065
+T: Weight decay as a shrinking factor
+S: gradient-descent
+Q: Gradient descent on $L(w)+\frac{\lambda}{2}\|w\|_2^2$ with learning rate $\eta=0.1$ and $\lambda=0.5$ can be written $w\leftarrow c\,w-\eta\nabla L(w)$. What is $c$?
+A: $0.95$
+B: $0.9$
+C: $0.5$
+D: $1.05$
+ANS: A
+EXP: $\nabla\left(\frac\lambda2\|w\|^2\right)=\lambda w$, so the update is $w-\eta(\nabla L+\lambda w)=(1-\eta\lambda)w-\eta\nabla L$.
+$c=1-0.1\cdot0.5=0.95$: each step shrinks the weights by $5\%$ before the loss gradient acts, hence "weight decay".
+$0.9=1-\eta$ ignores $\lambda$. $1.05$ has the wrong sign and would grow the weights.
+
+
+@ calc h calc-h-062
+T: Gradient descent on an ill-conditioned quadratic
+S: gradient-descent
+TYPE: msq
+Q: Gradient descent with $\eta=0.15$ is run on $f(x,y)=\frac12\left(x^2+10y^2\right)$, starting from $(1,1)$. Which statements are true? More than one may be correct.
+A: The iterates converge to $(0,0)$.
+B: The $y$-coordinate changes sign at every step.
+C: The error in $x$ shrinks faster than the error in $y$.
+D: Any step size $0<\eta<2$ would also converge.
+ANS: A,B
+EXP: Updates decouple: $x\leftarrow(1-\eta)x=0.85\,x$ and $y\leftarrow(1-10\eta)y=-0.5\,y$.
+[[A]] is true: both factors have absolute value below $1$.
+[[B]] is true: the $y$-factor is negative ($-0.5$), so $y$ zig-zags $1,-0.5,0.25,\dots$
+[[C]] is false: $|y|$ shrinks by $0.5$ per step but $|x|$ only by $0.85$. The flat direction (small eigenvalue) is the slow one.
+[[D]] is false: stability needs $\eta<\frac2{L}=\frac2{10}=0.2$; e.g. $\eta=1$ gives $y\leftarrow-9y$. Using the bound $2$ from the small eigenvalue is the trap.
+
+
+@ calc h calc-h-063
+T: Fixed-step subgradient method on |x|
+S: gradient-descent
+Q: Minimise $f(x)=|x|$ with the subgradient method $x_{t+1}=x_t-\eta\operatorname{sign}(x_t)$, fixed $\eta=0.3$, starting from $x_0=1$. What happens?
+A: The iterates converge to $0$.
+B: The iterates eventually cycle between $0.1$ and $-0.2$.
+C: The iterates reach $0$ exactly after finitely many steps.
+D: The iterates diverge.
+ANS: B
+EXP: The step always has length $0.3$, whatever the distance to the minimiser.
+$1\to0.7\to0.4\to0.1\to-0.2\to0.1\to-0.2\to\dots$
+Once near $0$ it overshoots back and forth for ever. On a non-smooth function the subgradient does not shrink near the minimum (unlike $f'(x)=2x$ for $x^2$), so a fixed step cannot converge; one needs a decaying step such as $\eta_t\propto\frac{1}{\sqrt t}$.
+"Converges to $0$" is what one expects from smooth problems. Reaching $0$ exactly would need $x_0$ to be a multiple of $0.3$.
+
+
+@ calc h calc-h-064
+T: Bias in Adam's moving average
+S: gradient-descent
+TYPE: nat
+TOL: 0.001
+Q: Adam keeps $m_t=\beta m_{t-1}+(1-\beta)g_t$ with $m_0=0$ and $\beta=0.9$. If the gradient is constant, $g_t=1$ for all $t$, what is $m_3$ before bias correction? Enter it to 3 decimal places.
+ANS: 0.271
+EXP: $m_1=0.1$, $m_2=0.9\cdot0.1+0.1=0.19$, $m_3=0.9\cdot0.19+0.1=0.271$.
+In general $m_t=(1-\beta^t)g$, here $1-0.9^3=0.271$.
+Because it starts at $0$, the average badly underestimates the true gradient $1$ early on. Adam's bias correction divides by $1-\beta^t$: $\hat m_3=0.271/0.271=1$.
+
+
+@ calc h calc-h-065
+T: Gradient descent on x⁴ needs a small start
+S: gradient-descent
+Q: Gradient descent with fixed $\eta=0.1$ is run on the convex function $f(x)=x^4$. For which starting points $x_0$ does it converge to $0$?
+A: Every real $x_0$, because $f$ is convex
+B: $|x_0|<\sqrt5$
+C: $|x_0|<\sqrt{10}$
+D: $|x_0|<5$
+ANS: B
+EXP: $f'(x)=4x^3$, so $x_{t+1}=x_t-0.4x_t^3=x_t\left(1-0.4x_t^2\right)$.
+If $0<x_t^2<5$, then $|1-0.4x_t^2|<1$, so $|x_{t+1}|<|x_t|$; the iterates stay in the region and shrink to $0$.
+If $x_0^2=5$ the factor is $-1$ and it oscillates; if $x_0^2>5$ the factor exceeds $1$ in size and $|x_t|$ blows up.
+The catch is that $f''(x)=12x^2$ is unbounded, so there is no global smoothness constant $L$ and no single safe step size. Convexity alone does not guarantee convergence of fixed-step gradient descent.
+
+
+@ calc h calc-h-066
+T: Batch size and gradient noise
+S: gradient-descent
+Q: For a scalar parameter, single-example gradients have variance $\sigma^2=4$. A mini-batch gradient averages $B=16$ independently sampled examples. What is its standard deviation, and what batch size halves that standard deviation?
+A: SD $0.5$; batch size $64$
+B: SD $0.5$; batch size $32$
+C: SD $0.25$; batch size $32$
+D: SD $0.125$; batch size $32$
+ANS: A
+EXP: The mean of $B$ independent terms has variance $\dfrac{\sigma^2}{B}=\dfrac4{16}=\dfrac14$, so the SD is $\dfrac{\sigma}{\sqrt B}=\dfrac{2}{4}=0.5$.
+The SD scales as $\frac{1}{\sqrt B}$, so halving it needs $4\times$ the batch: $B=64$.
+Doubling the batch to $32$ only cuts the SD by $\sqrt2$. $0.25$ is the variance, not the SD; $0.125$ divides $\sigma$ by $B$ instead of $\sqrt B$. This square-root law is why huge batches give diminishing returns.
+
+
+@ calc e calc-e-043
+T: Where is x³ − 3x² convex?
+S: convexity
+Q: On which set is $f(x)=x^3-3x^2$ convex?
+A: $x\ge0$
+B: $x\le1$
+C: $x\ge1$
+D: $x\ge2$
+ANS: C
+EXP: A twice-differentiable function is convex where $f''\ge0$.
+$f'(x)=3x^2-6x$, $f''(x)=6x-6\ge0\iff x\ge1$. The inflection point is $x=1$.
+$x\ge2$ uses $f'\ge0$ (where $f$ is increasing), which is a different property. $x\le1$ is where $f$ is concave.
+
+
+@ calc e calc-e-044
+T: The chord lies above a convex function
+S: convexity
+Q: $f$ is convex on $\mathbb R$ with $f(0)=0$ and $f(2)=4$. What can we conclude about $f(1)$?
+A: $f(1)\le2$
+B: $f(1)\ge2$
+C: $f(1)=2$
+D: $f(1)\le1$
+ANS: A
+EXP: Convexity: $f(\lambda a+(1-\lambda)b)\le\lambda f(a)+(1-\lambda)f(b)$.
+With $a=0$, $b=2$, $\lambda=\frac12$: $f(1)\le\frac12\cdot0+\frac12\cdot4=2$. The graph lies on or below the chord.
+Equality need not hold: $f(x)=x^2$ fits the data and has $f(1)=1$, while $f(x)=2x$ has $f(1)=2$. So $f(1)\le1$ is not forced either.
+
+
+@ calc e calc-e-045
+T: Stationary points of convex functions
+S: convexity
+Q: $f:\mathbb R^n\to\mathbb R$ is convex and differentiable, and $\nabla f(x^*)=0$. Then $x^*$ is:
+A: a local minimiser that may not be a global minimiser
+B: a global minimiser
+C: possibly a saddle point
+D: a global maximiser
+ANS: B
+EXP: For a differentiable convex function, $f(y)\ge f(x^*)+\nabla f(x^*)^T(y-x^*)$ for all $y$ (the tangent plane lies below the graph).
+With $\nabla f(x^*)=0$ this gives $f(y)\ge f(x^*)$ for every $y$: a global minimum.
+Convex functions have no saddle points and no spurious local minima. This is why convex losses (linear/logistic regression, SVMs) are reliably solved by gradient methods, unlike neural networks.
+
+
+@ calc e calc-e-046
+T: Convexity of x² + kxy + y²
+S: convexity
+TYPE: nat
+TOL: 0
+Q: $f(x,y)=x^2+kxy+y^2$ is convex exactly when $|k|\le k_{\max}$. Enter $k_{\max}$.
+ANS: 2
+EXP: The Hessian is constant: $H=\begin{pmatrix}2&k\\k&2\end{pmatrix}$, with eigenvalues $2\pm k$.
+$f$ is convex iff $H$ is positive semidefinite: $2-|k|\ge0$, i.e. $|k|\le2$.
+Equivalently $\det H=4-k^2\ge0$ together with the diagonal $2>0$. At $k=2$, $f=(x+y)^2$, convex but flat along $x=-y$.
+
+
+@ calc m calc-m-066
+T: Jensen's inequality for a square root
+S: convexity
+Q: Which inequality holds for every positive random variable $X$ with finite mean?
+A: $E[X^2]\le(E[X])^2$
+B: $E[e^X]\le e^{E[X]}$
+C: $E[\sqrt X]\le\sqrt{E[X]}$
+D: $E[1/X]\le1/E[X]$
+ANS: C
+EXP: Jensen: for convex $\varphi$, $E[\varphi(X)]\ge\varphi(E[X])$; for concave $\varphi$ the inequality reverses.
+$\sqrt x$ is concave, so $E[\sqrt X]\le\sqrt{E[X]}$. Example: $X=1$ or $9$ with equal chance gives $2\le\sqrt5$.
+The others are all convex functions, so the inequalities go the other way. With the same $X$: $E[X^2]=41>25$; $E[1/X]=\frac59>\frac15$; and $E[e^X]>e^{E[X]}$.
+$E[X^2]\ge(E[X])^2$ is just $\operatorname{Var}(X)\ge0$.
+
+
+@ calc m calc-m-067
+T: Operations that preserve convexity
+S: convexity
+TYPE: msq
+Q: $f$ and $g$ are convex functions on $\mathbb R$. Which of the following must also be convex? More than one may be correct.
+A: $f+g$
+B: $\max(f,g)$
+C: $f\cdot g$
+D: $g\circ f$, i.e. $g(f(x))$
+ANS: A,B
+EXP: [[A]]: a sum of convex functions is convex (add the two chord inequalities).
+[[B]]: a pointwise maximum of convex functions is convex (its epigraph is the intersection of convex sets). The hinge loss $\max(0,1-m)$ and ReLU are examples.
+[[C]] fails: $f(x)=x$ and $g(x)=x^2$ are convex but $x^3$ is not.
+[[D]] fails: $g(t)=-t$ is convex (linear) and $f(x)=x^2$ is convex, but $g(f(x))=-x^2$ is concave. Composition needs $g$ convex and non-decreasing.
+
+
+@ calc m calc-m-068
+T: Strong convexity constant of a quadratic
+S: convexity
+Q: $f(x,y)=3x^2+2xy+3y^2$ is $\mu$-strongly convex, meaning $\nabla^2f\succeq\mu I$. What is the largest such $\mu$?
+A: $6$
+B: $4$
+C: $8$
+D: $2$
+ANS: B
+EXP: $\nabla^2f=\begin{pmatrix}6&2\\2&6\end{pmatrix}$, eigenvalues $6\pm2$: $8$ and $4$.
+The largest $\mu$ with $H-\mu I\succeq0$ is the smallest eigenvalue, $\mu=4$. The largest eigenvalue, $L=8$, is the smoothness constant, and $\kappa=L/\mu=2$.
+$6$ reads off the diagonal and ignores the coupling term; $2$ is the off-diagonal entry or the coefficient $2xy$.
+
+
+@ calc m calc-m-069
+T: When is |x|^p convex?
+S: convexity
+Q: For which $p>0$ is $f(x)=|x|^p$ convex on all of $\mathbb R$?
+A: $p\ge1$
+B: $p\ge2$
+C: every $p>0$
+D: $0<p\le1$
+ANS: A
+EXP: For $x>0$, $f''(x)=p(p-1)x^{p-2}$, which is $\ge0$ iff $p\ge1$; by symmetry the same holds for $x<0$.
+At $x=0$: for $p\ge1$, $f$ has a minimum there and stays above its supporting line $0$, so convexity holds across $0$ too ($p=1$ gives $|x|$, convex but not differentiable).
+For $p<1$, e.g. $|x|^{1/2}$: $f(1)=1$ but the chord from $0$ to $4$ gives $\frac14\cdot2=0.5$ at $x=1$, below the graph, so it is not convex.
+$p\ge2$ is too strict: $|x|^{1.5}$ is convex. This is why $\ell_p$ norms are convex only for $p\ge1$.
+
+
+@ calc m calc-m-070
+T: Convex but not strictly convex
+S: convexity
+Q: The function $f(x,y)=e^{x+y}$ on $\mathbb R^2$ is:
+A: strictly convex
+B: concave
+C: neither convex nor concave
+D: convex but not strictly convex
+ANS: D
+EXP: $\nabla^2f=e^{x+y}\begin{pmatrix}1&1\\1&1\end{pmatrix}$, with eigenvalues $2e^{x+y}$ and $0$: positive semidefinite, so $f$ is convex.
+It is not strictly convex: along the line $x+y=0$, $f\equiv1$ is constant, so chords on that line touch the graph.
+A singular PSD Hessian is the warning sign. The usual guess "exponential, so strictly convex" holds for $e^x$ in one variable, not for $e^{x+y}$ in two.
+
+
+@ calc h calc-h-067
+T: Convexity of x⁴ + y⁴
+S: convexity
+TYPE: msq
+Q: Consider $f(x,y)=x^4+y^4$. Which statements are true? More than one may be correct.
+A: $f$ is convex.
+B: $f$ is strictly convex.
+C: The Hessian of $f$ is positive definite at every point.
+D: $f$ is strongly convex (for some $\mu>0$, $\nabla^2f\succeq\mu I$ everywhere).
+ANS: A,B
+EXP: $\nabla^2f=\begin{pmatrix}12x^2&0\\0&12y^2\end{pmatrix}\succeq0$, so [[A]] is true.
+[[B]] is true: $t\mapsto t^4$ is strictly convex on $\mathbb R$, and a sum of strictly convex functions of separate coordinates is strictly convex.
+[[C]] is false: at the origin (and anywhere on an axis) the Hessian is singular. A positive definite Hessian is sufficient for strict convexity but not necessary.
+[[D]] is false: the smallest eigenvalue $12\min(x^2,y^2)$ goes to $0$ near the axes. So gradient descent on $x^4$ converges only sublinearly near $0$.
+
+
+@ calc h calc-h-068
+T: Which loss is not convex in the weights?
+S: convexity
+Q: For a fixed example $(x,y)$, which loss is NOT convex in $w$? ($\sigma$ is the sigmoid, $y\in\{0,1\}$ for the last one and $y\in\{-1,+1\}$ for the first two.)
+A: Hinge loss $\max(0,\ 1-y\,w^Tx)$
+B: Logistic loss $\log\left(1+e^{-y\,w^Tx}\right)$
+C: $(w^Tx-y)^2+\lambda\|w\|^2$ with $\lambda>0$
+D: Squared error on a sigmoid output, $\left(\sigma(w^Tx)-y\right)^2$
+ANS: D
+EXP: Hinge: a max of two affine functions of $w$, so convex. Logistic: $t\mapsto\log(1+e^{-t})$ has second derivative $\sigma(t)(1-\sigma(t))>0$, and it is applied to a linear function of $w$, so convex. Ridge: a convex quadratic plus a strictly convex one.
+For the sigmoid-squared loss take one dimension, $x=1$, $y=0$: $g(w)=\sigma(w)^2$, $g''(w)=2\sigma\sigma'(2-3\sigma)$, which is negative when $\sigma(w)>\frac23$. So it is not convex.
+This is why logistic regression is trained with cross-entropy, not MSE on probabilities: the composition of a convex loss with a non-linear sigmoid need not be convex.
+
+
+@ calc h calc-h-069
+T: Convex in each variable but not jointly
+S: convexity
+Q: Which describes $f(x,y)=x^2+4xy+y^2$?
+A: Convex in $x$ for fixed $y$ and in $y$ for fixed $x$, but not convex jointly
+B: Jointly convex on $\mathbb R^2$
+C: Concave on $\mathbb R^2$
+D: Not convex on $\mathbb R^2$, but convex on the quadrant $x,y\ge0$
+ANS: A
+EXP: In $x$ alone, $f=x^2+(4y)x+y^2$ has second derivative $2>0$; the same holds in $y$. So $f$ is convex in each variable separately.
+Jointly: $\nabla^2f=\begin{pmatrix}2&4\\4&2\end{pmatrix}$, eigenvalues $6$ and $-2$: indefinite. Along $x=-y=t$, $f=-2t^2$, so the origin is a saddle.
+On the quadrant: the Hessian is the same constant indefinite matrix, so $f$ is not convex there either (e.g. on the segment from $(1,0)$ to $(0,1)$, $f=1+2t-2t^2$ in the parameter, which is concave).
+Checking only $f_{xx}$ and $f_{yy}$ is the trap; the cross term matters. Alternating minimisation exploits per-variable convexity, but it does not make the joint problem convex.
+
+
+@ calc h calc-h-070
+T: Convexity of e^x + ax²
+S: convexity
+Q: For which real $a$ is $f(x)=e^x+ax^2$ convex on all of $\mathbb R$?
+A: $a\ge-\frac12$
+B: every real $a$
+C: $a\ge0$
+D: $a\ge\frac12$
+ANS: C
+EXP: $f''(x)=e^x+2a$ must be $\ge0$ for every $x$.
+$\inf_xe^x=0$ (approached as $x\to-\infty$, never reached), so we need $2a\ge0$, i.e. $a\ge0$.
+If $a<0$, then for $x<\ln(-2a)$ we get $e^x<-2a$ and $f''(x)<0$.
+$a\ge-\frac12$ checks $f''\ge0$ only at $x=0$; e.g. $a=-\frac14$ gives $f''(-2)=e^{-2}-\frac12<0$.
+
+
+@ calc h calc-h-071
+T: Quadratic-over-linear function
+S: convexity
+Q: The function $f(x,y)=\dfrac{x^2}{y}$ on the half-plane $y>0$ is:
+A: concave
+B: convex
+C: neither convex nor concave
+D: convex only where $x>0$
+ANS: B
+EXP: $f_{xx}=\dfrac2y$, $f_{xy}=-\dfrac{2x}{y^2}$, $f_{yy}=\dfrac{2x^2}{y^3}$.
+So $\nabla^2f=\dfrac{2}{y^3}\begin{pmatrix}y^2&-xy\\-xy&x^2\end{pmatrix}=\dfrac{2}{y^3}\begin{pmatrix}y\\-x\end{pmatrix}\begin{pmatrix}y&-x\end{pmatrix}$, a positive multiple of an outer product $vv^T$.
+Hence it is positive semidefinite (determinant $0$, trace $>0$) and $f$ is convex on $y>0$.
+The negative cross term $f_{xy}$ makes it look non-convex, but definiteness depends on the whole matrix, and the sign of $x$ plays no role. This function underlies the convexity of the perspective function and of $\frac{\|x\|^2}{t}$ terms in optimisation.
+
+
+@ calc e calc-e-047
+T: The Lagrange condition
+S: constrained-optimization
+Q: At a local minimiser $x^*$ of $f(x)$ subject to the single equality constraint $g(x)=0$ (with $\nabla g(x^*)\ne0$), which condition must hold?
+A: $\nabla f(x^*)=0$ and $g(x^*)=0$
+B: $\nabla f(x^*)=\lambda\nabla g(x^*)$ for some scalar $\lambda$, and $g(x^*)=0$
+C: $\nabla f(x^*)$ is perpendicular to $\nabla g(x^*)$
+D: $\nabla g(x^*)=0$
+ANS: B
+EXP: At a constrained optimum you cannot decrease $f$ by moving along the constraint surface, so $\nabla f$ has no component tangent to it. That means $\nabla f$ is parallel to the normal $\nabla g$: $\nabla f=\lambda\nabla g$.
+Together with feasibility $g(x^*)=0$ these are the stationarity conditions of $\mathcal L=f-\lambda g$.
+$\nabla f=0$ is the unconstrained condition; on a constraint the gradient usually is not zero. "Perpendicular" has it backwards: $\nabla f$ is perpendicular to the constraint surface, i.e. parallel to $\nabla g$.
+
+
+@ calc e calc-e-048
+T: Closest point to the origin on a line
+S: constrained-optimization
+Q: What is the minimum of $x^2+y^2$ subject to $x+y=2$?
+A: $1$
+B: $4$
+C: $\sqrt2$
+D: $2$
+ANS: D
+EXP: Lagrange: $\mathcal L=x^2+y^2-\lambda(x+y-2)$. Then $2x=\lambda$ and $2y=\lambda$, so $x=y$, and $x+y=2$ gives $x=y=1$.
+Minimum value $1^2+1^2=2$.
+$\sqrt2$ is the distance from the origin, not the squared distance. $4$ is the value at the point $(2,0)$, which is on the line but not the closest point.
+
+
+@ calc e calc-e-049
+T: The KKT conditions
+S: constrained-optimization
+TYPE: msq
+Q: For the problem: minimise $f(x)$ subject to $g(x)\le0$, with Lagrangian $\mathcal L=f+\mu g$, which of the following are KKT conditions at an optimum $x^*$ (under the usual regularity assumptions)? More than one may be correct.
+A: $\nabla f(x^*)+\mu\nabla g(x^*)=0$
+B: $\mu\ge0$
+C: $\mu\,g(x^*)=0$
+D: $g(x^*)=0$
+ANS: A,B,C
+EXP: The KKT conditions are stationarity [[A]], dual feasibility [[B]], complementary slackness [[C]], and primal feasibility $g(x^*)\le0$.
+[[D]] is not required: the constraint may be inactive. Example: minimise $x^2$ subject to $x-5\le0$; the optimum $x^*=0$ has $g(0)=-5<0$, and complementary slackness then forces $\mu=0$.
+In SVMs, complementary slackness is why only the support vectors (active constraints) get non-zero multipliers.
+
+
+@ calc e calc-e-050
+T: The multiplier as a shadow price
+S: constrained-optimization
+Q: We maximise $f(x)$ subject to $g(x)=c$, using $\mathcal L=f-\lambda\,(g-c)$, and find the optimal multiplier $\lambda^*=3$. If $c$ is increased by $0.1$, the optimal value changes by approximately:
+A: $+0.3$
+B: $+3$
+C: $+0.03$
+D: $+30$
+ANS: A
+EXP: The multiplier is the sensitivity of the optimal value to the constraint level: $\dfrac{df^*}{dc}=\lambda^*$.
+So $\Delta f^*\approx\lambda^*\,\Delta c=3\times0.1=0.3$.
+$+3$ ignores the size of the change in $c$. This "shadow price" reading is used in economics and in sensitivity analysis of constrained models.
+
+
+@ calc m calc-m-071
+T: Maximise x + y on a circle
+S: constrained-optimization
+Q: What is the maximum of $x+y$ subject to $x^2+y^2=8$?
+A: $4$
+B: $2\sqrt2$
+C: $8$
+D: $4\sqrt2$
+ANS: A
+EXP: $\mathcal L=x+y-\lambda(x^2+y^2-8)$: $1=2\lambda x$ and $1=2\lambda y$, so $x=y$.
+Then $2x^2=8$, $x=\pm2$. The maximum is at $(2,2)$: $x+y=4$ (the point $(-2,-2)$ gives the minimum $-4$).
+Cauchy-Schwarz agrees: $x+y\le\sqrt2\sqrt{x^2+y^2}=\sqrt2\cdot2\sqrt2=4$.
+$2\sqrt2$ is the radius; $4\sqrt2$ takes $x=y=2\sqrt2$, which is off the circle.
+
+
+@ calc m calc-m-072
+T: Cheapest design with a fixed product
+S: constrained-optimization
+Q: Minimise the cost $2x+3y$ subject to $xy=24$ with $x,y>0$. What is the minimum cost?
+A: $26$
+B: $24$
+C: $30$
+D: $12$
+ANS: B
+EXP: $\mathcal L=2x+3y-\lambda(xy-24)$: $2=\lambda y$ and $3=\lambda x$, so $\frac{2}{3}=\frac{y}{x}$, i.e. $2x=3y$.
+With $xy=24$: $x=6$, $y=4$, cost $12+12=24$.
+At the optimum the two cost terms are equal, as AM-GM predicts: $2x+3y\ge2\sqrt{6xy}=2\sqrt{144}=24$.
+$26$ swaps the allocation to $x=4$, $y=6$ ($8+18$). $30$ is the cost at $x=12$, $y=2$, feasible but not optimal.
+
+
+@ calc m calc-m-073
+T: Distance from the origin to a plane
+S: constrained-optimization
+TYPE: nat
+TOL: 0
+Q: Minimise $\sqrt{x^2+y^2+z^2}$ subject to $x+2y+2z=9$. Enter the minimum distance.
+ANS: 3
+EXP: Minimise the square $x^2+y^2+z^2$ instead (same minimiser). $\mathcal L=x^2+y^2+z^2-\lambda(x+2y+2z-9)$ gives $(x,y,z)=\frac\lambda2(1,2,2)$.
+The constraint: $\frac\lambda2(1+4+4)=9$, so $\frac\lambda2=1$ and the point is $(1,2,2)$.
+Distance $\sqrt{1+4+4}=3$, matching $\dfrac{|9|}{\|(1,2,2)\|}=\dfrac93$.
+Entering $9$ gives the squared distance, not the distance.
+
+
+@ calc m calc-m-074
+T: KKT multiplier for an active constraint
+S: constrained-optimization
+TYPE: nat
+TOL: 0
+Q: Minimise $(x-5)^2$ subject to $x\le3$, with Lagrangian $\mathcal L=(x-5)^2+\mu(x-3)$ and $\mu\ge0$. Enter the optimal multiplier $\mu^*$.
+ANS: 4
+EXP: The unconstrained minimiser $x=5$ is infeasible, so the constraint is active: $x^*=3$.
+Stationarity: $2(x-5)+\mu=0$ at $x=3$ gives $-4+\mu=0$, so $\mu^*=4\ge0$ (dual feasible).
+Complementary slackness holds since $x^*-3=0$. The multiplier measures how hard the constraint pushes: relaxing it to $x\le3+\delta$ lowers the optimum by about $4\delta$.
+Getting $-4$ means the sign convention was flipped; with $\mathcal L=f+\mu g$ and $g\le0$, the multiplier must be non-negative.
+
+
+@ calc m calc-m-075
+T: Minimising over a box by clipping
+S: constrained-optimization
+Q: Minimise $(x-3)^2+(y-1)^2$ subject to $0\le x\le2$ and $0\le y\le2$.
+A: $(3,1)$
+B: $(2,2)$
+C: $(2,1)$
+D: $(1,1)$
+ANS: C
+EXP: The objective and the box both split into separate problems for $x$ and $y$.
+$x$: minimise $(x-3)^2$ on $[0,2]$; the free minimiser $3$ is outside, so clip to $x=2$.
+$y$: minimise $(y-1)^2$ on $[0,2]$; the free minimiser $1$ is inside, so $y=1$.
+Answer $(2,1)$, value $1$. This is exactly the Euclidean projection of $(3,1)$ onto the box, the step used in projected gradient descent.
+$(3,1)$ is infeasible; $(2,2)$ clips both coordinates, though only $x$ violates the box.
+
+
+@ calc h calc-h-072
+T: Maximise xy on an ellipse
+S: constrained-optimization
+Q: Maximise $xy$ subject to $\dfrac{x^2}{8}+\dfrac{y^2}{2}=1$.
+A: $4$
+B: $\sqrt2$
+C: $1$
+D: $2$
+ANS: D
+EXP: $\mathcal L=xy-\lambda\left(\frac{x^2}{8}+\frac{y^2}{2}-1\right)$: $y=\frac{\lambda x}{4}$ and $x=\lambda y$.
+Multiply the first equation by $x$ and the second by $y$: $xy=\frac{\lambda x^2}{4}$ and $xy=\lambda y^2$. So $\frac{x^2}{4}=y^2$ ($\lambda\ne0$ at the maximum), i.e. $\frac{x^2}{8}=\frac{y^2}{2}$.
+Each term is then $\frac12$: $x^2=4$, $y^2=1$, and the maximum $xy=2\cdot1=2$.
+Shortcut: with $u=\frac{x}{2\sqrt2}$, $v=\frac{y}{\sqrt2}$, $xy=4uv\le4\cdot\frac{u^2+v^2}{2}=2$.
+$4$ takes $x=2\sqrt2$, $y=\sqrt2$ (both semi-axes at once), which is not on the ellipse.
+
+
+@ calc h calc-h-073
+T: Lagrange dual of a one-variable problem
+S: constrained-optimization
+Q: For the problem minimise $x^2$ subject to $x\ge1$, form $\mathcal L(x,\mu)=x^2+\mu(1-x)$ with $\mu\ge0$. What is the dual function $q(\mu)=\min_x\mathcal L(x,\mu)$?
+A: $\mu^2/4-\mu$
+B: $\mu-\mu^2/2$
+C: $\mu-\mu^2/4$
+D: $\mu-\mu^2$
+ANS: C
+EXP: For fixed $\mu$, minimise over $x$: $\partial_x\mathcal L=2x-\mu=0$, so $x=\frac\mu2$.
+$q(\mu)=\frac{\mu^2}{4}+\mu\left(1-\frac\mu2\right)=\mu-\frac{\mu^2}{4}$.
+The dual problem maximises $q$: $q'(\mu)=1-\frac\mu2=0$ at $\mu^*=2$, giving $q^*=1$, which equals the primal optimum $p^*=1$ at $x=1$ (strong duality for this convex problem).
+$\mu-\mu^2/2$ comes from plugging in $x=\mu$ (forgetting the $\frac12$). $\mu^2/4-\mu$ has the sign flipped and would be maximised at $\mu=0$. The SVM is trained through exactly this kind of dual.
+
+
+@ calc h calc-h-074
+T: KKT with two active constraints
+S: constrained-optimization
+Q: Minimise $(x-3)^2+(y+1)^2$ subject to $g_1=x+y-2\le0$ and $g_2=-y\le0$, with $\mathcal L=f+\mu_1g_1+\mu_2g_2$. Which gives the optimal point and multipliers?
+A: $(2,0)$ with $\mu_1=2$, $\mu_2=4$
+B: $(2,0)$ with $\mu_1=2$, $\mu_2=0$
+C: $(3,-1)$ with $\mu_1=\mu_2=0$
+D: $(2,0)$ with $\mu_1=2$, $\mu_2=-4$
+ANS: A
+EXP: The free minimiser $(3,-1)$ violates $y\ge0$. On $y=0$: minimise $(x-3)^2+1$ with $x\le2$, giving $(2,0)$, value $2$. On $x+y=2$: $f=(1+y)^2+(y+1)^2=2(1+y)^2$ is smallest at $y=0$, again $(2,0)$. So $x^*=(2,0)$ with both constraints active.
+Stationarity: $\nabla f=(2(x-3),\,2(y+1))=(-2,2)$, $\nabla g_1=(1,1)$, $\nabla g_2=(0,-1)$.
+$x$: $-2+\mu_1=0\Rightarrow\mu_1=2$. $y$: $2+\mu_1-\mu_2=0\Rightarrow\mu_2=4$. Both $\ge0$, so KKT holds.
+$\mu_2=0$ treats $y\ge0$ as inactive, but then the $y$-equation $2+2=0$ fails. $\mu_2=-4$ has the sign convention wrong. $(3,-1)$ is infeasible.
+
+
+@ calc h calc-h-075
+T: Entropy-regularised choice gives softmax
+S: constrained-optimization
+Q: For scores $z\in\mathbb R^n$, maximise $\displaystyle\sum_ip_iz_i-\sum_ip_i\ln p_i$ over probability vectors $p$ ($p_i\ge0$, $\sum_ip_i=1$). Which gives the maximiser and the maximum value?
+A: $p=\operatorname{softmax}(z)$, maximum $\max_iz_i$
+B: $p=\operatorname{softmax}(z)$, maximum $\ln\sum_ie^{z_i}$
+C: $p$ one-hot at $\arg\max_iz_i$, maximum $\max_iz_i$
+D: $p$ uniform, maximum $\frac1n\sum_iz_i+\ln n$
+ANS: B
+EXP: $\mathcal L=\sum_ip_iz_i-\sum_ip_i\ln p_i-\lambda\left(\sum_ip_i-1\right)$.
+$\partial/\partial p_i$: $z_i-\ln p_i-1-\lambda=0$, so $p_i\propto e^{z_i}$; normalising gives $p=\operatorname{softmax}(z)$ (all $p_i>0$, so the constraints $p_i\ge0$ are inactive).
+Value: $\ln p_i=z_i-\ln Z$ with $Z=\sum_je^{z_j}$, so $\sum_ip_iz_i-\sum_ip_i(z_i-\ln Z)=\ln Z$.
+The one-hot answer is right without the entropy term; the entropy smooths it. So log-sum-exp is a smooth max, and softmax is its gradient. $\max_iz_i$ is only a lower bound on $\ln Z$.

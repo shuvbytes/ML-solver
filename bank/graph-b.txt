@@ -1,0 +1,1056 @@
+@ graph e graph-e-028
+T: Which vertex can start a topological order
+S: dag-toposort
+Q: A DAG has edges $P\to Q$, $P\to R$, $S\to R$, $Q\to T$, $R\to T$. Which vertex can be placed first in some topological order?
+A: $Q$
+B: $R$
+C: $S$
+D: $T$
+ANS: C
+EXP: The first vertex of a topological order must have in-degree $0$: nothing may need to come before it.
+In-degrees: $P:0$, $S:0$, $Q:1$, $R:2$, $T:2$. So only $P$ or $S$ can start; of the options, $S$.
+$T$ has out-degree $0$, so it is a vertex that can come last, not first.
+
+@ graph e graph-e-029
+T: Sources and sinks in every DAG
+S: dag-toposort
+Q: Which statement is true for every finite DAG with at least one vertex?
+A: It has exactly one vertex of in-degree $0$
+B: It has at least one vertex of in-degree $0$ and at least one vertex of out-degree $0$
+C: It has exactly one topological order
+D: It has a vertex with an edge to every other vertex
+ANS: B
+EXP: Follow edges forward from any vertex. With no cycles a vertex can never repeat, and the graph is finite, so the walk stops at a vertex with out-degree $0$ (a sink). Following edges backwards gives a vertex of in-degree $0$ (a source).
+There can be several sources: the DAG with two vertices and no edges has two, and it also has two topological orders. That is why "exactly one" fails in both places.
+
+@ graph e graph-e-030
+T: Checking a proposed topological order
+S: dag-toposort
+Q: A DAG has edges $1\to2$, $1\to3$, $2\to4$, $3\to4$, $4\to5$. Which sequence is a valid topological order?
+A: $1,2,4,3,5$
+B: $2,1,3,4,5$
+C: $1,3,2,4,5$
+D: $1,2,3,5,4$
+ANS: C
+EXP: A topological order needs $u$ before $v$ for every edge $u\to v$.
+$1,3,2,4,5$: $1$ is before $2$ and $3$, both are before $4$, and $4$ is before $5$. Valid.
+$1,2,4,3,5$ puts $4$ before $3$ (breaks $3\to4$). $2,1,\dots$ breaks $1\to2$. $1,2,3,5,4$ breaks $4\to5$.
+
+@ graph e graph-e-031
+T: Maximum edges in a DAG
+S: dag-toposort
+Q: A simple directed graph on 6 vertices has no directed cycle, and at most one edge between any pair of vertices. What is the largest number of edges it can have?
+A: $30$
+B: $5$
+C: $36$
+D: $15$
+ANS: D
+EXP: Fix a topological order $v_1,\dots,v_6$. Every edge must go forward in this order, so there is at most one edge per unordered pair: at most $\binom62=15$.
+Taking every forward edge $v_i\to v_j$ ($i<j$) reaches $15$ and has no cycle.
+$30=6\cdot5$ counts both directions of each pair, which would create 2-cycles. $5$ is the edge count of a tree, not a bound for DAGs.
+
+@ graph e graph-e-032
+T: Counting connected components
+S: connectivity
+Q: An undirected graph has vertices $1,2,\dots,9$ and edges $\{1,2\},\{2,3\},\{4,5\},\{6,7\},\{7,8\},\{8,6\}$. How many connected components does it have?
+A: $4$
+B: $3$
+C: $6$
+D: $5$
+ANS: A
+EXP: Group vertices that are joined by paths: $\{1,2,3\}$, $\{4,5\}$, $\{6,7,8\}$, and $\{9\}$ on its own.
+That is $4$ components. The easy slip is to forget vertex $9$: an isolated vertex is a component by itself, which gives the wrong count $3$.
+
+@ graph e graph-e-033
+T: Finding the bridge
+S: connectivity
+Q: An undirected graph has edges $\{A,B\},\{B,C\},\{C,A\},\{C,D\},\{D,E\},\{E,F\},\{F,D\}$. Which edge is a bridge (its removal disconnects the graph)?
+A: $\{A,B\}$
+B: $\{D,E\}$
+C: $\{B,C\}$
+D: $\{C,D\}$
+ANS: D
+EXP: An edge is a bridge exactly when it lies on no cycle.
+The graph is two triangles $ABC$ and $DEF$ joined by the single edge $\{C,D\}$. Every triangle edge lies on its triangle, so removing it leaves the triangle's vertices connected by the other two edges.
+Removing $\{C,D\}$ separates $\{A,B,C\}$ from $\{D,E,F\}$, so it is the only bridge.
+
+@ graph e graph-e-034
+T: Drawing the house without lifting the pen
+S: connectivity
+Q: The "house" graph has a square $A-B-C-D-A$ (edges $\{A,B\},\{B,C\},\{C,D\},\{D,A\}$) and a roof vertex $E$ joined to $A$ and $B$. Which is true?
+A: It has an Euler circuit
+B: It has an Euler path but no Euler circuit
+C: It has neither an Euler path nor an Euler circuit
+D: It has an Euler path only if we start at $E$
+ANS: B
+EXP: Degrees: $A=3$, $B=3$, $C=2$, $D=2$, $E=2$. The graph is connected.
+Euler's rule: a connected graph has an Euler circuit iff every degree is even, and an Euler path (open trail using every edge once) iff exactly $0$ or $2$ degrees are odd.
+Here exactly two ($A$ and $B$) are odd, so there is an Euler path, and it must start at one of $A$, $B$ and end at the other. There is no circuit. Starting at $E$ (even degree) cannot work.
+
+@ graph e graph-e-035
+T: Edges needed to connect components
+S: connectivity
+TYPE: nat
+TOL: 0
+Q: A simple undirected graph on 12 vertices has exactly 4 connected components. What is the minimum number of edges that must be added to make it connected? Enter an integer.
+ANS: 3
+EXP: Each new edge can join at most two components into one, so it lowers the component count by at most $1$.
+Going from $4$ components to $1$ needs at least $4-1=3$ edges, and 3 edges suffice: link one vertex of component 1 to each of the other three components.
+The number of vertices (12) does not matter.
+
+@ graph e graph-e-036
+T: Which digraph is strongly connected
+S: connectivity
+Q: Which directed graph on vertices $\{P,Q,R\}$ is strongly connected (every vertex can reach every other)?
+A: $P\to Q$, $Q\to R$, $P\to R$
+B: $P\to Q$, $Q\to P$, $Q\to R$
+C: $P\to Q$, $Q\to R$, $R\to P$
+D: $R\to P$, $P\to Q$, $R\to Q$
+ANS: C
+EXP: The directed cycle $P\to Q\to R\to P$ lets any vertex reach any other by going round the cycle, so it is strongly connected.
+In $P\to Q, Q\to R, P\to R$ nothing leaves $R$. In $P\to Q, Q\to P, Q\to R$ again nothing leaves $R$. In $R\to P, P\to Q, R\to Q$ nothing enters $R$.
+A useful test: a strongly connected digraph (with $\ge2$ vertices) has no vertex of in-degree $0$ or out-degree $0$.
+
+@ graph e graph-e-037
+T: Chromatic number of a tree
+S: matching-coloring
+Q: What is the chromatic number of a tree with at least 2 vertices?
+A: $2$
+B: $1$
+C: the maximum degree plus $1$
+D: the number of vertices
+ANS: A
+EXP: A tree has no cycles at all, so in particular no odd cycles: it is bipartite. Colour vertices by the parity of their distance from any chosen root, and every edge joins the two colours.
+It has at least one edge, so one colour is not enough. Hence $\chi=2$.
+"Max degree plus one" is the greedy upper bound, which is far from tight for a star like $K_{1,5}$.
+
+@ graph e graph-e-038
+T: Maximum matching in a path
+S: matching-coloring
+TYPE: nat
+TOL: 0
+Q: The path $P_7$ has 7 vertices $v_1,\dots,v_7$ and edges $\{v_i,v_{i+1}\}$ for $i=1,\dots,6$. What is the size of a maximum matching (largest set of edges with no shared endpoint)? Enter an integer.
+ANS: 3
+EXP: Take $\{v_1,v_2\},\{v_3,v_4\},\{v_5,v_6\}$: three disjoint edges.
+A matching of size $k$ covers $2k$ distinct vertices, and there are only $7$, so $k\le\lfloor7/2\rfloor=3$.
+So the maximum is $3$, not the edge count $6$. Vertex $v_7$ is left uncovered: an odd number of vertices never has a perfect matching.
+
+@ graph e graph-e-039
+T: Which graph has a perfect matching
+S: matching-coloring
+Q: Which graph has a perfect matching (a matching that covers every vertex)?
+A: the cycle $C_5$
+B: the cycle $C_6$
+C: the star $K_{1,3}$
+D: the complete bipartite graph $K_{2,4}$
+ANS: B
+EXP: $C_6$ with vertices $1,\dots,6$ in order: the edges $\{1,2\},\{3,4\},\{5,6\}$ cover every vertex once.
+$C_5$ has 5 vertices, an odd number, so no perfect matching exists.
+$K_{1,3}$ has 4 vertices, but every edge uses the centre, so at most one edge can be chosen.
+$K_{2,4}$ has 6 vertices, but every edge uses one of the 2 vertices on the small side, so a matching has at most 2 edges. Having an even number of vertices is necessary, not sufficient.
+
+@ graph e graph-e-040
+T: Colours needed for any planar graph
+S: matching-coloring
+Q: What is the smallest $k$ such that every planar graph can be properly vertex-coloured with $k$ colours?
+A: $3$
+B: $5$
+C: $4$
+D: there is no such $k$
+ANS: C
+EXP: The Four Colour Theorem: every planar graph has $\chi\le4$.
+$4$ is needed: $K_4$ is planar (draw a triangle with one vertex inside joined to all three corners) and needs 4 colours.
+$5$ is the easy Five Colour Theorem bound, true but not the smallest. $3$ fails because of $K_4$.
+
+@ graph e graph-e-041
+T: Facts about adjacency eigenvalues
+S: spectral
+TYPE: msq
+Q: $A$ is the adjacency matrix of a simple undirected graph with at least one edge. Which statements are always true? (More than one option may be correct.)
+A: All eigenvalues of $A$ are real
+B: The eigenvalues of $A$ sum to $0$
+C: All eigenvalues of $A$ are non-negative
+D: The number of eigenvalues (with multiplicity) equals the number of edges
+ANS: A,B
+EXP: $A$ is real and symmetric, so by the spectral theorem its eigenvalues are real. True.
+The sum of eigenvalues equals the trace, and a simple graph has no loops, so the diagonal is zero and the sum is $0$. True.
+Since the eigenvalues sum to $0$ and $A\ne0$, at least one must be negative: for $K_2$ they are $1$ and $-1$. So "non-negative" is false.
+$A$ is $n\times n$, so it has $n$ eigenvalues, one per vertex, not one per edge: $K_3$ has 3 vertices and 3 edges but $K_{1,3}$ has 4 vertices and 3 edges.
+
+@ graph e graph-e-042
+T: Sum of Laplacian eigenvalues
+S: spectral
+TYPE: nat
+TOL: 0
+Q: A simple undirected graph has 9 edges. What is the sum of all eigenvalues of its Laplacian $L=D-A$? Enter an integer.
+ANS: 18
+EXP: The sum of eigenvalues equals the trace. The diagonal of $L$ holds the degrees (the diagonal of $A$ is zero), so
+$$\operatorname{tr}L=\sum_v\deg(v)=2|E|=18$$
+by the handshake lemma. Answering $9$ forgets that each edge adds to two degrees.
+
+@ graph e graph-e-043
+T: Why 0 is a Laplacian eigenvalue
+S: spectral
+Q: Why is $0$ always an eigenvalue of the graph Laplacian $L=D-A$?
+A: Every row of $L$ sums to $0$, so $L\mathbf 1=\mathbf 0$
+B: The diagonal of $L$ is zero
+C: $L$ is not symmetric
+D: $A$ is always singular
+ANS: A
+EXP: Row $i$ of $L$ has $\deg(i)$ on the diagonal and $-1$ for each of the $\deg(i)$ neighbours, so it sums to $0$. Hence the all-ones vector $\mathbf 1$ satisfies $L\mathbf 1=\mathbf 0$, an eigenvector for eigenvalue $0$.
+The diagonal of $L$ is the degrees, not zero (that is $A$). $L$ is symmetric. $A$ is not always singular: $K_2$ has eigenvalues $\pm1$.
+
+@ graph e graph-e-044
+T: Top eigenvalue of a regular graph
+S: spectral
+Q: The cube graph $Q_3$ has 8 vertices, each of degree 3. What is the largest eigenvalue of its adjacency matrix?
+A: $8$
+B: $12$
+C: $1$
+D: $3$
+ANS: D
+EXP: In a $k$-regular graph every row of $A$ has exactly $k$ ones, so $A\mathbf 1=k\mathbf 1$: $k$ is an eigenvalue.
+It is the largest: for any eigenvector $x$, look at the entry with the largest $|x_i|$. Then $|\lambda||x_i|=|\sum_{j\sim i}x_j|\le k|x_i|$, so $|\lambda|\le k$.
+So the answer is $3$. ($Q_3$'s full spectrum is $3,1,1,1,-1,-1,-1,-3$.) $8$ is the vertex count and $12$ the edge count; neither is an eigenvalue here.
+
+@ graph e graph-e-045
+T: Diagonal of the squared adjacency matrix
+S: spectral
+Q: In a simple undirected graph, vertex $v$ has degree 4. What is the diagonal entry $(A^2)_{vv}$ of the squared adjacency matrix?
+A: $16$
+B: $4$
+C: $2$
+D: $8$
+ANS: B
+EXP: $(A^k)_{uv}$ counts walks of length $k$ from $u$ to $v$. A closed walk of length 2 from $v$ goes to a neighbour and straight back, so there is one per neighbour: $(A^2)_{vv}=\deg(v)=4$.
+Algebraically, $(A^2)_{vv}=\sum_j A_{vj}A_{jv}=\sum_j A_{vj}^2=\sum_j A_{vj}$ because entries are $0$ or $1$. $16=4^2$ squares the degree instead.
+
+@ graph e graph-e-046
+T: One step of a simple random walk
+S: random-walks
+Q: An undirected graph has edges $\{1,2\},\{1,3\},\{1,4\},\{2,3\}$. A simple random walk moves to a uniformly random neighbour at each step. From vertex $1$, what is the probability that the next step goes to vertex $2$?
+A: $1/4$
+B: $1/2$
+C: $1/3$
+D: $1/8$
+ANS: C
+EXP: The transition probability is $P_{uv}=1/\deg(u)$ for each neighbour $v$ of $u$.
+Vertex $1$ has neighbours $2,3,4$, so $\deg(1)=3$ and $P_{12}=1/3$.
+$1/4$ divides by the number of vertices, $1/2$ uses $\deg(2)$ (the target instead of the current vertex), and $1/8=1/(2|E|)$ is the stationary weight per edge end.
+
+@ graph e graph-e-047
+T: Degree-proportional stationary probability
+S: random-walks
+TYPE: nat
+TOL: 0.01
+Q: A simple random walk (uniform neighbour each step) runs on the connected graph with edges $\{1,2\},\{1,3\},\{1,4\},\{2,3\},\{3,4\},\{4,5\}$. What is the stationary probability of vertex $1$? Enter a decimal to 2 places.
+ANS: 0.25
+EXP: For a simple random walk on a connected undirected graph, $\pi(v)=\dfrac{\deg(v)}{2|E|}$.
+Here $|E|=6$, so $2|E|=12$, and $\deg(1)=3$ (neighbours $2,3,4$).
+$\pi(1)=3/12=0.25$. The uniform guess $1/5=0.2$ ignores that the walk visits high-degree vertices more often.
+
+@ graph e graph-e-048
+T: Valid transition matrix
+S: random-walks
+Q: Using the row convention ($P_{ij}$ = probability of moving from state $i$ to state $j$), which matrix is a valid transition matrix?
+A: $\begin{pmatrix}0.5&0.5\\0.5&0.4\end{pmatrix}$
+B: $\begin{pmatrix}0.2&0.8\\0.7&0.3\end{pmatrix}$
+C: $\begin{pmatrix}0.2&0.7\\0.8&0.3\end{pmatrix}$
+D: $\begin{pmatrix}1.2&-0.2\\0.5&0.5\end{pmatrix}$
+ANS: B
+EXP: A row-stochastic matrix has non-negative entries and every row sums to $1$.
+$\begin{pmatrix}0.2&0.8\\0.7&0.3\end{pmatrix}$: rows give $1$ and $1$. Valid.
+$\begin{pmatrix}0.2&0.7\\0.8&0.3\end{pmatrix}$ has columns summing to $1$ but rows summing to $0.9$ and $1.1$: it is column-stochastic, the other convention. The matrix with $0.4$ has a row summing to $0.9$, and the one with $-0.2$ has a negative entry.
+
+@ graph e graph-e-049
+T: Stationary distribution on a cycle
+S: random-walks
+Q: A simple random walk runs on the cycle $C_8$ (8 vertices, each joined to its two neighbours). What is its stationary distribution?
+A: $\pi(v)=1/8$ for every vertex
+B: $\pi(v)=1/2$ for every vertex
+C: $\pi(v)=1/16$ for every vertex
+D: it has no stationary distribution because the cycle is bipartite
+ANS: A
+EXP: $\pi(v)=\deg(v)/2|E|$. Every vertex has degree 2 and $|E|=8$, so $\pi(v)=2/16=1/8$: uniform, as for any regular graph.
+Bipartiteness makes the walk periodic, so $P^t$ need not converge, but a stationary distribution still exists ($\pi P=\pi$ holds). $1/2$ is a single transition probability, not a stationary one.
+
+@ graph e graph-e-050
+T: Two-step walk probability
+S: random-walks
+Q: A simple random walk runs on the graph with edges $\{1,2\},\{2,3\},\{3,1\},\{3,4\}$. Starting at vertex $1$, what is the probability of being at vertex $4$ after exactly 2 steps?
+A: $1/3$
+B: $1/2$
+C: $1/4$
+D: $1/6$
+ANS: D
+EXP: The only length-2 route is $1\to3\to4$ (vertex $2$ is not adjacent to $4$).
+$P(1\to3)=1/\deg(1)=1/2$ and $P(3\to4)=1/\deg(3)=1/3$, so the probability is $\tfrac12\cdot\tfrac13=\tfrac16$. This is the entry $(P^2)_{14}$.
+$1/3$ is only the second step; $1/2$ only the first.
+
+@ graph m graph-m-046
+T: Course schedule that cannot be completed
+S: dag-toposort
+Q: Five courses are numbered $1$ to $5$. A pair $a\to b$ means course $a$ must be completed before course $b$. Which set of prerequisites makes it impossible to complete all five courses?
+A: $1\to2$, $2\to3$, $1\to3$, $3\to4$, $4\to5$
+B: $1\to2$, $3\to2$, $2\to4$, $4\to5$, $5\to3$
+C: $2\to1$, $3\to1$, $4\to3$, $5\to4$, $5\to2$
+D: $1\to5$, $2\to5$, $3\to5$, $4\to5$, $1\to2$
+ANS: B
+EXP: All courses can be finished iff the prerequisite graph has a topological order, that is, iff it has no directed cycle.
+In the second set: $3\to2\to4\to5\to3$ is a cycle, so each of $2,3,4,5$ waits on another and none can ever start.
+The others are DAGs: $1,2,3,4,5$ works for the first; $5,4,3,2,1$ for the third; $1,2,3,4,5$ for the fourth. (This is LeetCode's "Course Schedule", solved with Kahn's algorithm.)
+
+@ graph m graph-m-047
+T: Kahn's algorithm with a min-heap
+S: dag-toposort
+Q: A DAG has edges $D\to A$, $D\to B$, $C\to B$, $A\to E$, $B\to E$, $C\to F$. Kahn's algorithm repeatedly removes a vertex of in-degree $0$; when several are available it always takes the alphabetically smallest. What order does it output?
+A: $C,D,A,B,E,F$
+B: $C,D,F,A,B,E$
+C: $A,B,C,D,E,F$
+D: $D,A,C,B,E,F$
+ANS: A
+EXP: Initial in-degrees: $A1,B2,C0,D0,E2,F1$. Available: $\{C,D\}$.
+Take $C$: $B\to1$, $F\to0$. Available $\{D,F\}$. Take $D$: $A\to0$, $B\to0$. Available $\{A,B,F\}$.
+Take $A$ ($E\to1$), then $B$ ($E\to0$); available $\{E,F\}$, take $E$ then $F$. Output: $C,D,A,B,E,F$.
+$C,D,F,A,B,E$ is what a plain FIFO queue gives (it keeps $F$ ahead of $A$ and $B$). $A,B,C,D,E,F$ is not even valid, since $D\to A$.
+
+@ graph m graph-m-048
+T: DFS-based topological sort output
+S: dag-toposort
+Q: A DAG has edges $A\to B$, $A\to C$, $B\to D$, $C\to D$, $D\to E$. Run DFS starting at $A$, visiting neighbours in alphabetical order, and output the vertices in reverse order of finishing time. What is the output?
+A: $E,D,B,C,A$
+B: $A,B,D,E,C$
+C: $A,C,B,D,E$
+D: $A,B,C,D,E$
+ANS: C
+EXP: DFS: $A\to B\to D\to E$. $E$ finishes, then $D$, then $B$. Back at $A$, visit $C$; its neighbour $D$ is done, so $C$ finishes, then $A$.
+Finishing order: $E,D,B,C,A$. Reversed: $A,C,B,D,E$, which is the algorithm's output.
+$E,D,B,C,A$ forgets to reverse. $A,B,D,E,C$ is discovery (pre-)order, which is not a topological order here ($C\to D$ is broken). $A,B,C,D,E$ is a valid topological order, but not the one this algorithm produces.
+
+@ graph m graph-m-049
+T: Critical path of a task DAG
+S: dag-toposort
+Q: Tasks with durations (in days): $P(3)$, $Q(2)$, $R(4)$, $S(1)$, $T(2)$. Prerequisites: $Q$ and $R$ need $P$; $S$ needs $Q$; $T$ needs both $R$ and $S$. With unlimited workers, what is the minimum time to finish all tasks?
+A: $8$ days
+B: $9$ days
+C: $12$ days
+D: $6$ days
+ANS: B
+EXP: With unlimited parallelism the finish time is the longest (critical) path in the DAG, computed in topological order: finish(task) = duration + max finish of its prerequisites.
+$P:3$. $Q:3+2=5$. $R:3+4=7$. $S:5+1=6$. $T:2+\max(7,6)=9$.
+Critical path $P\to R\to T$: 9 days. $8$ is the other path $P\to Q\to S\to T$ (the shorter one, which does not decide the finish). $12$ is the sum of all durations, the time for one worker.
+
+@ graph m graph-m-050
+T: DFS edge type that reveals a cycle
+S: dag-toposort
+Q: A DFS is run on a directed graph. The graph has a directed cycle if and only if the DFS finds:
+A: a tree edge
+B: a forward edge
+C: a cross edge
+D: a back edge
+ANS: D
+EXP: A back edge goes from a vertex to one of its ancestors that is still on the recursion stack. Together with the tree path from that ancestor down, it closes a directed cycle.
+Conversely, if there is a cycle, the first cycle vertex DFS discovers reaches all others while still active, so the edge returning to it is a back edge.
+Forward and cross edges can appear in DAGs (e.g. $A\to B$, $B\to C$, $A\to C$ gives a forward edge), so they prove nothing.
+
+@ graph m graph-m-051
+T: Counting paths in a DAG
+S: dag-toposort
+TYPE: nat
+TOL: 0
+Q: A DAG has edges $S\to A$, $S\to B$, $A\to B$, $A\to C$, $B\to C$, $B\to T$, $C\to T$. How many distinct directed paths go from $S$ to $T$? Enter an integer.
+ANS: 5
+EXP: Use dynamic programming in reverse topological order: $N(v)=\sum_{v\to w}N(w)$ with $N(T)=1$.
+$N(C)=N(T)=1$. $N(B)=N(C)+N(T)=2$. $N(A)=N(B)+N(C)=3$. $N(S)=N(A)+N(B)=5$.
+The paths: $SACT$, $SABT$, $SABCT$, $SBT$, $SBCT$. This DP is only valid because there are no cycles; the same recurrence underlies backpropagation's accumulation over all paths in a computation graph.
+
+@ graph m graph-m-052
+T: Which orders are topological
+S: dag-toposort
+TYPE: msq
+Q: A DAG has edges $A\to B$, $A\to C$, $B\to D$, $C\to D$, $C\to E$. Which sequences are valid topological orders? (More than one option may be correct.)
+A: $A,C,E,B,D$
+B: $A,B,C,E,D$
+C: $A,B,D,C,E$
+D: $C,A,B,D,E$
+ANS: A,B
+EXP: Check every edge $u\to v$ has $u$ before $v$.
+$A,C,E,B,D$: $A$ first; $C$ before $D,E$; $B$ before $D$. Valid.
+$A,B,C,E,D$: all five edges respected. Valid.
+$A,B,D,C,E$ puts $D$ before $C$, breaking $C\to D$.
+$C,A,B,D,E$ puts $C$ before $A$, breaking $A\to C$.
+This DAG has 5 topological orders in total, so "the" order is never unique unless the DAG forces it.
+
+@ graph m graph-m-053
+T: Counting strongly connected components
+S: connectivity
+TYPE: nat
+TOL: 0
+Q: A directed graph on vertices $1,\dots,8$ has edges $1\to2$, $2\to3$, $3\to1$, $3\to4$, $4\to5$, $5\to4$, $5\to6$, $7\to6$, $6\to8$. How many strongly connected components does it have? Enter an integer.
+ANS: 5
+EXP: Two vertices are in the same SCC iff each can reach the other.
+$1\to2\to3\to1$ is a cycle: $\{1,2,3\}$. $4\to5\to4$: $\{4,5\}$. There is no way back from $4$ to $3$, so these stay separate.
+$6$, $7$ and $8$ lie on no cycle, so each is its own SCC: $\{6\},\{7\},\{8\}$.
+Total $5$. Counting weakly connected components (ignoring direction) would give $1$.
+
+@ graph m graph-m-054
+T: Articulation points of a graph
+S: connectivity
+TYPE: msq
+Q: An undirected graph has edges $\{1,2\},\{2,3\},\{3,1\},\{3,4\},\{4,5\},\{5,6\},\{6,4\},\{6,7\}$. Which vertices are articulation points (removing the vertex disconnects the graph)? (More than one option may be correct.)
+A: vertex $3$
+B: vertex $4$
+C: vertex $5$
+D: vertex $6$
+ANS: A,B,D
+EXP: The graph is triangle $123$, edge $\{3,4\}$, triangle $456$, and a pendant edge $\{6,7\}$.
+Remove $3$: $\{1,2\}$ is cut off from the rest. Articulation point.
+Remove $4$: $\{1,2,3\}$ is cut off from $\{5,6,7\}$. Articulation point.
+Remove $6$: vertex $7$ is isolated. Articulation point.
+Remove $5$: $4$ and $6$ are still joined directly, so the graph stays connected. Not one.
+Rule: an endpoint of a bridge is an articulation point unless it has degree 1 (vertex $7$ is not one).
+
+@ graph m graph-m-055
+T: Hamiltonian cycles in complete bipartite graphs
+S: connectivity
+Q: Which graph has a Hamiltonian cycle (a cycle through every vertex exactly once)?
+A: $K_{2,4}$
+B: $K_{3,4}$
+C: $K_{3,3}$
+D: $K_{1,5}$
+ANS: C
+EXP: In a bipartite graph every cycle alternates sides, so a cycle through all vertices needs both sides the same size.
+$K_{3,3}$: sides $\{a_1,a_2,a_3\}$, $\{b_1,b_2,b_3\}$; the cycle $a_1b_1a_2b_2a_3b_3a_1$ works.
+$K_{2,4}$, $K_{3,4}$ and $K_{1,5}$ have unequal sides, so no Hamiltonian cycle. $K_{3,4}$ is the tempting one: it is dense and has a Hamiltonian path, but no cycle.
+
+@ graph m graph-m-056
+T: Start vertex of a directed Euler path
+S: connectivity
+Q: A directed graph has edges $1\to2$, $2\to3$, $3\to1$, $1\to4$, $4\to2$. An Euler path uses every edge exactly once. Where must it start?
+A: at vertex $1$
+B: at vertex $2$
+C: at vertex $3$
+D: no Euler path exists
+ANS: A
+EXP: Out/in degrees: vertex $1$: out 2, in 1. Vertex $2$: out 1, in 2. Vertices $3$ and $4$: out 1, in 1.
+A connected digraph has an Euler path iff at most one vertex has out $-$ in $=1$ (the start), at most one has in $-$ out $=1$ (the end), and all others are balanced. Here the start is $1$ and the end is $2$.
+Example: $1\to4\to2\to3\to1\to2$. Starting at $2$ reverses the roles: it has more edges in than out, so it must be the end.
+
+@ graph m graph-m-057
+T: Vertex vs edge connectivity
+S: connectivity
+Q: Two copies of $K_4$ share exactly one vertex: vertex sets $\{0,1,2,3\}$ and $\{0,4,5,6\}$, each forming a complete graph. What are its vertex connectivity $\kappa$ and edge connectivity $\lambda$?
+A: $\kappa=1,\ \lambda=1$
+B: $\kappa=3,\ \lambda=3$
+C: $\kappa=2,\ \lambda=3$
+D: $\kappa=1,\ \lambda=3$
+ANS: D
+EXP: Removing the shared vertex $0$ separates $\{1,2,3\}$ from $\{4,5,6\}$, so $\kappa=1$.
+For edges: the minimum degree is $3$ (vertices $1,\dots,6$), so $\lambda\le3$. No set of 2 edges disconnects it: each $K_4$ is 3-edge-connected, and separating the two halves requires cutting all 3 edges from $0$ to one side. So $\lambda=3$.
+Whitney's inequality $\kappa\le\lambda\le\delta$ holds with $1<3=3$. Assuming $\lambda=\kappa$ is the trap: a cut vertex need not come with a bridge.
+
+@ graph m graph-m-058
+T: Fewest pen strokes to draw a graph
+S: connectivity
+Q: The triangular prism has two triangles $\{1,2,3\}$ and $\{4,5,6\}$ plus edges $\{1,4\},\{2,5\},\{3,6\}$. What is the minimum number of edge-disjoint trails (pen strokes) needed to cover every edge exactly once?
+A: $6$
+B: $1$
+C: $3$
+D: $2$
+ANS: C
+EXP: Every vertex has degree $3$, so all $6$ vertices are odd.
+Each trail has at most 2 odd-degree endpoints, and every odd vertex must be the end of some trail, so we need at least $6/2=3$ trails. For a connected graph with $2k$ odd vertices, exactly $k$ trails suffice (add $k$ dummy edges pairing the odd vertices, take an Euler circuit, then delete them).
+$6$ counts odd vertices instead of pairs; $1$ would need at most two odd vertices.
+
+@ graph m graph-m-059
+T: Chromatic number of a wheel
+S: matching-coloring
+Q: The wheel $W_5$ has a 5-cycle $v_1v_2v_3v_4v_5$ plus a hub $h$ joined to all five cycle vertices. What is its chromatic number?
+A: $3$
+B: $4$
+C: $5$
+D: $6$
+ANS: B
+EXP: The rim is the odd cycle $C_5$, which needs 3 colours.
+The hub is adjacent to every rim vertex, so it cannot reuse any of those 3 colours: it needs a 4th. So $\chi=3+1=4$.
+The trap is $3$, which is right for a wheel with an even rim ($C_6$ needs only 2 colours, plus 1 for the hub).
+
+@ graph m graph-m-060
+T: Exam slots from a conflict graph
+S: matching-coloring
+Q: Six exams $0,\dots,5$ cannot share a time slot when they share a student. Conflicts: $\{0,1\},\{1,2\},\{2,3\},\{3,4\},\{4,0\},\{0,5\},\{2,5\}$. What is the minimum number of time slots?
+A: $2$
+B: $4$
+C: $3$
+D: $6$
+ANS: C
+EXP: Slots = chromatic number of the conflict graph.
+Lower bound: $0,1,2,3,4$ form an odd cycle $C_5$, which is not 2-colourable, so at least 3.
+Upper bound: colour $0\!:\!1$, $1\!:\!2$, $2\!:\!1$, $3\!:\!2$, $4\!:\!3$, $5\!:\!2$. Check: $5$ is adjacent to $0$ and $2$ (both colour 1). Valid, so 3 slots.
+$4$ is the greedy bound $\Delta+1$ (max degree is 3), which is an upper bound, not the answer.
+
+@ graph m graph-m-061
+T: Maximum matching of workers to jobs
+S: matching-coloring
+Q: Workers $W_1,\dots,W_4$ and jobs $J_1,\dots,J_4$. Edges (who can do what): $W_1$: $J_1,J_2$; $W_2$: $J_1$; $W_3$: $J_1,J_2$; $W_4$: $J_3,J_4$. What is the maximum number of workers that can be assigned distinct jobs?
+A: $4$
+B: $2$
+C: $7$
+D: $3$
+ANS: D
+EXP: $W_1,W_2,W_3$ together can only do $J_1$ and $J_2$. By Hall's condition, the set $\{W_1,W_2,W_3\}$ has only 2 neighbours, so at most 2 of them get jobs. With $W_4$ that gives at most 3.
+Achieve 3: $W_2\!-\!J_1$, $W_1\!-\!J_2$, $W_4\!-\!J_3$.
+By König's theorem the max matching equals the min vertex cover: $\{J_1,J_2,W_4\}$ covers all 7 edges, confirming $3$. $4$ ignores the Hall violation; $7$ is the edge count.
+
+@ graph m graph-m-062
+T: Degree condition guaranteeing a matching
+S: matching-coloring
+Q: A bipartite graph has sides $X$ and $Y$. Every vertex in $X$ has degree at least $k$, and every vertex in $Y$ has degree at most $k$, for some $k\ge1$. What can be concluded?
+A: There is a matching that covers every vertex of $X$
+B: There is a perfect matching
+C: $|X|>|Y|$
+D: Nothing: a matching covering $X$ may fail to exist
+ANS: A
+EXP: Hall's theorem: a matching covering $X$ exists iff $|N(S)|\ge|S|$ for every $S\subseteq X$.
+Count edges leaving $S$: at least $k|S|$. They all land in $N(S)$, which can absorb at most $k|N(S)|$ edges. So $k|S|\le k|N(S)|$, i.e. $|N(S)|\ge|S|$. Hall holds.
+It need not be perfect: $Y$ can be larger, e.g. $X=\{x\}$, $Y=\{y_1,y_2\}$, $k=1$, one edge $xy_1$. Counting all edges also gives $k|X|\le k|Y|$, so $|X|\le|Y|$, the opposite of $|X|>|Y|$.
+
+@ graph m graph-m-063
+T: Edge colouring facts
+S: matching-coloring
+TYPE: msq
+Q: The chromatic index $\chi'(G)$ is the fewest colours needed so that edges sharing an endpoint get different colours. Which statements are true? (More than one option may be correct.)
+A: $\chi'(K_{3,4})=4$
+B: $\chi'(C_5)=3$
+C: $\chi'(G)\le\Delta(G)$ for every graph, where $\Delta$ is the maximum degree
+D: $\chi'(K_4)=4$
+ANS: A,B
+EXP: König's edge-colouring theorem: a bipartite graph has $\chi'=\Delta$. $K_{3,4}$ has $\Delta=4$, so $\chi'=4$. True.
+$C_5$: colour classes are matchings of size at most 2, and 5 edges need at least $\lceil5/2\rceil=3$ classes; 3 suffice. True.
+Since $C_5$ has $\Delta=2<3$, "$\chi'\le\Delta$" is false. Vizing's theorem gives $\Delta\le\chi'\le\Delta+1$.
+$K_4$ splits into 3 perfect matchings ($\{12,34\},\{13,24\},\{14,23\}$), so $\chi'(K_4)=3=\Delta$, not 4.
+
+@ graph m graph-m-064
+T: Edges from the adjacency spectrum
+S: spectral
+TYPE: nat
+TOL: 0
+Q: A simple graph has adjacency eigenvalues $\sqrt6,\ 0,\ 0,\ 0,\ -\sqrt6$. How many edges does it have? Enter an integer.
+ANS: 6
+EXP: $\sum\lambda_i^2=\operatorname{tr}(A^2)=\sum_v(A^2)_{vv}=\sum_v\deg(v)=2|E|$.
+Here $\sum\lambda_i^2=6+0+0+0+6=12$, so $|E|=6$. (The graph is $K_{2,3}$.)
+Summing the eigenvalues themselves always gives $0$ (the trace of $A$), so that tells you nothing; forgetting to halve gives $12$.
+
+@ graph m graph-m-065
+T: Laplacian spectrum of K4
+S: spectral
+Q: What are the eigenvalues of the Laplacian $L=D-A$ of the complete graph $K_4$?
+A: $3,-1,-1,-1$
+B: $0,4,4,4$
+C: $0,3,3,3$
+D: $0,1,2,3$
+ANS: B
+EXP: For $K_n$: $A=J-I$ and $D=(n-1)I$, so $L=(n-1)I-(J-I)=nI-J$.
+$J$ (all-ones) has eigenvalues $n$ (on $\mathbf 1$) and $0$ (multiplicity $n-1$). So $L$ has $n-n=0$ once and $n-0=n$ with multiplicity $n-1$.
+For $n=4$: $0,4,4,4$. Check: the trace is $12=2|E|$. $3,-1,-1,-1$ is the adjacency spectrum; $0,3,3,3$ wrongly subtracts from the degree $3$ instead of $n$.
+
+@ graph m graph-m-066
+T: Spanning trees from Laplacian eigenvalues
+S: spectral
+Q: A connected graph on 4 vertices has Laplacian eigenvalues $0,2,2,4$. By the matrix-tree theorem, how many spanning trees does it have?
+A: $16$
+B: $0$
+C: $4$
+D: $8$
+ANS: C
+EXP: Matrix-tree theorem (eigenvalue form): $\tau(G)=\dfrac1n\prod_{i=2}^n\mu_i$, the product of the nonzero Laplacian eigenvalues divided by $n$.
+$\tau=\frac{2\cdot2\cdot4}{4}=4$. (The graph is $C_4$: remove any one of its 4 edges.)
+$16$ forgets to divide by $n$. $0$ multiplies in the zero eigenvalue too.
+
+@ graph m graph-m-067
+T: Spotting a bipartite spectrum
+S: spectral
+Q: Each list is the adjacency spectrum of a graph on 4 vertices. Which graph is bipartite?
+A: $2,\ 0,\ -1,\ -1$
+B: $3,\ -1,\ -1,\ -1$
+C: $2,\ 0,\ 0,\ -2$
+D: $\tfrac{1+\sqrt{17}}2,\ 0,\ -1,\ \tfrac{1-\sqrt{17}}2$
+ANS: C
+EXP: A graph is bipartite iff its adjacency spectrum is symmetric about $0$ (if $(x,y)$ is an eigenvector for $\lambda$ split by sides, then $(x,-y)$ is one for $-\lambda$).
+$2,0,0,-2$ is symmetric (it is $C_4$). Bipartite.
+$2,0,-1,-1$ is a triangle plus an isolated vertex; $3,-1,-1,-1$ is $K_4$; the $\sqrt{17}$ list is $K_4$ minus an edge. None is symmetric, and each contains a triangle. Note that all four lists sum to $0$, so a zero trace does not settle it.
+
+@ graph m graph-m-068
+T: Counting walks of length 3
+S: spectral
+Q: A graph has a triangle on vertices $1,2,3$ and one more vertex $4$ joined only to $3$. How many walks of length 3 go from vertex $3$ to vertex $1$ (this is $(A^3)_{31}$)?
+A: $1$
+B: $2$
+C: $3$
+D: $4$
+ANS: D
+EXP: Walks $3\to a\to b\to1$ need $a\sim3$, $b\sim a$, and $b\sim1$, where $N(1)=\{2,3\}$.
+$a=1$: $b\in N(1)=\{2,3\}$: $3\,1\,2\,1$ and $3\,1\,3\,1$.
+$a=2$: $b\in N(2)\cap N(1)=\{3\}$: $3\,2\,3\,1$.
+$a=4$: $b\in N(4)\cap N(1)=\{3\}$: $3\,4\,3\,1$.
+Total $4$. Walks may repeat vertices and edges, so this is more than the number of paths of length 3 from $3$ to $1$ (there are none: a path from $3$ to $1$ using three edges would need a fourth vertex adjacent to $1$).
+
+@ graph m graph-m-069
+T: Expected return time of a random walk
+S: random-walks
+TYPE: nat
+TOL: 0.01
+Q: A simple random walk runs on a connected undirected graph with 10 edges. Vertex $v$ has degree 4. What is the expected number of steps for the walk started at $v$ to first return to $v$? Enter a number.
+ANS: 5
+EXP: Kac's formula: the expected return time to $v$ is $1/\pi(v)$.
+For a simple random walk, $\pi(v)=\deg(v)/2|E|=4/20=0.2$.
+So the expected return time is $1/0.2=5$. Using $|E|/\deg(v)=2.5$ forgets the factor 2 in the handshake total.
+
+@ graph m graph-m-070
+T: Hitting time along a path
+S: random-walks
+Q: A simple random walk runs on the path with vertices $0,1,2,3,4$ (edges $\{i,i+1\}$). Starting at vertex $0$, what is the expected number of steps to first reach vertex $4$?
+A: $16$
+B: $4$
+C: $8$
+D: $10$
+ANS: A
+EXP: Let $h_i$ = expected steps from $i$ to reach $4$. Then $h_4=0$, $h_0=1+h_1$ (vertex $0$ always steps to $1$), and $h_i=1+\tfrac12h_{i-1}+\tfrac12h_{i+1}$ for $i=1,2,3$.
+Write $d_i=h_i-h_{i+1}$. From the end: $d_0=1$, and the middle equation gives $d_i=d_{i-1}+2$, so $d=1,3,5,7$.
+$h_0=1+3+5+7=16=n^2$ for distance $n=4$. The trap $4$ is the distance, which a random walk does not cover in a straight line; diffusion needs time quadratic in distance.
+
+@ graph m graph-m-071
+T: One PageRank iteration
+S: random-walks
+Q: Pages $P_1,P_2,P_3$ have links $P_1\to P_2$, $P_2\to P_1$, $P_2\to P_3$, $P_3\to P_1$. Use $\text{PR}(v)=\frac{1-d}N+d\sum_{u\to v}\frac{\text{PR}(u)}{\text{out}(u)}$ with $d=0.85$, $N=3$, starting from $\text{PR}=1/3$ for every page. After one iteration, what is $\text{PR}(P_1)$?
+A: $0.425$
+B: $0.475$
+C: $0.500$
+D: $0.575$
+ANS: B
+EXP: Links into $P_1$ come from $P_2$ (out-degree 2) and $P_3$ (out-degree 1).
+Sum: $\frac{1/3}{2}+\frac{1/3}{1}=\frac16+\frac13=\frac12$.
+$\text{PR}(P_1)=\frac{0.15}3+0.85\cdot\frac12=0.05+0.425=0.475$.
+$0.425$ drops the teleport term; $0.575$ adds $1-d=0.15$ without dividing by $N$; $0.5$ ignores damping altogether.
+
+@ graph m graph-m-072
+T: Why PageRank uses damping
+S: random-walks
+Q: In PageRank, with probability $1-d$ the surfer jumps to a uniformly random page instead of following a link. Why is this damping needed?
+A: It makes the computation exact in one iteration
+B: It makes the transition matrix symmetric
+C: It ensures a unique stationary distribution even when the link graph has sinks, traps or periodic cycles
+D: It makes every page's rank equal to $1/N$
+ANS: C
+EXP: Following links alone, a walk can get stuck in a set of pages with no links out (all rank drains into it), or cycle periodically and never settle.
+The random jump makes every page reachable from every page in one step, so the chain is irreducible and aperiodic. By the Perron-Frobenius theorem it then has a unique stationary distribution, and power iteration converges at rate about $d$ per step.
+Damping does not make ranks equal (links still matter) and does not make the matrix symmetric.
+
+@ graph m graph-m-073
+T: Random walk on an even cycle does not settle
+S: random-walks
+Q: A simple random walk on $C_6$ (vertices $0,\dots,5$ in a ring) starts at vertex $0$. What happens to $P(X_t=0)$ as $t\to\infty$?
+A: It converges to $1/6$
+B: It converges to $0$
+C: It converges to $1/3$
+D: It is $0$ at every odd $t$ and tends to $1/3$ along even $t$, so it has no limit
+ANS: D
+EXP: $C_6$ is bipartite (even and odd vertices). Each step switches side, so at odd times the walk is on an odd vertex: $P(X_t=0)=0$.
+At even times it lives on the 3 even vertices, and within them it spreads out evenly, so $P(X_t=0)\to1/3$.
+The stationary distribution is uniform ($1/6$), but the chain is periodic, so $P^t$ does not converge to it. The fix is a lazy walk ($P'=\tfrac12(I+P)$), which converges to $1/6$.
+
+@ graph m graph-m-074
+T: Stationary distribution with edge weights
+S: random-walks
+Q: A triangle has edge weights $w_{12}=2$, $w_{23}=1$, $w_{13}=3$. From vertex $u$, the walk moves to neighbour $v$ with probability $w_{uv}/\sum_x w_{ux}$. What is the stationary probability of vertex $1$?
+A: $1/3$
+B: $5/6$
+C: $5/12$
+D: $1/2$
+ANS: C
+EXP: For a weighted undirected graph, $\pi(v)\propto s(v)$, the strength (sum of incident weights). It satisfies detailed balance: $s(u)\frac{w_{uv}}{s(u)}=w_{uv}=s(v)\frac{w_{vu}}{s(v)}$.
+Strengths: $s(1)=2+3=5$, $s(2)=2+1=3$, $s(3)=1+3=4$, total $12$.
+$\pi(1)=5/12$. $1/3$ uses unweighted degrees (all equal to 2); $5/6$ divides by the total edge weight $6$ instead of twice it.
+
+@ graph m graph-m-075
+T: Properties of a simple random walk
+S: random-walks
+TYPE: msq
+Q: $G$ is a connected, non-bipartite, undirected graph that is not regular, and $P=D^{-1}A$ is its simple random walk (row-stochastic). Which statements are true? (More than one option may be correct.)
+A: $\pi(v)=\deg(v)/2|E|$ is a stationary distribution
+B: Detailed balance $\pi(u)P_{uv}=\pi(v)P_{vu}$ holds for all $u,v$
+C: $P$ is a symmetric matrix
+D: The stationary distribution is uniform
+ANS: A,B
+EXP: With $\pi(u)=\deg(u)/2|E|$: $\pi(u)P_{uv}=\frac{\deg(u)}{2|E|}\cdot\frac{A_{uv}}{\deg(u)}=\frac{A_{uv}}{2|E|}$, which is symmetric in $u,v$. So detailed balance holds, and summing over $u$ gives $\pi P=\pi$. Both true.
+$P_{uv}=1/\deg(u)$ but $P_{vu}=1/\deg(v)$, which differ when degrees differ. Since $G$ is not regular, some edge joins vertices of different degree (connectedness), so $P$ is not symmetric.
+For the same reason $\pi$ is not uniform: uniform holds only for regular graphs.
+
+@ graph h graph-h-048
+T: When the topological order is unique
+S: dag-toposort
+Q: Each option lists the edges of a DAG on vertices $\{A,B,C,D\}$. Which DAG has exactly one topological order?
+A: $A\to B$, $A\to C$, $B\to D$, $C\to D$
+B: $A\to B$, $A\to C$, $A\to D$, $B\to D$, $C\to D$
+C: $A\to C$, $B\to C$, $C\to D$, $A\to D$
+D: $A\to B$, $A\to C$, $B\to C$, $B\to D$, $C\to D$
+ANS: D
+EXP: Key fact: a DAG has a unique topological order iff it has a directed Hamiltonian path, i.e. every pair of consecutive vertices in the order is joined by an edge. If some consecutive pair $u,v$ had no edge, swapping them would give a second order.
+$A\to B\to C\to D$ is present in the last DAG, so its order is forced.
+In the first two, nothing orders $B$ and $C$ (two orders each). In the third, nothing orders $A$ and $B$ (two sources). The second DAG has more edges than the first but is still not unique: edge count is not the test.
+
+@ graph h graph-h-049
+T: Nilpotency index of a DAG adjacency matrix
+S: dag-toposort
+TYPE: nat
+TOL: 0
+Q: A DAG on 5 vertices has edges $A\to B$, $B\to C$, $C\to D$, $A\to D$, $B\to E$. Let $M$ be its adjacency matrix. What is the smallest $k\ge1$ with $M^k=0$? Enter an integer.
+ANS: 4
+EXP: $(M^k)_{uv}$ counts directed walks of length $k$ from $u$ to $v$. In a DAG walks are paths, so $M^k=0$ exactly when no path has $k$ edges.
+The longest path is $A\to B\to C\to D$ with 3 edges. So $M^3\ne0$ (entry $(A,D)$ is $1$) and $M^4=0$. Answer $4$.
+Ordering vertices topologically makes $M$ strictly upper triangular, so all its eigenvalues are $0$. The bound $M^n=0$ ($n=5$) always holds, but the smallest such power is (longest path length) $+1$.
+
+@ graph h graph-h-050
+T: Interleaving two chains
+S: dag-toposort
+TYPE: nat
+TOL: 0
+Q: A DAG consists of two separate chains $X_1\to X_2\to X_3$ and $Y_1\to Y_2\to Y_3$, with no edges between them. How many topological orders does it have? Enter an integer.
+ANS: 20
+EXP: Within each chain the order is forced. A topological order is just a choice of which 3 of the 6 positions hold the $X$'s (they then appear as $X_1,X_2,X_3$ in those positions, and the $Y$'s fill the rest in order).
+So the count is $\binom63=20$.
+$6!=720$ ignores the chain constraints; $2$ (all $X$ then all $Y$, or the reverse) forgets that the chains can interleave.
+
+@ graph h graph-h-051
+T: Semesters with a course limit
+S: dag-toposort
+Q: Seven courses $A,\dots,G$. Prerequisites: $D$ needs $A$, $B$ and $C$; each of $E$, $F$, $G$ needs $D$. Each semester you may take at most 2 courses, and a course can be taken only after all its prerequisites were completed in earlier semesters. What is the minimum number of semesters?
+A: $3$
+B: $4$
+C: $5$
+D: $7$
+ANS: C
+EXP: Two easy lower bounds both give $4$: the longest chain $A\to D\to E$ needs 3 semesters, and $\lceil7/2\rceil=4$.
+But the structure forces more. $D$ cannot start until $A,B,C$ are all done, which takes 2 semesters (only 2 per semester). In semester 3, $D$ is the only available course ($E,F,G$ need $D$ finished first). Then $E,F,G$ take $\lceil3/2\rceil=2$ more semesters.
+Total $2+1+2=5$, and the schedule $\{A,B\},\{C\},\{D\},\{E,F\},\{G\}$ achieves it. The bottleneck $D$ wastes a slot in semester 3, which neither bound sees.
+
+@ graph h graph-h-052
+T: Edges that can be added to a DAG
+S: dag-toposort
+Q: A simple DAG has 6 vertices and 7 edges, with at most one edge between any pair. What is the maximum number of new edges that can be added so that the graph is still a simple DAG?
+A: $8$
+B: $15$
+C: $23$
+D: it depends on which 7 edges are present
+ANS: A
+EXP: Fix any topological order $v_1,\dots,v_6$ of the DAG. All 7 existing edges point forward in it. Add the forward edge $v_i\to v_j$ ($i<j$) for every pair not yet joined: all edges still go forward, so no cycle forms.
+That fills every one of the $\binom62=15$ pairs, so $15-7=8$ edges can be added, and no more since every pair is then used.
+This works for any DAG, so the answer does not depend on which edges are present. $15$ forgets the existing edges; $23=30-7$ counts ordered pairs, which would allow 2-cycles.
+
+@ graph h graph-h-053
+T: Shortest path in a DAG with a negative edge
+S: dag-toposort
+Q: A weighted DAG has edges $S\to A$ (weight $1$), $S\to B$ ($4$), $B\to A$ ($-5$), $A\to T$ ($2$). What is the true shortest distance from $S$ to $T$?
+A: $3$
+B: $-1$
+C: $4$
+D: $1$
+ANS: D
+EXP: In a DAG, relax edges in topological order: $S,B,A,T$. This is correct even with negative weights, in $O(V+E)$.
+$d(S)=0$. $d(B)=4$. $d(A)=\min(0+1,\ 4-5)=-1$. $d(T)=d(A)+2=1$. Path $S\to B\to A\to T$.
+$3$ is what Dijkstra returns: it finalises $A$ at distance $1$ before seeing the cheaper route through $B$, and it then pops $T$ at $3$ before $B$ (at $4$). $-1$ is the distance to $A$, not $T$.
+
+@ graph h graph-h-054
+T: True statements about DAGs
+S: dag-toposort
+TYPE: msq
+Q: Which statements are true for every finite DAG $G$? (More than one option may be correct.)
+A: $G$ has at least one vertex of in-degree $0$
+B: Reversing the direction of every edge of $G$ gives another DAG
+C: If $u$ comes before $v$ in some topological order of $G$, then $G$ has a directed path from $u$ to $v$
+D: If $u$ comes before $v$ in some topological order of $G$, then adding the edge $v\to u$ creates a cycle
+ANS: A,B
+EXP: Walking backwards along edges from any vertex can never repeat a vertex, so it ends at a vertex of in-degree $0$. True.
+A cycle in the reversed graph, read backwards, would be a cycle in $G$. So reversing preserves acyclicity (its topological order is the reverse). True.
+Counterexample for the path claim: two vertices $u,v$ and no edges. Then $u,v$ is a topological order, yet there is no path $u\to v$.
+The same graph refutes the last claim: adding $v\to u$ gives a single edge, no cycle. A cycle forms only if there was already a path $u\leadsto v$.
+
+@ graph h graph-h-055
+T: Edges needed to make a digraph strongly connected
+S: connectivity
+Q: A directed graph on vertices $1,\dots,7$ has edges $1\to2$, $2\to1$, $2\to3$, $3\to4$, $4\to3$, $1\to5$, $6\to5$, $2\to7$. What is the minimum number of edges that must be added to make it strongly connected?
+A: $2$
+B: $4$
+C: $3$
+D: $5$
+ANS: C
+EXP: Contract each SCC to a node: $\{1,2\}$, $\{3,4\}$, $\{5\}$, $\{6\}$, $\{7\}$. The condensation DAG has edges $\{1,2\}\to\{3,4\}$, $\{1,2\}\to\{5\}$, $\{1,2\}\to\{7\}$, $\{6\}\to\{5\}$.
+Sources (in-degree 0): $\{1,2\}$ and $\{6\}$, so $s=2$. Sinks (out-degree 0): $\{3,4\}$, $\{5\}$, $\{7\}$, so $t=3$.
+Every sink needs a new outgoing edge and every source a new incoming one, and one edge can serve one sink and one source, so at least $\max(s,t)=3$ are needed. Theorem (Eswaran-Tarjan): $\max(s,t)$ edges always suffice when the graph is not already strongly connected. E.g. add $3\to6$, $5\to1$, $7\to1$.
+$4$ is (number of SCCs $-1$); $5=s+t$ double-counts edges that fix a sink and a source at once.
+
+@ graph h graph-h-056
+T: Connectivity of a graph and its complement
+S: connectivity
+TYPE: msq
+Q: $\bar G$ is the complement of a simple graph $G$ on $n\ge2$ vertices (same vertices; $uv$ is an edge of $\bar G$ iff it is not an edge of $G$). Which statements are true? (More than one option may be correct.)
+A: If $G$ is disconnected, then $\bar G$ is connected
+B: If $G$ is connected, then $\bar G$ is disconnected
+C: $G$ and $\bar G$ can both be connected
+D: $G$ and $\bar G$ can both be disconnected
+ANS: A,C
+EXP: Suppose $G$ is disconnected. Take $u,v$. If they are in different components of $G$, then $uv\in\bar G$. If they are in the same component, pick $w$ in another component: $uw,wv\in\bar G$. So $\bar G$ is connected (diameter at most 2). True.
+That also rules out both being disconnected.
+The path $P_4$ ($1-2-3-4$) is connected and its complement has edges $13,14,24$: the path $3-1-4-2$, also connected. So both can be connected, and "$G$ connected implies $\bar G$ disconnected" is false. ($C_5$ is another example: its complement is again a 5-cycle.)
+
+@ graph h graph-h-057
+T: Which grid has a Hamiltonian cycle
+S: connectivity
+Q: The $m\times n$ grid graph has a vertex at each point $(i,j)$, $1\le i\le m$, $1\le j\le n$, joined to its horizontal and vertical neighbours. Which grid has a Hamiltonian cycle?
+A: $3\times3$
+B: $3\times4$
+C: $5\times5$
+D: $1\times4$
+ANS: B
+EXP: A grid is bipartite (colour $(i,j)$ by the parity of $i+j$), and a Hamiltonian cycle in a bipartite graph alternates colours, so it needs equal colour classes and therefore an even number of vertices.
+$3\times3$ (9 vertices) and $5\times5$ (25) are odd, so no Hamiltonian cycle, though both have Hamiltonian paths (snake row by row).
+$1\times4$ is a path with degree-1 ends, so no cycle at all.
+$3\times4$ has 12 vertices, and a cycle exists: $(1,1)\to(1,2)\to(1,3)\to(1,4)\to(2,4)\to(3,4)\to(3,3)\to(2,3)\to(2,2)\to(3,2)\to(3,1)\to(2,1)\to(1,1)$.
+
+@ graph h graph-h-058
+T: When the DFS root is a cut vertex
+S: connectivity
+Q: DFS is run on a connected undirected graph from root $r$. When is $r$ an articulation point?
+A: when $r$ has degree at least 2 in the graph
+B: when $r$ has at least 2 children in the DFS tree
+C: when $r$ has at least one back edge
+D: never, since the root reaches every vertex
+ANS: B
+EXP: In an undirected DFS there are no cross edges: every non-tree edge joins a vertex to its ancestor or descendant. So two different subtrees of $r$ are joined only through $r$.
+If $r$ has $\ge2$ children, deleting $r$ separates those subtrees: cut vertex. If it has one child, the rest of the tree hangs below that child and stays connected without $r$.
+Degree $\ge2$ is not enough: in a triangle the root has degree 2, but DFS reaches the third vertex through the first child, so the root has one child and is not a cut vertex. (Non-root $u$ uses the low-link test: some child $v$ with $\text{low}(v)\ge\text{disc}(u)$.)
+
+@ graph h graph-h-059
+T: Maximum edges with 3 components
+S: connectivity
+TYPE: nat
+TOL: 0
+Q: A simple undirected graph has 10 vertices and exactly 3 connected components. What is the maximum possible number of edges? Enter an integer.
+ANS: 28
+EXP: With component sizes $n_1+n_2+n_3=10$, the most edges is $\sum\binom{n_i}{2}$ (each component complete).
+$\binom{x}{2}$ is convex, so the sum is largest when the sizes are as unequal as possible: $8,1,1$. That gives $\binom82=28$.
+The balanced split $4,3,3$ gives only $6+3+3=12$. In general the maximum is $\binom{n-k+1}{2}$.
+
+@ graph h graph-h-060
+T: Graphs with a strongly connected orientation
+S: connectivity
+Q: Robbins' theorem concerns orienting every edge of an undirected graph so that the result is strongly connected. Which graph has such an orientation?
+A: two triangles joined by a single extra edge
+B: the cycle $C_5$ with one pendant vertex attached
+C: the star $K_{1,3}$
+D: two triangles sharing exactly one vertex (the "bowtie")
+ANS: D
+EXP: Robbins' theorem: a connected graph has a strongly connected orientation iff it has no bridge. A bridge, whichever way it points, can be crossed in only one direction.
+Two triangles joined by an edge: that edge is a bridge. $C_5$ plus a pendant: the pendant edge is a bridge. $K_{1,3}$: every edge is a bridge.
+The bowtie has a cut vertex but no bridge: orient each triangle as a directed cycle; both pass through the shared vertex, so everything is mutually reachable. The trap is thinking an articulation point blocks this; only bridges do.
+
+@ graph h graph-h-061
+T: Proper 3-colourings of a 5-cycle
+S: matching-coloring
+TYPE: nat
+TOL: 0
+Q: How many proper vertex colourings of the cycle $C_5$ (vertices labelled $1,\dots,5$) use colours from a set of 3 colours? Colourings that differ by renaming colours count as different. Enter an integer.
+ANS: 30
+EXP: The chromatic polynomial of the cycle is $P(C_n,k)=(k-1)^n+(-1)^n(k-1)$.
+For $n=5$, $k=3$: $2^5-2=30$.
+Why: a path on $n$ vertices has $k(k-1)^{n-1}$ colourings ($3\cdot16=48$ here). Those where vertex 5 matches vertex 1 must be removed; they correspond to colourings of $C_4$ ($2^4+2=18$). $48-18=30$. The trap $48$ forgets the closing edge.
+
+@ graph h graph-h-062
+T: Perfect matchings of a ladder
+S: matching-coloring
+Q: The $2\times4$ ladder graph has top vertices $t_1,\dots,t_4$ and bottom vertices $b_1,\dots,b_4$, with edges $t_it_{i+1}$, $b_ib_{i+1}$ ($i=1,2,3$) and rungs $t_ib_i$ ($i=1,\dots,4$). How many perfect matchings does it have?
+A: $4$
+B: $5$
+C: $8$
+D: $16$
+ANS: B
+EXP: Look at $t_1$. Either it is matched by the rung $t_1b_1$, leaving a $2\times3$ ladder, or by $t_1t_2$, which forces $b_1b_2$ (the only option left for $b_1$), leaving a $2\times2$ ladder.
+So $M_n=M_{n-1}+M_{n-2}$ with $M_1=1$, $M_2=2$: Fibonacci. $M_3=3$, $M_4=5$.
+This is the domino-tiling count of a $2\times4$ board. $16=2^4$ treats each column independently, which ignores how horizontal pairs force each other.
+
+@ graph h graph-h-063
+T: Matching and vertex cover of an odd cycle
+S: matching-coloring
+Q: For the cycle $C_7$, let $\nu$ be the size of a maximum matching and $\tau$ the size of a minimum vertex cover. What are they?
+A: $\nu=3,\ \tau=3$
+B: $\nu=4,\ \tau=4$
+C: $\nu=3,\ \tau=4$
+D: $\nu=4,\ \tau=3$
+ANS: C
+EXP: Matching: 7 vertices, so at most $\lfloor7/2\rfloor=3$ disjoint edges, and 3 is achievable. $\nu=3$.
+Cover: each vertex covers 2 of the 7 edges, so 3 vertices cover at most 6. $\tau\ge4$, and $\{1,3,5,7\}$ works. $\tau=4$.
+König's theorem ($\nu=\tau$) holds only for bipartite graphs; $C_7$ is an odd cycle, so $\nu=\tau$ fails here. In general $\nu\le\tau\le2\nu$, which also rules out $\nu=4,\tau=3$.
+
+@ graph h graph-h-064
+T: Bounds on the chromatic number
+S: matching-coloring
+TYPE: msq
+Q: $\chi(G)$ is the chromatic number, $\omega(G)$ the size of the largest clique and $\Delta(G)$ the maximum degree. Which statements are true for every simple graph $G$? (More than one option may be correct.)
+A: $\chi(G)\ge\omega(G)$
+B: $\chi(G)\le\Delta(G)+1$
+C: If $G$ has no triangle, then $\chi(G)\le3$
+D: If $G$ contains an odd cycle, then $\chi(G)\ge3$
+ANS: A,B,D
+EXP: A clique of size $\omega$ needs $\omega$ different colours. True.
+Greedy colouring in any order: each vertex has at most $\Delta$ coloured neighbours, so one of $\Delta+1$ colours is free. True.
+An odd cycle is not 2-colourable, and a subgraph needs at most as many colours as the whole graph. True.
+False: triangle-free graphs can need many colours. The Grötzsch graph (11 vertices) is triangle-free with $\chi=4$, and Mycielski's construction gives triangle-free graphs of any chromatic number. So $\omega$ can be a very weak lower bound.
+
+@ graph h graph-h-065
+T: Chromatic number of the complement of C6
+S: matching-coloring
+Q: What is the chromatic number of $\bar C_6$, the complement of the 6-cycle?
+A: $2$
+B: $3$
+C: $4$
+D: $6$
+ANS: B
+EXP: Label $C_6$ as $0,1,\dots,5$ around the ring. In $\bar C_6$, vertex $i$ is adjacent to everything except $i\pm1$.
+$\{0,2,4\}$ are pairwise non-adjacent in $C_6$, so they form a triangle in $\bar C_6$; likewise $\{1,3,5\}$. So $\chi\ge3$.
+Colour classes in $\bar C_6$ are cliques of $C_6$, which are edges: $\{0,1\},\{2,3\},\{4,5\}$. Three classes suffice, so $\chi=3$. (The graph is the triangular prism.)
+$2$ is $\chi(C_6)$; complementing does not preserve it. $4$ would need more than 3 colours, but the 3-colouring above already works (the largest clique is only a triangle).
+
+@ graph h graph-h-066
+T: Greedy colouring on a bad order
+S: matching-coloring
+Q: The graph has vertices $u_1,\dots,u_4$ and $v_1,\dots,v_4$, with $u_i$ adjacent to $v_j$ exactly when $i\ne j$ ($K_{4,4}$ minus a perfect matching). Greedy colouring visits $u_1,v_1,u_2,v_2,u_3,v_3,u_4,v_4$ and gives each vertex the smallest colour not used by an already-coloured neighbour. How many colours does it use?
+A: $2$
+B: $3$
+C: $4$
+D: $8$
+ANS: C
+EXP: $u_1\to1$. $v_1$ is not adjacent to $u_1$, so $v_1\to1$. $u_2$ sees $v_1$ (colour 1), so $u_2\to2$; $v_2$ sees $u_1$ (1), so $v_2\to2$.
+$u_3$ sees $v_1,v_2$ (1,2): colour 3; $v_3$ likewise 3. $u_4,v_4$ get 4. So greedy uses 4 colours.
+But the graph is bipartite ($u$'s one side, $v$'s the other), so $\chi=2$. Greedy depends on the order, and on this "crown" graph with $n$ pairs it uses $n$ colours; the answer $2$ is the optimum, not what greedy produces.
+
+@ graph h graph-h-067
+T: Largest eigenvalue of a star
+S: spectral
+Q: What is the largest eigenvalue of the adjacency matrix of the star $K_{1,4}$ (one centre joined to 4 leaves)?
+A: $4$
+B: $5$
+C: $2$
+D: $1$
+ANS: C
+EXP: Let $x$ be the centre value and $y$ the (equal) leaf values. $Ax=\lambda x$ gives: centre $4y=\lambda x$; each leaf $x=\lambda y$. So $4y=\lambda^2y$, $\lambda^2=4$, $\lambda=\pm2$. The other eigenvalues are $0$ (leaf vectors summing to zero, centre $0$), three times.
+Spectrum $2,0,0,0,-2$: check $\sum\lambda^2=8=2|E|$.
+$4$ is the maximum degree. That would be right for a 4-regular graph, but in general $\bar d\le\lambda_1\le\Delta$, and for $K_{1,n}$ it is $\sqrt n$.
+
+@ graph h graph-h-068
+T: Laplacian spectrum of the complement
+S: spectral
+Q: A graph $G$ on 4 vertices has Laplacian eigenvalues $0,1,1,4$. How many connected components does its complement $\bar G$ have?
+A: $1$
+B: $2$
+C: $3$
+D: $4$
+ANS: B
+EXP: Since $L(G)+L(\bar G)=L(K_n)=nI-J$, and $J$ vanishes on vectors orthogonal to $\mathbf 1$, each eigenvector of $L(G)$ orthogonal to $\mathbf 1$ with eigenvalue $\mu$ is an eigenvector of $L(\bar G)$ with eigenvalue $n-\mu$. The vector $\mathbf 1$ itself still gives $0$.
+Here $n=4$: from $1,1,4$ we get $3,3,0$. So $\bar G$ has Laplacian eigenvalues $0,0,3,3$.
+The multiplicity of $0$ counts components: $\bar G$ has 2. (Indeed $G=K_{1,3}$ and $\bar G$ is a triangle plus an isolated vertex.) Answering $1$ forgets the $4\to0$ step; the eigenvalue $4=n$ in $G$ is the signal that $\bar G$ is disconnected.
+
+@ graph h graph-h-069
+T: Reading a graph off its spectrum
+S: spectral
+TYPE: msq
+Q: A simple graph has adjacency eigenvalues $3$ (once), $1$ (5 times) and $-2$ (4 times). Which statements are true? (More than one option may be correct.)
+A: It has exactly 15 edges
+B: It is bipartite
+C: It contains no triangle
+D: It is disconnected
+ANS: A,C
+EXP: Edges: $\sum\lambda^2=9+5\cdot1+4\cdot4=30=2|E|$, so $|E|=15$. True.
+Triangles: $\operatorname{tr}A^3=6\times(\#\text{triangles})$, and $\sum\lambda^3=27+5-32=0$. No triangles. True.
+Bipartite needs a spectrum symmetric about $0$: $3$ is present but $-3$ is not. False.
+Connected: $n=10$, average degree $30/10=3=\lambda_1$. $\lambda_1$ equals the average degree only for regular graphs, so it is 3-regular, and for a regular graph the multiplicity of the eigenvalue $k$ counts components. It appears once, so the graph is connected. (This is the Petersen graph.)
+
+@ graph h graph-h-070
+T: Exact PageRank with damping 0.5
+S: random-walks
+TYPE: nat
+TOL: 0.001
+Q: Pages $P_1,P_2,P_3$ have links $P_1\to P_2$, $P_1\to P_3$, $P_2\to P_3$, $P_3\to P_1$. PageRank satisfies $r_v=\frac{1-d}N+d\sum_{u\to v}\frac{r_u}{\text{out}(u)}$ with $d=0.5$ and $N=3$. Find the exact (fixed-point) value of $r_3$, the rank of $P_3$, to 3 decimal places.
+ANS: 0.385
+EXP: Equations with $c=\frac{1-d}N=\frac16$:
+$r_1=\frac16+\frac12r_3$, $r_2=\frac16+\frac12\cdot\frac{r_1}2$, $r_3=\frac16+\frac12\left(\frac{r_1}2+r_2\right)$.
+Substitute $r_2=\frac16+\frac{r_1}4$: $r_3=\frac16+\frac12\left(\frac{r_1}2+\frac16+\frac{r_1}4\right)=\frac14+\frac38r_1$.
+With $r_1=\frac16+\frac12r_3$: $r_3=\frac14+\frac1{16}+\frac3{16}r_3$, so $\frac{13}{16}r_3=\frac5{16}$ and $r_3=\frac5{13}\approx0.385$.
+Then $r_1=\frac{14}{39}$, $r_2=\frac{10}{39}$; they sum to $1$. $P_3$ ranks highest because it collects all of $P_2$'s vote and half of $P_1$'s.
+
+@ graph h graph-h-071
+T: Commute time across a tree edge
+S: random-walks
+Q: A simple random walk runs on the tree with edges $\{0,1\},\{1,2\},\{1,3\},\{3,4\},\{3,5\}$. What is the expected commute time between vertices $1$ and $3$ (expected steps to go from $1$ to $3$ and then back to $1$)?
+A: $2$
+B: $5$
+C: $10$
+D: $20$
+ANS: C
+EXP: Commute time identity: $\kappa(u,v)=2|E|\cdot R_{\text{eff}}(u,v)$, where each edge is a unit resistor.
+In a tree there is only one route, so $R_{\text{eff}}(1,3)=1$ (one edge). With $|E|=5$: $\kappa=2\cdot5\cdot1=10$.
+Direct check: for a tree edge $\{u,v\}$, $h(u\to v)=2m_u+1$, where $m_u$ is the number of edges on $u$'s side. Both sides have 2 edges, so $h(1\to3)=h(3\to1)=5$, and $5+5=10$.
+$2$ treats the edge as if the walk crossed it immediately both ways; $5$ forgets the factor 2.
+
+@ graph h graph-h-072
+T: Eigenvalues of the random walk on K4
+S: random-walks
+Q: What are the eigenvalues of the transition matrix $P=D^{-1}A$ of the simple random walk on $K_4$?
+A: $1,\ -\tfrac13,\ -\tfrac13,\ -\tfrac13$
+B: $3,\ -1,\ -1,\ -1$
+C: $1,\ 0,\ 0,\ 0$
+D: $1,\ \tfrac13,\ \tfrac13,\ \tfrac13$
+ANS: A
+EXP: $K_4$ is 3-regular, so $P=\frac13A=\frac13(J-I)$. The adjacency eigenvalues are $3,-1,-1,-1$; dividing by 3 gives $1,-\frac13,-\frac13,-\frac13$.
+Check: $\operatorname{tr}P=0$ (no self-loops) and $1-1=0$. The eigenvalue $1$ is always present ($P\mathbf 1=\mathbf 1$).
+The second-largest absolute value $\frac13$ sets the mixing speed: the distance to uniform shrinks by a factor of $3$ each step. $3,-1,-1,-1$ forgets to normalise by degree.
+
+@ graph h graph-h-073
+T: Stationary distribution of a directed walk
+S: random-walks
+Q: A walk on a directed graph follows a uniformly random outgoing edge at each step. Edges: $P_1\to P_2$, $P_2\to P_3$, $P_3\to P_1$, $P_3\to P_2$. What is the stationary probability of $P_1$?
+A: $1/4$
+B: $1/3$
+C: $1/5$
+D: $2/5$
+ANS: C
+EXP: Solve $\pi=\pi P$. $P_1$ is entered only from $P_3$ (out-degree 2): $\pi_1=\frac12\pi_3$.
+$P_2$ from $P_1$ (out 1) and $P_3$: $\pi_2=\pi_1+\frac12\pi_3=\pi_3$. $P_3$ from $P_2$ only: $\pi_3=\pi_2$.
+So $\pi\propto(\tfrac12,1,1)$, i.e. $\pi=(\tfrac15,\tfrac25,\tfrac25)$.
+The trap $1/4$ uses "proportional to in-degree" (in-degrees $1,2,1$), and degree-proportional rules only hold for undirected graphs. That is exactly why PageRank has to be computed, not read off degrees.
+
+@ graph h graph-h-074
+T: Probability of hitting one vertex before another
+S: random-walks
+Q: A simple random walk runs on the graph with edges $\{A,B\},\{B,C\},\{B,D\},\{C,D\}$. Starting at $B$, what is the probability that it reaches $D$ before it reaches $A$?
+A: $1/2$
+B: $2/3$
+C: $3/5$
+D: $1/3$
+ANS: C
+EXP: Let $h(v)=P(\text{hit }D\text{ before }A\mid\text{start }v)$, so $h(A)=0$, $h(D)=1$, and $h$ is harmonic elsewhere (the average over neighbours).
+$h(C)=\frac12(h(B)+1)$. $h(B)=\frac13(0+h(C)+1)$.
+Substitute: $h(B)=\frac13\left(\frac{h(B)+1}2+1\right)=\frac{h(B)}6+\frac12$, so $\frac56h(B)=\frac12$ and $h(B)=\frac35$.
+$1/3$ counts only the direct step to $D$; $2/3$ adds the step to $C$ as if it always led to $D$. The detour through $C$ can come back to $B$ and then go to $A$.
+
+@ graph h graph-h-075
+T: Visits to a vertex between returns
+S: random-walks
+Q: A simple random walk runs on the graph with edges $\{v,u\},\{u,x\},\{u,y\},\{x,y\}$. Starting at $v$, what is the expected number of visits to $u$ before the walk first returns to $v$?
+A: $1$
+B: $3$
+C: $1/3$
+D: $6$
+ANS: B
+EXP: Renewal argument: over many excursions from $v$, the long-run fraction of time at $u$ versus at $v$ is $\pi(u)/\pi(v)$, and $v$ is visited once per excursion. So expected visits to $u$ per excursion $=\pi(u)/\pi(v)=\deg(u)/\deg(v)=3/1=3$.
+Direct check: from $v$ the walk must go to $u$. Each time at $u$ it returns to $v$ with probability $\frac13$; otherwise it goes into the triangle and comes back to $u$ (it cannot reach $v$ without $u$). Visits to $u$ are geometric with success $\frac13$: mean $3$.
+$1/3$ inverts the ratio; $1$ assumes $u$ is passed through once.

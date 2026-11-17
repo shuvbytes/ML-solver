@@ -1,0 +1,1200 @@
+@ stat e stat-e-029
+T: One-sample z statistic with known sigma
+S: z-test
+TYPE: nat
+TOL: 0.01
+Q: A machine fills bags with known standard deviation $\sigma=10$ g. A sample of $n=100$ bags has mean $\bar x=52$ g. For testing $H_0:\mu=50$, what is the value of the $z$ statistic? Enter the number.
+ANS: 2
+EXP: Rule: $z=\dfrac{\bar x-\mu_0}{\sigma/\sqrt n}$.
+Standard error $=10/\sqrt{100}=1$, so $z=\dfrac{52-50}{1}=2$.
+Forgetting the $\sqrt n$ (dividing by $\sigma$ alone) gives $0.2$, which ignores that a mean of 100 values varies much less than one value.
+
+@ stat e stat-e-030
+T: Power from the Type II error rate
+S: z-test
+Q: A test has Type II error probability $\beta=0.2$ at a particular alternative, and significance level $\alpha=0.05$. What is its power at that alternative?
+A: $0.2$
+B: $0.95$
+C: $0.8$
+D: $0.05$
+ANS: C
+EXP: Power is the probability of rejecting $H_0$ when the alternative is true: power $=1-\beta=1-0.2=0.8$.
+$0.95=1-\alpha$ is the probability of correctly keeping $H_0$ when it is true, a different quantity. $\beta$ itself is the miss rate.
+
+@ stat e stat-e-031
+T: Same z value, one-sided vs two-sided decision
+S: z-test
+Q: A z-test gives $z=1.80$. Use $z_{0.05}=1.645$ and $z_{0.025}=1.96$. At $\alpha=0.05$, which statement is correct?
+A: $H_0$ is rejected by the two-sided test but not by the one-sided test $H_1:\mu>\mu_0$
+B: $H_0$ is rejected by the one-sided test $H_1:\mu>\mu_0$ but not by the two-sided test
+C: $H_0$ is rejected by both tests
+D: $H_0$ is rejected by neither test
+ANS: B
+EXP: One-sided test ($H_1:\mu>\mu_0$): reject if $z>z_{0.05}=1.645$. Since $1.80>1.645$, reject.
+Two-sided test: the $0.05$ is split into two tails, so reject if $|z|>z_{0.025}=1.96$. Since $1.80<1.96$, do not reject.
+The one-sided test puts all of $\alpha$ in one tail, so its cut-off is lower. That is why the direction must be fixed before seeing the data.
+
+@ stat e stat-e-032
+T: One-sample t statistic
+S: t-test
+Q: A sample of $n=16$ values has mean $\bar x=12$ and sample standard deviation $s=4$. What is the $t$ statistic for testing $H_0:\mu=10$?
+A: $0.5$
+B: $8$
+C: $0.125$
+D: $2$
+ANS: D
+EXP: Rule: $t=\dfrac{\bar x-\mu_0}{s/\sqrt n}$, with $n-1=15$ degrees of freedom.
+Standard error $=4/\sqrt{16}=1$, so $t=\dfrac{12-10}{1}=2$.
+$0.5$ forgets the $\sqrt n$ (divides by $s$). $8$ divides by $s/n$ in place of $s/\sqrt n$. $0.125$ divides by the variance $s^2$.
+
+@ stat e stat-e-033
+T: Degrees of freedom of a pooled two-sample t-test
+S: t-test
+Q: A pooled (equal-variance) two-sample $t$-test compares groups of sizes $n_1=10$ and $n_2=12$. How many degrees of freedom does the test statistic have?
+A: $20$
+B: $21$
+C: $22$
+D: $9$
+ANS: A
+EXP: The pooled variance uses $n_1-1$ degrees of freedom from group 1 and $n_2-1$ from group 2 (one mean is estimated in each group).
+df $=(n_1-1)+(n_2-1)=n_1+n_2-2=9+11=20$.
+$21$ subtracts only one, as if a single mean had been estimated. $22$ subtracts nothing.
+
+@ stat e stat-e-034
+T: When to use t in place of z
+S: t-test
+Q: A sample of $n=12$ comes from a normal population. When should a $t$-test be used in place of a $z$-test for the mean?
+A: When the population standard deviation is unknown and is estimated by the sample standard deviation $s$
+B: When the population standard deviation is known
+C: When the population is not normal and $n$ is small
+D: When the alternative hypothesis is two-sided
+ANS: A
+EXP: If $\sigma$ is known, $\dfrac{\bar X-\mu}{\sigma/\sqrt n}$ is exactly standard normal, so a $z$-test applies.
+If $\sigma$ is replaced by the estimate $s$, the extra uncertainty in $s$ makes the statistic follow a $t$ distribution with $n-1$ degrees of freedom, which has heavier tails.
+The $t$-test also needs normal data when $n$ is small, so a small non-normal sample is not the reason to use it. One- or two-sided alternatives can be used with either test.
+
+@ stat e stat-e-035
+T: Choosing a test for before-and-after data
+S: t-test
+Q: The blood pressure of the same $12$ patients is measured before and after a drug. The population SD is unknown. Which test, with how many degrees of freedom, fits best?
+A: Pooled two-sample $t$-test with $22$ degrees of freedom
+B: Paired $t$-test with $12$ degrees of freedom
+C: Paired $t$-test with $11$ degrees of freedom
+D: Two-sample $z$-test
+ANS: C
+EXP: The two measurements come from the same patients, so they are dependent. Take the 12 differences $d_i=\text{after}_i-\text{before}_i$ and run a one-sample $t$-test on them.
+That is the paired $t$-test, with df $=n-1=12-1=11$.
+A two-sample test with $22$ df treats the groups as independent, which ignores the pairing and usually loses a lot of power.
+
+@ stat e stat-e-036
+T: Expected count in a contingency table
+S: chi-squared-test
+Q: In a chi-square test of independence on a table with grand total $n=120$, a cell lies in a row with total $40$ and a column with total $30$. What is its expected count under independence?
+A: $35$
+B: $\frac{1}{12}$
+C: $40$
+D: $10$
+ANS: D
+EXP: Under independence, $P(\text{row}\cap\text{col})=P(\text{row})P(\text{col})$, so
+$E=n\cdot\dfrac{40}{120}\cdot\dfrac{30}{120}=\dfrac{40\times30}{120}=10$.
+$\frac1{12}$ is the expected cell probability, not the count: it still has to be multiplied by $n$.
+
+@ stat e stat-e-037
+T: Degrees of freedom for a fair-die goodness-of-fit
+S: chi-squared-test
+Q: A die is rolled $300$ times and the six face counts are compared with the counts expected for a fair die using a chi-square goodness-of-fit test. How many degrees of freedom does the test have?
+A: $6$
+B: $5$
+C: $299$
+D: $4$
+ANS: B
+EXP: Goodness of fit: df $=k-1-m$, where $k$ is the number of categories and $m$ the number of parameters estimated from the data.
+Here $k=6$ and nothing is estimated (the fair-die probabilities are fully specified), so df $=6-1=5$.
+The $-1$ is because the counts must add to $300$. $299$ wrongly uses the number of rolls.
+
+@ stat e stat-e-038
+T: Chi-square statistic for 60 heads in 100 tosses
+S: chi-squared-test
+Q: A coin is tossed $100$ times and gives $60$ heads. What is the chi-square goodness-of-fit statistic for $H_0$: the coin is fair?
+A: $2$
+B: $4$
+C: $200$
+D: $0.4$
+ANS: B
+EXP: Expected counts: $50$ heads, $50$ tails. Rule: $\chi^2=\sum\dfrac{(O-E)^2}{E}$ over all categories.
+$\chi^2=\dfrac{(60-50)^2}{50}+\dfrac{(40-50)^2}{50}=2+2=4$.
+$2$ uses only the heads cell. Both categories must be included. $200$ forgets to divide by $E$.
+
+@ stat e stat-e-039
+T: Rejection region of a chi-square test
+S: chi-squared-test
+Q: A chi-square test of independence with $2$ degrees of freedom gives $\chi^2=7.2$. Given $\chi^2_{0.05,2}=5.991$ (upper 5% point) and $\chi^2_{0.025,2}=7.378$, what is the decision at $\alpha=0.05$?
+A: Do not reject $H_0$, because the test is two-tailed and $7.2<7.378$
+B: Do not reject $H_0$, because a large $\chi^2$ supports independence
+C: Reject $H_0$, because $7.2>5.991$
+D: Reject $H_0$, because $7.2>1.96$
+ANS: C
+EXP: The statistic $\sum (O-E)^2/E$ grows when the observed counts move away from the expected ones, so only large values count against $H_0$. The test is right-tailed: reject if $\chi^2>\chi^2_{0.05,2}=5.991$.
+$7.2>5.991$, so reject independence.
+Splitting $\alpha$ into two tails (the $7.378$ cut-off) is a habit carried over from $z$- and $t$-tests, and does not apply here. $1.96$ is a normal quantile and has nothing to do with this test.
+
+@ stat e stat-e-040
+T: Reading a regression slope
+S: regression-correlation
+Q: A fitted regression line is $\hat y=3+2x$. If $x$ increases by $5$, by how much does the predicted $y$ change?
+A: $13$
+B: $2.5$
+C: $5$
+D: $10$
+ANS: D
+EXP: The slope is the change in $\hat y$ per unit change in $x$. A change of $\Delta x=5$ gives $\Delta\hat y=2\times5=10$.
+$13=3+2\cdot5$ is the predicted value at $x=5$, not the change. The intercept cancels when you take differences.
+
+@ stat e stat-e-041
+T: R squared from a negative correlation
+S: regression-correlation
+Q: In simple linear regression (one predictor, with intercept) the sample correlation is $r=-0.6$. What is $R^2$?
+A: $0.36$
+B: $-0.36$
+C: $0.6$
+D: $-0.6$
+ANS: A
+EXP: For simple linear regression with an intercept, $R^2=r^2=(-0.6)^2=0.36$: the line explains 36% of the variance of $y$.
+$R^2$ is a fraction of variance, so it cannot be negative. The sign of $r$ tells you only the direction of the slope.
+
+@ stat e stat-e-042
+T: Correlation after linear transformations
+S: regression-correlation
+Q: The correlation between $X$ and $Y$ is $0.7$. Let $U=2X+3$ and $V=-Y+1$. What is the correlation between $U$ and $V$?
+A: $0.7$
+B: $-0.7$
+C: $-1.4$
+D: $1.4$
+ANS: B
+EXP: Correlation ignores shifts and positive rescaling: $\text{corr}(aX+b,cY+d)=\text{sign}(ac)\,\text{corr}(X,Y)$.
+Here $a=2>0$ and $c=-1<0$, so the sign flips: $\text{corr}(U,V)=-0.7$.
+Correlation always lies in $[-1,1]$, so $\pm1.4$ is impossible. Multiplying by 2 changes the covariance but also the SD, so the factor cancels.
+
+@ stat e stat-e-043
+T: Beta–Binomial posterior parameters
+S: bayesian-inference
+Q: A coin's heads probability $\theta$ has prior $\text{Beta}(2,2)$. In $10$ tosses you see $7$ heads and $3$ tails. What is the posterior distribution of $\theta$?
+A: $\text{Beta}(7,3)$
+B: $\text{Beta}(5,9)$
+C: $\text{Beta}(9,5)$
+D: $\text{Beta}(9,3)$
+ANS: C
+EXP: The Beta prior is conjugate to the binomial likelihood: $\text{Beta}(a,b)$ plus $k$ successes and $n-k$ failures gives $\text{Beta}(a+k,\;b+n-k)$.
+$\text{Beta}(2+7,\;2+3)=\text{Beta}(9,5)$.
+$\text{Beta}(7,3)$ drops the prior. $\text{Beta}(5,9)$ swaps heads and tails.
+
+@ stat e stat-e-044
+T: Posterior is proportional to likelihood times prior
+S: bayesian-inference
+Q: For a parameter $\theta$ and data $x$, which expression gives the posterior density $p(\theta\mid x)$ up to a constant that does not depend on $\theta$?
+A: $p(x\mid\theta)\,p(\theta)$
+B: $p(\theta)/p(x\mid\theta)$
+C: $p(x\mid\theta)$ alone
+D: $p(x)\,p(\theta)$
+ANS: A
+EXP: Bayes' rule: $p(\theta\mid x)=\dfrac{p(x\mid\theta)\,p(\theta)}{p(x)}$. The evidence $p(x)$ does not depend on $\theta$, so posterior $\propto$ likelihood $\times$ prior.
+Using the likelihood alone is the frequentist starting point (it leads to the MLE). It equals the posterior shape only when the prior is flat.
+
+@ stat e stat-e-045
+T: When MAP equals MLE
+S: bayesian-inference
+Q: For which prior is the MAP estimate of $\theta$ always the same as the MLE (assuming the MLE lies inside the prior's support)?
+A: A normal prior centred at the MLE
+B: Any conjugate prior
+C: A Laplace prior centred at zero
+D: A uniform (flat) prior on the parameter space
+ANS: D
+EXP: $\hat\theta_{MAP}=\arg\max_\theta\,[\log p(x\mid\theta)+\log p(\theta)]$. If $p(\theta)$ is constant, the second term does not change the maximiser, so MAP $=$ MLE.
+A Laplace prior at zero adds an $L_1$ penalty (lasso), and a normal prior adds an $L_2$ penalty (ridge). Both pull the estimate away from the MLE. Conjugacy only makes the posterior easy to compute, it does not remove the prior's effect.
+
+@ stat e stat-e-046
+T: Conjugate prior for a Poisson rate
+S: bayesian-inference
+Q: Counts $x_1,\dots,x_n$ are i.i.d. Poisson$(\lambda)$. Which prior family on $\lambda$ is conjugate, so that the posterior is in the same family?
+A: Beta
+B: Gamma
+C: Normal
+D: Dirichlet
+ANS: B
+EXP: The Poisson likelihood is $\propto \lambda^{\sum x_i}e^{-n\lambda}$. A Gamma$(\alpha,\beta)$ prior (rate $\beta$) has density $\propto \lambda^{\alpha-1}e^{-\beta\lambda}$.
+Multiplying gives $\lambda^{\alpha+\sum x_i-1}e^{-(\beta+n)\lambda}$, which is Gamma$(\alpha+\sum x_i,\;\beta+n)$.
+Beta is conjugate to the Bernoulli/binomial (it lives on $[0,1]$, but $\lambda$ can be any positive number). Dirichlet is conjugate to the multinomial.
+
+@ stat e stat-e-047
+T: Entropy of a uniform distribution on 8 outcomes
+S: information-theory
+Q: Using base-2 logarithms, what is the entropy of a random variable that is uniform on $8$ outcomes?
+A: $3$ bits
+B: $8$ bits
+C: $\frac18$ bit
+D: $2.08$ bits
+ANS: A
+EXP: For a uniform distribution on $k$ outcomes, $H=-\sum \frac1k\log_2\frac1k=\log_2 k$.
+$H=\log_2 8=3$ bits: three yes/no questions identify the outcome.
+$2.08=\ln 8$ is the same entropy in nats (natural log), not bits.
+
+@ stat e stat-e-048
+T: Entropy of the distribution (1/2, 1/4, 1/4)
+S: information-theory
+TYPE: nat
+TOL: 0.01
+Q: A random variable takes three values with probabilities $\frac12,\frac14,\frac14$. What is its entropy in bits (base-2 logarithm)? Enter the number.
+ANS: 1.5
+EXP: $H=-\sum p_i\log_2 p_i$.
+$H=\tfrac12\log_2 2+\tfrac14\log_2 4+\tfrac14\log_2 4=\tfrac12(1)+\tfrac14(2)+\tfrac14(2)=1.5$ bits.
+This is less than $\log_2 3\approx1.585$, the maximum for three outcomes, because the distribution is not uniform.
+
+@ stat e stat-e-049
+T: Cross-entropy loss for one example
+S: information-theory
+Q: A classifier outputs probabilities $(0.5,\,0.25,\,0.25)$ for classes $1,2,3$. The true class is $2$ (one-hot label). What is the cross-entropy loss for this example, using base-2 logarithms?
+A: $1.5$ bits
+B: $0.25$ bits
+C: $2$ bits
+D: $1$ bit
+ANS: C
+EXP: With a one-hot label, cross-entropy $-\sum_k y_k\log_2 q_k$ keeps only the true class term: loss $=-\log_2 q_{\text{true}}=-\log_2 0.25=2$ bits.
+$1.5$ bits is the entropy of the predicted distribution, which does not involve the label at all. $1$ bit would be the loss if class 1 were the true class.
+
+@ stat e stat-e-050
+T: Basic property of KL divergence
+S: information-theory
+Q: For any two distributions $P$ and $Q$ on the same finite set (with $Q(x)>0$ wherever $P(x)>0$), which statement is always true?
+A: $D_{KL}(P\|Q)=D_{KL}(Q\|P)$
+B: $D_{KL}(P\|Q)\le 1$
+C: $D_{KL}(P\|Q)\ge 0$, with equality only when $P=Q$
+D: $D_{KL}(P\|R)\le D_{KL}(P\|Q)+D_{KL}(Q\|R)$ for every third distribution $R$
+ANS: C
+EXP: Gibbs' inequality (from Jensen's inequality): $D_{KL}(P\|Q)=\sum P\log\frac PQ\ge0$, with equality iff $P=Q$.
+KL is not symmetric: for $P=(\frac12,\frac12)$, $Q=(\frac14,\frac34)$, $D(P\|Q)\approx0.208$ bits but $D(Q\|P)\approx0.189$ bits.
+It is not bounded by 1: for $P=(1,0)$, $Q=(\frac1{1024},\frac{1023}{1024})$, $D(P\|Q)=\log_2 1024=10$ bits.
+It does not satisfy the triangle inequality: for $P=(0.9,0.1)$, $Q=(0.5,0.5)$, $R=(0.1,0.9)$, $D(P\|R)\approx2.54$ bits but $D(P\|Q)+D(Q\|R)\approx0.53+0.74=1.27$ bits. That is why it is called a divergence, not a distance.
+
+@ stat m stat-m-041
+T: Two-sided p-value from a z statistic
+S: z-test
+TYPE: nat
+TOL: 0.0005
+Q: A two-sided $z$-test gives $z=2.00$. Using $\Phi(2.00)=0.9772$, what is the p-value? Enter it to 4 decimal places.
+ANS: 0.0456
+EXP: Two-sided p-value $=P(|Z|\ge|z|)=2\,[1-\Phi(|z|)]$.
+$1-\Phi(2)=1-0.9772=0.0228$, so $p=2\times0.0228=0.0456$.
+Reporting $0.0228$ gives only one tail, which is the p-value of a one-sided test. At $\alpha=0.05$ the result is significant, but only just.
+
+@ stat m stat-m-042
+T: Two-sample z-test with known variances
+S: z-test
+Q: Two independent groups have known SDs $\sigma_1=15$, $\sigma_2=20$ and sizes $n_1=n_2=25$. The sample means are $\bar x_1=110$ and $\bar x_2=100$. What is the $z$ statistic for $H_0:\mu_1=\mu_2$?
+A: $2.83$
+B: $1.43$
+C: $2.00$
+D: $0.40$
+ANS: C
+EXP: Rule: $z=\dfrac{\bar x_1-\bar x_2}{\sqrt{\sigma_1^2/n_1+\sigma_2^2/n_2}}$. Variances of independent means add, standard errors do not.
+$\sigma_1^2/n_1=225/25=9$, $\sigma_2^2/n_2=400/25=16$, so SE $=\sqrt{25}=5$ and $z=10/5=2.00$.
+$1.43$ adds the two standard errors ($3+4=7$). $0.40$ divides by the variance $25$ in place of its square root. $2.83$ divides the summed variances by $n_1+n_2=50$.
+
+@ stat m stat-m-043
+T: Two-proportion z-test for an A/B test
+S: z-test
+Q: In an A/B test, version A converts $60$ of $200$ users and version B converts $40$ of $200$. Using the pooled two-proportion $z$-test for $H_0:p_A=p_B$, the $z$ statistic is about:
+A: $3.27$
+B: $2.31$
+C: $4.62$
+D: $3.09$
+ANS: B
+EXP: Under $H_0$ the two rates are equal, so pool them: $\hat p=\dfrac{60+40}{400}=0.25$.
+SE $=\sqrt{\hat p(1-\hat p)\left(\frac1{n_A}+\frac1{n_B}\right)}=\sqrt{0.25\times0.75\times\frac{2}{200}}=\sqrt{0.001875}\approx0.0433$.
+$z=\dfrac{0.30-0.20}{0.0433}\approx2.31$.
+$3.27$ uses only $\frac1{200}$ (one group's size) in place of $\frac1{200}+\frac1{200}$. $4.62$ uses $\frac1{400}$. $3.09$ uses only group A's variance $0.3\times0.7$.
+
+@ stat m stat-m-044
+T: Sample size for a target power
+S: z-test
+Q: You will test $H_0:\mu=\mu_0$ against $H_1:\mu>\mu_0$ at $\alpha=0.05$ with known $\sigma=10$. You want power $0.80$ when the true mean is $\mu_0+5$. Use $z_{0.05}=1.645$, $z_{0.025}=1.96$, $z_{0.20}=0.84$. What is the smallest sample size?
+A: $25$
+B: $32$
+C: $11$
+D: $5$
+ANS: A
+EXP: Rule for a one-sided $z$-test: $n=\left(\dfrac{(z_\alpha+z_\beta)\,\sigma}{\delta}\right)^2$.
+$n=\left(\dfrac{(1.645+0.84)\times10}{5}\right)^2=(4.97)^2\approx24.7$, so round up to $n=25$.
+$32$ uses the two-sided value $1.96$. $11$ ignores the power requirement (uses $z_\alpha$ only, which gives power $0.5$). $5$ forgets to square.
+
+@ stat m stat-m-045
+T: What changes the power of a z-test
+S: z-test
+TYPE: msq
+Q: Consider a one-sided $z$-test of $H_0:\mu=\mu_0$ vs $H_1:\mu>\mu_0$ with known $\sigma$. Which statements are true? (More than one option may be correct.)
+A: With $\alpha$ fixed, increasing the sample size $n$ increases the power at any fixed $\mu>\mu_0$
+B: Lowering $\alpha$ from $0.05$ to $0.01$ (same $n$) increases the power
+C: For fixed $n$ and $\alpha$, the power is larger when the true $\mu$ is further above $\mu_0$
+D: The probability of a Type I error depends on the true value of $\mu$ under $H_1$
+ANS: A,C
+EXP: Power at true $\mu$: $1-\Phi\!\left(z_\alpha-\dfrac{(\mu-\mu_0)\sqrt n}{\sigma}\right)$.
+[[A]] True: a larger $n$ makes the shift $\frac{(\mu-\mu_0)\sqrt n}{\sigma}$ larger, so the power rises.
+[[B]] False: lowering $\alpha$ raises the cut-off $z_\alpha$ (from $1.645$ to $2.326$), so it is harder to reject and the power falls. This is the Type I/Type II trade-off.
+[[C]] True: a bigger $\mu-\mu_0$ gives a bigger shift.
+[[D]] False: a Type I error is rejecting when $H_0$ is true, so its probability is computed at $\mu=\mu_0$ and equals $\alpha$.
+
+@ stat m stat-m-046
+T: Duality between a CI and a two-sided test
+S: z-test
+Q: A 95% confidence interval for $\mu$ (based on the usual $z$ procedure) is $(48.2,\,53.8)$. For which null value would a two-sided $z$-test at $\alpha=0.05$ on the same data reject $H_0:\mu=\mu_0$?
+A: $\mu_0=49$
+B: $\mu_0=54$
+C: $\mu_0=51$
+D: $\mu_0=53$
+ANS: B
+EXP: A two-sided test at level $\alpha$ rejects $H_0:\mu=\mu_0$ exactly when $\mu_0$ lies outside the $(1-\alpha)$ confidence interval, because both use the same $\bar x\pm1.96\,\sigma/\sqrt n$.
+Only $54$ lies outside $(48.2,53.8)$, so only that null value is rejected.
+$49$ and $53$ are near the edges but still inside, so the data are consistent with them.
+
+@ stat m stat-m-047
+T: Paired t-test from before and after scores
+S: t-test
+Q: Four students take a test before and after a course. Scores before: $10,12,9,11$. After: $12,15,10,15$. For a paired $t$-test of $H_0$: no mean change, two-sided, $\alpha=0.05$, with $t_{0.025,3}=3.182$, which is correct?
+A: $t\approx3.87$, reject $H_0$
+B: $t\approx4.47$, reject $H_0$
+C: $t\approx1.94$, do not reject $H_0$
+D: $t\approx1.81$, do not reject $H_0$
+ANS: A
+EXP: Differences $d=(2,3,1,4)$, $\bar d=2.5$.
+$s_d^2=\dfrac{(-0.5)^2+0.5^2+(-1.5)^2+1.5^2}{3}=\dfrac53$, so $s_d\approx1.291$.
+$t=\dfrac{\bar d}{s_d/\sqrt4}=\dfrac{2.5}{0.6455}\approx3.87>3.182$, so reject.
+$4.47$ uses $n$ in place of $n-1$ in $s_d$. $1.94$ forgets the $\sqrt n$. $1.81$ wrongly treats the two columns as independent samples (pooled two-sample test). The variation between students then swamps the consistent gain.
+
+@ stat m stat-m-048
+T: Pooled variance from two samples
+S: t-test
+TYPE: nat
+TOL: 0
+Q: For a pooled two-sample $t$-test, group 1 has $n_1=10$ and $s_1^2=20$, and group 2 has $n_2=6$ and $s_2^2=34$. What is the pooled variance $s_p^2$? Enter the number.
+ANS: 25
+EXP: Rule: $s_p^2=\dfrac{(n_1-1)s_1^2+(n_2-1)s_2^2}{n_1+n_2-2}$. Each sample variance is weighted by its degrees of freedom.
+$s_p^2=\dfrac{9(20)+5(34)}{14}=\dfrac{180+170}{14}=25$.
+The plain average $\frac{20+34}{2}=27$ ignores that group 1 has more data. Weighting by $n_i$ in place of $n_i-1$ gives $25.25$.
+
+@ stat m stat-m-049
+T: Welch t statistic with unequal variances
+S: t-test
+Q: Two independent samples: $n_1=9$, $\bar x_1=26$, $s_1^2=18$; $n_2=4$, $\bar x_2=20$, $s_2^2=28$. Variances are not assumed equal. What is Welch's (unpooled) $t$ statistic for $H_0:\mu_1=\mu_2$?
+A: $2.19$
+B: $1.48$
+C: $2.00$
+D: $0.67$
+ANS: C
+EXP: Welch: $t=\dfrac{\bar x_1-\bar x_2}{\sqrt{s_1^2/n_1+s_2^2/n_2}}$.
+$s_1^2/n_1=2$, $s_2^2/n_2=7$, SE $=\sqrt9=3$, so $t=6/3=2.00$.
+$2.19$ is the pooled statistic. Here the pooled variance puts most weight on the larger group, which has the smaller variance, so it understates the SE. $1.48$ adds the two standard errors ($\sqrt2+\sqrt7$). $0.67$ forgets the square root ($6/9$).
+
+@ stat m stat-m-050
+T: Bracketing a p-value with a t table
+S: t-test
+Q: A one-sample $t$-test with $10$ degrees of freedom gives $t=2.6$ (two-sided alternative). The table gives $t_{0.025,10}=2.228$ and $t_{0.01,10}=2.764$ (upper-tail points). What can you say about the p-value?
+A: $0.01<p<0.025$
+B: $0.05<p<0.10$
+C: $p<0.01$
+D: $0.02<p<0.05$
+ANS: D
+EXP: $2.228<2.6<2.764$, so the upper-tail area beyond $2.6$ is between $0.01$ and $0.025$.
+For a two-sided test the p-value doubles the tail area: $0.02<p<0.05$.
+$0.01<p<0.025$ is the one-sided p-value. Forgetting to double is the most common slip.
+
+@ stat m stat-m-051
+T: Smallest sample mean that rejects in a t-test
+S: t-test
+TYPE: nat
+TOL: 0.01
+Q: A sample of $n=9$ has standard deviation $s=6$. You test $H_0:\mu=20$ against $H_1:\mu>20$ at $\alpha=0.05$, with $t_{0.05,8}=1.860$. What is the smallest sample mean $\bar x$ for which $H_0$ is rejected? Enter it to 2 decimal places.
+ANS: 23.72
+EXP: Reject when $t=\dfrac{\bar x-20}{s/\sqrt n}>1.860$, with SE $=6/\sqrt9=2$.
+So $\bar x>20+1.860\times2=23.72$.
+Using $z_{0.05}=1.645$ gives $23.29$, which is too small: with $\sigma$ estimated from $9$ values, the $t$ cut-off must be used.
+
+@ stat m stat-m-052
+T: Assumptions of the pooled two-sample t-test
+S: t-test
+TYPE: msq
+Q: Which of the following are assumptions of the pooled (equal-variance) two-sample $t$-test for small samples? (More than one option may be correct.)
+A: The two samples are independent of each other
+B: The two populations have equal variances
+C: The two samples have equal sizes
+D: The population variances are known
+ANS: A,B
+EXP: [[A]] Needed: dependence (for example, the same subjects measured twice) calls for the paired test.
+[[B]] Needed: the pooled $s_p^2$ estimates one common variance. If the variances differ, use Welch's test.
+[[C]] Not needed: $s_p^2$ and the SE $s_p\sqrt{1/n_1+1/n_2}$ handle unequal $n_1,n_2$ (equal sizes only make the test less sensitive to unequal variances).
+[[D]] Not needed: if the variances were known you would use a $z$-test. The $t$-test exists because they are estimated.
+Normality of both populations is also assumed for small samples.
+
+@ stat m stat-m-053
+T: Type I error when z is used for a small sample
+S: t-test
+Q: With $n=5$ normal observations and $\sigma$ unknown, an analyst computes $t=\dfrac{\bar x-\mu_0}{s/\sqrt5}$ but rejects $H_0$ when $|t|>1.96$ (the normal cut-off). Upper-tail points for $4$ df: $t_{0.10,4}=1.533$, $t_{0.05,4}=2.132$. What is the true Type I error rate of this procedure?
+A: Exactly $0.05$
+B: Between $0.05$ and $0.10$
+C: Between $0.10$ and $0.20$
+D: Less than $0.05$
+ANS: C
+EXP: Under $H_0$ the statistic follows $t_4$, not $N(0,1)$. Since $1.533<1.96<2.132$, the upper-tail area beyond $1.96$ is between $0.05$ and $0.10$.
+The test rejects in both tails, so the true $\alpha$ is between $0.10$ and $0.20$ (it is about $0.12$).
+"Between $0.05$ and $0.10$" forgets the second tail. The $t$ tails are heavier than normal tails, so the normal cut-off rejects too often, not too rarely.
+
+@ stat m stat-m-054
+T: Goodness of fit for a 9:3:3:1 ratio
+S: chi-squared-test
+TYPE: nat
+TOL: 0.01
+Q: A genetics model predicts four phenotypes in the ratio $9:3:3:1$. Among $160$ offspring the observed counts are $99,\,27,\,24,\,10$. What is the chi-square goodness-of-fit statistic? Enter it to 2 decimal places.
+ANS: 2.4
+EXP: Expected counts: $160\times\frac{9}{16}=90$, $160\times\frac3{16}=30$, $30$, $160\times\frac1{16}=10$.
+$\chi^2=\dfrac{9^2}{90}+\dfrac{(-3)^2}{30}+\dfrac{(-6)^2}{30}+\dfrac{0^2}{10}=0.9+0.3+1.2+0=2.4$.
+With df $=4-1=3$ and $\chi^2_{0.05,3}=7.815$, the data fit the model well.
+
+@ stat m stat-m-055
+T: Degrees of freedom when fitting a Poisson
+S: chi-squared-test
+Q: To check whether daily server errors follow a Poisson distribution, the counts are grouped into $5$ categories ($0,1,2,3,\ge4$). The rate $\lambda$ is estimated from the same data by its MLE (the sample mean). How many degrees of freedom does the chi-square goodness-of-fit test have?
+A: $4$
+B: $3$
+C: $5$
+D: $2$
+ANS: B
+EXP: Rule: df $=k-1-m$, with $k$ categories and $m$ estimated parameters.
+$k=5$, $m=1$ ($\lambda$), so df $=5-1-1=3$.
+$4$ forgets that estimating $\lambda$ from the data makes the fit closer, which costs one degree of freedom.
+
+@ stat m stat-m-056
+T: Chi-square test on a 2x2 table
+S: chi-squared-test
+Q: A $2\times2$ table of counts is $\begin{pmatrix}30&20\\20&30\end{pmatrix}$. Test independence at $\alpha=0.05$ using $\chi^2_{0.05,1}=3.841$ and $\chi^2_{0.05,2}=5.991$ (no continuity correction). Which is correct?
+A: $\chi^2=4.0$ with $2$ df, so do not reject
+B: $\chi^2=1.0$ with $1$ df, so do not reject
+C: $\chi^2=4.0$ with $1$ df, so reject
+D: $\chi^2=2.0$ with $1$ df, so do not reject
+ANS: C
+EXP: All margins are $50$ and $n=100$, so every expected count is $\frac{50\times50}{100}=25$.
+Each cell contributes $\frac{(\pm5)^2}{25}=1$, so $\chi^2=4\times1=4.0$.
+df $=(2-1)(2-1)=1$. Since $4.0>3.841$, reject independence.
+$1.0$ counts only one cell. Using $2$ df (as if df $=$ number of rows) gives the wrong cut-off $5.991$ and the wrong decision.
+
+@ stat m stat-m-057
+T: Chi-square statistic when the sample is ten times larger
+S: chi-squared-test
+Q: A goodness-of-fit test on $n=160$ observations gives $\chi^2=2.4$. Suppose a study with $n=1600$ finds exactly the same observed proportions in every category. What is the new $\chi^2$ statistic?
+A: $2.4$
+B: $7.59$
+C: $240$
+D: $24$
+ANS: D
+EXP: Multiply all counts by $10$: then $O$ and $E$ both scale by $10$, so each term $\dfrac{(O-E)^2}{E}$ scales by $\dfrac{10^2}{10}=10$.
+$\chi^2=10\times2.4=24$.
+So a deviation that was not significant with $160$ observations can become highly significant with $1600$. A significant chi-square says the effect is detectable, not that it is large. $7.59=\sqrt{10}\times2.4$ wrongly scales like a $z$ statistic.
+
+@ stat m stat-m-058
+T: Facts about the chi-square test of independence
+S: chi-squared-test
+TYPE: msq
+Q: Which statements about the chi-square test of independence on an $r\times c$ table are true? (More than one option may be correct.)
+A: The expected count of a cell is $\dfrac{\text{row total}\times\text{column total}}{n}$
+B: Applying the test to row percentages in place of counts gives the same statistic
+C: The degrees of freedom are $(r-1)(c-1)$
+D: A large p-value proves that the two variables are independent
+ANS: A,C
+EXP: [[A]] True: under independence the cell probability is $P(\text{row})P(\text{col})$, times $n$.
+[[B]] False: $\chi^2$ scales with the total. For example, counts $\begin{pmatrix}60&40\\40&60\end{pmatrix}$ ($n=200$) give $\chi^2=8$, but the same table written as percentages, $\begin{pmatrix}30&20\\20&30\end{pmatrix}$, gives $\chi^2=4$. The test must use raw counts.
+[[C]] True: once the margins are fixed, only $(r-1)(c-1)$ cells are free.
+[[D]] False: failing to reject only means there is not enough evidence of dependence. The sample may simply be too small.
+
+@ stat m stat-m-059
+T: Chi-square test for a variance
+S: chi-squared-test
+Q: A process should have variance $\sigma^2=10$. A sample of $n=11$ items gives $s^2=18$ (denominator $n-1$). Test $H_0:\sigma^2=10$ against $H_1:\sigma^2>10$ at $\alpha=0.05$, with $\chi^2_{0.05,10}=18.307$. Which is correct?
+A: Statistic $18.0$, do not reject $H_0$
+B: Statistic $19.8$, reject $H_0$
+C: Statistic $1.8$, do not reject $H_0$
+D: Statistic $5.56$, do not reject $H_0$
+ANS: A
+EXP: For normal data, $\dfrac{(n-1)S^2}{\sigma_0^2}\sim\chi^2_{n-1}$ under $H_0$.
+Statistic $=\dfrac{10\times18}{10}=18.0<18.307$, so do not reject (just barely).
+$19.8$ multiplies by $n=11$ in place of $n-1=10$, which flips the decision. $1.8$ is only the ratio $s^2/\sigma_0^2$. $5.56$ inverts the ratio.
+
+@ stat m stat-m-060
+T: Correlation from the two regression slopes
+S: regression-correlation
+Q: For a data set, the least-squares slope of $y$ on $x$ is $1.5$ and the least-squares slope of $x$ on $y$ is $0.24$. What is the correlation $r$?
+A: $0.6$
+B: $0.36$
+C: $-0.6$
+D: $6.25$
+ANS: A
+EXP: $b_{y|x}=r\dfrac{s_y}{s_x}$ and $b_{x|y}=r\dfrac{s_x}{s_y}$, so $b_{y|x}\,b_{x|y}=r^2$.
+$r^2=1.5\times0.24=0.36$, and $r$ has the same sign as both slopes (positive), so $r=0.6$.
+$0.36$ is $r^2$ (the $R^2$), not $r$. The two lines are different unless $|r|=1$, so $b_{x|y}\ne 1/b_{y|x}$ in general.
+
+@ stat m stat-m-061
+T: t-test for a correlation coefficient
+S: regression-correlation
+Q: From $n=18$ pairs, the sample correlation is $r=0.5$. Test $H_0:\rho=0$ (two-sided, $\alpha=0.05$) with $t_{0.025,16}=2.120$. Which is correct?
+A: $t=2.00$, do not reject $H_0$
+B: $t\approx2.31$, reject $H_0$
+C: $t\approx2.67$, reject $H_0$
+D: $t\approx0.58$, do not reject $H_0$
+ANS: B
+EXP: Rule: $t=\dfrac{r\sqrt{n-2}}{\sqrt{1-r^2}}$ with $n-2$ df. This equals the $t$ statistic for the slope in simple regression.
+$t=\dfrac{0.5\times4}{\sqrt{0.75}}=\dfrac{2}{0.866}\approx2.31>2.120$, so reject.
+$2.00$ forgets the $\sqrt{1-r^2}$ and gets the wrong decision. $2.67$ divides by $1-r^2$ without the square root.
+
+@ stat m stat-m-062
+T: Properties of OLS residuals
+S: regression-correlation
+TYPE: msq
+Q: A simple linear regression $\hat y=a+bx$ with an intercept is fitted by ordinary least squares. Which statements about the residuals $e_i=y_i-\hat y_i$ are true? (More than one option may be correct.)
+A: $\sum e_i=0$
+B: $\sum x_ie_i=0$, so the residuals are uncorrelated with $x$
+C: The fitted line passes through $(\bar x,\bar y)$
+D: The residuals would still sum to zero if the line were forced through the origin
+ANS: A,B,C
+EXP: The normal equations are $\partial/\partial a$: $\sum e_i=0$, and $\partial/\partial b$: $\sum x_ie_i=0$. So [[A]] and [[B]] are true.
+[[C]] True: $\sum e_i=0$ gives $\bar y=a+b\bar x$.
+[[D]] False: without an intercept only $\sum x_ie_i=0$ holds. For example, fit $y=\beta x$ to $x=(1,2,3)$, $y=(2,3,7)$: $\hat\beta=\frac{29}{14}$ and the residuals sum to $12-\frac{29}{14}\cdot6=-\frac{3}{7}\ne0$.
+
+@ stat m stat-m-063
+T: Residual standard error from R squared
+S: regression-correlation
+Q: A simple linear regression on $n=27$ points has total sum of squares $\text{SST}=100$ and $R^2=0.64$. What is the residual standard error $s=\sqrt{\text{SSE}/(n-2)}$?
+A: $1.44$
+B: $1.15$
+C: $1.6$
+D: $1.2$
+ANS: D
+EXP: $\text{SSE}=(1-R^2)\,\text{SST}=0.36\times100=36$.
+Two parameters (intercept and slope) are estimated, so df $=n-2=25$: $s=\sqrt{36/25}=1.2$.
+$1.44$ is $s^2$, not $s$. $1.15$ divides by $n=27$. $1.6$ uses $R^2\,\text{SST}=64$, the explained sum of squares, in place of the residual one.
+
+@ stat m stat-m-064
+T: Posterior mean as a compromise
+S: bayesian-inference
+Q: A click-through rate $\theta$ has prior $\text{Beta}(3,7)$ (prior mean $0.3$). In $20$ impressions there are $12$ clicks. What is the posterior mean of $\theta$?
+A: $0.6$
+B: $0.45$
+C: $0.5$
+D: $0.3$
+ANS: C
+EXP: Posterior: $\text{Beta}(3+12,\;7+8)=\text{Beta}(15,15)$, mean $\dfrac{15}{30}=0.5$.
+In general the posterior mean is a weighted average of the prior mean and the MLE, with weights given by prior strength $a+b=10$ and data size $n=20$: $\frac{10}{30}(0.3)+\frac{20}{30}(0.6)=0.5$.
+$0.45$ weights prior and data equally, ignoring that the data carry twice the weight. $0.6$ is the MLE.
+
+@ stat m stat-m-065
+T: Normal–Normal posterior mean
+S: bayesian-inference
+Q: Observations are $X_i\mid\mu\sim N(\mu,\,4)$ (second parameter is the variance). The prior is $\mu\sim N(0,\,1)$. From $n=4$ observations, $\bar x=3$. What is the posterior mean of $\mu$?
+A: $3$
+B: $1.5$
+C: $2$
+D: $0.6$
+ANS: B
+EXP: Precisions add: prior precision $1/1=1$, data precision $n/\sigma^2=4/4=1$. Posterior precision $=2$.
+The posterior mean is the precision-weighted average: $\dfrac{1\times0+1\times3}{1+1}=1.5$.
+$2$ uses $n/\sigma=4/2$ (SD in place of variance). $0.6$ uses a single observation's precision $1/4$, forgetting the factor $n$. $3$ ignores the prior.
+
+@ stat m stat-m-066
+T: MAP estimate under a Beta prior
+S: bayesian-inference
+TYPE: nat
+TOL: 0.005
+Q: A success probability $\theta$ has prior $\text{Beta}(3,3)$. In $10$ trials there are $4$ successes. What is the MAP estimate of $\theta$? Enter it to 3 decimal places.
+ANS: 0.429
+EXP: Posterior: $\text{Beta}(3+4,\;3+6)=\text{Beta}(7,9)$.
+The mode of $\text{Beta}(a,b)$ with $a,b>1$ is $\dfrac{a-1}{a+b-2}$, so MAP $=\dfrac{6}{14}\approx0.429$.
+Compare: posterior mean $\frac7{16}=0.4375$, MLE $0.4$. The prior centred at $0.5$ pulls both Bayesian estimates up from the MLE. The mode and the mean differ because the posterior is not symmetric.
+
+@ stat m stat-m-067
+T: Predictive probability after zero successes
+S: bayesian-inference
+Q: A rare word never appears in $3$ spam emails. With a uniform $\text{Beta}(1,1)$ prior on the probability $\theta$ that a spam email contains the word, what is the posterior predictive probability that the next spam email contains it?
+A: $0$
+B: $0.2$
+C: $0.25$
+D: $0.5$
+ANS: B
+EXP: Posterior: $\text{Beta}(1+0,\;1+3)=\text{Beta}(1,4)$. The predictive probability of a success is the posterior mean $\frac{1}{1+4}=0.2$.
+This is Laplace's rule of succession, $\frac{k+1}{n+2}$, the same add-one smoothing used in naive Bayes.
+The MLE $0$ would make any email containing the word get probability zero of being spam. $0.25=\frac1{n+1}$ adds one count to only one side.
+
+@ stat m stat-m-068
+T: Meaning of a 95% credible interval
+S: bayesian-inference
+Q: A Bayesian analysis gives a 95% credible interval $[0.32,\,0.48]$ for a parameter $\theta$. Which interpretation is correct?
+A: If the experiment were repeated many times, 95% of such intervals would contain the true $\theta$
+B: 95% of the observed data lie in $[0.32,0.48]$
+C: There is a 5% chance that the MLE lies outside the interval
+D: Given the data and the prior, the posterior probability that $\theta\in[0.32,0.48]$ is $0.95$
+ANS: D
+EXP: In Bayesian inference $\theta$ is treated as random, so a credible interval is a direct probability statement: $P(0.32\le\theta\le0.48\mid\text{data})=0.95$ under the posterior.
+The "repeated experiments" statement describes a frequentist confidence interval, where $\theta$ is fixed and the interval is random. The two often agree numerically with a flat prior and large $n$, but they mean different things.
+
+@ stat m stat-m-069
+T: Gamma–Poisson posterior mean
+S: bayesian-inference
+Q: Daily bug reports are Poisson$(\lambda)$. The prior is $\lambda\sim\text{Gamma}(\alpha=2,\beta=1)$ (shape $\alpha$, rate $\beta$, mean $\alpha/\beta$). Three days give counts $3,5,4$. What is the posterior mean of $\lambda$?
+A: $3.5$
+B: $4$
+C: $\frac{14}{3}$
+D: $2$
+ANS: A
+EXP: Gamma–Poisson conjugacy: posterior $\text{Gamma}(\alpha+\sum x_i,\;\beta+n)=\text{Gamma}(2+12,\;1+3)=\text{Gamma}(14,4)$.
+Posterior mean $=\frac{14}{4}=3.5$, between the prior mean $2$ and the MLE $\bar x=4$.
+$\frac{14}{3}$ forgets to add the prior's $\beta=1$ to $n$.
+
+@ stat m stat-m-070
+T: KL divergence between two Bernoulli distributions
+S: information-theory
+Q: Let $P=\text{Bernoulli}(\frac12)$ and $Q=\text{Bernoulli}(\frac14)$. Using base-2 logarithms, $D_{KL}(P\|Q)$ is approximately:
+A: $0.189$ bits
+B: $0.208$ bits
+C: $0.415$ bits
+D: $0.5$ bits
+ANS: B
+EXP: $D_{KL}(P\|Q)=\sum_x P(x)\log_2\frac{P(x)}{Q(x)}=\tfrac12\log_2\frac{1/2}{1/4}+\tfrac12\log_2\frac{1/2}{3/4}$.
+$=\tfrac12(1)+\tfrac12(-0.585)\approx0.208$ bits.
+$0.189$ is $D_{KL}(Q\|P)$: KL is not symmetric, so the order matters. $0.415$ drops the weights $P(x)=\tfrac12$.
+
+@ stat m stat-m-071
+T: KL divergence from cross-entropy and entropy
+S: information-theory
+Q: Let $P=(\frac12,\frac14,\frac14)$ and $Q=(\frac14,\frac14,\frac12)$ on the same three outcomes. Using base-2 logarithms, what is $D_{KL}(P\|Q)$?
+A: $1.75$ bits
+B: $1.5$ bits
+C: $-0.25$ bits
+D: $0.25$ bits
+ANS: D
+EXP: Use $D_{KL}(P\|Q)=H(P,Q)-H(P)$.
+Cross-entropy: $H(P,Q)=-\sum P\log_2Q=\tfrac12(2)+\tfrac14(2)+\tfrac14(1)=1.75$ bits.
+Entropy: $H(P)=\tfrac12(1)+\tfrac14(2)+\tfrac14(2)=1.5$ bits.
+$D_{KL}=1.75-1.5=0.25$ bits.
+$1.75$ is the cross-entropy itself. $-0.25$ subtracts the wrong way round, and KL can never be negative. In training, $H(P)$ is fixed by the data, so minimising cross-entropy is the same as minimising KL.
+
+@ stat m stat-m-072
+T: Mutual information from a 2x2 joint table
+S: information-theory
+TYPE: nat
+TOL: 0.005
+Q: Binary $X,Y$ have joint probabilities $P(0,0)=\frac14$, $P(0,1)=\frac14$, $P(1,0)=0$, $P(1,1)=\frac12$. What is $I(X;Y)$ in bits (base-2 logarithm)? Enter it to 3 decimal places.
+ANS: 0.311
+EXP: Use $I(X;Y)=H(Y)-H(Y\mid X)$.
+Marginal of $Y$: $P(Y=0)=\frac14$, $P(Y=1)=\frac34$, so $H(Y)=\frac14\log_24+\frac34\log_2\frac43\approx0.811$ bits.
+Given $X=0$ (prob $\frac12$): $Y$ is $(\frac12,\frac12)$, entropy $1$. Given $X=1$ (prob $\frac12$): $Y=1$ for sure, entropy $0$. So $H(Y\mid X)=0.5$.
+$I=0.811-0.5\approx0.311$ bits.
+
+@ stat m stat-m-073
+T: Chain rule for conditional entropy
+S: information-theory
+Q: For random variables $X$ and $Y$: $H(X)=1$ bit, $H(Y)=1.5$ bits and $I(X;Y)=0.3$ bits. What is $H(X\mid Y)$?
+A: $1.2$ bits
+B: $0.7$ bits
+C: $2.2$ bits
+D: $0.5$ bits
+ANS: B
+EXP: Mutual information is the drop in uncertainty about $X$ from knowing $Y$: $I(X;Y)=H(X)-H(X\mid Y)$.
+$H(X\mid Y)=1-0.3=0.7$ bits.
+$1.2=H(Y)-I$ is $H(Y\mid X)$, the other conditional. $2.2=H(X)+H(Y)-I$ is the joint entropy $H(X,Y)$.
+
+@ stat m stat-m-074
+T: Softmax cross-entropy loss from logits
+S: information-theory
+TYPE: nat
+TOL: 0.01
+Q: A 3-class model outputs logits $(2,\,1,\,0)$, and the true class is the first one. What is the softmax cross-entropy loss using the natural logarithm (nats)? Use $e\approx2.718$, $e^2\approx7.389$. Enter it to 2 decimal places.
+ANS: 0.41
+EXP: Softmax: $p_1=\dfrac{e^2}{e^2+e^1+e^0}=\dfrac{7.389}{7.389+2.718+1}=\dfrac{7.389}{11.107}\approx0.665$.
+Loss $=-\ln p_1\approx0.408$, about $0.41$ nats.
+Equivalently, loss $=\ln\sum_k e^{z_k}-z_{\text{true}}=\ln11.107-2\approx2.408-2=0.408$, the log-sum-exp form used in practice. In bits it would be $0.588$.
+
+@ stat m stat-m-075
+T: KL divergence when supports differ
+S: information-theory
+TYPE: msq
+Q: Let $P=(\frac12,\frac12,0)$ and $Q=(\frac12,\frac14,\frac14)$ on three outcomes. Using base-2 logarithms (and $0\log0=0$), which statements are true? (More than one option may be correct.)
+A: $D_{KL}(P\|Q)=0.5$ bits
+B: $D_{KL}(Q\|P)=+\infty$
+C: $D_{KL}(Q\|P)=0.5$ bits
+D: $D_{KL}(P\|Q)=+\infty$
+ANS: A,B
+EXP: [[A]] True: $D(P\|Q)=\tfrac12\log_2\frac{1/2}{1/2}+\tfrac12\log_2\frac{1/2}{1/4}+0=0+\tfrac12(1)=0.5$ bits. The third term is $0$ because $P=0$ there.
+[[B]] True: $Q$ puts $\frac14$ on the third outcome where $P=0$, giving a term $\frac14\log_2\frac{1/4}{0}=+\infty$.
+So [[C]] is false, and [[D]] is false because $Q>0$ wherever $P>0$.
+In ML, this is why a model that assigns probability $0$ to an outcome seen in the data gets infinite cross-entropy loss.
+
+@ stat h stat-h-041
+T: Power when the true mean sits on the cut-off
+S: z-test
+Q: Test $H_0:\mu=0$ vs $H_1:\mu\ne0$ at $\alpha=0.05$ with $\sigma=1$ known and $n=16$ (reject if $|\bar x|>1.96/4=0.49$). If the true mean is $\mu=0.49$, the power is closest to:
+A: $0.975$
+B: $0.025$
+C: $0.50$
+D: $0.05$
+ANS: C
+EXP: Under $\mu=0.49$, $\bar X\sim N(0.49,\;(1/4)^2)$.
+Upper rejection: $P(\bar X>0.49)=0.5$, because the true mean sits exactly on the cut-off.
+Lower rejection: $P(\bar X<-0.49)=P(Z<-3.92)\approx0.00004$, which is negligible.
+Power $\approx0.50$.
+Key idea: an effect exactly as large as the critical value is detected only half the time. To get 80% power the true effect must be about $(1.96+0.84)\,\sigma/\sqrt n$. $0.025$ and $0.975$ come from confusing the tail areas under $H_0$ with those under $H_1$.
+
+@ stat h stat-h-042
+T: What a p-value does and does not mean
+S: z-test
+TYPE: msq
+Q: Consider tests with a continuous test statistic. Which statements are true? (More than one option may be correct.)
+A: If $H_0$ is true, the p-value is uniformly distributed on $(0,1)$
+B: A p-value of $0.03$ means there is a 3% probability that $H_0$ is true
+C: For a $z$-test, the two-sided p-value is twice the one-sided p-value computed in the direction of the observed effect
+D: A p-value of $0.001$ always indicates a larger effect than a p-value of $0.04$
+ANS: A,C
+EXP: [[A]] True: if $T$ has continuous CDF $F$ under $H_0$, then $p=1-F(T)$ and $P(p\le u)=u$. So with $H_0$ true, $p<0.05$ happens exactly 5% of the time, which is what $\alpha$ means.
+[[B]] False: the p-value is $P(\text{data this extreme}\mid H_0)$, not $P(H_0\mid\text{data})$. The second needs a prior.
+[[C]] True: the normal distribution is symmetric, so $P(|Z|\ge|z|)=2P(Z\ge|z|)$.
+[[D]] False: p depends on $n$. A mean shift of $0.1\sigma$ with $n=1600$ gives $z=4$ ($p<0.001$), while a shift of $0.5\sigma$ with $n=16$ gives $z=2$ ($p\approx0.046$).
+
+@ stat h stat-h-043
+T: Sample size that balances both error rates
+S: z-test
+Q: You test $H_0:\mu=0$ vs $H_1:\mu=1$, with $\sigma=2$ known, using the rule "reject if $\bar x>c$". You want $P(\text{Type I})=P(\text{Type II})=0.05$. Use $z_{0.05}=1.645$, $z_{0.025}=1.96$. What is the smallest $n$?
+A: $44$
+B: $62$
+C: $11$
+D: $7$
+ANS: A
+EXP: Type I: $P(\bar X>c\mid\mu=0)=0.05$ gives $c=1.645\,\sigma/\sqrt n$. Type II: $P(\bar X<c\mid\mu=1)=0.05$ gives $c=1-1.645\,\sigma/\sqrt n$.
+Both errors are equal, so by symmetry $c$ is the midpoint: $c=0.5$.
+$1.645\times\dfrac{2}{\sqrt n}=0.5$ gives $\sqrt n=6.58$, so $n=43.3$, rounded up to $44$.
+$62$ wrongly uses $1.96$ (the test is one-sided). $11$ uses $\sigma=1$. $7$ stops at $\sqrt n$.
+
+@ stat h stat-h-044
+T: Share of significant results that are false alarms
+S: z-test
+TYPE: nat
+TOL: 0.01
+Q: A team runs many A/B tests at $\alpha=0.05$. In $10\%$ of them the new version truly helps, and in those cases the tests have power $0.8$. In the other $90\%$, $H_0$ is true. Among the tests that come out significant, what fraction are false positives? Enter it to 2 decimal places.
+ANS: 0.36
+EXP: Per test: false positives occur at rate $0.9\times0.05=0.045$, and true positives at $0.1\times0.8=0.08$.
+By Bayes' rule, $P(H_0\text{ true}\mid\text{significant})=\dfrac{0.045}{0.045+0.08}=0.36$.
+So about a third of the "wins" are noise, even though each test controls its Type I error at 5%. The trap is to answer $0.05$, which confuses $P(\text{reject}\mid H_0)$ with $P(H_0\mid\text{reject})$.
+
+@ stat h stat-h-045
+T: p-value when the effect is in the wrong direction
+S: z-test
+Q: A team pre-registers the one-sided test $H_0:\mu=50$ vs $H_1:\mu>50$. The data give $z=-2.5$. Using $\Phi(2.5)=0.9938$, what is the p-value?
+A: $0.0062$
+B: $0.0124$
+C: $0.9938$
+D: $0.4938$
+ANS: C
+EXP: For $H_1:\mu>50$ the p-value is the upper-tail probability $P(Z\ge z)=P(Z\ge-2.5)=\Phi(2.5)=0.9938$.
+The sample mean is below 50, which is the opposite of what $H_1$ claims, so there is no evidence at all for $H_1$.
+$0.0062$ is the lower-tail area. Using it would mean switching the direction after seeing the data. $0.0124$ is the two-sided p-value.
+
+@ stat h stat-h-046
+T: Why pairing increases the t statistic
+S: t-test
+Q: Each subject is measured twice. Both measurements have SD $10$, and the correlation between a subject's two measurements is $0.8$. For the same mean difference and the same $n$ (treat the SDs as known), the paired test statistic is larger than the statistic from a test that wrongly treats the two sets as independent by about what factor?
+A: $5$
+B: $\sqrt5\approx2.24$
+C: $1$
+D: $\frac1{\sqrt5}\approx0.45$
+ANS: B
+EXP: Paired: $\text{Var}(X_1-X_2)=\sigma_1^2+\sigma_2^2-2\rho\sigma_1\sigma_2=100+100-160=40$.
+Independent treatment ignores the covariance: $\text{Var}=100+100=200$.
+The SEs are $\sqrt{40/n}$ and $\sqrt{200/n}$, so the ratio of the statistics is $\sqrt{200/40}=\sqrt5\approx2.24$.
+Positive correlation cancels the between-subject variation. $5$ is the ratio of the variances, not of the SDs.
+
+@ stat h stat-h-047
+T: Two-sample t and one-way ANOVA
+S: t-test
+Q: A pooled two-sample $t$-test on two groups gives $t=2.5$. A one-way ANOVA $F$-test on the same two groups gives which $F$ statistic?
+A: $2.5$
+B: $1.58$
+C: $5$
+D: $6.25$
+ANS: D
+EXP: With two groups, the ANOVA $F$ statistic (with $1$ and $n_1+n_2-2$ df) equals $t^2$ from the pooled $t$-test: $F=2.5^2=6.25$.
+The p-values are identical, because $F_{1,\nu}$ is the distribution of $T_\nu^2$. Both are also the same as regressing $y$ on a 0/1 group indicator and testing its slope.
+$1.58=\sqrt{2.5}$ goes the wrong way. $5=2t$ is not a valid relation.
+
+@ stat h stat-h-048
+T: Transformations that leave the t statistic unchanged
+S: t-test
+TYPE: msq
+Q: Two independent samples are compared with the pooled two-sample $t$ statistic. Which changes to the data leave the value of $t$ unchanged? (More than one option may be correct.)
+A: Converting every observation from inches to centimetres (multiplying by $2.54$)
+B: Adding $5$ to every observation in both groups
+C: Adding $5$ to every observation in group 1 only
+D: Multiplying every observation in both groups by $-1$
+ANS: A,B
+EXP: $t=\dfrac{\bar x_1-\bar x_2}{s_p\sqrt{1/n_1+1/n_2}}$.
+[[A]] Unchanged: numerator and $s_p$ both scale by $2.54$.
+[[B]] Unchanged: both means shift by $5$, so their difference stays the same, and SDs do not change under shifts.
+[[C]] Changes: the numerator grows by $5$ while $s_p$ stays the same.
+[[D]] Changes sign: $\bar x_1-\bar x_2$ flips sign but $s_p$ does not, so $t\to-t$. The two-sided p-value is unchanged, but the statistic is not.
+
+@ stat h stat-h-049
+T: How sample size alone can create significance
+S: t-test
+Q: A one-sample $t$-test with $n=16$ gives $t=1.2$. Suppose a larger study finds exactly the same $\bar x$ and $s$. Taking the two-sided critical value as $2.0$ for all sizes involved, what is the smallest $n$ for which the result becomes significant?
+A: $27$
+B: $45$
+C: $36$
+D: $64$
+ANS: B
+EXP: With $\bar x$ and $s$ fixed, $t=\dfrac{\bar x-\mu_0}{s}\sqrt n$ grows like $\sqrt n$: $t(n)=1.2\sqrt{n/16}$.
+We need $1.2\sqrt{n/16}>2$, so $n>16\times(2/1.2)^2=44.4$, giving $n=45$.
+$27$ assumes $t$ grows linearly in $n$ ($16\times2/1.2\approx26.7$). This is why huge A/B tests flag tiny effects: report effect sizes, not just p-values.
+
+@ stat h stat-h-050
+T: Pooled t-test when the small group is noisier
+S: t-test
+Q: Group 1 has $n_1=40$ observations from a population with small variance. Group 2 has $n_2=5$ observations from a population with much larger variance. The means are equal. If you use the pooled two-sample $t$-test at nominal $\alpha=0.05$, the actual Type I error rate is:
+A: Larger than $0.05$, because $s_p^2$ is dominated by the small-variance group and understates the SE
+B: Smaller than $0.05$, because $s_p^2$ is dominated by the large-variance group
+C: Exactly $0.05$, because the $t$-test is exact for normal data
+D: Exactly $0.05$, because $\bar x_1-\bar x_2$ is unbiased
+ANS: A
+EXP: The true SE of $\bar X_1-\bar X_2$ is $\sqrt{\sigma_1^2/40+\sigma_2^2/5}$, which is dominated by $\sigma_2^2/5$.
+The pooled estimate $s_p^2=\frac{39s_1^2+4s_2^2}{43}$ is close to the small $\sigma_1^2$, so $s_p\sqrt{1/40+1/5}$ is too small. The $t$ statistic is then too large and the test rejects too often.
+The pooled test is exact only if the variances are equal. That assumption fails here, so use Welch's test. (If the large group had the large variance, the error would go the other way, making the test conservative.)
+
+@ stat h stat-h-051
+T: Adding an observation equal to the sample mean
+S: t-test
+TYPE: nat
+TOL: 0.01
+Q: A sample of $n=9$ has $\bar x=10$ and $s=3$ (denominator $n-1$), and the one-sample statistic for $H_0:\mu=8$ is $t=2$. A tenth observation equal to $10$ is added. What is the new $t$ statistic? Enter it to 2 decimal places.
+ANS: 2.24
+EXP: The new value equals the mean, so $\bar x$ stays $10$ and the sum of squared deviations stays $(n-1)s^2=8\times9=72$.
+New $s^2=72/9=8$, so $s=2.828$. New SE $=2.828/\sqrt{10}=0.894$.
+$t=\dfrac{10-8}{0.894}\approx2.24$.
+The statistic rises for two reasons: $s$ shrinks (same sum of squares, one more df) and $\sqrt n$ grows.
+
+@ stat h stat-h-052
+T: Choosing the test direction after seeing the data
+S: t-test
+Q: A researcher looks at the sample first and then runs a one-sided $t$-test at $\alpha=0.05$ in whichever direction the sample mean points. If $H_0$ is true, what is the actual probability of rejecting $H_0$?
+A: $0.10$
+B: $0.05$
+C: $0.025$
+D: $0.0025$
+ANS: A
+EXP: The procedure rejects if $t>t_{0.05}$ (when the mean is above $\mu_0$) or if $t<-t_{0.05}$ (when it is below).
+That is a two-sided test with $0.05$ in each tail, so $P(\text{reject}\mid H_0)=0.05+0.05=0.10$.
+The nominal $0.05$ is honest only when the direction is fixed before seeing the data.
+
+@ stat h stat-h-053
+T: Smallest imbalance that a 2x2 test detects
+S: chi-squared-test
+TYPE: nat
+TOL: 0
+Q: $200$ users are split equally between two page designs. The click table is $\begin{pmatrix}a&100-a\\100-a&a\end{pmatrix}$ (rows: designs, columns: click / no click). Test independence at $\alpha=0.05$ with $\chi^2_{0.05,1}=3.841$ (no continuity correction). What is the smallest integer $a>50$ for which $H_0$ is rejected? Enter the integer.
+ANS: 57
+EXP: Every margin is $100$, so every expected count is $50$. Write $a=50+x$. Then each cell deviates by $\pm x$:
+$\chi^2=4\cdot\dfrac{x^2}{50}=0.08x^2$.
+Reject if $0.08x^2>3.841$, so $x^2>48.0$ and $x\ge7$ ($x=6$ gives $2.88$, $x=7$ gives $3.92$).
+Smallest $a=57$: a click rate of $57\%$ vs $43\%$ is needed at this sample size.
+
+@ stat h stat-h-054
+T: Degrees of freedom after merging sparse categories
+S: chi-squared-test
+Q: To test whether the number of heads in $4$ tosses of a coin follows a Binomial$(4,p)$ model, $p$ is estimated from the data. The $5$ categories ($0,1,2,3,4$ heads) are reduced to $4$ by merging "3" and "4", because their expected counts are below $5$. How many degrees of freedom does the goodness-of-fit test have?
+A: $3$
+B: $4$
+C: $2$
+D: $1$
+ANS: C
+EXP: df $=k-1-m$, where $k$ is the number of categories actually used in the statistic and $m$ is the number of estimated parameters.
+After merging, $k=4$. One parameter $p$ is estimated, so df $=4-1-1=2$.
+$3$ forgets the estimated $p$. $4$ uses the original 5 categories and forgets the estimate. Merging changes the number of terms in $\sum(O-E)^2/E$, so $k$ must be the merged count.
+
+@ stat h stat-h-055
+T: Phi coefficient from a 2x2 chi-square
+S: chi-squared-test
+Q: A chi-square test of independence on a $2\times2$ table with $n=100$ observations gives $\chi^2=9$. What is the magnitude of the phi coefficient (the correlation between the two binary variables)?
+A: $0.09$
+B: $0.03$
+C: $0.9$
+D: $0.3$
+ANS: D
+EXP: For a $2\times2$ table, $\chi^2=n\,\phi^2$, where $\phi$ is the Pearson correlation of the two 0/1 variables.
+$|\phi|=\sqrt{\chi^2/n}=\sqrt{9/100}=0.3$.
+$0.09$ is $\phi^2$. So a highly significant $\chi^2$ (well above $3.841$) can still mean only a modest association. Significance and strength are different things.
+
+@ stat h stat-h-056
+T: z statistic recovered from a 2x2 chi-square
+S: chi-squared-test
+Q: Out of $100$ users each, $45$ convert with version A and $30$ with version B. The chi-square test of independence on this $2\times2$ table (no continuity correction) gives $\chi^2=4.8$. What is $|z|$ for the pooled two-proportion $z$-test on the same data?
+A: $4.8$
+B: $2.19$
+C: $23.04$
+D: $1.10$
+ANS: B
+EXP: For a $2\times2$ table, the uncorrected chi-square statistic equals the square of the pooled two-proportion $z$: $\chi^2=z^2$, and $\chi^2_1$ is the distribution of $Z^2$.
+So $|z|=\sqrt{4.8}\approx2.19$.
+Check directly: $\hat p=0.375$, SE $=\sqrt{0.375\times0.625\times\frac2{100}}\approx0.0685$, $z=0.15/0.0685\approx2.19$.
+The two tests give the same two-sided p-value. $23.04$ squares again in place of taking the root.
+
+@ stat h stat-h-057
+T: Chi-square test across three ad variants
+S: chi-squared-test
+Q: Three ad variants are each shown $100$ times and get $20$, $30$ and $40$ clicks. Test whether the click rate is the same for all variants. Table values: $\chi^2_{0.05,2}=5.991$, $\chi^2_{0.01,2}=9.210$, $\chi^2_{0.05,3}=7.815$, $\chi^2_{0.01,3}=11.345$. Which is correct?
+A: $\chi^2\approx9.52$ and $p<0.01$
+B: $\chi^2\approx6.67$ and $0.01<p<0.05$
+C: $\chi^2\approx9.52$ and $0.01<p<0.05$
+D: $\chi^2\approx2.86$ and $p>0.05$
+ANS: A
+EXP: Pooled click rate $=90/300=0.3$, so expected counts are $30$ clicks and $70$ non-clicks per variant.
+Clicks: $\frac{100}{30}+0+\frac{100}{30}=6.67$. Non-clicks (observed $80,70,60$): $\frac{100}{70}+0+\frac{100}{70}=2.86$.
+$\chi^2=6.67+2.86\approx9.52$, with df $=(3-1)(2-1)=2$.
+$9.52>9.210$, so $p<0.01$.
+$6.67$ uses only the click row. With $9.52$ and $0.01<p<0.05$, the df was wrongly taken as $3$ (the number of variants).
+
+@ stat h stat-h-058
+T: Chi-square score for selecting a text feature
+S: chi-squared-test
+TYPE: nat
+TOL: 0.01
+Q: For feature selection in a text classifier, $200$ documents are counted by whether they contain a word and by their class. Word present: $40$ in class 1, $10$ in class 0. Word absent: $60$ in class 1, $90$ in class 0. What is the chi-square statistic for independence of word and class (no continuity correction)? Enter the number.
+ANS: 24
+EXP: For a $2\times2$ table $\begin{pmatrix}A&B\\C&D\end{pmatrix}$: $\chi^2=\dfrac{N(AD-BC)^2}{(A+B)(C+D)(A+C)(B+D)}$.
+$AD-BC=40\cdot90-10\cdot60=3000$. Margins: $50,150,100,100$.
+$\chi^2=\dfrac{200\times9\,000\,000}{50\times150\times100\times100}=\dfrac{1.8\times10^9}{7.5\times10^7}=24$.
+Check with expected counts: $25,25,75,75$, giving $\frac{225}{25}+\frac{225}{25}+\frac{225}{75}+\frac{225}{75}=24$. A large score means the word is strongly associated with the class, so it is kept as a feature.
+
+@ stat h stat-h-059
+T: Facts about chi-square goodness of fit
+S: chi-squared-test
+TYPE: msq
+Q: Which statements about chi-square tests are true? (More than one option may be correct.)
+A: Swapping the roles of rows and columns in a test of independence does not change the statistic or its degrees of freedom
+B: The goodness-of-fit test rejects $H_0$ both for very large and for very small values of $\chi^2$ at the usual level
+C: Merging two categories in a goodness-of-fit test lowers the degrees of freedom by one
+D: Each parameter estimated from the data increases the degrees of freedom by one
+ANS: A,C
+EXP: [[A]] True: the expected counts and the sum $\sum(O-E)^2/E$ are symmetric in rows and columns, and $(r-1)(c-1)=(c-1)(r-1)$.
+[[B]] False: the standard test is upper-tailed. Only a large $\chi^2$ (poor fit) leads to rejection. A suspiciously small value is sometimes examined (data "too good"), but it is not part of the usual rejection region.
+[[C]] True: df $=k-1-m$, and merging reduces $k$ by one.
+[[D]] False: each estimated parameter reduces the df by one, because the fitted expected counts sit closer to the data.
+
+@ stat h stat-h-060
+T: Regression to the mean in exam scores
+S: regression-correlation
+Q: Midterm scores have mean $60$ and SD $10$. Final scores have mean $70$ and SD $8$. The correlation is $r=0.5$. Using the least-squares line of final on midterm, what is the predicted final score of a student who scored $80$ on the midterm?
+A: $86$
+B: $82.5$
+C: $78$
+D: $80$
+ANS: C
+EXP: Slope $b=r\dfrac{s_y}{s_x}=0.5\times\dfrac{8}{10}=0.4$. Prediction: $\hat y=70+0.4(80-60)=78$.
+In standard units, the midterm is $z=2$ and the predicted final is $r\cdot z=1$ SD above the mean: $70+8=78$.
+$86$ assumes the student stays $2$ SD above the mean (it ignores $r<1$). This pull toward the mean is called regression to the mean. $82.5$ inverts the SD ratio.
+
+@ stat h stat-h-061
+T: Noisy predictor shrinks the slope
+S: regression-correlation
+Q: The true relation is $y=2x+\varepsilon$ with $\text{Var}(x)=4$. You only observe $\tilde x=x+u$, where the measurement noise $u$ has variance $1$ and is independent of $x$ and $\varepsilon$. For large samples, the OLS slope of $y$ on $\tilde x$ is about:
+A: $2$
+B: $1.6$
+C: $2.5$
+D: $1.0$
+ANS: B
+EXP: Slope $=\dfrac{\text{Cov}(y,\tilde x)}{\text{Var}(\tilde x)}=\dfrac{\text{Cov}(2x,x+u)}{4+1}=\dfrac{2\times4}{5}=1.6$.
+This is attenuation bias: noise in $x$ inflates the denominator but not the covariance, so the slope is shrunk toward $0$ by the factor $\frac{\text{Var}(x)}{\text{Var}(x)+\text{Var}(u)}=0.8$.
+Noise in $y$ alone (in $\varepsilon$) would leave the slope unbiased, which is why the tempting answer $2$ is wrong here. $2.5$ multiplies by the factor in place of dividing.
+
+@ stat h stat-h-062
+T: SD of y from the slope and R squared
+S: regression-correlation
+TYPE: nat
+TOL: 0.01
+Q: A simple linear regression gives $\hat y=10-3x$ with $R^2=0.81$. The sample SD of $x$ is $s_x=2$. What is the sample SD of $y$? Enter it to 2 decimal places.
+ANS: 6.67
+EXP: $|r|=\sqrt{0.81}=0.9$, and $r$ has the sign of the slope, so $r=-0.9$.
+Slope $b=r\dfrac{s_y}{s_x}$, so $-3=-0.9\dfrac{s_y}{2}$ and $s_y=\dfrac{6}{0.9}\approx6.67$.
+Using $R^2=0.81$ in place of $r$ gives $7.41$. Mixing up the formula as $s_y=|b|\,s_x\,|r|$ gives $5.4$.
+
+@ stat h stat-h-063
+T: What adding a regressor does to R squared
+S: regression-correlation
+TYPE: msq
+Q: Consider OLS linear regression with an intercept. Which statements are true? (More than one option may be correct.)
+A: Adding a regressor never decreases $R^2$
+B: Adding a regressor that is uncorrelated with $y$ cannot increase $R^2$
+C: In simple regression (one regressor), $R^2$ equals the square of the sample correlation between $x$ and $y$
+D: Adjusted $R^2$ never decreases when a regressor is added
+ANS: A,C
+EXP: [[A]] True: the larger model contains the smaller one (set the new coefficient to $0$), so its SSE cannot be larger.
+[[B]] False: the new regressor can still help through the other regressors (a suppressor). Take independent $u,v$ with equal variance and $y=u$, $x_1=u+v$, $x_2=v$. Then $\text{corr}(x_2,y)=0$, yet $R^2$ goes from $0.5$ with $x_1$ alone to $1$ with both, since $y=x_1-x_2$ exactly.
+[[C]] True for simple regression with intercept.
+[[D]] False: adjusted $R^2=1-(1-R^2)\frac{n-1}{n-p-1}$ penalises extra parameters, and it falls when the gain in $R^2$ is small. That is the reason it exists, as a guard against overfitting.
+
+@ stat h stat-h-064
+T: t-test for a regression slope
+S: regression-correlation
+Q: A simple linear regression on $n=12$ points gives slope $b=1.5$, residual standard error $s=2$, and $S_{xx}=\sum(x_i-\bar x)^2=10$. Test $H_0:\beta=0$ (two-sided, $\alpha=0.05$) with $t_{0.025,10}=2.228$. Which is correct?
+A: $t=7.5$, reject $H_0$
+B: $t=0.75$, do not reject $H_0$
+C: $t=3.75$, reject $H_0$
+D: $t\approx2.37$, reject $H_0$
+ANS: D
+EXP: $\text{Var}(b)=\sigma^2/S_{xx}$, so $\text{SE}(b)=s/\sqrt{S_{xx}}=2/\sqrt{10}\approx0.632$.
+$t=1.5/0.632\approx2.37$ with $n-2=10$ df. Since $2.37>2.228$, reject.
+$7.5$ divides by $s/S_{xx}$ (missing square root). $3.75$ uses $s^2/S_{xx}$, the variance in place of the SE. $0.75$ ignores $S_{xx}$.
+
+@ stat h stat-h-065
+T: Least-squares slope without an intercept
+S: regression-correlation
+Q: Fit the model $y=\beta x$ (no intercept) by least squares to the points $(1,2),(2,3),(3,7)$. What is $\hat\beta$?
+A: $\frac{29}{14}$
+B: $\frac52$
+C: $2$
+D: $\frac{29}{6}$
+ANS: A
+EXP: Minimise $\sum(y_i-\beta x_i)^2$: setting the derivative to zero gives $\hat\beta=\dfrac{\sum x_iy_i}{\sum x_i^2}$.
+$\sum x_iy_i=2+6+21=29$, $\sum x_i^2=1+4+9=14$, so $\hat\beta=\frac{29}{14}\approx2.07$.
+$\frac52$ is the slope of the model with an intercept, $\frac{S_{xy}}{S_{xx}}=\frac{5}{2}$, whose line is $\hat y=-1+2.5x$. Forcing the line through the origin changes the slope. $2=\bar y/\bar x$ is a ratio estimator, not least squares. $\frac{29}{6}$ divides by $\sum x_i$.
+
+@ stat h stat-h-066
+T: Weight of the data in a Normal–Normal posterior
+S: bayesian-inference
+Q: Observations are $X_i\mid\mu\sim N(\mu,36)$ and the prior is $\mu\sim N(50,4)$ (second parameter is the variance). With $n=27$ observations, the posterior mean is $w\bar x+(1-w)\cdot50$. What is $w$?
+A: $0.9$
+B: $0.964$
+C: $0.25$
+D: $0.75$
+ANS: D
+EXP: The weights are the precisions. Data: $n/\sigma^2=27/36=0.75$. Prior: $1/4=0.25$.
+$w=\dfrac{0.75}{0.75+0.25}=0.75$.
+Another way to see it: the prior variance $4=36/9$ is worth $9$ observations, so $w=\frac{27}{27+9}$.
+$0.9$ uses SDs in place of variances ($27/6$ vs $1/2$). $0.964=\frac{27}{28}$ treats the prior as worth one observation.
+
+@ stat h stat-h-067
+T: Ridge penalty implied by a Gaussian prior
+S: bayesian-inference
+Q: In linear regression $y=Xw+\varepsilon$ with $\varepsilon\sim N(0,\sigma^2I)$, $\sigma^2=4$, and prior $w\sim N(0,\tau^2I)$ with $\tau^2=0.5$, the MAP estimate minimises $\|y-Xw\|^2+\lambda\|w\|^2$. What is $\lambda$?
+A: $2$
+B: $8$
+C: $0.125$
+D: $16$
+ANS: B
+EXP: Negative log posterior (up to constants): $\dfrac{1}{2\sigma^2}\|y-Xw\|^2+\dfrac{1}{2\tau^2}\|w\|^2$.
+Multiply by $2\sigma^2$: $\|y-Xw\|^2+\dfrac{\sigma^2}{\tau^2}\|w\|^2$, so $\lambda=\dfrac{4}{0.5}=8$.
+$2=1/\tau^2$ ignores the noise scale. $0.125$ inverts the ratio.
+Insight: more noise or a tighter prior both mean stronger regularisation.
+
+@ stat h stat-h-068
+T: MAP, MLE and Beta posteriors
+S: bayesian-inference
+TYPE: msq
+Q: Which statements are true? (More than one option may be correct.)
+A: For a Binomial likelihood with a $\text{Beta}(1,1)$ prior, the MAP estimate equals the MLE $k/n$
+B: The MAP estimate is unchanged by reparameterisation: if $\hat\theta$ is the MAP for $\theta$, then $g(\hat\theta)$ is the MAP for $\phi=g(\theta)$ for any smooth one-to-one $g$
+C: In the Beta–Binomial model the posterior variance is always smaller than the prior variance
+D: With a fixed prior that is positive and continuous near the true parameter, the MAP and the MLE get closer as $n\to\infty$
+ANS: A,D
+EXP: [[A]] True: the posterior is $\text{Beta}(k+1,n-k+1)$, whose mode is $\frac{k}{n}$.
+[[B]] False: a change of variables multiplies the density by a Jacobian $|d\theta/d\phi|$, which moves the mode. Example: posterior $\text{Beta}(2,2)$, density $6\theta(1-\theta)$, has mode $\theta=0.5$. For $\phi=\theta^2$, $\theta=\sqrt\phi$ and $d\theta/d\phi=\frac{1}{2\sqrt\phi}$, so the density of $\phi$ is $6\sqrt\phi(1-\sqrt\phi)\cdot\frac{1}{2\sqrt\phi}=3(1-\sqrt\phi)$ on $(0,1)$. Its mode is $\phi=0$, not $0.5^2=0.25$. (The MLE is invariant because a likelihood has no Jacobian.)
+[[C]] False: prior $\text{Beta}(1,10)$ has variance $\frac{10}{121\cdot12}\approx0.0069$. After one success it becomes $\text{Beta}(2,10)$, with variance $\frac{20}{144\cdot13}\approx0.0107$, which is larger. A surprising observation can increase uncertainty.
+[[D]] True: the log-likelihood grows like $n$ while the log-prior stays fixed, so the prior's influence vanishes.
+
+@ stat h stat-h-069
+T: Bayes estimate under absolute-error loss
+S: bayesian-inference
+Q: With a uniform $\text{Beta}(1,1)$ prior on $\theta$, you observe $2$ successes in $2$ trials, so the posterior is $\text{Beta}(3,1)$ with density $3\theta^2$ on $[0,1]$. What is the Bayes estimate of $\theta$ under absolute-error loss $|\theta-\hat\theta|$?
+A: $0.75$
+B: $1$
+C: $0.794$
+D: $0.667$
+ANS: C
+EXP: The estimate that minimises expected absolute-error loss is the posterior median. (Squared loss gives the mean, and 0–1 loss gives the mode, i.e. MAP.)
+CDF: $F(\theta)=\theta^3$. Set $\theta^3=\frac12$: $\theta=2^{-1/3}\approx0.794$.
+$0.75$ is the posterior mean (the squared-loss answer), and $1$ is the mode (MAP), which here equals the MLE $2/2$.
+
+@ stat h stat-h-070
+T: Posterior predictive variance in a Normal model
+S: bayesian-inference
+Q: Let $X\mid\mu\sim N(\mu,1)$ with prior $\mu\sim N(0,1)$ (second parameter is the variance). After observing one value $x=2$, what is the variance of the posterior predictive distribution of a new observation $X_{\text{new}}$?
+A: $0.5$
+B: $1$
+C: $2$
+D: $1.5$
+ANS: D
+EXP: Posterior: precision $1+1=2$, so $\mu\mid x\sim N(1,\,0.5)$.
+$X_{\text{new}}=\mu+\varepsilon$ with $\varepsilon\sim N(0,1)$ independent, so the predictive variance is $0.5+1=1.5$ (mean $1$).
+$0.5$ counts only the uncertainty about $\mu$. $1$ counts only the noise. $2$ is the prior predictive variance, before seeing $x$.
+
+@ stat h stat-h-071
+T: Maximum likelihood as KL minimisation
+S: information-theory
+Q: Let $\hat P$ be the empirical distribution of a training set and $Q_\theta$ a model. Minimising the average negative log-likelihood $-\frac1n\sum_i\log Q_\theta(x_i)$ over $\theta$ is equivalent to minimising which quantity?
+A: $D_{KL}(\hat P\,\|\,Q_\theta)$
+B: $D_{KL}(Q_\theta\,\|\,\hat P)$
+C: The entropy $H(Q_\theta)$
+D: The entropy $H(\hat P)$
+ANS: A
+EXP: The average NLL is the cross-entropy $H(\hat P,Q_\theta)=-\sum_x\hat P(x)\log Q_\theta(x)$.
+$H(\hat P,Q_\theta)=H(\hat P)+D_{KL}(\hat P\|Q_\theta)$, and $H(\hat P)$ does not depend on $\theta$. So the MLE minimises the forward KL $D_{KL}(\hat P\|Q_\theta)$.
+The reverse KL $D_{KL}(Q_\theta\|\hat P)$ is what variational inference minimises. It is infinite whenever $Q_\theta$ puts mass off the training points, so it is not equivalent to the MLE.
+
+@ stat h stat-h-072
+T: Best prediction under noisy labels
+S: information-theory
+Q: For a certain input, the true label is $1$ with probability $0.8$ and $0$ with probability $0.2$. A model predicts $P(y=1)=q$. Which $q$ minimises the expected cross-entropy loss, and what is the minimum expected loss in bits?
+A: $q=1$, loss $0$ bits
+B: $q=0.8$, loss $0$ bits
+C: $q=0.5$, loss $1$ bit
+D: $q=0.8$, loss about $0.722$ bits
+ANS: D
+EXP: Expected loss: $L(q)=-0.8\log_2q-0.2\log_2(1-q)=H(p)+D_{KL}(p\|q)$, which is minimised at $q=p=0.8$ (KL $=0$).
+The minimum is the entropy $H(0.8)=-0.8\log_2 0.8-0.2\log_2 0.2\approx0.722$ bits, the noise that no model can remove.
+$q=1$ looks confident but gives infinite loss on the 20% of cases with label $0$. Cross-entropy rewards calibrated probabilities, not just the right argmax.
+
+@ stat h stat-h-073
+T: Mutual information with zero correlation
+S: information-theory
+Q: $X$ is uniform on $\{-1,0,1\}$ and $Y=X^2$. Then $\text{Cov}(X,Y)=0$. Using base-2 logarithms, what is $I(X;Y)$?
+A: $0$ bits
+B: about $0.918$ bits
+C: about $1.585$ bits
+D: about $0.667$ bits
+ANS: B
+EXP: $Y$ is a function of $X$, so $H(Y\mid X)=0$ and $I(X;Y)=H(Y)$.
+$Y=0$ with probability $\frac13$ and $Y=1$ with probability $\frac23$: $H(Y)=\frac13\log_23+\frac23\log_2\frac32\approx0.918$ bits.
+$0$ is the trap: zero correlation only rules out a linear relation, while $I(X;Y)=0$ if and only if the variables are independent. $1.585=\log_23$ is $H(X)$, which would apply only if $Y$ determined $X$.
+
+@ stat h stat-h-074
+T: Jensen–Shannon divergence of disjoint distributions
+S: information-theory
+Q: Let $P=(1,0)$ and $Q=(0,1)$ on two outcomes. Using base-2 logarithms, what is the Jensen–Shannon divergence $\text{JS}(P,Q)=\frac12D_{KL}(P\|M)+\frac12D_{KL}(Q\|M)$, where $M=\frac12(P+Q)$?
+A: $+\infty$
+B: $0$
+C: $2$ bits
+D: $1$ bit
+ANS: D
+EXP: $M=(\frac12,\frac12)$. $D_{KL}(P\|M)=1\cdot\log_2\frac{1}{1/2}=1$ bit, and likewise $D_{KL}(Q\|M)=1$ bit.
+$\text{JS}=\frac12(1)+\frac12(1)=1$ bit, its largest possible value.
+$+\infty$ is $D_{KL}(P\|Q)$: the supports do not overlap. Mixing with $M$ keeps JS finite and symmetric, which is why it appears in the original GAN objective.
+
+@ stat h stat-h-075
+T: Information one coin gives about a sum
+S: information-theory
+TYPE: nat
+TOL: 0.01
+Q: $X$ and $Y$ are independent fair coins taking values $0$ or $1$, and $S=X+Y$. Using base-2 logarithms, what is $I(X;S)$ in bits? Enter the number.
+ANS: 0.5
+EXP: $I(X;S)=H(S)-H(S\mid X)$.
+$S\in\{0,1,2\}$ with probabilities $\frac14,\frac12,\frac14$: $H(S)=\frac14(2)+\frac12(1)+\frac14(2)=1.5$ bits.
+Given $X$, $S=X+Y$ is still a fair coin flip (shifted by $X$), so $H(S\mid X)=H(Y)=1$ bit.
+$I(X;S)=1.5-1=0.5$ bits. Knowing $X$ removes half a bit of the uncertainty about $S$.

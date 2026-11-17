@@ -1,0 +1,1183 @@
+@ prob e prob-e-028
+T: Recovering n and p of a binomial
+S: discrete-dists
+Q: $X\sim\text{Bin}(n,p)$ has mean $6$ and variance $4.2$. What are $n$ and $p$?
+A: $n=10,\ p=0.6$
+B: $n=30,\ p=0.2$
+C: $n=20,\ p=0.3$
+D: $n=60,\ p=0.1$
+ANS: C
+EXP: For a binomial, $E[X]=np$ and $\operatorname{Var}(X)=np(1-p)$.
+Divide: $\dfrac{\operatorname{Var}(X)}{E[X]}=1-p=\dfrac{4.2}{6}=0.7$, so $p=0.3$ and $n=6/0.3=20$.
+Every option has mean $6$, so only the variance separates them: $10\cdot0.6\cdot0.4=2.4$, $30\cdot0.2\cdot0.8=4.8$, $60\cdot0.1\cdot0.9=5.4$. A common slip is to read $0.7$ as $p$ instead of $1-p$, which gives a non-integer $n$.
+
+@ prob e prob-e-029
+T: Poisson count over a half-hour window
+S: discrete-dists
+Q: Requests reach a server as a Poisson process at an average rate of $4$ per hour. What is the probability that at most one request arrives in a given $30$-minute window?
+A: $3e^{-2}$
+B: $2e^{-2}$
+C: $5e^{-4}$
+D: $e^{-2}$
+ANS: A
+EXP: Scale the rate to the window: $\lambda=4\times\tfrac12=2$, so the count $N\sim\text{Poisson}(2)$.
+$P(N\le1)=P(N=0)+P(N=1)=e^{-2}+2e^{-2}=3e^{-2}\approx0.406$.
+$2e^{-2}$ is only $P(N=1)$ and $e^{-2}$ only $P(N=0)$; "at most one" needs both. $5e^{-4}$ forgets to rescale the hourly rate to $30$ minutes.
+
+@ prob e prob-e-030
+T: Chance an exponential lifetime exceeds its mean
+S: continuous-dists
+Q: The lifetime $T$ of a component is exponential with mean $5$ years. What is $P(T>5)$?
+A: $0.5$
+B: $e^{-5}$
+C: $1-e^{-1}$
+D: $e^{-1}$
+ANS: D
+EXP: Mean $5$ means rate $\lambda=1/5$. The survival function is $P(T>t)=e^{-\lambda t}$.
+$P(T>5)=e^{-5/5}=e^{-1}\approx0.368$, and this holds for every exponential: $P(T>\text{mean})=e^{-1}$.
+$0.5$ assumes the mean equals the median, which is false for this right-skewed distribution (the median is $5\ln2\approx3.47$). $e^{-5}$ uses $5$ as the rate, and $1-e^{-1}$ is $P(T\le5)$.
+
+@ prob e prob-e-031
+T: Normal tail probability with variance given
+S: continuous-dists
+Q: Exam scores are $X\sim N(70,25)$ (second parameter is the variance). Use $\Phi(0.4)=0.6554$ and $\Phi(2)=0.9772$. What is $P(X>80)$?
+A: $0.3446$
+B: $0.0228$
+C: $0.9772$
+D: $0.0456$
+ANS: B
+EXP: Standardise with the standard deviation $\sigma=\sqrt{25}=5$: $z=\dfrac{80-70}{5}=2$.
+$P(X>80)=1-\Phi(2)=1-0.9772=0.0228$.
+$0.3446$ divides by the variance ($z=10/25=0.4$). $0.9772$ is $P(X<80)$, and $0.0456$ is the two-sided tail $P(|X-70|>10)$.
+
+@ prob e prob-e-032
+T: A uniform variable is not memoryless
+S: continuous-dists
+Q: $X\sim U(0,10)$. What is $P(X>6\mid X>4)$?
+A: $2/3$
+B: $2/5$
+C: $4/5$
+D: $1/3$
+ANS: A
+EXP: Definition of conditional probability: $P(X>6\mid X>4)=\dfrac{P(X>6)}{P(X>4)}=\dfrac{4/10}{6/10}=\dfrac23$.
+Given $X>4$, $X$ is uniform on $(4,10)$, and $(6,10)$ is $4/6$ of that interval.
+$2/5$ ignores the condition. $4/5=P(X>2)$ treats the uniform as memoryless, which only the exponential (continuous) and geometric (discrete) are.
+
+@ prob e prob-e-033
+T: Conditional PMF from a joint table
+S: joint-conditional
+Q: The joint PMF of $X$ and $Y$ is
+$$\begin{array}{c|cc} & Y=0 & Y=1\\\hline X=0 & 0.1 & 0.2\\ X=1 & 0.3 & 0.4\end{array}$$
+What is $P(X=1\mid Y=1)$?
+A: $4/7$
+B: $0.4$
+C: $0.6$
+D: $2/3$
+ANS: D
+EXP: Marginal of $Y$: $P(Y=1)=0.2+0.4=0.6$ (sum the $Y=1$ column).
+Conditional PMF: $P(X=1\mid Y=1)=\dfrac{P(X=1,Y=1)}{P(Y=1)}=\dfrac{0.4}{0.6}=\dfrac23$.
+$4/7=0.4/0.7$ divides by $P(X=1)$, which is $P(Y=1\mid X=1)$, the reverse conditional. $0.4$ is the joint probability, not the conditional one.
+
+@ prob e prob-e-034
+T: Marginal density on a triangle
+S: joint-conditional
+Q: $(X,Y)$ has joint density $f(x,y)=2$ on the triangle $0<y<x<1$ (and $0$ elsewhere). What is the marginal density $f_X(x)$ for $0<x<1$?
+A: $2(1-x)$
+B: $2x$
+C: $2$
+D: $x$
+ANS: B
+EXP: Integrate out $y$ over its range for fixed $x$. On the triangle, $y$ runs from $0$ to $x$:
+$f_X(x)=\displaystyle\int_0^x 2\,dy=2x$, which integrates to $1$ on $(0,1)$.
+$2(1-x)$ integrates $y$ from $x$ to $1$; that is the marginal of $Y$, $f_Y(y)=2(1-y)$. Leaving the answer as $2$ forgets that the range of $y$ depends on $x$.
+
+@ prob e prob-e-035
+T: Probability of an event from a joint PMF
+S: joint-conditional
+TYPE: nat
+TOL: 0.001
+Q: $X$ and $Y$ each take values in $\{1,2\}$ with joint PMF $P(1,1)=0.2$, $P(1,2)=0.3$, $P(2,1)=0.1$, $P(2,2)=0.4$, where $P(i,j)=P(X=i,Y=j)$. Find $P(X\ge Y)$.
+ANS: 0.7
+EXP: List the cells with $x\ge y$: $(1,1)$, $(2,1)$ and $(2,2)$.
+$P(X\ge Y)=0.2+0.1+0.4=0.7$.
+Equivalently $1-P(X<Y)=1-P(1,2)=1-0.3=0.7$. Answering $0.6$ counts only the diagonal $X=Y$.
+
+@ prob e prob-e-036
+T: Conditional mean from a joint table
+S: conditional-expectation
+Q: The joint PMF of $X$ and $Y$ is
+$$\begin{array}{c|cc} & Y=1 & Y=2\\\hline X=1 & 0.2 & 0.3\\ X=2 & 0.1 & 0.4\end{array}$$
+What is $E[Y\mid X=2]$?
+A: $1.8$
+B: $1.7$
+C: $0.9$
+D: $1.5$
+ANS: A
+EXP: Condition on the row $X=2$: $P(X=2)=0.1+0.4=0.5$, so $P(Y=1\mid X=2)=0.2$ and $P(Y=2\mid X=2)=0.8$.
+$E[Y\mid X=2]=1(0.2)+2(0.8)=1.8$.
+$0.9=1(0.1)+2(0.4)$ uses the joint probabilities without dividing by $P(X=2)$. $1.7$ is the unconditional $E[Y]=1(0.3)+2(0.7)$.
+
+@ prob e prob-e-037
+T: Tower property with a linear conditional mean
+S: conditional-expectation
+Q: $E[Y\mid X]=2X+1$ and $E[X]=3$. What is $E[Y]$?
+A: $6$
+B: $3$
+C: $7$
+D: It cannot be found without the distribution of $X$
+ANS: C
+EXP: Law of total expectation (tower property): $E[Y]=E\big[E[Y\mid X]\big]=E[2X+1]=2E[X]+1=7$.
+Linearity means only $E[X]$ is needed, not the full distribution of $X$. $6$ drops the constant $1$.
+
+@ prob e prob-e-038
+T: Expected total of a random number of purchases
+S: conditional-expectation
+TYPE: nat
+TOL: 0
+Q: The number of customers $N$ in an hour is Poisson with mean $4$. Each customer spends an amount with mean $50$ units, independently of each other and of $N$. Find the expected total amount spent in the hour.
+ANS: 200
+EXP: Let $S=X_1+\dots+X_N$. Condition on $N$: $E[S\mid N]=50N$.
+Tower property: $E[S]=E[50N]=50\,E[N]=50\times4=200$ (this is Wald's identity, $E[S]=E[N]\,E[X]$).
+
+@ prob e prob-e-039
+T: Covariance under affine maps
+S: covariance-correlation
+Q: $\operatorname{Cov}(X,Y)=1.5$. What is $\operatorname{Cov}(2X+3,\,1-Y)$?
+A: $3$
+B: $-3$
+C: $-2$
+D: $-0.5$
+ANS: B
+EXP: Covariance is bilinear and ignores additive constants: $\operatorname{Cov}(aX+b,\,cY+d)=ac\,\operatorname{Cov}(X,Y)$.
+Here $a=2$, $c=-1$: $\operatorname{Cov}(2X+3,1-Y)=2(-1)(1.5)=-3$.
+$3$ loses the sign of $-Y$. Constants $3$ and $1$ shift the variables but do not change how they co-vary.
+
+@ prob e prob-e-040
+T: Correlation is scale-free but keeps sign
+S: covariance-correlation
+Q: $\rho(X,Y)=0.6$. What is $\rho(3X+2,\,-2Y+5)$?
+A: $-0.6$
+B: $0.6$
+C: $-3.6$
+D: $-1.2$
+ANS: A
+EXP: $\operatorname{Cov}(3X+2,-2Y+5)=-6\operatorname{Cov}(X,Y)$, and the standard deviations become $3\sigma_X$ and $2\sigma_Y$.
+$\rho=\dfrac{-6\operatorname{Cov}(X,Y)}{3\sigma_X\cdot2\sigma_Y}=-\rho(X,Y)=-0.6$.
+Correlation only changes sign when exactly one scale factor is negative. $-3.6$ multiplies by the scale factors as if it were a covariance, and any value outside $[-1,1]$ is impossible for a correlation. This is why standardising features before training does not change their correlations.
+
+@ prob e prob-e-041
+T: Which covariance facts always hold
+S: covariance-correlation
+TYPE: msq
+Q: For random variables $X,Y$ with finite variances and a constant $c$, which statements are always true? More than one option may be correct.
+A: $\operatorname{Cov}(X,X)=\operatorname{Var}(X)$
+B: $\operatorname{Cov}(X,c)=0$
+C: $|\operatorname{Cov}(X,Y)|\le\sigma_X\sigma_Y$
+D: If $\operatorname{Cov}(X,Y)=0$ then $X$ and $Y$ are independent
+ANS: A,B,C
+EXP: [[A]] True: $\operatorname{Cov}(X,X)=E[(X-\mu)^2]=\operatorname{Var}(X)$.
+[[B]] True: $c-E[c]=0$, so the product inside the expectation is always $0$.
+[[C]] True: this is the Cauchy–Schwarz inequality, and it is why $|\rho|\le1$.
+[[D]] False. Take $X$ uniform on $\{-1,0,1\}$ and $Y=X^2$: $\operatorname{Cov}(X,Y)=E[X^3]-E[X]E[X^2]=0$, yet $Y$ is a function of $X$. Zero covariance rules out only a linear relationship.
+
+@ prob e prob-e-042
+T: Linear transform of a normal variable
+S: transformations
+Q: $X\sim N(2,9)$ (second parameter is the variance). What is the distribution of $Y=3-2X$?
+A: $N(-1,18)$
+B: $N(7,36)$
+C: $N(-1,36)$
+D: $N(-1,6)$
+ANS: C
+EXP: A linear function of a normal is normal. Mean: $E[Y]=3-2(2)=-1$. Variance: $\operatorname{Var}(Y)=(-2)^2\cdot9=36$.
+So $Y\sim N(-1,36)$.
+$N(-1,18)$ multiplies the variance by $2$ instead of $2^2$. $N(-1,6)$ gives the standard deviation $2\cdot3=6$ in place of the variance. $N(7,36)$ adds $2\cdot2$ instead of subtracting it.
+
+@ prob e prob-e-043
+T: Density of a stretched uniform
+S: transformations
+Q: $X\sim U(0,1)$ and $Y=2X+1$. What is the density $f_Y(2)$?
+A: $1$
+B: $1/2$
+C: $2$
+D: $1/3$
+ANS: B
+EXP: $Y$ ranges over $(1,3)$. Change of variables: $f_Y(y)=f_X\!\left(\frac{y-1}{2}\right)\left|\frac{dx}{dy}\right|=1\cdot\frac12$ for $1<y<3$.
+So $f_Y(2)=1/2$: $Y\sim U(1,3)$.
+Answering $1$ forgets the Jacobian factor; answering $2$ multiplies by $dy/dx$ instead of $dx/dy$. A density must spread total probability $1$ over a length-$2$ interval.
+
+@ prob e prob-e-044
+T: Scaling an exponential variable
+S: transformations
+Q: $X$ is exponential with rate $2$ (mean $1/2$). What is the distribution of $Y=3X$?
+A: Exponential with rate $2/3$
+B: Exponential with rate $6$
+C: Exponential with rate $3/2$
+D: Exponential with rate $2$
+ANS: A
+EXP: CDF method: $P(Y>y)=P(X>y/3)=e^{-2y/3}$, so $Y$ is exponential with rate $2/3$ (mean $3/2$).
+Scaling a variable by $3$ multiplies its mean by $3$ and so divides the rate by $3$.
+Rate $6$ multiplies the rate instead. Rate $3/2$ confuses the new mean $3/2$ with the rate.
+
+@ prob e prob-e-045
+T: Markov inequality bound
+S: limit-theorems
+Q: A non-negative random variable $X$ has $E[X]=4$. What is the best upper bound Markov's inequality gives for $P(X\ge20)$?
+A: $0.04$
+B: $0.8$
+C: $0.25$
+D: $0.2$
+ANS: D
+EXP: Markov's inequality: for $X\ge0$ and $a>0$, $P(X\ge a)\le\dfrac{E[X]}{a}$.
+$P(X\ge20)\le\dfrac{4}{20}=0.2$.
+$0.04=(4/20)^2$ looks like a Chebyshev-type squared bound, which needs the variance and is not available here. $0.8=1-0.2$ is the Markov lower bound for $P(X<20)$, not an upper bound for $P(X\ge20)$.
+
+@ prob e prob-e-046
+T: Approximate distribution of a sample mean
+S: limit-theorems
+Q: $X_1,\dots,X_{100}$ are i.i.d. with mean $10$ and variance $25$. By the central limit theorem, $\bar X=\frac1{100}\sum X_i$ is approximately (second parameter is the variance):
+A: $N(10,\,0.25)$
+B: $N(10,\,2.5)$
+C: $N(10,\,25)$
+D: $N(1000,\,2500)$
+ANS: A
+EXP: CLT: $\bar X\approx N\!\left(\mu,\ \sigma^2/n\right)=N(10,\ 25/100)=N(10,\,0.25)$, so the standard error is $0.5$.
+$N(10,2.5)$ divides the variance by $\sqrt n$ instead of $n$ (it is the standard deviation that shrinks by $\sqrt n$). $N(1000,2500)$ is the distribution of the sum, not the mean.
+
+@ prob e prob-e-047
+T: Statement of the weak law of large numbers
+S: limit-theorems
+Q: $X_1,X_2,\dots$ are i.i.d. with mean $\mu$ and finite variance, and $\bar X_n$ is the mean of the first $n$. What does the weak law of large numbers state?
+A: $\bar X_n$ is exactly normally distributed for large $n$
+B: For every $\varepsilon>0$, $P(|\bar X_n-\mu|>\varepsilon)\to0$ as $n\to\infty$
+C: $\operatorname{Var}(\bar X_n)=\operatorname{Var}(X_1)$ for every $n$
+D: $\bar X_n=\mu$ exactly once $n$ is large enough
+ANS: B
+EXP: The WLLN says $\bar X_n$ converges to $\mu$ in probability: the chance of being more than any fixed $\varepsilon$ away tends to $0$. It follows from Chebyshev: $P(|\bar X_n-\mu|>\varepsilon)\le\sigma^2/(n\varepsilon^2)\to0$.
+"Approximately normal" is the CLT, and only approximately. The variance of $\bar X_n$ is $\sigma^2/n$, not $\sigma^2$. $\bar X_n$ never has to equal $\mu$ exactly. This law is why averaging the loss over a large minibatch approximates the expected loss.
+
+@ prob e prob-e-048
+T: Two-step transition probability
+S: markov-chains
+TYPE: nat
+TOL: 0.001
+Q: A Markov chain on states $\{1,2\}$ has transition matrix $P=\begin{pmatrix}0.7&0.3\\0.4&0.6\end{pmatrix}$, where row $i$ is the current state and $P_{ij}=P(X_{n+1}=j\mid X_n=i)$. The chain starts in state $1$. Find $P(X_2=1)$.
+ANS: 0.61
+EXP: Sum over the state at time $1$ (Chapman–Kolmogorov): $P(X_2=1)=P_{11}P_{11}+P_{12}P_{21}=0.7(0.7)+0.3(0.4)=0.49+0.12=0.61$.
+This is the $(1,1)$ entry of $P^2$. Answering $0.49$ forgets the path $1\to2\to1$.
+
+@ prob e prob-e-049
+T: Spot the valid transition matrix
+S: markov-chains
+Q: For a Markov chain whose rows are the current state ($P_{ij}=P(X_{n+1}=j\mid X_n=i)$), which matrix is a valid transition matrix?
+A: $\begin{pmatrix}0.5&0.5\\0.3&0.6\end{pmatrix}$
+B: $\begin{pmatrix}0.6&0.4\\0.6&0.4\end{pmatrix}$
+C: $\begin{pmatrix}0.6&0.6\\0.4&0.4\end{pmatrix}$
+D: $\begin{pmatrix}1.2&-0.2\\0.5&0.5\end{pmatrix}$
+ANS: B
+EXP: With rows as the current state, every entry must be in $[0,1]$ and every row must sum to $1$.
+[[B]] Rows sum to $1$: valid (both rows equal, so the next state does not depend on the current one).
+[[A]] The second row sums to $0.9$. [[C]] Its columns sum to $1$, not its rows, so it is column-stochastic, the other convention. [[D]] Rows sum to $1$, but $1.2$ and $-0.2$ are not probabilities.
+
+@ prob e prob-e-050
+T: Expected time spent in a sticky state
+S: markov-chains
+Q: In a Markov chain, state $A$ returns to itself with probability $0.8$ at each step. The chain has just entered $A$. Counting the current step, what is the expected number of consecutive steps it spends in $A$ before moving elsewhere?
+A: $4$
+B: $1.25$
+C: $5$
+D: $0.8$
+ANS: C
+EXP: Each step the chain leaves with probability $0.2$, independently of the past (Markov property). So the number of steps spent in $A$, counting the first, is geometric with success probability $0.2$.
+Expected value $=1/0.2=5$.
+$4=0.8/0.2$ counts only the extra steps after the first (the number of self-loops). $1.25=1/0.8$ inverts the wrong probability.
+
+@ prob m prob-m-044
+T: Geometric waiting time is memoryless
+S: discrete-dists
+Q: A fair coin is tossed until the first head. Let $X$ be the number of tosses needed. What is $P(X>5\mid X>2)$?
+A: $1/32$
+B: $1/8$
+C: $1/4$
+D: $3/8$
+ANS: B
+EXP: For a geometric variable, $P(X>k)=(1-p)^k$ (the first $k$ tosses are all tails).
+$P(X>5\mid X>2)=\dfrac{(1/2)^5}{(1/2)^2}=(1/2)^3=\dfrac18=P(X>3)$.
+This is the memoryless property: after two tails, the coin "starts over". $1/32$ ignores the condition, and $1/4$ uses $(1/2)^2$ from the conditioning event.
+
+@ prob m prob-m-045
+T: Poisson approximation to a rare binomial
+S: discrete-dists
+Q: A batch of $500$ chips has each chip defective with probability $0.004$, independently. Using the Poisson approximation, the probability that exactly $2$ chips are defective is about:
+A: $e^{-2}$
+B: $4e^{-2}$
+C: $2e^{-4}$
+D: $2e^{-2}$
+ANS: D
+EXP: For large $n$ and small $p$, $\text{Bin}(n,p)\approx\text{Poisson}(\lambda=np)$. Here $\lambda=500\times0.004=2$.
+$P(X=2)\approx e^{-2}\dfrac{2^2}{2!}=2e^{-2}\approx0.271$ (the exact binomial value is $0.2712$).
+$4e^{-2}$ forgets the $2!$ in the denominator. $e^{-2}$ is $P(X=0)$.
+
+@ prob m prob-m-046
+T: Sampling a committee without replacement
+S: discrete-dists
+Q: A committee of $4$ is chosen at random from $6$ women and $4$ men. What is the probability that it has exactly $2$ women?
+A: $3/7$
+B: $0.3456$
+C: $2/5$
+D: $1/5$
+ANS: A
+EXP: Sampling without replacement gives a hypergeometric count:
+$P=\dfrac{\binom62\binom42}{\binom{10}4}=\dfrac{15\cdot6}{210}=\dfrac{90}{210}=\dfrac37\approx0.429$.
+$0.3456=\binom42(0.6)^2(0.4)^2$ is the binomial answer, which treats the draws as independent (sampling with replacement). Once a woman is picked, the chance the next pick is a woman drops, so the binomial is wrong here.
+
+@ prob m prob-m-047
+T: Median lifetime of an exponential component
+S: continuous-dists
+TYPE: nat
+TOL: 0.01
+Q: The time to failure of a disk (in hours) is exponential with rate $\lambda=0.1$ per hour. Find its median, in hours, to $2$ decimal places. (Use $\ln2=0.6931$.)
+ANS: 6.93
+EXP: The median $m$ satisfies $P(T\le m)=1-e^{-\lambda m}=\tfrac12$, so $e^{-\lambda m}=\tfrac12$ and $m=\dfrac{\ln2}{\lambda}=\dfrac{0.6931}{0.1}=6.93$ hours.
+The mean is $1/\lambda=10$ hours, larger than the median, because the exponential is right-skewed. Answering $10$ confuses the mean with the median.
+
+@ prob m prob-m-048
+T: Cut-off score for the top ten percent
+S: continuous-dists
+Q: Scores are normal with mean $500$ and standard deviation $100$. Use $\Phi(1.28)=0.90$ and $\Phi(1.645)=0.95$. Approximately what score is needed to be in the top $10\%$?
+A: $664.5$
+B: $628$
+C: $372$
+D: $590$
+ANS: B
+EXP: We need $x$ with $P(X>x)=0.10$, that is $P(X\le x)=0.90$, so $z=1.28$.
+$x=\mu+z\sigma=500+1.28\times100=628$.
+$664.5$ uses the $95\%$ point, which marks the top $5\%$. $372$ takes $z=-1.28$, the bottom $10\%$. $590=500+0.9\times100$ uses the probability $0.9$ as if it were a z value.
+
+@ prob m prob-m-049
+T: Waiting for the next Poisson arrival
+S: continuous-dists
+TYPE: nat
+TOL: 0.005
+Q: Buses arrive as a Poisson process at rate $4$ per hour. What is the probability that the next bus arrives within $15$ minutes? Give the answer to $3$ decimal places.
+ANS: 0.632
+EXP: In a Poisson process with rate $\lambda$, the waiting time $W$ until the next arrival is exponential with rate $\lambda$.
+In hours, $15$ minutes is $0.25$, so $P(W\le0.25)=1-e^{-4\times0.25}=1-e^{-1}\approx0.632$.
+Equivalently, the count in $15$ minutes is Poisson with mean $1$, and "a bus within $15$ minutes" means a count of at least $1$: $1-e^{-1}$. Answering $0.368$ gives the chance of waiting longer.
+
+@ prob m prob-m-050
+T: Fraction of large prediction errors
+S: continuous-dists
+Q: A regression model's errors are $\varepsilon\sim N(0,4)$ (second parameter is the variance). Use $\Phi(0.75)=0.7734$ and $\Phi(1.5)=0.9332$. What fraction of errors have $|\varepsilon|>3$?
+A: $0.0668$
+B: $0.4532$
+C: $0.1336$
+D: $0.8664$
+ANS: C
+EXP: Standard deviation $\sigma=2$, so $|\varepsilon|>3$ means $|Z|>1.5$.
+By symmetry, $P(|Z|>1.5)=2\big(1-\Phi(1.5)\big)=2(0.0668)=0.1336$.
+$0.0668$ counts only one tail ($\varepsilon>3$). $0.4532$ standardises with the variance ($z=3/4$). $0.8664$ is the fraction with $|\varepsilon|\le3$.
+
+@ prob m prob-m-051
+T: Conditional density given one coordinate
+S: joint-conditional
+Q: $(X,Y)$ has joint density $f(x,y)=e^{-y}$ for $0<x<y$ (and $0$ elsewhere). What is $P(Y>3\mid X=1)$?
+A: $e^{-2}$
+B: $e^{-3}$
+C: $4e^{-3}$
+D: $1-e^{-2}$
+ANS: A
+EXP: Marginal of $X$: $f_X(x)=\displaystyle\int_x^\infty e^{-y}\,dy=e^{-x}$ for $x>0$.
+Conditional density: $f_{Y\mid X}(y\mid x)=\dfrac{e^{-y}}{e^{-x}}=e^{-(y-x)}$ for $y>x$, so given $X=1$, $Y-1$ is exponential with rate $1$.
+$P(Y>3\mid X=1)=P(Y-1>2)=e^{-2}$.
+$e^{-3}$ forgets that given $X=1$ the variable $Y$ starts at $1$. $4e^{-3}$ is the unconditional $P(Y>3)$ from the marginal $f_Y(y)=ye^{-y}$; it ignores the information $X=1$.
+
+@ prob m prob-m-052
+T: Which joint densities factor into independence
+S: joint-conditional
+TYPE: msq
+Q: Each function below is a valid joint density on the region shown (and $0$ elsewhere). For which of them are $X$ and $Y$ independent? More than one option may be correct.
+A: $f(x,y)=6xy^2$ on $0<x<1,\ 0<y<1$
+B: $f(x,y)=8xy$ on $0<x<y<1$
+C: $f(x,y)=x+y$ on $0<x<1,\ 0<y<1$
+D: $f(x,y)=2e^{-x-2y}$ on $x>0,\ y>0$
+ANS: A,D
+EXP: $X$ and $Y$ are independent iff the density factors as $g(x)h(y)$ on a product (rectangular) support.
+[[A]] $6xy^2=(2x)(3y^2)$ on a square. Independent.
+[[B]] $8xy$ looks like a product, but the support $0<x<y<1$ is a triangle: knowing $Y=0.1$ forces $X<0.1$. Not independent. This is the usual trap.
+[[C]] $x+y$ cannot be written as $g(x)h(y)$: $f_X(x)=x+\tfrac12$, $f_Y(y)=y+\tfrac12$, and $f(0,0)=0\neq\tfrac14=f_X(0)f_Y(0)$. Not independent.
+[[D]] $2e^{-x-2y}=(e^{-x})(2e^{-2y})$ on the positive quadrant. Independent.
+
+@ prob m prob-m-053
+T: Maximum of two dice given the minimum
+S: joint-conditional
+Q: Two fair dice are rolled. Let $X$ be the smaller and $Y$ the larger of the two numbers. What is $P(Y=4\mid X=2)$?
+A: $1/9$
+B: $1/5$
+C: $2/9$
+D: $1/18$
+ANS: C
+EXP: Count ordered outcomes out of $36$.
+$X=2$: outcomes with minimum $2$ are $(2,2)$, $(2,k)$ and $(k,2)$ for $k=3,\dots,6$, so $1+4+4=9$ outcomes.
+$X=2,Y=4$: $(2,4)$ and $(4,2)$, so $2$ outcomes.
+$P(Y=4\mid X=2)=\dfrac{2/36}{9/36}=\dfrac29$.
+$1/9$ counts $(2,4)$ once, forgetting the order. $1/5$ assumes $Y$ is equally likely to be $2,3,4,5,6$, but $Y=2$ has only one outcome while the others have two.
+
+@ prob m prob-m-054
+T: Conditioning on the sum of two i.i.d. variables
+S: conditional-expectation
+Q: $X$ and $Y$ are independent, each exponential with mean $1$. What is $E[X\mid X+Y=6]$?
+A: $1$
+B: $6$
+C: $2$
+D: $3$
+ANS: D
+EXP: By symmetry, $X$ and $Y$ play identical roles, so $E[X\mid X+Y=6]=E[Y\mid X+Y=6]$.
+Their sum is $E[X+Y\mid X+Y=6]=6$, so each is $3$.
+$1$ is the unconditional mean and ignores the information in the sum. The symmetry argument works for any i.i.d. pair, not only exponentials.
+
+@ prob m prob-m-055
+T: Law of total variance for a Poisson mixture
+S: conditional-expectation
+Q: $X$ is chosen uniformly from $\{1,2,3\}$, and given $X=x$, $Y$ is Poisson with mean $x$. What is $\operatorname{Var}(Y)$?
+A: $2$
+B: $8/3$
+C: $2/3$
+D: $4/3$
+ANS: B
+EXP: Law of total variance: $\operatorname{Var}(Y)=E[\operatorname{Var}(Y\mid X)]+\operatorname{Var}(E[Y\mid X])$.
+For a Poisson, mean and variance are both $X$: $E[\operatorname{Var}(Y\mid X)]=E[X]=2$ and $\operatorname{Var}(E[Y\mid X])=\operatorname{Var}(X)=\frac{(1-2)^2+0+(3-2)^2}{3}=\frac23$.
+$\operatorname{Var}(Y)=2+\frac23=\frac83$.
+$2$ keeps only the within-group part and $2/3$ only the between-group part. The mixture is overdispersed (variance exceeds the mean $2$), which is why count models in ML sometimes use a negative binomial instead of a Poisson.
+
+@ prob m prob-m-056
+T: Regression line of a bivariate normal
+S: conditional-expectation
+Q: $(X,Y)$ is bivariate normal with $\mu_X=10$, $\sigma_X=2$, $\mu_Y=50$, $\sigma_Y=5$ and correlation $\rho=0.8$. What is $E[Y\mid X=13]$?
+A: $56$
+B: $50.96$
+C: $57.5$
+D: $62$
+ANS: A
+EXP: For a bivariate normal, $E[Y\mid X=x]=\mu_Y+\rho\dfrac{\sigma_Y}{\sigma_X}(x-\mu_X)$.
+$E[Y\mid X=13]=50+0.8\cdot\dfrac52\cdot3=50+6=56$.
+$50.96$ uses $\sigma_X/\sigma_Y$ upside down. $57.5$ drops $\rho$, so it would be right only for perfect correlation. $62$ uses $\rho\sigma_Y$ without dividing by $\sigma_X$. The conditional mean is linear in $x$ here, which is why least-squares linear regression is optimal for Gaussian data. The prediction regresses toward the mean: $X$ is $1.5$ SDs above its mean, $Y$ is predicted only $1.2$ SDs above.
+
+@ prob m prob-m-057
+T: Breaking a stick twice
+S: conditional-expectation
+TYPE: nat
+TOL: 0.01
+Q: A stick of length $1$ is broken at a point $U\sim U(0,1)$, keeping the left piece of length $U$. That piece is broken at a point chosen uniformly along it, again keeping the left piece, of length $V$. Find $E[V]$ to $2$ decimal places.
+ANS: 0.25
+EXP: Given $U=u$, $V\sim U(0,u)$, so $E[V\mid U]=U/2$.
+Tower property: $E[V]=E[U/2]=\frac12\cdot\frac12=\frac14=0.25$.
+No need to find the density of $V$ (which is $-\ln v$ on $(0,1)$). Answering $1/3$ would come from treating $V$ as the minimum of two uniforms.
+
+@ prob m prob-m-058
+T: Correlation of a variable with a sum
+S: covariance-correlation
+Q: $X$ and $Y$ are independent with the same variance $\sigma^2>0$. What is $\rho(X,\,X+Y)$?
+A: $1/2$
+B: $1/\sqrt2$
+C: $1$
+D: $0$
+ANS: B
+EXP: $\operatorname{Cov}(X,X+Y)=\operatorname{Var}(X)+\operatorname{Cov}(X,Y)=\sigma^2+0=\sigma^2$.
+$\operatorname{Var}(X+Y)=2\sigma^2$, so $\rho=\dfrac{\sigma^2}{\sigma\cdot\sqrt2\,\sigma}=\dfrac1{\sqrt2}\approx0.707$.
+$1/2$ divides by $\operatorname{Var}(X+Y)$ without the square root. $0$ confuses $\rho(X,X+Y)$ with $\rho(X,Y)$.
+
+@ prob m prob-m-059
+T: Averaging correlated models in an ensemble
+S: covariance-correlation
+Q: An ensemble averages the predictions of $10$ models. Each prediction has variance $1$, and every pair of predictions has correlation $0.2$. What is the variance of the average prediction?
+A: $0.1$
+B: $0.19$
+C: $0.2$
+D: $0.28$
+ANS: D
+EXP: $\operatorname{Var}\!\left(\sum X_i\right)=\sum\operatorname{Var}(X_i)+\sum_{i\ne j}\operatorname{Cov}(X_i,X_j)=10(1)+90(0.2)=28$, counting each of the $45$ pairs twice (ordered pairs).
+Then $\operatorname{Var}(\bar X)=28/10^2=0.28$.
+$0.1=1/10$ assumes the models are uncorrelated. $0.19$ counts each pair once ($10+45\times0.2=19$). In general $\operatorname{Var}(\bar X)=\rho+\frac{1-\rho}{n}$, which never drops below $\rho=0.2$: this is why random forests decorrelate their trees.
+
+@ prob m prob-m-060
+T: Correlation of two binary variables
+S: covariance-correlation
+TYPE: nat
+TOL: 0.01
+Q: $X,Y\in\{0,1\}$ have joint PMF $P(0,0)=0.4$, $P(0,1)=0.1$, $P(1,0)=0.1$, $P(1,1)=0.4$, where $P(i,j)=P(X=i,Y=j)$. Find the correlation $\rho(X,Y)$.
+ANS: 0.6
+EXP: Marginals: $P(X=1)=0.5$ and $P(Y=1)=0.5$, so $E[X]=E[Y]=0.5$ and $\operatorname{Var}(X)=\operatorname{Var}(Y)=0.25$.
+$E[XY]=P(X=1,Y=1)=0.4$, so $\operatorname{Cov}(X,Y)=0.4-0.25=0.15$.
+$\rho=\dfrac{0.15}{\sqrt{0.25\cdot0.25}}=\dfrac{0.15}{0.25}=0.6$.
+Stopping at $0.15$ gives the covariance, not the correlation.
+
+@ prob m prob-m-061
+T: Density of the square of a symmetric uniform
+S: transformations
+Q: $X\sim U(-1,1)$ and $Y=X^2$. What is the density $f_Y(y)$ for $0<y<1$?
+A: $\dfrac1{4\sqrt y}$
+B: $\dfrac1{2\sqrt y}$
+C: $\dfrac12$
+D: $2y$
+ANS: B
+EXP: CDF method: $F_Y(y)=P(X^2\le y)=P(-\sqrt y\le X\le\sqrt y)=\dfrac{2\sqrt y}{2}=\sqrt y$.
+Differentiate: $f_Y(y)=\dfrac1{2\sqrt y}$, which integrates to $1$ on $(0,1)$.
+$\dfrac1{4\sqrt y}$ counts only the branch $x=\sqrt y$ and misses $x=-\sqrt y$; it integrates to $1/2$. When a transformation is not one-to-one, add the contributions of all preimages.
+
+@ prob m prob-m-062
+T: Time to the first of several failures
+S: transformations
+Q: A server fails if any of three independent parts fails. The parts' lifetimes are exponential with rates $1$, $2$ and $3$ per year. What is the expected time until the server fails?
+A: $1/6$ year
+B: $11/18$ year
+C: $6$ years
+D: $11/6$ years
+ANS: A
+EXP: The server's lifetime is $T=\min(T_1,T_2,T_3)$. For independent exponentials, $P(T>t)=e^{-t}e^{-2t}e^{-3t}=e^{-6t}$, so $T$ is exponential with rate $1+2+3=6$.
+$E[T]=1/6$ year.
+$11/6=1+\frac12+\frac13$ adds the mean lifetimes, which would describe parts used one after another. $11/18$ averages the means. $6$ is the rate, not the mean.
+
+@ prob m prob-m-063
+T: Expected maximum of four uniforms
+S: transformations
+Q: $X_1,\dots,X_4$ are i.i.d. $U(0,1)$ and $M=\max_i X_i$. What is $E[M]$?
+A: $3/4$
+B: $1/2$
+C: $4/5$
+D: $1/5$
+ANS: C
+EXP: CDF of the maximum: $P(M\le m)=P(\text{all }X_i\le m)=m^4$, so $f_M(m)=4m^3$ on $(0,1)$.
+$E[M]=\displaystyle\int_0^1 m\cdot4m^3\,dm=\frac45$. In general the max of $n$ uniforms has mean $\frac n{n+1}$.
+$1/5$ is the mean of the minimum. $3/4$ is the off-by-one $\frac{n-1}{n}$.
+
+@ prob m prob-m-064
+T: Density of a sum of two uniforms
+S: transformations
+TYPE: nat
+TOL: 0.01
+Q: $X$ and $Y$ are independent $U(0,1)$ and $S=X+Y$. Find the density $f_S(1.2)$.
+ANS: 0.8
+EXP: Convolution: $f_S(s)=\displaystyle\int f_X(x)f_Y(s-x)\,dx$ is the length of the set of $x$ with $0<x<1$ and $0<s-x<1$.
+For $1\le s\le2$ that set is $(s-1,1)$, of length $2-s$. So $S$ has the triangular density, peaking at $f_S(1)=1$.
+$f_S(1.2)=2-1.2=0.8$.
+The sum of two uniforms is not uniform: answering $0.5$ treats $S$ as $U(0,2)$. Summing more uniforms makes the density look more and more bell-shaped (the CLT at work).
+
+@ prob m prob-m-065
+T: Facts about the log-normal distribution
+S: transformations
+TYPE: msq
+Q: $X\sim N(0,1)$ and $Y=e^X$. Which statements are true? More than one option may be correct.
+A: The median of $Y$ is $1$
+B: $E[Y]=e^{1/2}$
+C: $E[Y]=1$
+D: $P(Y\le1)=1/2$
+ANS: A,B,D
+EXP: [[A]] True. $e^x$ is increasing, so medians map to medians: $\operatorname{median}(Y)=e^{\operatorname{median}(X)}=e^0=1$.
+[[D]] True, for the same reason: $P(Y\le1)=P(X\le0)=1/2$.
+[[B]] True. $E[e^X]$ is the MGF of $N(0,1)$ at $t=1$: $M(t)=e^{t^2/2}$, so $E[Y]=e^{1/2}\approx1.65$.
+[[C]] False. $E[e^X]\neq e^{E[X]}$; by Jensen's inequality ($e^x$ is convex) $E[e^X]>e^{0}=1$. Means do not pass through non-linear functions, but medians pass through monotone ones.
+
+@ prob m prob-m-066
+T: Normal approximation to a sum
+S: limit-theorems
+Q: $X_1,\dots,X_{100}$ are i.i.d. with mean $2$ and variance $4$, and $S=\sum X_i$. Use $\Phi(0.5)=0.6915$ and $\Phi(1)=0.8413$. By the CLT, $P(S>220)$ is about:
+A: $0.3085$
+B: $0.8413$
+C: $0.1587$
+D: $0.0000$
+ANS: C
+EXP: CLT: $S\approx N(n\mu,\,n\sigma^2)=N(200,\,400)$, so $\operatorname{SD}(S)=20$.
+$P(S>220)\approx P\!\left(Z>\frac{220-200}{20}\right)=1-\Phi(1)=0.1587$.
+$0.3085$ uses $\operatorname{SD}=4\sqrt{100}=40$, putting the variance where the SD belongs. $0.0000$ uses the SD of the mean, $2/\sqrt{100}=0.2$, for the sum. $0.8413$ is $P(S<220)$.
+
+@ prob m prob-m-067
+T: Chebyshev sample size for a mean
+S: limit-theorems
+TYPE: nat
+TOL: 0
+Q: $X_1,\dots,X_n$ are i.i.d. with variance $1$ (distribution unknown). Using Chebyshev's inequality, find the smallest $n$ that guarantees $P(|\bar X_n-\mu|\ge0.1)\le0.05$.
+ANS: 2000
+EXP: $\operatorname{Var}(\bar X_n)=1/n$. Chebyshev: $P(|\bar X_n-\mu|\ge0.1)\le\dfrac{1/n}{0.1^2}=\dfrac{100}{n}$.
+Need $100/n\le0.05$, so $n\ge2000$.
+The CLT would suggest $n\approx(1.96/0.1)^2\approx385$, but that is an approximation that assumes near-normality. Chebyshev is a guarantee for any distribution with this variance, so it asks for more data.
+
+@ prob m prob-m-068
+T: Continuity correction for a binomial
+S: limit-theorems
+Q: $X\sim\text{Bin}(100,0.5)$. Use $\Phi(1.9)=0.9713$, $\Phi(2)=0.9772$ and $\Phi(2.1)=0.9821$. Using the normal approximation with continuity correction, $P(X\ge60)$ is about:
+A: $0.0287$
+B: $0.0228$
+C: $0.0179$
+D: $0.9713$
+ANS: A
+EXP: $\mu=np=50$ and $\sigma=\sqrt{np(1-p)}=5$.
+$X\ge60$ for an integer variable is $X>59.5$ for the continuous approximation: $z=\dfrac{59.5-50}{5}=1.9$.
+$P(X\ge60)\approx1-\Phi(1.9)=0.0287$ (the exact value is $0.0284$).
+$0.0228$ skips the correction ($z=2$). $0.0179$ corrects in the wrong direction (to $60.5$), which approximates $P(X\ge61)$.
+
+@ prob m prob-m-069
+T: Markov versus Chebyshev bounds
+S: limit-theorems
+Q: A non-negative random variable $X$ has mean $10$ and variance $4$. What is the smallest upper bound on $P(X\ge16)$ obtainable from Markov's or Chebyshev's inequality?
+A: $5/8$
+B: $1/9$
+C: $1/4$
+D: $2/3$
+ANS: B
+EXP: Markov: $P(X\ge16)\le\dfrac{10}{16}=\dfrac58$.
+Chebyshev: $X\ge16$ implies $|X-10|\ge6$, so $P(X\ge16)\le\dfrac{\operatorname{Var}(X)}{6^2}=\dfrac4{36}=\dfrac19$.
+The smaller (better) bound is $1/9$; using the variance gives much more information than the mean alone.
+$1/4=4/16$ divides the variance by $16$ instead of by the squared distance from the mean, $6^2$. $2/3=4/6$ forgets to square the distance.
+
+@ prob m prob-m-070
+T: What the central limit theorem says
+S: limit-theorems
+TYPE: msq
+Q: $X_1,X_2,\dots$ are i.i.d. and $\bar X_n$ is the mean of the first $n$. Which statements are true? More than one option may be correct.
+A: If the variance is finite, $\sqrt n(\bar X_n-\mu)/\sigma$ is approximately $N(0,1)$ for large $n$, whatever the shape of the distribution
+B: The CLT requires each $X_i$ to be normally distributed
+C: The standard deviation of $\bar X_n$ shrinks in proportion to $1/\sqrt n$
+D: The CLT applies to i.i.d. Cauchy variables
+ANS: A,C
+EXP: [[A]] True: this is the CLT. It needs i.i.d. variables with finite variance, nothing about shape.
+[[B]] False. If the $X_i$ were normal, $\bar X_n$ would be exactly normal for every $n$ and no limit theorem would be needed. The CLT matters precisely for non-normal data (Bernoulli clicks in an A/B test, for example).
+[[C]] True: $\operatorname{SD}(\bar X_n)=\sigma/\sqrt n$, so halving the error needs four times the data.
+[[D]] False. The Cauchy distribution has no finite mean or variance; the mean of $n$ i.i.d. standard Cauchy variables is again standard Cauchy for every $n$, so it never concentrates.
+
+@ prob m prob-m-071
+T: Stationary distribution of a walk on a path
+S: markov-chains
+Q: A Markov chain on states $\{1,2,3\}$ has transition matrix $P=\begin{pmatrix}0&1&0\\0.5&0&0.5\\0&1&0\end{pmatrix}$, where row $i$ is the current state and $P_{ij}=P(X_{n+1}=j\mid X_n=i)$. What is its stationary distribution $\pi$ (with $\pi P=\pi$)?
+A: $(1/3,\,1/3,\,1/3)$
+B: $(1/2,\,1/4,\,1/4)$
+C: $(1/4,\,1/2,\,1/4)$
+D: $(1/5,\,3/5,\,1/5)$
+ANS: C
+EXP: Solve $\pi P=\pi$: $\pi_1=0.5\pi_2$, $\pi_3=0.5\pi_2$, and $\pi_2=\pi_1+\pi_3$. With $\pi_1+\pi_2+\pi_3=1$: $\pi=(1/4,1/2,1/4)$.
+Check: $\pi P=(0.5\cdot\tfrac12,\ \tfrac14+\tfrac14,\ 0.5\cdot\tfrac12)=(1/4,1/2,1/4)$.
+This is a random walk on the path $1-2-3$, and for a random walk on a graph $\pi_i\propto\deg(i)$: degrees $1,2,1$. The uniform vector fails because the middle state is visited from both ends; it would be stationary only if the columns also summed to $1$.
+
+@ prob m prob-m-072
+T: Three-step return probability in a 2-state chain
+S: markov-chains
+TYPE: nat
+TOL: 0.005
+Q: A Markov chain on $\{1,2\}$ has transition matrix $P=\begin{pmatrix}0.8&0.2\\0.3&0.7\end{pmatrix}$, where row $i$ is the current state and $P_{ij}=P(X_{n+1}=j\mid X_n=i)$. The chain starts in state $1$ at time $0$, i.e. $X_0=1$. Find $P(X_3=1)$ to $2$ decimal places.
+ANS: 0.65
+EXP: For a 2-state chain with $a=P_{12}=0.2$ and $b=P_{21}=0.3$, the eigenvalues of $P$ are $1$ and $1-a-b=0.5$, and
+$P(X_n=1\mid X_0=1)=\pi_1+(1-\pi_1)(1-a-b)^n$, with $\pi_1=\frac{b}{a+b}=0.6$.
+So $P(X_3=1)=0.6+0.4(0.5)^3=0.6+0.05=0.65$.
+Check by multiplication: $P^2_{11}=0.64+0.06=0.70$, $P^2_{12}=0.30$, then $P^3_{11}=0.70(0.8)+0.30(0.3)=0.65$.
+The gap to the stationary value $0.6$ halves at every step; the second eigenvalue sets the mixing speed.
+
+@ prob m prob-m-073
+T: Biased gambler's ruin on four states
+S: markov-chains
+Q: A walk on $\{0,1,2,3\}$ moves up one step with probability $2/3$ and down one step with probability $1/3$, and stops on reaching $0$ or $3$. Starting at $1$, what is the probability of reaching $3$ before $0$?
+A: $2/3$
+B: $4/7$
+C: $4/9$
+D: $1/3$
+ANS: B
+EXP: First-step analysis. Let $h_k=P(\text{reach }3\text{ before }0\mid\text{start at }k)$, with $h_0=0$, $h_3=1$.
+$h_1=\frac23h_2$ and $h_2=\frac23+\frac13h_1$.
+Substitute: $h_1=\frac49+\frac29h_1$, so $\frac79h_1=\frac49$ and $h_1=\frac47$.
+$4/9=(2/3)^2$ counts only the direct path up-up and forgets that the walk can go $1\to2\to1$ and try again. $1/3$ is the answer for a fair walk ($k/N$).
+
+@ prob m prob-m-074
+T: One step with a column-stochastic matrix
+S: markov-chains
+Q: A two-state chain uses the column convention: $P=\begin{pmatrix}0.9&0.2\\0.1&0.8\end{pmatrix}$ with $P_{ij}=P(X_{n+1}=i\mid X_n=j)$, so each column is the current state and sums to $1$. The current distribution is the column vector $x_0=(0.5,\,0.5)^T$. What is the distribution after one step?
+A: $(0.5,\,0.5)^T$
+B: $(0.45,\,0.55)^T$
+C: $(0.9,\,0.1)^T$
+D: $(0.55,\,0.45)^T$
+ANS: D
+EXP: With columns as the current state, the update is $x_1=Px_0$:
+$x_1=\begin{pmatrix}0.9(0.5)+0.2(0.5)\\0.1(0.5)+0.8(0.5)\end{pmatrix}=\begin{pmatrix}0.55\\0.45\end{pmatrix}$.
+$(0.5,0.5)$ comes from using the row convention $x_0^TP$ on a column-stochastic matrix; it mixes probabilities from different current states. PageRank is usually written in this column form, $r\leftarrow Mr$.
+
+@ prob m prob-m-075
+T: Properties of a deterministic three-cycle
+S: markov-chains
+TYPE: msq
+Q: A Markov chain on $\{1,2,3\}$ has transition matrix $P=\begin{pmatrix}0&1&0\\0&0&1\\1&0&0\end{pmatrix}$, where row $i$ is the current state. Which statements are true? More than one option may be correct.
+A: The chain is irreducible
+B: The chain is aperiodic
+C: It has a unique stationary distribution, $(1/3,1/3,1/3)$
+D: $P^n$ converges as $n\to\infty$
+ANS: A,C
+EXP: The chain moves $1\to2\to3\to1$ deterministically.
+[[A]] True: every state reaches every other.
+[[B]] False: a return to any state takes a multiple of $3$ steps, so the period is $3$.
+[[C]] True: $P$ is doubly stochastic, so the uniform vector satisfies $\pi P=\pi$, and irreducibility makes it unique.
+[[D]] False: $P^3=I$, so $P^n$ cycles through $P,P^2,I$ forever. A stationary distribution exists, but the chain does not converge to it; convergence needs aperiodicity. PageRank's damping (random teleport) is added partly to guarantee this.
+
+@ prob h prob-h-042
+T: Thinning a Poisson stream of emails
+S: discrete-dists
+Q: The number of emails you get in a day is Poisson with mean $10$. Each email is spam with probability $0.3$, independently. Today you got exactly $4$ spam emails. What is the expected number of non-spam emails today?
+A: $6$
+B: $28/3$
+C: $7$
+D: $10$
+ANS: C
+EXP: Poisson thinning: if $N\sim\text{Poisson}(\lambda)$ and each item is independently kept with probability $p$, the kept count is $\text{Poisson}(\lambda p)$, the rest is $\text{Poisson}(\lambda(1-p))$, and the two counts are independent.
+So the spam count $S\sim\text{Poisson}(3)$ and the non-spam count $H\sim\text{Poisson}(7)$ are independent, and $E[H\mid S=4]=E[H]=7$.
+$6=10-4$ treats the total as fixed at $10$, but the total is random; seeing $4$ spams says nothing about the non-spam stream. $28/3$ scales $4$ by $0.7/0.3$, which would be right only if the split were deterministic.
+
+@ prob h prob-h-043
+T: First success on an even-numbered trial
+S: discrete-dists
+Q: Independent trials each succeed with probability $1/3$. What is the probability that the first success occurs on an even-numbered trial?
+A: $1/2$
+B: $3/5$
+C: $1/3$
+D: $2/5$
+ANS: D
+EXP: Geometric: $P(X=k)=(1-p)^{k-1}p$. Sum over $k=2,4,6,\dots$:
+$\displaystyle\sum_{m\ge1}(1-p)^{2m-1}p=\frac{(1-p)p}{1-(1-p)^2}=\frac{1-p}{2-p}=\frac{2/3}{5/3}=\frac25$.
+Shortcut: let $e=P(\text{even})$. The first trial fails with probability $2/3$, and then the parity flips, so $e=\frac23(1-e)$, giving $e=2/5$.
+$1/2$ assumes even and odd are equally likely, but trial $1$ (odd) is the single most likely place for the first success. $3/5$ is the probability of odd.
+
+@ prob h prob-h-044
+T: Which sums keep the same distribution family
+S: discrete-dists
+TYPE: msq
+Q: In each option $X$ and $Y$ are independent. Which statements are true? More than one option may be correct.
+A: If $X\sim\text{Bin}(5,0.3)$ and $Y\sim\text{Bin}(7,0.3)$, then $X+Y\sim\text{Bin}(12,0.3)$
+B: If $X\sim\text{Poisson}(2)$ and $Y\sim\text{Poisson}(3)$, then $X+Y\sim\text{Poisson}(5)$
+C: If $X$ and $Y$ are both geometric on $\{1,2,\dots\}$ with parameter $p$, then $X+Y$ is geometric
+D: If $X\sim\text{Bin}(5,0.3)$ and $Y\sim\text{Bin}(5,0.6)$, then $X+Y\sim\text{Bin}(10,0.45)$
+ANS: A,B
+EXP: [[A]] True: $X+Y$ counts successes in $5+7$ independent trials that all have success probability $0.3$.
+[[B]] True: the MGFs multiply, $e^{2(e^t-1)}e^{3(e^t-1)}=e^{5(e^t-1)}$.
+[[C]] False: $X+Y\ge2$ always, so $P(X+Y=1)=0\neq p$. The sum is negative binomial (trials until the second success).
+[[D]] False even though the mean $1.5+3=4.5$ matches: $\operatorname{Var}(X+Y)=5(0.21)+5(0.24)=2.25$, but $\text{Bin}(10,0.45)$ has variance $10(0.45)(0.55)=2.475$. The trials do not share one success probability.
+
+@ prob h prob-h-045
+T: Variance of the number of aces in a hand
+S: discrete-dists
+Q: A $13$-card hand is dealt from a well-shuffled $52$-card deck containing $4$ aces. What is the variance of the number of aces in the hand?
+A: $12/13$
+B: $12/17$
+C: $9/13$
+D: $1$
+ANS: B
+EXP: The ace count is hypergeometric with $N=52$, $K=4$, $n=13$, so $p=K/N=1/13$.
+$\operatorname{Var}=np(1-p)\dfrac{N-n}{N-1}=13\cdot\dfrac1{13}\cdot\dfrac{12}{13}\cdot\dfrac{39}{51}=\dfrac{12}{13}\cdot\dfrac{13}{17}=\dfrac{12}{17}\approx0.706$.
+$12/13$ is the binomial variance; it ignores the finite-population correction $\frac{N-n}{N-1}$ needed because cards are drawn without replacement. $9/13$ uses $\frac{N-n}{N}=\frac34$ in the correction. $1$ is the mean, not the variance.
+
+@ prob h prob-h-046
+T: First toss given the total number of heads
+S: discrete-dists
+Q: A biased coin with $P(\text{head})=0.7$ is tossed $10$ times, and exactly $4$ heads appear. Given this, what is the probability that the first toss was a head?
+A: $0.7$
+B: $0.28$
+C: $0.5$
+D: $0.4$
+ANS: D
+EXP: $P(\text{first}=H\mid4\text{ heads})=\dfrac{0.7\cdot\binom93(0.7)^3(0.3)^6}{\binom{10}4(0.7)^4(0.3)^6}=\dfrac{\binom93}{\binom{10}4}=\dfrac{84}{210}=0.4$.
+The bias cancels: given the total, every arrangement of $4$ heads among $10$ tosses is equally likely, so each toss is a head with probability $4/10$. (The total is a sufficient statistic for $p$.)
+$0.7$ ignores the conditioning; $0.28=0.7\times0.4$ mixes the two.
+
+@ prob h prob-h-047
+T: Lifetime with a cold standby spare
+S: continuous-dists
+Q: A machine runs on one part, whose lifetime is exponential with mean $1$ year. When it fails, an identical spare (unused until then) takes over immediately. What is the probability the machine is still running after $2$ years?
+A: $3e^{-2}$
+B: $e^{-1}$
+C: $2e^{-2}$
+D: $e^{-4}$
+ANS: A
+EXP: The total lifetime is $T_1+T_2$ with $T_i$ i.i.d. exponential with rate $1$. It exceeds $2$ exactly when the Poisson process of failures (rate $1$) has at most one event in $[0,2]$:
+$P(T_1+T_2>2)=P(N(2)\le1)=e^{-2}(1+2)=3e^{-2}\approx0.406$.
+$e^{-1}$ treats the sum as exponential with mean $2$; a sum of exponentials is Gamma, not exponential. $2e^{-2}$ is only $P(N(2)=1)$. $e^{-4}$ wrongly multiplies the two survival probabilities, which is the series system (both must survive), the opposite of a spare.
+
+@ prob h prob-h-048
+T: Recovering a normal's parameters from two quantiles
+S: continuous-dists
+Q: $X$ is normal with unknown mean and variance, and $P(X<8)=0.1587$ and $P(X<14)=0.9772$. Use $\Phi(1)=0.8413$, $\Phi(1.5)=0.9332$, $\Phi(2)=0.9772$. What is $P(X>13)$?
+A: $0.1587$
+B: $0.0228$
+C: $0.0668$
+D: $0.9332$
+ANS: C
+EXP: Read off the z values: $\Phi(-1)=0.1587$ and $\Phi(2)=0.9772$, so $8=\mu-\sigma$ and $14=\mu+2\sigma$.
+Subtract: $3\sigma=6$, so $\sigma=2$ and $\mu=10$.
+$P(X>13)=1-\Phi\!\left(\frac{13-10}{2}\right)=1-\Phi(1.5)=0.0668$.
+$0.1587$ is the given $P(X<8)$, the lower tail, not the answer. $0.0228$ is $P(X>14)$. $0.9332$ is $P(X<13)$.
+
+@ prob h prob-h-049
+T: Expected maximum of two exponentials
+S: continuous-dists
+Q: Two servers process jobs independently, each finishing after an exponential time with mean $1$ minute. What is the expected time until both have finished?
+A: $1$ minute
+B: $3/2$ minutes
+C: $2$ minutes
+D: $1/2$ minute
+ANS: B
+EXP: Split $\max(T_1,T_2)=\min(T_1,T_2)+(\text{remaining time})$.
+The minimum of two independent rate-$1$ exponentials is exponential with rate $2$: mean $1/2$.
+By the memoryless property, the other server's remaining time is still exponential with mean $1$.
+$E[\max]=\frac12+1=\frac32$ minutes.
+$2$ adds the two means, as if the servers worked one after another. $1/2$ is the expected minimum. $1$ ignores that waiting for both takes longer than waiting for one.
+
+@ prob h prob-h-050
+T: Mean absolute value of a standard normal
+S: continuous-dists
+Q: $Z\sim N(0,1)$. What is $E|Z|$?
+A: $\sqrt{2/\pi}$
+B: $1/\sqrt{2\pi}$
+C: $1$
+D: $0$
+ANS: A
+EXP: By symmetry, $E|Z|=2\displaystyle\int_0^\infty z\,\frac1{\sqrt{2\pi}}e^{-z^2/2}\,dz=\frac2{\sqrt{2\pi}}\Big[-e^{-z^2/2}\Big]_0^\infty=\frac2{\sqrt{2\pi}}=\sqrt{\frac2\pi}\approx0.798$.
+$1/\sqrt{2\pi}$ integrates over $z>0$ only and forgets the factor $2$. $1$ is $E[Z^2]$ (the variance); by Jensen, $E|Z|\le\sqrt{E[Z^2]}=1$, with strict inequality. $0$ is $E[Z]$.
+So for Gaussian errors the mean absolute error is about $0.8$ times the RMSE.
+
+@ prob h prob-h-051
+T: True facts about continuous distributions
+S: continuous-dists
+TYPE: msq
+Q: Which statements are true? More than one option may be correct.
+A: Among continuous distributions on $(0,\infty)$, only the exponential is memoryless
+B: If $X\sim U(0,1)$, then $1-X\sim U(0,1)$
+C: If $X,Y$ are independent $U(0,1)$, then $X+Y\sim U(0,2)$
+D: If $X\sim N(\mu,\sigma^2)$, then $P(\mu-\sigma<X<\mu+\sigma)$ is the same for every $\mu$ and $\sigma>0$
+ANS: A,B,D
+EXP: [[A]] True: $P(X>s+t)=P(X>s)P(X>t)$ for all $s,t$ forces the survival function to be $e^{-\lambda t}$.
+[[B]] True: $P(1-X\le y)=P(X\ge1-y)=y$ for $0\le y\le1$.
+[[C]] False: the sum has the triangular density $f(s)=1-|s-1|$ on $(0,2)$, peaking at $s=1$. For example, $P(X+Y<0.5)=0.125$, not $0.25$.
+[[D]] True: standardising gives $P(-1<Z<1)\approx0.683$ for every normal. This is why z-scores make all normals comparable.
+
+@ prob h prob-h-052
+T: One Poisson count given the total of two
+S: joint-conditional
+Q: $X\sim\text{Poisson}(2)$ and $Y\sim\text{Poisson}(3)$ are independent. What is $P(X=1\mid X+Y=4)$?
+A: $0.1536$
+B: $0.3456$
+C: $0.2707$
+D: $0.4$
+ANS: B
+EXP: $X+Y\sim\text{Poisson}(5)$. Then
+$P(X=1\mid X+Y=4)=\dfrac{P(X=1)P(Y=3)}{P(X+Y=4)}=\dfrac{e^{-2}2\cdot e^{-3}3^3/3!}{e^{-5}5^4/4!}=\binom41\left(\frac25\right)^1\left(\frac35\right)^3$.
+So given the total, $X\sim\text{Bin}\!\left(4,\frac{2}{5}\right)$ and the answer is $4(0.4)(0.216)=0.3456$.
+$0.1536=4(0.4)^3(0.6)$ swaps the roles of the two probabilities. $0.2707=2e^{-2}$ is the unconditional $P(X=1)$. $0.4$ is the probability of a single event being from $X$, not of exactly one in four.
+
+@ prob h prob-h-053
+T: Conditional density on a triangle
+S: joint-conditional
+Q: $(X,Y)$ has joint density $f(x,y)=8xy$ on $0<x<y<1$ (and $0$ elsewhere). What is $P\!\left(X<\tfrac12\ \middle|\ Y=\tfrac34\right)$?
+A: $2/3$
+B: $1/4$
+C: $4/9$
+D: $1/2$
+ANS: C
+EXP: Marginal: $f_Y(y)=\displaystyle\int_0^y8xy\,dx=4y^3$ for $0<y<1$.
+Conditional: $f_{X\mid Y}(x\mid y)=\dfrac{8xy}{4y^3}=\dfrac{2x}{y^2}$ for $0<x<y$.
+At $y=\frac34$: $P(X<\tfrac12\mid Y=\tfrac34)=\displaystyle\int_0^{1/2}\frac{2x}{9/16}\,dx=\frac{1/4}{9/16}=\frac49$.
+$2/3=\frac{1/2}{3/4}$ assumes $X$ is uniform on $(0,y)$, but the conditional density grows like $x$. $1/4$ uses $y=1$.
+
+@ prob h prob-h-054
+T: Probability a product of uniforms is small
+S: joint-conditional
+TYPE: nat
+TOL: 0.01
+Q: $X$ and $Y$ are independent $U(0,1)$. Find $P(XY\le\tfrac12)$ to $2$ decimal places. (Use $\ln2=0.6931$.)
+ANS: 0.85
+EXP: The joint density is $1$ on the unit square, so the answer is the area where $xy\le\frac12$.
+For $x\le\frac12$, every $y\in(0,1)$ works: area $\frac12$.
+For $x>\frac12$, need $y\le\frac1{2x}$: area $\displaystyle\int_{1/2}^1\frac{dx}{2x}=\frac12\ln2$.
+Total: $\frac12+\frac12\ln2\approx0.5+0.3466=0.85$.
+Answering $0.5$ assumes the product is uniform; products of numbers in $(0,1)$ pile up near $0$.
+
+@ prob h prob-h-055
+T: Inferring the die from the roll
+S: joint-conditional
+Q: $X$ is chosen uniformly from $\{1,2,3\}$, and then $Y$ is chosen uniformly from $\{1,\dots,X\}$. Given $Y=2$, what is the probability that $X=3$?
+A: $1/2$
+B: $1/3$
+C: $3/5$
+D: $2/5$
+ANS: D
+EXP: Joint PMF: $P(X=x,Y=y)=\frac13\cdot\frac1x$ for $1\le y\le x$.
+$P(X=2,Y=2)=\frac16$ and $P(X=3,Y=2)=\frac19$ ($X=1$ cannot give $Y=2$), so $P(Y=2)=\frac16+\frac19=\frac5{18}$.
+$P(X=3\mid Y=2)=\dfrac{1/9}{5/18}=\dfrac25$.
+$1/2$ treats $X=2$ and $X=3$ as equally likely given $Y=2$, ignoring that $X=2$ produces $Y=2$ more often ($1/2$ vs $1/3$). $3/5$ is $P(X=2\mid Y=2)$.
+
+@ prob h prob-h-056
+T: Variance of a compound Poisson sum
+S: conditional-expectation
+Q: The number of claims $N$ is Poisson with mean $3$. Claim sizes $X_1,X_2,\dots$ are i.i.d. with mean $2$ and variance $1$, independent of $N$. What is $\operatorname{Var}\!\left(\sum_{i=1}^NX_i\right)$?
+A: $3$
+B: $15$
+C: $12$
+D: $7$
+ANS: B
+EXP: Law of total variance with $S=\sum_{i=1}^NX_i$: $E[S\mid N]=2N$ and $\operatorname{Var}(S\mid N)=N\cdot1$.
+$\operatorname{Var}(S)=E[\operatorname{Var}(S\mid N)]+\operatorname{Var}(E[S\mid N])=E[N]\cdot1+\operatorname{Var}(N)\cdot2^2=3+3\cdot4=15$.
+$3$ keeps only the first term (as if $N$ were fixed at $3$). $12$ keeps only the second. $7=3+2^2$ forgets to multiply $E[X]^2$ by $\operatorname{Var}(N)$. For a Poisson count the result is $\lambda E[X^2]=3(1+4)=15$.
+
+@ prob h prob-h-057
+T: Conditional mean of the first break point
+S: conditional-expectation
+TYPE: nat
+TOL: 0.01
+Q: $X\sim U(0,1)$ and, given $X=x$, $Y\sim U(0,x)$. Find $E[X\mid Y=\tfrac12]$ to $2$ decimal places. (Use $\ln2=0.6931$.)
+ANS: 0.72
+EXP: Joint density: $f(x,y)=1\cdot\frac1x$ for $0<y<x<1$.
+Marginal: $f_Y(y)=\displaystyle\int_y^1\frac{dx}{x}=-\ln y$.
+Conditional: $f_{X\mid Y}(x\mid y)=\dfrac{1/x}{-\ln y}$ on $(y,1)$, so $E[X\mid Y=y]=\dfrac{\int_y^1x\cdot\frac1x\,dx}{-\ln y}=\dfrac{1-y}{-\ln y}$.
+At $y=\frac12$: $\dfrac{0.5}{0.6931}\approx0.72$.
+The tempting $0.75$ assumes $X\mid Y$ is uniform on $(\frac12,1)$, but the density $\propto1/x$ favours smaller $x$: a small $X$ makes $Y=\frac12$ more likely.
+
+@ prob h prob-h-058
+T: Tosses until both faces have appeared
+S: conditional-expectation
+Q: A coin shows heads with probability $1/3$. It is tossed until both a head and a tail have appeared. What is the expected number of tosses?
+A: $3$
+B: $4.5$
+C: $3.5$
+D: $2.5$
+ANS: C
+EXP: Condition on the first toss. If it is a head (probability $1/3$), wait for the first tail: geometric with mean $1/(2/3)=3/2$. If it is a tail (probability $2/3$), wait for the first head: mean $1/(1/3)=3$.
+$E[N]=1+\frac13\cdot\frac32+\frac23\cdot3=1+\frac12+2=3.5$.
+$3$ is the answer for a fair coin. $4.5=3+1.5$ adds both waiting times instead of weighting them by the first toss.
+
+@ prob h prob-h-059
+T: Gaussian conditioning on a noisy sum
+S: conditional-expectation
+Q: $X\sim N(0,1)$ and $Y\sim N(0,4)$ are independent (second parameter is the variance). You observe $X+Y=10$. What is $E[X\mid X+Y=10]$?
+A: $5$
+B: $10/3$
+C: $8$
+D: $2$
+ANS: D
+EXP: $(X,S)$ with $S=X+Y$ is bivariate normal with means $0$, so $E[X\mid S=s]=\dfrac{\operatorname{Cov}(X,S)}{\operatorname{Var}(S)}\,s$.
+$\operatorname{Cov}(X,S)=\operatorname{Var}(X)=1$ and $\operatorname{Var}(S)=1+4=5$, so $E[X\mid S=10]=\frac15\cdot10=2$.
+The observed total is shared in proportion to the variances: the noisier $Y$ takes $8$, $X$ takes $2$.
+$5$ splits evenly, which is right only when the variances are equal. $10/3$ splits in proportion to the standard deviations ($1:2$). $8$ is $E[Y\mid S=10]$. This is the same calculation as a Kalman filter or Gaussian-process update.
+
+@ prob h prob-h-060
+T: Correlation between face counts of a die
+S: covariance-correlation
+Q: A fair die is rolled $60$ times. $X$ is the number of 1s and $Y$ the number of 2s. What is $\rho(X,Y)$?
+A: $-1/5$
+B: $0$
+C: $-1/36$
+D: $-1$
+ANS: A
+EXP: Write $X=\sum_kA_k$, $Y=\sum_kB_k$ with indicators for roll $k$. On the same roll, $A_kB_k=0$, so $\operatorname{Cov}(A_k,B_k)=0-\frac16\cdot\frac16=-\frac1{36}$; different rolls are independent.
+$\operatorname{Cov}(X,Y)=-\frac{60}{36}$ and $\operatorname{Var}(X)=\operatorname{Var}(Y)=60\cdot\frac16\cdot\frac56=\frac{300}{36}$.
+$\rho=\dfrac{-60/36}{300/36}=-\dfrac15$ (in general $-\frac{p}{1-p}$ for two equal-probability multinomial cells).
+$0$ misses that a roll cannot be both a 1 and a 2. $-1$ would need $X+Y$ to be constant, but the other four faces absorb part of the variation. $-1/36$ is the covariance of a single roll, not a correlation.
+
+@ prob h prob-h-061
+T: Covariances involving the sample mean
+S: covariance-correlation
+TYPE: msq
+Q: $X_1,\dots,X_n$ ($n\ge2$) are i.i.d. with variance $\sigma^2$, and $\bar X$ is their mean. Which statements are true? More than one option may be correct.
+A: $\operatorname{Cov}(\bar X,X_1)=\sigma^2/n$
+B: $\operatorname{Cov}(\bar X,\,X_1-\bar X)=0$
+C: $\operatorname{Var}(X_1-\bar X)=\sigma^2\left(1-\frac1n\right)$
+D: $\operatorname{Cov}(X_1,X_2)=\sigma^2/n$
+ANS: A,B,C
+EXP: [[A]] True: $\operatorname{Cov}\!\left(\frac1n\sum_iX_i,X_1\right)=\frac1n\operatorname{Var}(X_1)=\frac{\sigma^2}n$.
+[[B]] True: $\operatorname{Cov}(\bar X,X_1)-\operatorname{Var}(\bar X)=\frac{\sigma^2}n-\frac{\sigma^2}n=0$. The mean is uncorrelated with each residual (for normal data this gives the independence of $\bar X$ and $S^2$).
+[[C]] True: $\operatorname{Var}(X_1)+\operatorname{Var}(\bar X)-2\operatorname{Cov}(X_1,\bar X)=\sigma^2+\frac{\sigma^2}n-\frac{2\sigma^2}n=\sigma^2\left(1-\frac1n\right)$. Residuals vary less than the data, which is why $S^2$ divides by $n-1$.
+[[D]] False: $X_1$ and $X_2$ are independent, so their covariance is $0$.
+
+@ prob h prob-h-062
+T: Most negative common pairwise correlation
+S: covariance-correlation
+Q: Three random variables $X,Y,Z$, each with variance $1$, have the same correlation $\rho$ between every pair. What is the smallest possible value of $\rho$?
+A: $-1$
+B: $-1/3$
+C: $-1/2$
+D: $0$
+ANS: C
+EXP: Any variance is non-negative: $0\le\operatorname{Var}(X+Y+Z)=3+6\rho$, so $\rho\ge-\frac12$.
+It is attained: take $X,Y,Z$ as deviations from the mean of three i.i.d. variables (rescaled), whose sum is $0$. Equivalently, the covariance matrix with $1$ on the diagonal and $\rho$ off it has eigenvalues $1+2\rho$ and $1-\rho$, both needing to be $\ge0$.
+$-1$ is fine for two variables, but three variables cannot each be perfectly opposite to the other two. In general the bound is $-\frac1{n-1}$.
+
+@ prob h prob-h-063
+T: Correlation of a uniform with its square
+S: covariance-correlation
+TYPE: nat
+TOL: 0.01
+Q: $X\sim U(0,1)$. Find the correlation $\rho(X,X^2)$ to $2$ decimal places.
+ANS: 0.97
+EXP: Moments: $E[X^k]=\frac1{k+1}$.
+$\operatorname{Cov}(X,X^2)=E[X^3]-E[X]E[X^2]=\frac14-\frac12\cdot\frac13=\frac1{12}$.
+$\operatorname{Var}(X)=\frac13-\frac14=\frac1{12}$ and $\operatorname{Var}(X^2)=\frac15-\frac19=\frac4{45}$.
+$\rho=\dfrac{1/12}{\sqrt{\frac1{12}\cdot\frac4{45}}}=\sqrt{\frac{45}{48}}=\frac{\sqrt{15}}4\approx0.968$.
+Not $1$: $Y$ is a deterministic function of $X$, but correlation measures only the linear part. On $(-1,1)$ the same pair would have correlation $0$.
+
+@ prob h prob-h-064
+T: Variance explained by a linear signal
+S: covariance-correlation
+Q: $Y=2X+\varepsilon$, where $\operatorname{Var}(X)=1$, $\operatorname{Var}(\varepsilon)=3$, and $\varepsilon$ is independent of $X$. What fraction of $\operatorname{Var}(Y)$ is explained by the best linear predictor of $Y$ from $X$ (that is, what is $\rho(X,Y)^2$)?
+A: $2/\sqrt7$
+B: $4/7$
+C: $4/3$
+D: $3/7$
+ANS: B
+EXP: $\operatorname{Cov}(X,Y)=2\operatorname{Var}(X)=2$ and $\operatorname{Var}(Y)=4\cdot1+3=7$.
+$\rho=\dfrac{2}{1\cdot\sqrt7}$, so $\rho^2=\dfrac47$. This is the population $R^2$ of the regression: signal variance $4$ out of total $7$.
+$2/\sqrt7$ is $\rho$ itself, not the fraction of variance. $4/3$ is the signal-to-noise ratio. $3/7$ is the unexplained fraction.
+
+@ prob h prob-h-065
+T: Share of a sum of two exponentials
+S: transformations
+Q: $X$ and $Y$ are independent exponentials with rate $1$. What is $P\!\left(\dfrac{X}{X+Y}<\dfrac13\right)$?
+A: $1/2$
+B: $1/4$
+C: $1/9$
+D: $1/3$
+ANS: D
+EXP: $\dfrac X{X+Y}<\dfrac13\iff3X<X+Y\iff Y>2X$.
+$P(Y>2X)=\displaystyle\int_0^\infty e^{-x}\,e^{-2x}\,dx=\frac13$.
+In fact $X/(X+Y)\sim U(0,1)$ for i.i.d. exponentials, so every such probability equals its threshold.
+$1/4=P(Y>3X)$ drops the $X$ on the right when rearranging. $1/2$ uses symmetry, which only gives the answer for the threshold $1/2$.
+
+@ prob h prob-h-066
+T: Radius of a 2-D standard normal point
+S: transformations
+Q: $X$ and $Y$ are independent $N(0,1)$. What is $P\!\left(\sqrt{X^2+Y^2}>2\right)$?
+A: $e^{-1}$
+B: $e^{-2}$
+C: $e^{-4}$
+D: $1-e^{-2}$
+ANS: B
+EXP: Switch to polar coordinates: $P(R>r)=\displaystyle\int_0^{2\pi}\!\!\int_r^\infty\frac1{2\pi}e^{-s^2/2}s\,ds\,d\theta=e^{-r^2/2}$.
+So $R^2=X^2+Y^2$ is exponential with mean $2$ (it is $\chi^2_2$), and $P(R>2)=P(R^2>4)=e^{-4/2}=e^{-2}\approx0.135$.
+$e^{-4}$ treats $R^2$ as exponential with mean $1$. $e^{-1}$ uses $2$ instead of $2^2=4$. This is the fact behind the Box–Muller method for sampling normals.
+
+@ prob h prob-h-067
+T: Density of the square root of an exponential
+S: transformations
+Q: $X$ is exponential with rate $1$ and $Y=\sqrt X$. What is $f_Y(y)$ for $y>0$?
+A: $e^{-y^2}$
+B: $ye^{-y^2/2}$
+C: $2ye^{-y^2}$
+D: $\dfrac{1}{2\sqrt y}e^{-\sqrt y}$
+ANS: C
+EXP: CDF method: $P(Y\le y)=P(X\le y^2)=1-e^{-y^2}$.
+Differentiate: $f_Y(y)=2ye^{-y^2}$ (a Rayleigh density). Equivalently $f_X(y^2)\left|\frac{d}{dy}y^2\right|$.
+$e^{-y^2}$ substitutes $x=y^2$ but forgets the Jacobian $2y$; it integrates to $\sqrt\pi/2$, not $1$. $\frac1{2\sqrt y}e^{-\sqrt y}$ is the density of $X^2$, using the inverse map the wrong way round. $ye^{-y^2/2}$ is the Rayleigh density with a different scale (the radius of a 2-D standard normal).
+
+@ prob h prob-h-068
+T: Limit of the geometric mean of uniforms
+S: limit-theorems
+Q: $U_1,U_2,\dots$ are i.i.d. $U(0,1)$. With probability $1$, what is $\displaystyle\lim_{n\to\infty}\left(U_1U_2\cdots U_n\right)^{1/n}$?
+A: $1/2$
+B: $e^{-1}$
+C: $0$
+D: $1$
+ANS: B
+EXP: Take logs: $\ln\!\left(\prod U_i\right)^{1/n}=\frac1n\sum\ln U_i$.
+By the strong law of large numbers this tends to $E[\ln U]=\displaystyle\int_0^1\ln u\,du=-1$.
+So the geometric mean tends to $e^{-1}\approx0.368$.
+$1/2=E[U]$ assumes the limit of a geometric mean is the arithmetic mean; by Jensen, $E[\ln U]<\ln E[U]$, so the limit is smaller. $0$ is the limit of the product itself, not of its $n$-th root. Averaging log-likelihoods instead of multiplying likelihoods uses the same idea.
+
+@ prob h prob-h-069
+T: Which tail probabilities Markov allows
+S: limit-theorems
+TYPE: msq
+Q: $X\ge0$ and $E[X]=2$. Which of these values can $P(X\ge5)$ take for some such $X$? More than one option may be correct.
+A: $0.4$
+B: $0.5$
+C: $0$
+D: $0.1$
+ANS: A,C,D
+EXP: Markov's inequality gives $P(X\ge5)\le\frac25=0.4$, so any value above $0.4$ is impossible. Every value in $[0,0.4]$ is achievable.
+[[A]] Possible: $X=5$ with probability $0.4$ and $0$ otherwise has mean $2$. Markov's bound is tight for such two-point variables.
+[[B]] Impossible: then $E[X]\ge5\times0.5=2.5>2$.
+[[C]] Possible: $X\equiv2$.
+[[D]] Possible: $X=5$ with probability $0.1$ and $X=\frac{2-0.5}{0.9}=\frac53$ otherwise; the mean is $0.5+1.5=2$.
+
+@ prob h prob-h-070
+T: Accumulated rounding error
+S: limit-theorems
+Q: $300$ numbers are each rounded to the nearest integer. The rounding errors are independent and $U(-0.5,0.5)$. Use $\Phi(1)=0.8413$ and $\Phi(2)=0.9772$. By the CLT, the probability that the total rounding error exceeds $10$ in absolute value is about:
+A: $0.0228$
+B: $0.25$
+C: $0.3174$
+D: $0.0456$
+ANS: D
+EXP: Each error has mean $0$ and variance $\frac{(0.5-(-0.5))^2}{12}=\frac1{12}$.
+The total has variance $300/12=25$, so $\operatorname{SD}=5$, and by the CLT it is approximately $N(0,25)$.
+$P(|E|>10)\approx P(|Z|>2)=2(1-0.9772)=0.0456$.
+$0.0228$ counts only one tail. $0.25=25/10^2$ is Chebyshev's bound, valid but far from the CLT estimate. $0.3174$ uses variance $\frac{(b-a)^2}{3}=\frac13$ per error instead of $\frac{(b-a)^2}{12}$, giving $\operatorname{SD}=10$ and $z=1$.
+
+@ prob h prob-h-071
+T: Asymptotics of fair coin tosses
+S: limit-theorems
+TYPE: msq
+Q: $S_n$ is the number of heads in $n$ tosses of a fair coin. Which statements are true as $n\to\infty$ (for the first, take $n$ even)? More than one option may be correct.
+A: $P(S_n=n/2)\to0$
+B: $P(S_n\le n/2)\to1/2$
+C: $P(|S_n/n-1/2|>0.01)\to0$
+D: $P(|S_n-n/2|\le10)\to1$
+ANS: A,B,C
+EXP: $S_n$ has mean $n/2$ and SD $\sqrt n/2$.
+[[A]] True: the single most likely value still has probability $\binom n{n/2}2^{-n}\approx\sqrt{2/(\pi n)}\to0$; the mass spreads over about $\sqrt n$ values.
+[[B]] True: by the CLT, $P(S_n\le n/2)\to\Phi(0)=1/2$ (from above, because of the atom at $n/2$, which vanishes by the first statement).
+[[C]] True: the weak LLN, since $\operatorname{Var}(S_n/n)=\frac1{4n}\to0$.
+[[D]] False: $P(|S_n-n/2|\le10)\approx P(|Z|\le20/\sqrt n)\to0$. The proportion settles down, but the count of heads drifts ever further from $n/2$ in absolute terms. Confusing the two is the gambler's fallacy.
+
+@ prob h prob-h-072
+T: Return time to a leaf of a star graph
+S: markov-chains
+TYPE: nat
+TOL: 0
+Q: A random walk on the star graph with one centre and $4$ leaves moves at each step to a uniformly random neighbour of its current vertex. Starting at a particular leaf, find the expected number of steps until it first returns to that leaf.
+ANS: 8
+EXP: For a random walk on a connected graph, $\pi_v=\frac{\deg v}{2|E|}$. Here $|E|=4$, so $\pi_{\text{leaf}}=\frac18$.
+Kac's formula: expected return time to $v$ is $1/\pi_v=8$.
+Check directly: each excursion is leaf $\to$ centre $\to$ some leaf (2 steps), and it hits our leaf with probability $\frac14$, so the expected number of excursions is $4$ and the expected time is $2\times4=8$.
+Answering $4$ counts excursions, not steps. Answering $5$ takes $\pi$ uniform over the $5$ vertices, but the walk visits the centre far more often than any leaf.
+
+@ prob h prob-h-073
+T: Expected time to absorption
+S: markov-chains
+TYPE: nat
+TOL: 0
+Q: A Markov chain on $\{1,2,3\}$ has transition matrix $P=\begin{pmatrix}0.6&0.4&0\\0.3&0.2&0.5\\0&0&1\end{pmatrix}$, where row $i$ is the current state and $P_{ij}=P(X_{n+1}=j\mid X_n=i)$. Starting from state $1$, find the expected number of steps until the chain reaches state $3$.
+ANS: 6
+EXP: First-step analysis. Let $t_i$ be the expected time to reach $3$ from $i$; $t_3=0$.
+$t_1=1+0.6t_1+0.4t_2$, so $0.4t_1=1+0.4t_2$ and $t_1=2.5+t_2$.
+$t_2=1+0.3t_1+0.2t_2$, so $0.8t_2=1+0.3(2.5+t_2)$, giving $0.5t_2=1.75$ and $t_2=3.5$.
+$t_1=2.5+3.5=6$.
+A quick guess like $1/0.5=2$ (the waiting time once in state $2$) ignores the time spent in state $1$ and the falls back from $2$ to $1$.
+
+@ prob h prob-h-074
+T: Long-run fraction for a doubly stochastic chain
+S: markov-chains
+Q: A Markov chain on $\{1,2,3\}$ has transition matrix $P=\begin{pmatrix}0.5&0.3&0.2\\0.2&0.5&0.3\\0.3&0.2&0.5\end{pmatrix}$, where row $i$ is the current state. In the long run, what fraction of time does the chain spend in state $3$?
+A: $1/3$
+B: $1/2$
+C: $0.2$
+D: $0.3$
+ANS: A
+EXP: Each column also sums to $1$ ($0.5+0.2+0.3$, $0.3+0.5+0.2$, $0.2+0.3+0.5$), so $P$ is doubly stochastic.
+Then $\pi=(\tfrac13,\tfrac13,\tfrac13)$ satisfies $\pi P=\pi$: each entry of $\pi P$ is $\frac13\times(\text{column sum})=\frac13$.
+The chain is irreducible and aperiodic (it has self-loops), so this is the unique stationary distribution and the long-run fraction is $1/3$.
+$0.5$, $0.2$ and $0.3$ are single entries of $P$, which are one-step probabilities, not long-run fractions.
+
+@ prob h prob-h-075
+T: Stationary distribution by detailed balance
+S: markov-chains
+Q: A Markov chain on $\{0,1,2\}$ has transition matrix $P=\begin{pmatrix}2/3&1/3&0\\1/3&1/3&1/3\\0&2/3&1/3\end{pmatrix}$, where row $i$ is the current state. In the long run, what fraction of time does it spend in state $2$?
+A: $1/3$
+B: $2/5$
+C: $1/4$
+D: $1/5$
+ANS: D
+EXP: The chain only moves between neighbouring states (a birth–death chain), so the stationary distribution satisfies detailed balance $\pi_iP_{i,i+1}=\pi_{i+1}P_{i+1,i}$.
+$\pi_0\cdot\frac13=\pi_1\cdot\frac13\Rightarrow\pi_1=\pi_0$, and $\pi_1\cdot\frac13=\pi_2\cdot\frac23\Rightarrow\pi_2=\frac{\pi_1}2$.
+Normalise: $\pi_0(1+1+\frac12)=1$, so $\pi=(\tfrac25,\tfrac25,\tfrac15)$ and $\pi_2=1/5$.
+$1/3$ would need a doubly stochastic matrix, but the columns sum to $1$, $4/3$ and $2/3$. $2/5$ is $\pi_0$ or $\pi_1$. Detailed balance is also the condition MCMC samplers such as Metropolis–Hastings are built to satisfy.
+

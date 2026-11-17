@@ -1,0 +1,1102 @@
+@ calc e calc-e-011
+T: Rational function at infinity
+S: limits
+Q: $\displaystyle\lim_{x\to\infty}\frac{3x^2+2x}{5x^2-1}=$
+A: $0$
+B: $\infty$
+C: $\frac35$
+D: $\frac25$
+ANS: C
+EXP: Divide top and bottom by the highest power, $x^2$: $\dfrac{3+2/x}{5-1/x^2}\to\dfrac{3}{5}$.
+Rule: when numerator and denominator have the same degree, the limit at infinity is the ratio of leading coefficients. $\tfrac25$ wrongly uses the $x$ coefficient of the numerator.
+
+@ calc e calc-e-012
+T: Standard limit sin(ax)/(bx)
+S: limits
+TYPE: nat
+TOL: 0.01
+Q: Find $\displaystyle\lim_{x\to0}\frac{\sin 5x}{3x}$. Give your answer to 2 decimal places.
+ANS: 1.67
+EXP: Write $\dfrac{\sin5x}{3x}=\dfrac53\cdot\dfrac{\sin5x}{5x}$.
+Standard limit: $\dfrac{\sin u}{u}\to1$ as $u\to0$. So the limit is $\dfrac53\approx1.67$.
+A common slip is to answer $1$ by applying $\sin u/u\to1$ without matching the argument $5x$ in the denominator.
+
+@ calc e calc-e-013
+T: Removing a 0/0 by factoring
+S: limits
+Q: $\displaystyle\lim_{x\to2}\frac{x^2-4}{x-2}=$
+A: $0$
+B: $4$
+C: $2$
+D: does not exist
+ANS: B
+EXP: Direct substitution gives $\tfrac00$, which is indeterminate, not "does not exist".
+Factor: $\dfrac{(x-2)(x+2)}{x-2}=x+2$ for $x\ne2$, so the limit is $2+2=4$.
+The limit only looks at $x$ near $2$, never at $x=2$ itself, so cancelling is allowed.
+
+@ calc e calc-e-014
+T: One-sided limits of |x|/x
+S: limits
+Q: What is $\displaystyle\lim_{x\to0}\frac{|x|}{x}$?
+A: $1$
+B: $-1$
+C: $0$
+D: does not exist
+ANS: D
+EXP: For $x>0$, $\tfrac{|x|}{x}=1$, so the right-hand limit is $1$. For $x<0$, $\tfrac{|x|}{x}=-1$, so the left-hand limit is $-1$.
+A two-sided limit exists only when both one-sided limits exist and are equal. Here $1\ne-1$, so it does not exist.
+Answering $1$ only checks the right side.
+
+@ calc e calc-e-015
+T: Continuity and differentiability of |x|
+S: continuity-differentiability
+Q: At $x=0$, the function $f(x)=|x|$ is:
+A: continuous and differentiable
+B: continuous but not differentiable
+C: differentiable but not continuous
+D: neither continuous nor differentiable
+ANS: B
+EXP: Continuity: $\lim_{x\to0}|x|=0=f(0)$.
+Differentiability: the right derivative is $\lim_{h\to0^+}\tfrac{|h|}{h}=1$ and the left derivative is $-1$. They differ, so $f'(0)$ does not exist (a corner).
+"Differentiable but not continuous" is impossible: differentiability always implies continuity. This kink is why the L1 penalty in lasso needs subgradients.
+
+@ calc e calc-e-016
+T: Joining two pieces continuously
+S: continuity-differentiability
+TYPE: nat
+TOL: 0.01
+Q: Let $f(x)=kx+1$ for $x<2$ and $f(x)=x^2$ for $x\ge2$. Enter the value of $k$ that makes $f$ continuous at $x=2$.
+ANS: 1.5
+EXP: Continuity at $2$ needs the left limit to equal $f(2)$.
+Left limit: $2k+1$. Value: $f(2)=4$.
+$2k+1=4\Rightarrow k=1.5$.
+
+@ calc e calc-e-017
+T: One-sided derivatives of ReLU
+S: continuity-differentiability
+Q: For $\operatorname{ReLU}(x)=\max(0,x)$, the left-hand and right-hand derivatives at $x=0$ are, respectively:
+A: $0$ and $1$
+B: $1$ and $0$
+C: $0$ and $0$
+D: both undefined
+ANS: A
+EXP: Left: for $h<0$, $\tfrac{\operatorname{ReLU}(h)-0}{h}=\tfrac0h=0$. Right: for $h>0$, $\tfrac{h}{h}=1$.
+Both one-sided derivatives exist but differ, so ReLU is not differentiable at $0$. Deep learning libraries simply pick a value in $[0,1]$ (usually $0$) there.
+
+@ calc e calc-e-018
+T: Removable discontinuity
+S: continuity-differentiability
+Q: Let $f(x)=\dfrac{x^2-9}{x-3}$ for $x\ne3$ and $f(3)=k$. For which $k$ is $f$ continuous at $x=3$?
+A: $0$
+B: $3$
+C: $9$
+D: $6$
+ANS: D
+EXP: For $x\ne3$, $f(x)=\dfrac{(x-3)(x+3)}{x-3}=x+3$, so $\lim_{x\to3}f(x)=6$.
+Continuity needs $f(3)$ to equal the limit, so $k=6$. Any other $k$ leaves a removable discontinuity (a hole filled at the wrong height).
+
+@ calc e calc-e-019
+T: Continuity vs differentiability facts
+S: continuity-differentiability
+TYPE: msq
+Q: Which of the following statements are true? (More than one option may be correct.)
+A: If $f$ is differentiable at $a$, then $f$ is continuous at $a$.
+B: If $f$ is continuous at $a$, then $f$ is differentiable at $a$.
+C: $f(x)=|x|$ is continuous at $x=0$.
+D: $f(x)=|x|$ is differentiable at $x=0$.
+ANS: A,C
+EXP: [[A]] is true: $f(a+h)-f(a)=\tfrac{f(a+h)-f(a)}{h}\cdot h\to f'(a)\cdot0=0$.
+[[B]] is false: $|x|$ is continuous at $0$ but has a corner there.
+[[C]] is true since $|x|\to0=|0|$. [[D]] is false: the one-sided derivatives are $-1$ and $1$.
+
+@ calc e calc-e-020
+T: Quotient rule for ln(x)/x
+S: derivatives
+Q: $\dfrac{d}{dx}\left(\dfrac{\ln x}{x}\right)=$
+A: $\dfrac{1-\ln x}{x^2}$
+B: $\dfrac{\ln x-1}{x^2}$
+C: $\dfrac{1}{x^2}$
+D: $\dfrac{1+\ln x}{x^2}$
+ANS: A
+EXP: Quotient rule $\left(\tfrac uv\right)'=\tfrac{u'v-uv'}{v^2}$ with $u=\ln x$, $v=x$:
+$\dfrac{\tfrac1x\cdot x-\ln x\cdot1}{x^2}=\dfrac{1-\ln x}{x^2}$.
+$\tfrac{\ln x-1}{x^2}$ comes from subtracting in the wrong order ($uv'-u'v$).
+
+@ calc e calc-e-021
+T: Coefficient of x³ in e^x
+S: taylor-series
+Q: In the Maclaurin series of $e^x$, the coefficient of $x^3$ is:
+A: $\frac13$
+B: $\frac12$
+C: $\frac1{24}$
+D: $\frac16$
+ANS: D
+EXP: $e^x=\sum_{n\ge0}\dfrac{x^n}{n!}$ because every derivative of $e^x$ equals $1$ at $0$.
+The $x^3$ coefficient is $\tfrac1{3!}=\tfrac16$. $\tfrac13$ divides by $n$ instead of $n!$; $\tfrac1{24}$ is the $x^4$ coefficient.
+
+@ calc e calc-e-022
+T: Linear approximation of a square root
+S: taylor-series
+TYPE: nat
+TOL: 0.001
+Q: Use the first-order (linear) Taylor approximation of $f(x)=\sqrt x$ about $x=4$ to estimate $\sqrt{4.1}$. Give your answer to 3 decimal places.
+ANS: 2.025
+EXP: $f(4)=2$, $f'(x)=\dfrac1{2\sqrt x}\Rightarrow f'(4)=\dfrac14$.
+$f(4.1)\approx f(4)+f'(4)(0.1)=2+0.025=2.025$.
+The true value is $2.02485$; the small error is the neglected second-order term, which is negative since $\sqrt x$ is concave.
+
+@ calc e calc-e-023
+T: Maclaurin series of sin x
+S: taylor-series
+Q: The Maclaurin series of $\sin x$ is:
+A: $x-\dfrac{x^3}{3!}+\dfrac{x^5}{5!}-\cdots$
+B: $x+\dfrac{x^3}{3!}+\dfrac{x^5}{5!}+\cdots$
+C: $1-\dfrac{x^2}{2!}+\dfrac{x^4}{4!}-\cdots$
+D: $x-\dfrac{x^3}{3}+\dfrac{x^5}{5}-\cdots$
+ANS: A
+EXP: Derivatives of $\sin x$ at $0$ cycle $0,1,0,-1,\dots$, so only odd powers appear with alternating signs and factorial denominators.
+The all-plus series is $\sinh x$, the even series is $\cos x$, and dividing by $n$ instead of $n!$ gives the series of $\arctan x$.
+
+@ calc e calc-e-024
+T: General Taylor coefficient
+S: taylor-series
+Q: In the Taylor series of $f$ about $x=a$, the coefficient of $(x-a)^n$ is:
+A: $f^{(n)}(a)$
+B: $\dfrac{f^{(n)}(a)}{n}$
+C: $\dfrac{f^{(n)}(a)}{n!}$
+D: $n!\,f^{(n)}(a)$
+ANS: C
+EXP: Differentiating $\sum c_k(x-a)^k$ $n$ times and setting $x=a$ leaves $n!\,c_n=f^{(n)}(a)$, so $c_n=\dfrac{f^{(n)}(a)}{n!}$.
+Forgetting the $n!$ is the most common error in second-order expansions (the $\tfrac12$ in front of the Hessian term).
+
+@ calc e calc-e-025
+T: Where the geometric series is valid
+S: taylor-series
+Q: The expansion $\dfrac1{1-x}=1+x+x^2+x^3+\cdots$ is valid for:
+A: all real $x$
+B: $|x|<1$
+C: $|x|\le1$
+D: $x<1$
+ANS: B
+EXP: The partial sums are $\dfrac{1-x^{n+1}}{1-x}$, which converge to $\dfrac1{1-x}$ only when $x^{n+1}\to0$, i.e. $|x|<1$.
+At $x=1$ the series diverges to $\infty$; at $x=-1$ it oscillates $1,0,1,0,\dots$. And $x<1$ would include $x=-2$, where the terms grow without bound.
+
+@ calc e calc-e-026
+T: Global max on a closed interval
+S: maxima-minima
+Q: What is the global maximum value of $f(x)=x^2$ on $[-1,2]$?
+A: $1$
+B: $0$
+C: $2$
+D: $4$
+ANS: D
+EXP: Closed interval method: compare $f$ at critical points and endpoints.
+$f'(x)=2x=0\Rightarrow x=0$, $f(0)=0$ (the minimum). Endpoints: $f(-1)=1$, $f(2)=4$.
+The maximum is $4$ at the endpoint $x=2$; the only critical point gives the minimum, so checking critical points alone misses it.
+
+@ calc e calc-e-027
+T: Inflection point of a cubic
+S: maxima-minima
+Q: At which $x$ does $f(x)=x^3-6x^2$ have an inflection point?
+A: $x=0$
+B: $x=2$
+C: $x=4$
+D: $x=6$
+ANS: B
+EXP: Inflection points are where $f''$ changes sign. $f''(x)=6x-12$, which is $0$ at $x=2$ and changes from negative to positive there.
+$x=0$ and $x=4$ are the critical points ($f'=3x^2-12x=0$), which is a different thing; $x=6$ is a root of $f$.
+
+@ calc e calc-e-028
+T: Second derivative test
+S: maxima-minima
+Q: Suppose $f'(c)=0$ and $f''(c)=-3$. Then at $x=c$, $f$ has:
+A: a local maximum
+B: a local minimum
+C: an inflection point
+D: no conclusion possible
+ANS: A
+EXP: Second derivative test: at a stationary point, $f''(c)<0$ means the graph is concave down, so $c$ is a local maximum.
+The test is inconclusive only when $f''(c)=0$. Reading the negative value as "minimum" mixes up the sign.
+
+@ calc e calc-e-029
+T: Minimum of x + 4/x
+S: maxima-minima
+Q: For $x>0$, the minimum value of $f(x)=x+\dfrac4x$ is:
+A: $2$
+B: $5$
+C: $4$
+D: $8$
+ANS: C
+EXP: $f'(x)=1-\dfrac4{x^2}=0\Rightarrow x=2$ (positive root). $f''(x)=\dfrac8{x^3}>0$, so it is a minimum.
+$f(2)=2+2=4$. ($2$ is where the minimum occurs, not its value; $5=f(1)$ or $f(4)$.)
+
+@ calc m calc-m-011
+T: Limit of (1 + 2/x)^x
+S: limits
+Q: $\displaystyle\lim_{x\to\infty}\left(1+\frac2x\right)^x=$
+A: $1$
+B: $e^2$
+C: $e$
+D: $\sqrt e$
+ANS: B
+EXP: This is a $1^\infty$ form. Take logs: $x\ln\!\left(1+\tfrac2x\right)=\dfrac{\ln(1+2/x)}{1/x}$.
+With $u=1/x\to0$: $\dfrac{\ln(1+2u)}{u}\to2$. So the limit is $e^2$.
+General rule: $(1+a/x)^x\to e^a$. Answering $1$ treats $1^\infty$ as $1$, which is wrong because the base approaches $1$ while the exponent grows.
+
+@ calc m calc-m-012
+T: Limit of (x − sin x)/x³
+S: limits
+Q: $\displaystyle\lim_{x\to0}\frac{x-\sin x}{x^3}=$
+A: $0$
+B: $-\frac16$
+C: $\frac16$
+D: $\frac13$
+ANS: C
+EXP: Taylor: $\sin x=x-\dfrac{x^3}{6}+O(x^5)$, so $x-\sin x=\dfrac{x^3}{6}+O(x^5)$ and the ratio tends to $\tfrac16$.
+(L'Hôpital three times gives the same: $\tfrac{1-\cos x}{3x^2}\to\tfrac{\sin x}{6x}\to\tfrac16$.)
+$-\tfrac16$ is the limit of $(\sin x-x)/x^3$; the order of subtraction matters.
+
+@ calc m calc-m-013
+T: Difference of a root and x at infinity
+S: limits
+TYPE: nat
+TOL: 0
+Q: Find $\displaystyle\lim_{x\to\infty}\left(\sqrt{x^2+4x}-x\right)$.
+ANS: 2
+EXP: This is $\infty-\infty$. Multiply by the conjugate:
+$\dfrac{(x^2+4x)-x^2}{\sqrt{x^2+4x}+x}=\dfrac{4x}{\sqrt{x^2+4x}+x}=\dfrac{4}{\sqrt{1+4/x}+1}\to\dfrac42=2$.
+Concluding $0$ because "both terms are about $x$" ignores that their difference stays finite.
+
+@ calc m calc-m-014
+T: Limit of x ln x at zero
+S: limits
+Q: $\displaystyle\lim_{x\to0^+}x\ln x=$
+A: $0$
+B: $-\infty$
+C: $-1$
+D: $1$
+ANS: A
+EXP: This is a $0\cdot(-\infty)$ form. Rewrite as $\dfrac{\ln x}{1/x}$, which is $\tfrac{-\infty}{\infty}$, and apply L'Hôpital:
+$\dfrac{1/x}{-1/x^2}=-x\to0$.
+Powers of $x$ beat logarithms. This is why $0\log0$ is taken as $0$ in the entropy formula.
+
+@ calc m calc-m-015
+T: Limit of (3^x − 2^x)/x
+S: limits
+Q: $\displaystyle\lim_{x\to0}\frac{3^x-2^x}{x}=$
+A: $\ln 6$
+B: $1$
+C: $\dfrac{\ln3}{\ln2}$
+D: $\ln\dfrac32$
+ANS: D
+EXP: Use the standard limit $\dfrac{a^x-1}{x}\to\ln a$ (since $a^x=e^{x\ln a}$).
+Split: $\dfrac{3^x-1}{x}-\dfrac{2^x-1}{x}\to\ln3-\ln2=\ln\tfrac32$.
+$\ln6$ adds the logs instead of subtracting; $\tfrac{\ln3}{\ln2}$ divides them.
+
+@ calc m calc-m-016
+T: Which limits equal 1
+S: limits
+TYPE: msq
+Q: Which of the following limits equal $1$? (More than one option may be correct.)
+A: $\displaystyle\lim_{x\to\infty}x\sin\frac1x$
+B: $\displaystyle\lim_{x\to0}\frac{\ln(1+x)}{x}$
+C: $\displaystyle\lim_{x\to\infty}\left(1+\frac1x\right)^x$
+D: $\displaystyle\lim_{x\to0}\frac{1-\cos x}{x}$
+ANS: A,B
+EXP: [[A]]: put $u=1/x\to0^+$; then $x\sin\tfrac1x=\tfrac{\sin u}{u}\to1$. True.
+[[B]]: $\ln(1+x)=x-\tfrac{x^2}2+\cdots$, so the ratio $\to1$. True.
+[[C]]: this is the definition of $e\approx2.718$, not $1$. False.
+[[D]]: $1-\cos x\approx\tfrac{x^2}{2}$, so the ratio $\approx\tfrac x2\to0$. False.
+
+@ calc m calc-m-017
+T: Constants for a differentiable join
+S: continuity-differentiability
+TYPE: nat
+TOL: 0
+Q: Let $f(x)=x^2$ for $x\le1$ and $f(x)=ax+b$ for $x>1$. If $f$ is differentiable at $x=1$, enter the value of $b$.
+ANS: -1
+EXP: Differentiability needs both continuity and matching one-sided derivatives at $x=1$.
+Slopes: left $2x|_{x=1}=2$, right $a$, so $a=2$.
+Continuity: $1^2=a+b\Rightarrow b=1-2=-1$.
+So the line $y=2x-1$ is the tangent to $x^2$ at $x=1$. Matching only the values (without slopes) does not fix $b$.
+
+@ calc m calc-m-018
+T: Mean value theorem point for x³
+S: continuity-differentiability
+Q: For $f(x)=x^3$ on $[0,3]$, the value $c\in(0,3)$ guaranteed by the mean value theorem is:
+A: $\frac32$
+B: $\sqrt3$
+C: $1$
+D: $3$
+ANS: B
+EXP: MVT: $f$ is continuous on $[0,3]$ and differentiable on $(0,3)$, so some $c$ has $f'(c)=\dfrac{f(3)-f(0)}{3-0}=\dfrac{27}{3}=9$.
+$3c^2=9\Rightarrow c=\sqrt3\approx1.73$ (the root $-\sqrt3$ is outside the interval).
+The midpoint $\tfrac32$ works only for quadratics.
+
+@ calc m calc-m-019
+T: x·sin(1/x) at the origin
+S: continuity-differentiability
+Q: Let $f(x)=x\sin\dfrac1x$ for $x\ne0$ and $f(0)=0$. At $x=0$, $f$ is:
+A: continuous but not differentiable
+B: differentiable with $f'(0)=0$
+C: differentiable with $f'(0)=1$
+D: not continuous
+ANS: A
+EXP: Continuity: $|x\sin\tfrac1x|\le|x|\to0$ (squeeze theorem), so $f(x)\to0=f(0)$.
+Derivative: $\dfrac{f(h)-f(0)}{h}=\sin\dfrac1h$, which oscillates between $-1$ and $1$ as $h\to0$ and has no limit.
+So $f$ is continuous but not differentiable at $0$. The bound $|f|\le|x|$ controls the values, not the difference quotient.
+
+@ calc m calc-m-020
+T: Counting kinks of a sum of absolute values
+S: continuity-differentiability
+TYPE: nat
+TOL: 0
+Q: At how many points of $\mathbb R$ is $f(x)=|x^2-1|+|x|$ not differentiable?
+ANS: 3
+EXP: $|g(x)|$ can fail to be differentiable only where $g(x)=0$ and $g$ changes sign there.
+$|x^2-1|$: kinks at $x=\pm1$ (slopes jump from $-2$ to $2$ at $x=1$, and from $-2$ to $2$ at $x=-1$).
+$|x|$: kink at $x=0$, where $|x^2-1|=1-x^2$ is smooth, so the kink cannot cancel.
+At $x=\pm1$ the term $|x|$ is smooth, so those kinks also survive. Total: $3$.
+
+@ calc m calc-m-021
+T: Which functions are differentiable at 0
+S: continuity-differentiability
+TYPE: msq
+Q: Which of the following functions are differentiable at $x=0$? (More than one option may be correct.)
+A: $f(x)=\left(\max(0,x)\right)^2$
+B: $f(x)=|x|^3$
+C: $f(x)=|\sin x|$
+D: $f(x)=x^{1/3}$
+ANS: A,B
+EXP: [[A]]: the difference quotient is $0$ for $h<0$ and $h$ for $h>0$; both tend to $0$, so $f'(0)=0$. Squaring ReLU smooths its kink.
+[[B]]: $\tfrac{|h|^3}{h}=\pm h^2\to0$, so $f'(0)=0$.
+[[C]]: $\tfrac{|\sin h|}{h}\to1$ from the right and $-1$ from the left, so no derivative.
+[[D]]: $\tfrac{h^{1/3}}{h}=h^{-2/3}\to\infty$, a vertical tangent, so not differentiable even though it is continuous.
+
+@ calc m calc-m-022
+T: Smoothness of the Huber loss
+S: continuity-differentiability
+Q: The Huber loss with $\delta=1$ is $h(r)=\tfrac12r^2$ for $|r|\le1$ and $h(r)=|r|-\tfrac12$ for $|r|>1$. Which statement is true?
+A: $h$ is not continuous at $r=\pm1$
+B: $h$ is continuous but not differentiable at $r=\pm1$
+C: $h$ is differentiable everywhere, but $h''$ does not exist at $r=\pm1$
+D: $h$ is twice differentiable everywhere
+ANS: C
+EXP: At $r=1$: values $\tfrac12$ and $1-\tfrac12=\tfrac12$ agree, so $h$ is continuous.
+Slopes: $r|_{r=1}=1$ on the inside and $1$ on the outside, so $h'(1)=1$ exists.
+Second derivative: $1$ inside, $0$ outside, so it jumps and $h''(1)$ does not exist. The same holds at $r=-1$ by symmetry.
+This is the design of Huber: quadratic (like MSE) near $0$, linear (like MAE) in the tails, joined with a continuous gradient, which suits gradient descent.
+
+@ calc m calc-m-023
+T: Floor function sum at an integer
+S: continuity-differentiability
+Q: Let $f(x)=\lfloor x\rfloor+\lfloor -x\rfloor$. Which statement about $f$ at $x=2$ is true?
+A: $f$ is continuous at $2$
+B: $\lim_{x\to2}f(x)$ does not exist
+C: $\lim_{x\to2}f(x)=-1$ but $f(2)=0$, a removable discontinuity
+D: $\lim_{x\to2}f(x)=0=f(2)$
+ANS: C
+EXP: If $x$ is not an integer, $\lfloor -x\rfloor=-\lfloor x\rfloor-1$, so $f(x)=-1$. If $x$ is an integer, $f(x)=x+(-x)=0$.
+Near $x=2$ (but not at it), $f=-1$ on both sides, so the limit exists and equals $-1$, while $f(2)=0$.
+Each floor alone jumps at $2$, but the jumps cancel in the sum, which is why the limit exists.
+
+@ calc m calc-m-024
+T: Implicit differentiation on an ellipse
+S: derivatives
+Q: The curve $x^2+xy+y^2=7$ passes through $(1,2)$. What is $\dfrac{dy}{dx}$ there?
+A: $-\frac54$
+B: $\frac45$
+C: $-1$
+D: $-\frac45$
+ANS: D
+EXP: Differentiate both sides with respect to $x$, treating $y$ as $y(x)$:
+$2x+\left(y+xy'\right)+2yy'=0\Rightarrow y'=-\dfrac{2x+y}{x+2y}$.
+At $(1,2)$: $y'=-\dfrac{4}{5}$.
+$-\tfrac54$ inverts the fraction. $-1$ comes from forgetting the product rule on $xy$: differentiating it as just $y$ drops the $xy'$ term and gives $y'=-\tfrac{2x+y}{2y}=-1$.
+
+@ calc m calc-m-025
+T: Derivative of arctan(1/x)
+S: derivatives
+Q: For $x\ne0$, $\dfrac{d}{dx}\arctan\!\left(\dfrac1x\right)=$
+A: $\dfrac{1}{1+x^2}$
+B: $-\dfrac{1}{1+x^2}$
+C: $\dfrac{x^2}{1+x^2}$
+D: $-\dfrac{1}{x^2+1/x^2}$
+ANS: B
+EXP: Chain rule: $\dfrac{1}{1+(1/x)^2}\cdot\left(-\dfrac1{x^2}\right)=\dfrac{x^2}{x^2+1}\cdot\left(-\dfrac1{x^2}\right)=-\dfrac1{1+x^2}$.
+Check: $\arctan x+\arctan\tfrac1x$ is constant ($\pm\tfrac\pi2$) on each side of $0$, so the two derivatives must be negatives of each other.
+$\tfrac{x^2}{1+x^2}$ forgets the inner derivative $-1/x^2$.
+
+@ calc m calc-m-026
+T: Derivative of an inverse function
+S: derivatives
+TYPE: nat
+TOL: 0.01
+Q: Let $f(x)=x^3+x$ and $g=f^{-1}$. Find $g'(2)$.
+ANS: 0.25
+EXP: Inverse function rule: $g'(y)=\dfrac{1}{f'(g(y))}$.
+First find $g(2)$: $x^3+x=2\Rightarrow x=1$. Then $f'(x)=3x^2+1$, so $f'(1)=4$.
+$g'(2)=\tfrac14=0.25$. Plugging $2$ straight into $f'$ (giving $\tfrac1{13}$) is the classic mistake: $f'$ must be evaluated at $g(2)$, not at $2$.
+
+@ calc m calc-m-027
+T: Derivative of tanh
+S: derivatives
+Q: $\dfrac{d}{dx}\tanh x=$
+A: $1+\tanh^2x$
+B: $\tanh x\,(1-\tanh x)$
+C: $1-\tanh^2x$
+D: $\dfrac{1}{\cosh x}$
+ANS: C
+EXP: $\tanh x=\dfrac{\sinh x}{\cosh x}$. Quotient rule: $\dfrac{\cosh^2x-\sinh^2x}{\cosh^2x}=\dfrac1{\cosh^2x}=1-\tanh^2x$.
+$\tanh x(1-\tanh x)$ mimics the sigmoid formula $\sigma(1-\sigma)$, which does not carry over.
+At $x=0$ the derivative is $1$ (versus $\tfrac14$ for the sigmoid), one reason tanh layers train better than sigmoid layers.
+
+@ calc m calc-m-028
+T: Derivative of a base-2 logarithm
+S: derivatives
+TYPE: nat
+TOL: 0.01
+Q: Find $\dfrac{d}{dx}\log_2(x^2+1)$ at $x=1$. Give your answer to 2 decimal places.
+ANS: 1.44
+EXP: Change of base: $\log_2u=\dfrac{\ln u}{\ln2}$, so $\dfrac{d}{dx}\log_2u=\dfrac{u'}{u\ln2}$.
+With $u=x^2+1$: $\dfrac{2x}{(x^2+1)\ln2}$. At $x=1$: $\dfrac{2}{2\ln2}=\dfrac1{\ln2}\approx1.44$.
+Forgetting the $\ln2$ gives $1$. The same factor converts entropy in nats to bits.
+
+@ calc m calc-m-029
+T: Second derivative of a parametric curve
+S: derivatives
+Q: For the curve $x=t^2$, $y=t^3$, find $\dfrac{d^2y}{dx^2}$ at $t=1$.
+A: $\frac32$
+B: $\frac34$
+C: $3$
+D: $\frac12$
+ANS: B
+EXP: First derivative: $\dfrac{dy}{dx}=\dfrac{dy/dt}{dx/dt}=\dfrac{3t^2}{2t}=\dfrac{3t}2$.
+Second derivative: differentiate $\tfrac{dy}{dx}$ with respect to $t$ and divide by $\tfrac{dx}{dt}$ again: $\dfrac{3/2}{2t}=\dfrac3{4t}$. At $t=1$ this is $\tfrac34$.
+$\tfrac32$ forgets the second division by $dx/dt$; $3$ is $\tfrac{d^2y/dt^2}{d^2x/dt^2}=\tfrac{6t}{2}$, which is not a valid formula.
+
+@ calc m calc-m-030
+T: Derivative of log-sigmoid
+S: derivatives
+Q: Let $\sigma(x)=\dfrac1{1+e^{-x}}$. Then $\dfrac{d}{dx}\ln\sigma(x)=$
+A: $\sigma(x)$
+B: $\dfrac1{\sigma(x)}$
+C: $\sigma(x)(1-\sigma(x))$
+D: $1-\sigma(x)$
+ANS: D
+EXP: Chain rule: $\dfrac{\sigma'(x)}{\sigma(x)}=\dfrac{\sigma(1-\sigma)}{\sigma}=1-\sigma(x)$.
+(Or directly: $\ln\sigma(x)=-\ln(1+e^{-x})$, whose derivative is $\tfrac{e^{-x}}{1+e^{-x}}=1-\sigma(x)$.)
+This is why the logistic-regression log-likelihood has the simple gradient $(y-\sigma)x$. $\sigma(1-\sigma)$ is the derivative of $\sigma$ itself, before taking the log.
+
+@ calc m calc-m-031
+T: x⁴ coefficient of e^(−x²)
+S: taylor-series
+Q: The coefficient of $x^4$ in the Maclaurin series of $e^{-x^2}$ is:
+A: $\frac12$
+B: $-\frac12$
+C: $\frac1{24}$
+D: $\frac16$
+ANS: A
+EXP: Substitute $u=-x^2$ into $e^u=1+u+\tfrac{u^2}{2}+\cdots$: $e^{-x^2}=1-x^2+\dfrac{x^4}{2}-\cdots$.
+The $x^4$ term comes from $\tfrac{u^2}{2}=\tfrac{x^4}{2}$, positive because $(-x^2)^2>0$.
+$\tfrac1{24}$ is the $x^4$ coefficient of $e^x$, forgetting the substitution. Substitution is much faster than differentiating four times.
+
+@ calc m calc-m-032
+T: A high derivative read off a series
+S: taylor-series
+TYPE: nat
+TOL: 0
+Q: Let $f(x)=x^2e^x$. Find $f^{(5)}(0)$, the fifth derivative at $0$.
+ANS: 20
+EXP: Expand: $x^2e^x=\sum_{n\ge0}\dfrac{x^{n+2}}{n!}$. The $x^5$ term has $n=3$, coefficient $\tfrac1{3!}=\tfrac16$.
+Since the coefficient of $x^5$ is $\tfrac{f^{(5)}(0)}{5!}$: $f^{(5)}(0)=\dfrac{5!}{3!}=20$.
+Reading off the coefficient $\tfrac16$ as the derivative forgets to multiply by $5!$.
+
+@ calc m calc-m-033
+T: Error bound for sin x ≈ x
+S: taylor-series
+Q: Using Taylor's theorem with the Lagrange remainder, which is the smallest of these expressions that is a guaranteed upper bound on the error $|\sin(0.1)-0.1|$?
+A: $\dfrac{(0.1)^2}{2}$
+B: $\dfrac{(0.1)^3}{3}$
+C: $\dfrac{(0.1)^3}{6}$
+D: $\dfrac{(0.1)^5}{120}$
+ANS: C
+EXP: The Maclaurin polynomial of degree 2 of $\sin x$ is just $x$ (the $x^2$ coefficient is $0$). The remainder is $R_2=\dfrac{f'''(c)}{3!}x^3$ with $|f'''(c)|=|\cos c|\le1$.
+So the error is at most $\dfrac{(0.1)^3}{6}\approx1.67\times10^{-4}$ (actual: $1.666\times10^{-4}$).
+$\tfrac{(0.1)^2}{2}$ (the degree-1 remainder) and $\tfrac{(0.1)^3}{3}$ are valid but looser. $\tfrac{(0.1)^5}{120}$ is not an upper bound at all: it bounds the error of $x-\tfrac{x^3}{6}$, not of $x$.
+
+@ calc m calc-m-034
+T: Series of ln((1+x)/(1−x))
+S: taylor-series
+Q: The coefficient of $x^3$ in the Maclaurin series of $\ln\dfrac{1+x}{1-x}$ is:
+A: $\frac13$
+B: $0$
+C: $-\frac23$
+D: $\frac23$
+ANS: D
+EXP: $\ln(1+x)=x-\tfrac{x^2}2+\tfrac{x^3}3-\cdots$ and $\ln(1-x)=-x-\tfrac{x^2}2-\tfrac{x^3}3-\cdots$.
+Subtract: even powers cancel and odd powers double: $2\left(x+\tfrac{x^3}{3}+\tfrac{x^5}{5}+\cdots\right)$.
+So the coefficient is $\tfrac23$. $\tfrac13$ forgets the doubling; $0$ wrongly cancels the odd terms instead of the even ones.
+
+@ calc m calc-m-035
+T: Taylor polynomial of x³ about 1
+S: taylor-series
+Q: Written as a Taylor polynomial about $x=1$, $x^3=1+3(x-1)+c(x-1)^2+(x-1)^3$. What is $c$?
+A: $6$
+B: $3$
+C: $1$
+D: $\frac32$
+ANS: B
+EXP: $c=\dfrac{f''(1)}{2!}$ with $f''(x)=6x$, so $c=\tfrac62=3$.
+Check by the binomial theorem: $\left((x-1)+1\right)^3=(x-1)^3+3(x-1)^2+3(x-1)+1$.
+$6$ forgets to divide by $2!$.
+
+@ calc m calc-m-036
+T: Quadratic Taylor polynomial of the sigmoid
+S: taylor-series
+Q: The second-order Maclaurin polynomial of $\sigma(x)=\dfrac1{1+e^{-x}}$ is:
+A: $\dfrac12+\dfrac x4+\dfrac{x^2}{8}$
+B: $\dfrac12+\dfrac x2$
+C: $\dfrac x4$
+D: $\dfrac12+\dfrac x4$
+ANS: D
+EXP: $\sigma(0)=\tfrac12$ and $\sigma'(0)=\sigma(0)(1-\sigma(0))=\tfrac14$.
+$\sigma(x)-\tfrac12$ is an odd function (since $\sigma(-x)=1-\sigma(x)$), so all even-power coefficients, including $x^2$, are $0$.
+So $\sigma(x)\approx\tfrac12+\tfrac x4$ (next term $-\tfrac{x^3}{48}$). The $\tfrac{x^2}{8}$ term belongs to softplus, not sigmoid. Near $0$ the sigmoid is almost linear, which is why small initial weights put sigmoid units in their linear regime.
+
+@ calc m calc-m-037
+T: Global max beats the local max
+S: maxima-minima
+Q: What is the global maximum value of $f(x)=x^3-3x^2+1$ on $[-1,4]$?
+A: $1$
+B: $17$
+C: $-3$
+D: $20$
+ANS: B
+EXP: $f'(x)=3x^2-6x=3x(x-2)=0\Rightarrow x=0$ or $x=2$.
+Values: $f(-1)=-3$, $f(0)=1$ (local max), $f(2)=-3$ (local min), $f(4)=64-48+1=17$.
+The global maximum is $17$ at the endpoint $x=4$. Reporting the local maximum $1$ forgets the endpoints.
+
+@ calc m calc-m-038
+T: A stationary point that is not an extremum
+S: maxima-minima
+Q: For $f(x)=x^4-4x^3$, the stationary point $x=0$ is:
+A: a local minimum
+B: a local maximum
+C: neither, because $f'$ does not change sign there
+D: a global minimum
+ANS: C
+EXP: $f'(x)=4x^3-12x^2=4x^2(x-3)$. Stationary points: $x=0$ and $x=3$.
+First derivative test at $0$: $4x^2\ge0$ and $x-3<0$ near $0$, so $f'<0$ on both sides; $f$ keeps decreasing through $0$. No extremum.
+$f''(x)=12x^2-24x$ changes sign at $0$, so it is a stationary inflection point. The global minimum is at $x=3$ ($f(3)=-27$).
+
+@ calc m calc-m-039
+T: Extrema of the double well x⁴ − 2x²
+S: maxima-minima
+TYPE: msq
+Q: For $f(x)=x^4-2x^2$ on $\mathbb R$, which statements are true? (More than one option may be correct.)
+A: $f$ has a local maximum at $x=0$.
+B: The global minimum value of $f$ is $-1$.
+C: $f$ has a global maximum on $\mathbb R$.
+D: $f$ has inflection points at $x=\pm1$.
+ANS: A,B
+EXP: $f'(x)=4x(x^2-1)=0\Rightarrow x=0,\pm1$. $f''(x)=12x^2-4$.
+[[A]]: $f''(0)=-4<0$, local max. True.
+[[B]]: $f''(\pm1)=8>0$, minima with $f(\pm1)=-1$, and $f\to\infty$ as $|x|\to\infty$, so $-1$ is the global minimum. True.
+[[C]]: $f$ is unbounded above. False.
+[[D]]: $f''=0$ at $x=\pm\tfrac1{\sqrt3}$, not $\pm1$ (those are the minima). False.
+This non-convex double well has two global minima, a toy picture of a loss with several equally good solutions.
+
+@ calc m calc-m-040
+T: Minimum of x ln x
+S: maxima-minima
+Q: For $x>0$, the minimum value of $f(x)=x\ln x$ is:
+A: $-\dfrac1e$
+B: $\dfrac1e$
+C: $0$
+D: $-1$
+ANS: A
+EXP: $f'(x)=\ln x+1=0\Rightarrow x=e^{-1}$. $f''(x)=\tfrac1x>0$, so this is the global minimum on $(0,\infty)$.
+$f(e^{-1})=e^{-1}\cdot(-1)=-\tfrac1e\approx-0.368$.
+$\tfrac1e$ is where the minimum occurs, not its value. $-x\ln x$ is the term in entropy, so it peaks at $p=\tfrac1e$.
+
+@ calc m calc-m-041
+T: Minimising a sum of absolute deviations
+S: maxima-minima
+TYPE: nat
+TOL: 0
+Q: Find the minimum value of $f(x)=|x-1|+|x-3|+|x-8|$ over $x\in\mathbb R$.
+ANS: 7
+EXP: $f$ is piecewise linear with slope $=(\#\text{points left of }x)-(\#\text{points right of }x)$.
+The slope is $-1$ on $(1,3)$ and $+1$ on $(3,8)$, so the minimum is at the median $x=3$: $f(3)=2+0+5=7$.
+The mean $x=4$ gives $3+1+4=8$, which is not optimal. This is why the L1 (MAE) loss is minimised by the median and the L2 loss by the mean.
+
+@ calc m calc-m-042
+T: An extremum where f′ does not exist
+S: maxima-minima
+Q: Let $f(x)=x^{2/3}(x-5)$. Where does $f$ have a local maximum?
+A: $x=2$
+B: $x=5$
+C: $x=0$
+D: nowhere
+ANS: C
+EXP: $f=x^{5/3}-5x^{2/3}$, so $f'(x)=\tfrac53x^{2/3}-\tfrac{10}3x^{-1/3}=\dfrac{5(x-2)}{3x^{1/3}}$.
+Critical points: $f'=0$ at $x=2$, and $f'$ does not exist at $x=0$.
+Signs: $f'>0$ for $x<0$, $f'<0$ on $(0,2)$, $f'>0$ for $x>2$. So $x=0$ is a local max (a cusp, value $0$) and $x=2$ is a local min.
+Solving only $f'(x)=0$ finds $x=2$ and misses the cusp.
+
+@ calc h calc-h-011
+T: Limit of x^x at zero
+S: limits
+Q: $\displaystyle\lim_{x\to0^+}x^x=$
+A: $0$
+B: $1$
+C: $e$
+D: does not exist
+ANS: B
+EXP: $0^0$ is indeterminate. Write $x^x=e^{x\ln x}$.
+$x\ln x=\dfrac{\ln x}{1/x}\to\lim\dfrac{1/x}{-1/x^2}=\lim(-x)=0$ (L'Hôpital).
+So $x^x\to e^0=1$. Guessing $0$ (because the base goes to $0$) ignores that the exponent also goes to $0$.
+
+@ calc h calc-h-012
+T: Choosing a to make a limit finite
+S: limits
+TYPE: nat
+TOL: 0.01
+Q: There is a constant $a$ for which $\displaystyle\lim_{x\to0}\frac{\sin2x+ax}{x^3}$ exists and is finite. Find the value of this limit, to 2 decimal places.
+ANS: -1.33
+EXP: Taylor: $\sin2x=2x-\dfrac{(2x)^3}{6}+O(x^5)=2x-\dfrac{4x^3}{3}+O(x^5)$.
+Numerator: $(2+a)x-\tfrac43x^3+O(x^5)$. For a finite limit the $x$ term must vanish: $a=-2$.
+Then the ratio tends to $-\tfrac43\approx-1.33$.
+Writing $2\cdot\tfrac{x^3}{6}$ instead of $\tfrac{(2x)^3}{6}$ (not cubing the $2$) gives $-0.33$, a common slip.
+
+@ calc h calc-h-013
+T: Limit of (x/(x+1))^x
+S: limits
+Q: $\displaystyle\lim_{x\to\infty}\left(\frac{x}{x+1}\right)^x=$
+A: $1$
+B: $e$
+C: $0$
+D: $\dfrac1e$
+ANS: D
+EXP: $\dfrac{x}{x+1}=\dfrac1{1+1/x}$, so the expression is $\dfrac{1}{(1+1/x)^x}\to\dfrac1e$.
+Trap: the base tends to $1$, but $1^\infty$ is indeterminate. Taking logs, $x\ln\tfrac{x}{x+1}=-x\ln(1+\tfrac1x)\to-1$.
+
+@ calc h calc-h-014
+T: Difference of 1/sin² x and 1/x²
+S: limits
+Q: $\displaystyle\lim_{x\to0}\left(\frac1{\sin^2x}-\frac1{x^2}\right)=$
+A: $0$
+B: $\frac13$
+C: $\frac16$
+D: $\infty$
+ANS: B
+EXP: $\infty-\infty$ form. Combine: $\dfrac{x^2-\sin^2x}{x^2\sin^2x}$.
+Taylor: $\sin^2x=\left(x-\tfrac{x^3}6\right)^2+\cdots=x^2-\tfrac{x^4}{3}+O(x^6)$, so the numerator is $\tfrac{x^4}{3}+O(x^6)$.
+Denominator: $x^2\sin^2x=x^4+O(x^6)$. The limit is $\tfrac13$.
+$\tfrac16$ forgets that squaring $x-\tfrac{x^3}{6}$ doubles the cross term ($2\cdot x\cdot\tfrac{x^3}{6}=\tfrac{x^4}{3}$).
+
+@ calc h calc-h-015
+T: Limit of (cos x)^(1/x²)
+S: limits
+Q: $\displaystyle\lim_{x\to0}\left(\cos x\right)^{1/x^2}=$
+A: $e^{-1/2}$
+B: $1$
+C: $e^{-2}$
+D: $0$
+ANS: A
+EXP: $1^\infty$ form. Take logs: $\dfrac{\ln\cos x}{x^2}$.
+$\cos x=1-\tfrac{x^2}2+O(x^4)$ and $\ln(1+u)\approx u$, so $\ln\cos x\approx-\tfrac{x^2}{2}$ and the log tends to $-\tfrac12$.
+The limit is $e^{-1/2}\approx0.607$. Answering $1$ treats $1^\infty$ as $1$.
+
+@ calc h calc-h-016
+T: Which limits exist
+S: limits
+TYPE: msq
+Q: Which of the following limits exist as finite real numbers? (More than one option may be correct.)
+A: $\displaystyle\lim_{x\to0}x\sin\frac1x$
+B: $\displaystyle\lim_{x\to0}\sin\frac1x$
+C: $\displaystyle\lim_{x\to0}e^{-1/x}$
+D: $\displaystyle\lim_{x\to0^+}e^{-1/x}$
+ANS: A,D
+EXP: [[A]]: $|x\sin\tfrac1x|\le|x|\to0$, so the limit is $0$ by the squeeze theorem. Exists.
+[[B]]: $\sin\tfrac1x$ takes every value in $[-1,1]$ in every neighbourhood of $0$ (e.g. $x=\tfrac1{n\pi}$ gives $0$, $x=\tfrac1{2n\pi+\pi/2}$ gives $1$). No limit.
+[[C]]: from the right $-1/x\to-\infty$ so $e^{-1/x}\to0$; from the left $-1/x\to+\infty$ so $e^{-1/x}\to\infty$. The two-sided limit does not exist.
+[[D]]: the right-hand limit alone is $0$. Exists.
+The pair [[C]] and [[D]] shows why one-sided limits must be checked separately.
+
+@ calc h calc-h-017
+T: Log-sum-exp as temperature goes to zero
+S: limits
+TYPE: nat
+TOL: 0
+Q: Find $\displaystyle\lim_{T\to0^+}T\ln\!\left(e^{2/T}+e^{5/T}\right)$.
+ANS: 5
+EXP: Factor out the largest term: $e^{2/T}+e^{5/T}=e^{5/T}\left(1+e^{-3/T}\right)$.
+So $T\ln(\cdots)=5+T\ln\!\left(1+e^{-3/T}\right)$. As $T\to0^+$, $e^{-3/T}\to0$, so the second term $\to0\cdot\ln1=0$.
+The limit is $\max(2,5)=5$. Log-sum-exp with temperature $T$ is a smooth maximum, and softmax with $T\to0$ becomes a hard argmax. Answering $7$ (the sum) treats $\ln$ as if it split over a sum.
+
+@ calc h calc-h-018
+T: Differentiable with a discontinuous derivative
+S: continuity-differentiability
+Q: Let $f(x)=x^2\sin\dfrac1x$ for $x\ne0$ and $f(0)=0$. Which statement is true?
+A: $f$ is not differentiable at $0$.
+B: $f'(0)=0$ and $f'$ is continuous at $0$.
+C: $f'(0)=0$, but $f'$ is not continuous at $0$.
+D: $f'(0)=1$.
+ANS: C
+EXP: From the definition: $\dfrac{f(h)-0}{h}=h\sin\dfrac1h\to0$ (squeeze), so $f'(0)=0$.
+For $x\ne0$: $f'(x)=2x\sin\dfrac1x-\cos\dfrac1x$. The first term $\to0$, but $\cos\tfrac1x$ oscillates in $[-1,1]$, so $\lim_{x\to0}f'(x)$ does not exist.
+So $f$ is differentiable everywhere but not continuously differentiable. Trying to get $f'(0)$ by letting $x\to0$ in the formula for $f'(x)$ wrongly concludes that $f'(0)$ does not exist.
+
+@ calc h calc-h-019
+T: How smooth is |x|³ at zero
+S: continuity-differentiability
+Q: How many times is $f(x)=|x|^3$ differentiable at $x=0$?
+A: Exactly once
+B: Exactly twice
+C: Exactly three times
+D: Infinitely many times
+ANS: B
+EXP: $f(x)=x^3$ for $x\ge0$ and $-x^3$ for $x<0$.
+$f'(x)=3x|x|$ (so $f'(0)=0$), and $f''(x)=6|x|$ (so $f''(0)=0$).
+$f''=6|x|$ has a corner at $0$, so $f'''(0)$ does not exist. Exactly twice.
+Saying three times confuses $|x|^3$ with $x^3$; each power of $|x|$ buys one more derivative.
+
+@ calc h calc-h-020
+T: Kinks of a clipped distance function
+S: continuity-differentiability
+TYPE: nat
+TOL: 0
+Q: Let $f(x)=\min\left(|x|,\ |x-2|,\ 1\right)$. At how many points of $\mathbb R$ is $f$ not differentiable?
+ANS: 5
+EXP: $d(x)=\min(|x|,|x-2|)$ is the distance to the nearer of $0$ and $2$. It has corners at $x=0$ and $x=2$ (V shapes) and at $x=1$, where the two pieces cross (a peak with slopes $+1$ then $-1$).
+Clipping at $1$: $d(x)\ge1$ exactly when $x\le-1$ or $x\ge3$, so new corners appear at $x=-1$ and $x=3$ (slope changes between $\mp1$ and $0$).
+At $x=1$, $d=1$ only at that single point, so the peak survives the clipping.
+Corners: $-1,0,1,2,3$, so $5$ points. Missing $x=1$ (the max of two V's) gives $4$.
+
+@ calc h calc-h-021
+T: When is |x|·g(x) differentiable
+S: continuity-differentiability
+Q: Let $g$ be continuous at $0$ and $f(x)=|x|\,g(x)$. Then $f$ is differentiable at $0$ if and only if:
+A: $g(0)=0$
+B: $g'(0)=0$
+C: $g$ is differentiable at $0$
+D: $g(0)=1$
+ANS: A
+EXP: $f(0)=0$, so $\dfrac{f(h)-f(0)}{h}=\dfrac{|h|}{h}\,g(h)$.
+As $h\to0^+$ this tends to $g(0)$; as $h\to0^-$ it tends to $-g(0)$. They agree iff $g(0)=-g(0)$, i.e. $g(0)=0$.
+Differentiability of $g$ is neither needed nor sufficient: $g(x)=1$ is smooth but gives $|x|$. Example: $|x|\sin x$ is differentiable at $0$, $|x|\cos x$ is not.
+
+@ calc h calc-h-022
+T: Twice-differentiable join (spline)
+S: continuity-differentiability
+Q: Let $f(x)=x^3$ for $x\le1$ and $f(x)=ax^2+bx+c$ for $x>1$. If $f$ is twice differentiable at $x=1$, then $(a,b,c)=$
+A: $(3,-3,1)$
+B: $(0,3,-2)$
+C: $(3,3,-5)$
+D: $(6,-9,4)$
+ANS: A
+EXP: Match value, first and second derivatives at $x=1$. Left side: $f(1)=1$, $f'(1)=3$, $f''(1)=6$.
+Right side: $2a=6\Rightarrow a=3$; $2a+b=3\Rightarrow b=-3$; $a+b+c=1\Rightarrow c=1$.
+$(0,3,-2)$ is the tangent line (only value and slope matched). $(6,-9,4)$ sets $a=f''(1)$, forgetting that $(ax^2)''=2a$.
+Matching derivatives at joins is how cubic splines are built.
+
+@ calc h calc-h-023
+T: Roots via IVT and Rolle
+S: continuity-differentiability
+TYPE: nat
+TOL: 0
+Q: How many real roots does $f(x)=x^5-3x+1$ have in the interval $[0,2]$?
+ANS: 2
+EXP: Intermediate value theorem: $f(0)=1>0$, $f(1)=-1<0$, $f(2)=27>0$, so there is at least one root in $(0,1)$ and one in $(1,2)$.
+Upper bound (Rolle): $f'(x)=5x^4-3$ has exactly one zero in $[0,2]$, at $x=(3/5)^{1/4}\approx0.88$. Between two roots of $f$ there must be a zero of $f'$, so three roots in $[0,2]$ would need two zeros of $f'$ there.
+Exactly $2$ (numerically $\approx0.335$ and $\approx1.215$).
+
+@ calc h calc-h-024
+T: One-sided derivative of √(1 − cos x)
+S: continuity-differentiability
+TYPE: nat
+TOL: 0.01
+Q: Let $f(x)=\sqrt{1-\cos x}$. Find the right-hand derivative of $f$ at $x=0$, to 2 decimal places.
+ANS: 0.71
+EXP: Half-angle identity: $1-\cos x=2\sin^2\tfrac x2$, so $f(x)=\sqrt2\left|\sin\tfrac x2\right|$.
+Right-hand derivative: $\lim_{h\to0^+}\dfrac{\sqrt2\sin(h/2)}{h}=\dfrac{\sqrt2}{2}=\dfrac1{\sqrt2}\approx0.71$.
+The left-hand derivative is $-\tfrac1{\sqrt2}$, so $f$ is not differentiable at $0$.
+Differentiating the formula $\tfrac{\sin x}{2\sqrt{1-\cos x}}$ and substituting $x=0$ gives $\tfrac00$; the hidden absolute value is the key.
+
+@ calc h calc-h-025
+T: Logarithmic differentiation at a point
+S: derivatives
+Q: Let $y=\dfrac{(x-1)^2(x+2)^3}{(x+1)^4}$. What is $y'(0)$?
+A: $-4.5$
+B: $36$
+C: $-36$
+D: $-20$
+ANS: C
+EXP: Logarithmic differentiation: $\ln|y|=2\ln|x-1|+3\ln|x+2|-4\ln|x+1|$, so $\dfrac{y'}{y}=\dfrac2{x-1}+\dfrac3{x+2}-\dfrac4{x+1}$.
+At $x=0$: $\tfrac{y'}{y}=-2+\tfrac32-4=-4.5$, and $y(0)=\tfrac{1\cdot8}{1}=8$.
+$y'(0)=8\times(-4.5)=-36$. $-4.5$ is $y'/y$, forgetting to multiply back by $y$.
+
+@ calc h calc-h-026
+T: Eighth derivative of e^x sin x
+S: derivatives
+Q: Let $f(x)=e^x\sin x$. Then $\dfrac{f^{(8)}(x)}{f(x)}$ (where $f(x)\ne0$) equals:
+A: $8$
+B: $-16$
+C: $256$
+D: $16$
+ANS: D
+EXP: $f'=e^x(\sin x+\cos x)=\sqrt2\,e^x\sin\!\left(x+\tfrac\pi4\right)$. Each derivative multiplies by $\sqrt2$ and shifts the phase by $\tfrac\pi4$.
+After $8$ steps: $(\sqrt2)^8e^x\sin(x+2\pi)=16\,e^x\sin x$.
+Equivalently $f=\operatorname{Im}e^{(1+i)x}$ and $(1+i)^8=(2i)^4=16$. After 4 steps the factor is $(1+i)^4=-4$, and $(-4)^2=+16$, so $-16$ gets the sign wrong. $256=2^8$ forgets the square root in $\sqrt2$.
+
+@ calc h calc-h-027
+T: Implicit second derivative on a circle
+S: derivatives
+Q: For the circle $x^2+y^2=25$, find $\dfrac{d^2y}{dx^2}$ at the point $(3,4)$.
+A: $-\frac{7}{64}$
+B: $-\frac{25}{64}$
+C: $-\frac14$
+D: $-\frac34$
+ANS: B
+EXP: First: $2x+2yy'=0\Rightarrow y'=-\tfrac xy=-\tfrac34$.
+Second, quotient rule on $-\tfrac xy$: $y''=-\dfrac{y-xy'}{y^2}=-\dfrac{4-3\cdot(-\tfrac34)}{16}=-\dfrac{25/4}{16}=-\dfrac{25}{64}$.
+Shortcut: $y''=-\dfrac{y^2+x^2}{y^3}=-\dfrac{25}{64}$.
+$-\tfrac7{64}$ uses $y+xy'$ (a sign slip in the quotient rule); $-\tfrac14$ treats $y$ as constant; $-\tfrac34$ is $y'$, not $y''$.
+
+@ calc h calc-h-028
+T: Derivative from a functional equation
+S: derivatives
+TYPE: nat
+TOL: 0
+Q: A differentiable function $f$ satisfies $f(x+y)=f(x)f(y)$ for all $x,y$, with $f(0)\ne0$ and $f'(0)=2$. Find $f'(\ln3)$.
+ANS: 18
+EXP: Put $x=y=0$: $f(0)=f(0)^2$, so $f(0)=1$.
+Derivative: $f'(x)=\lim_{h\to0}\dfrac{f(x)f(h)-f(x)}{h}=f(x)\lim_{h\to0}\dfrac{f(h)-f(0)}{h}=f(x)f'(0)=2f(x)$.
+So $f(x)=e^{2x}$, and $f'(\ln3)=2e^{2\ln3}=2\cdot9=18$.
+Answering $6$ uses $e^{\ln 3}$ instead of $e^{2\ln3}$.
+
+@ calc h calc-h-029
+T: Curvature of GELU at zero
+S: derivatives
+TYPE: nat
+TOL: 0.01
+Q: The GELU activation is $g(x)=x\,\Phi(x)$, where $\Phi$ is the standard normal CDF with density $\varphi(x)=\tfrac1{\sqrt{2\pi}}e^{-x^2/2}$. Find $g''(0)$, to 2 decimal places.
+ANS: 0.80
+EXP: Product rule: $g'(x)=\Phi(x)+x\varphi(x)$, so $g'(0)=\tfrac12$.
+Again: $g''(x)=\varphi(x)+\varphi(x)+x\varphi'(x)=2\varphi(x)-x^2\varphi(x)$ (using $\varphi'(x)=-x\varphi(x)$).
+$g''(0)=2\varphi(0)=\dfrac{2}{\sqrt{2\pi}}=\sqrt{\tfrac2\pi}\approx0.80$.
+Forgetting the second $\varphi$ from the product rule gives $\varphi(0)\approx0.40$. Unlike ReLU, whose second derivative is $0$ away from $0$ and undefined at $0$, GELU is smoothly curved at the origin.
+
+@ calc h calc-h-030
+T: True facts about derivatives
+S: derivatives
+TYPE: msq
+Q: Let $f$ and $g$ be differentiable on an open interval $I$. Which statements are always true? (More than one option may be correct.)
+A: If $f'(x)>0$ for all $x\in I$, then $f$ is strictly increasing on $I$.
+B: If $f$ is strictly increasing on $I$, then $f'(x)>0$ for all $x\in I$.
+C: If $f'(x)=g'(x)$ for all $x\in I$, then $f-g$ is constant on $I$.
+D: If $f'(c)=0$ for some $c\in I$, then $f$ has a local extremum at $c$.
+ANS: A,C
+EXP: [[A]]: by the mean value theorem, $f(b)-f(a)=f'(\xi)(b-a)>0$ for $a<b$. True.
+[[B]]: $f(x)=x^3$ is strictly increasing but $f'(0)=0$. False.
+[[C]]: $(f-g)'=0$ on an interval, so by the MVT $f-g$ is constant. True. (On a union of disjoint intervals it could be a different constant on each piece.)
+[[D]]: $x^3$ again: $f'(0)=0$ but $0$ is not an extremum. False.
+
+@ calc h calc-h-031
+T: Tangent to ln x through the origin
+S: derivatives
+Q: A line through the origin is tangent to $y=\ln x$. What is its slope?
+A: $1$
+B: $e$
+C: $\frac1e$
+D: $\frac12$
+ANS: C
+EXP: Let the tangency point be $(a,\ln a)$. The tangent slope is $\tfrac1a$, and a line through the origin and $(a,\ln a)$ has slope $\tfrac{\ln a}{a}$.
+Equate: $\tfrac1a=\tfrac{\ln a}{a}\Rightarrow\ln a=1\Rightarrow a=e$. Slope $=\tfrac1e$.
+$e$ is the $x$-coordinate of the tangency point, not the slope; $1$ is the slope of $\ln x$ at $x=1$, where the tangent $y=x-1$ misses the origin.
+
+@ calc h calc-h-032
+T: Tenth derivative of 1/(1+x²) at zero
+S: taylor-series
+TYPE: nat
+TOL: 0
+Q: Let $f(x)=\dfrac{1}{1+x^2}$. Find $f^{(10)}(0)$.
+ANS: -3628800
+EXP: Geometric series with ratio $-x^2$: $\dfrac1{1+x^2}=\sum_{k\ge0}(-1)^kx^{2k}$ for $|x|<1$.
+The $x^{10}$ term has $k=5$, coefficient $(-1)^5=-1$.
+Since this coefficient equals $\dfrac{f^{(10)}(0)}{10!}$: $f^{(10)}(0)=-10!=-3628800$.
+Differentiating ten times directly is hopeless; reading coefficients off a known series is the key insight. Forgetting the sign gives $+10!$.
+
+@ calc h calc-h-033
+T: Smooth but not analytic
+S: taylor-series
+TYPE: msq
+Q: Let $f(x)=e^{-1/x^2}$ for $x\ne0$ and $f(0)=0$. Which statements are true? (More than one option may be correct.)
+A: $f$ is infinitely differentiable at $0$.
+B: $f^{(n)}(0)=0$ for every $n\ge0$.
+C: The Maclaurin series of $f$ converges to $f(x)$ for every $x$.
+D: $f$ has a local maximum at $x=0$.
+ANS: A,B
+EXP: Every derivative of $f$ for $x\ne0$ has the form $p(1/x)\,e^{-1/x^2}$ with $p$ a polynomial, and $e^{-1/x^2}$ goes to $0$ faster than any power of $1/x$ blows up. So each difference quotient at $0$ tends to $0$: [[A]] and [[B]] are true.
+[[C]]: the Maclaurin series is identically $0$, but $f(x)>0$ for $x\ne0$, so the series converges to $f$ only at $x=0$. False. Infinitely differentiable does not imply equal to its Taylor series.
+[[D]]: $f(0)=0<f(x)$ for $x\ne0$, so $0$ is a minimum. False.
+
+@ calc h calc-h-034
+T: Second-order estimate of softplus
+S: taylor-series
+TYPE: nat
+TOL: 0.002
+Q: Using the second-order Taylor polynomial of $s(x)=\ln(1+e^x)$ about $x=0$, estimate $s(0.4)$. Give your answer to 3 decimal places (use $\ln2=0.6931$).
+ANS: 0.913
+EXP: $s(0)=\ln2$. $s'(x)=\sigma(x)$, so $s'(0)=\tfrac12$. $s''(x)=\sigma(x)(1-\sigma(x))$, so $s''(0)=\tfrac14$.
+$s(x)\approx\ln2+\tfrac x2+\tfrac{1}{2}\cdot\tfrac14x^2=\ln2+\tfrac x2+\tfrac{x^2}8$.
+At $x=0.4$: $0.6931+0.2+0.02=0.9131$. (True value $0.9130$.)
+Using $s''(0)$ without the $\tfrac1{2!}$ gives $0.9331$.
+
+@ calc h calc-h-035
+T: Radius of convergence of 1/(1+x²)
+S: taylor-series
+Q: The function $\dfrac1{1+x^2}$ is infinitely differentiable on all of $\mathbb R$. What is the radius of convergence of its Maclaurin series?
+A: $1$
+B: $\infty$
+C: $2$
+D: $\frac12$
+ANS: A
+EXP: The series is $\sum(-1)^kx^{2k}$, a geometric series in $-x^2$, which converges iff $x^2<1$, i.e. $|x|<1$. So $R=1$.
+The reason, despite no trouble on the real line: in the complex plane $1+z^2=0$ at $z=\pm i$, at distance $1$ from $0$, and the radius of convergence is the distance to the nearest singularity.
+Answering $\infty$ assumes that smooth on $\mathbb R$ means the series converges everywhere.
+
+@ calc h calc-h-036
+T: Recognising the alternating harmonic series
+S: taylor-series
+Q: $1-\dfrac12+\dfrac13-\dfrac14+\cdots=$
+A: $1$
+B: $\ln2$
+C: $\dfrac\pi4$
+D: $\dfrac1e$
+ANS: B
+EXP: $\ln(1+x)=x-\dfrac{x^2}2+\dfrac{x^3}3-\cdots$ for $-1<x\le1$. At $x=1$ (allowed, since the alternating series converges and Abel's theorem applies), the sum is $\ln2\approx0.693$.
+$\tfrac\pi4=1-\tfrac13+\tfrac15-\cdots$ is the arctan series at $x=1$ (odd denominators only). $\tfrac1e=\sum\tfrac{(-1)^n}{n!}$ uses factorials.
+
+@ calc h calc-h-037
+T: How the Taylor error scales with step size
+S: taylor-series
+Q: Near $x=0$, approximate $e^x$ by $1+x+\dfrac{x^2}2$. If $x$ is halved (from a small value), the error is multiplied by approximately:
+A: $\frac12$
+B: $\frac14$
+C: $\frac1{16}$
+D: $\frac18$
+ANS: D
+EXP: The error is the first omitted term: $e^x-\left(1+x+\tfrac{x^2}2\right)=\dfrac{x^3}{6}+O(x^4)$.
+It scales as $x^3$, so halving $x$ multiplies it by $\left(\tfrac12\right)^3=\tfrac18$.
+$\tfrac14$ uses the order of the last kept term ($x^2$) instead of the first omitted one. The same reasoning explains why central differences ($O(h^2)$ error) beat forward differences ($O(h)$) when checking gradients numerically.
+
+@ calc h calc-h-038
+T: Checking third-order expansions
+S: taylor-series
+TYPE: msq
+Q: Which of the following Maclaurin expansions are correct up to and including the $x^3$ term? (More than one option may be correct.)
+A: $\tan x=x+\dfrac{x^3}{3}+\cdots$
+B: $\sqrt{1+x}=1+\dfrac x2-\dfrac{x^2}8+\dfrac{x^3}{16}+\cdots$
+C: $e^x\sin x=x+x^2+\dfrac{x^3}{2}+\cdots$
+D: $\dfrac1{(1-x)^2}=1+2x+3x^2+3x^3+\cdots$
+ANS: A,B
+EXP: [[A]]: $\tfrac{\sin x}{\cos x}=\left(x-\tfrac{x^3}6\right)\left(1+\tfrac{x^2}2\right)+\cdots=x+\tfrac{x^3}{3}+\cdots$. True.
+[[B]]: binomial series with $\binom{1/2}{2}=-\tfrac18$ and $\binom{1/2}{3}=\tfrac{(1/2)(-1/2)(-3/2)}{6}=\tfrac1{16}$. True.
+[[C]]: $\left(1+x+\tfrac{x^2}2\right)\left(x-\tfrac{x^3}6\right)=x+x^2+\left(\tfrac12-\tfrac16\right)x^3+\cdots$, so the $x^3$ coefficient is $\tfrac13$, not $\tfrac12$. False.
+[[D]]: differentiating $\sum x^n$ gives $\sum(n+1)x^n$, so the $x^3$ coefficient is $4$. False.
+
+@ calc h calc-h-039
+T: When the second derivative test fails
+S: maxima-minima
+Q: Let $f(x)=e^x+e^{-x}-2-x^2$. At $x=0$, $f'(0)=f''(0)=0$. What does $f$ have at $x=0$?
+A: A local maximum
+B: An inflection point
+C: A local minimum
+D: Neither an extremum nor an inflection point
+ANS: C
+EXP: The second derivative test is inconclusive, so go to higher order. $e^x+e^{-x}=2\cosh x=2+x^2+\dfrac{x^4}{12}+\cdots$.
+So $f(x)=\dfrac{x^4}{12}+\dfrac{x^6}{360}+\cdots>0=f(0)$ for $x\ne0$: a local (in fact global) minimum.
+Higher-order test: the first nonzero derivative is $f^{(4)}(0)=2>0$ and of even order, so it is a minimum. If the first nonzero derivative had odd order, it would be an inflection point, which is the tempting but wrong conclusion here.
+
+@ calc h calc-h-040
+T: Three real roots of x³ − 3x + k
+S: maxima-minima
+Q: For which values of $k$ does $x^3-3x+k=0$ have three distinct real roots?
+A: $|k|<2$
+B: $|k|\le2$
+C: $|k|<1$
+D: $k>2$
+ANS: A
+EXP: Let $f(x)=x^3-3x+k$. $f'(x)=3x^2-3=0\Rightarrow x=\pm1$: local max $f(-1)=k+2$, local min $f(1)=k-2$.
+A cubic has three distinct real roots iff its local max is above $0$ and local min is below $0$: $k+2>0$ and $k-2<0$, so $-2<k<2$.
+At $k=\pm2$ the graph touches the axis at an extremum, giving a repeated root, so only two distinct roots; that is why $|k|\le2$ is wrong.
+
+@ calc h calc-h-041
+T: Global max of x²e^(−x) on [0, ∞)
+S: maxima-minima
+Q: What is the global maximum value of $f(x)=x^2e^{-x}$ on $[0,\infty)$?
+A: $\dfrac1e$
+B: $\dfrac4{e^2}$
+C: $\dfrac2e$
+D: $\dfrac4e$
+ANS: B
+EXP: $f'(x)=(2x-x^2)e^{-x}=x(2-x)e^{-x}$: zero at $x=0$ and $x=2$.
+$f'>0$ on $(0,2)$ and $f'<0$ for $x>2$, so $x=2$ is a max. Endpoint $f(0)=0$ (the minimum) and $f\to0$ as $x\to\infty$.
+Global max $f(2)=4e^{-2}\approx0.541$. $\tfrac1e=f(1)$ comes from the critical point of $xe^{-x}$; $\tfrac4e$ forgets to square in $e^{-2}$.
+
+@ calc h calc-h-042
+T: Inflection points of the Gaussian bell
+S: maxima-minima
+Q: The function $\varphi(x)=\exp\!\left(-\dfrac{(x-\mu)^2}{2\sigma^2}\right)$ (with $\sigma>0$) has its inflection points at:
+A: $x=\mu$
+B: $x=\mu\pm\dfrac{\sigma}{\sqrt2}$
+C: $x=\mu\pm\sigma$
+D: $x=\mu\pm2\sigma$
+ANS: C
+EXP: Let $u=\tfrac{x-\mu}{\sigma}$. Then $\varphi'=-\tfrac{u}{\sigma}\varphi$ and $\varphi''=\tfrac{1}{\sigma^2}(u^2-1)\varphi$.
+$\varphi''$ changes sign where $u^2=1$, i.e. $x=\mu\pm\sigma$. Between them the bell is concave, outside it is convex.
+$x=\mu$ is the maximum, not an inflection point. $\mu\pm\tfrac\sigma{\sqrt2}$ is correct only for $e^{-(x-\mu)^2/\sigma^2}$, which lacks the factor $2$. This is how $\sigma$ can be read off a plotted normal curve.
+
+@ calc h calc-h-043
+T: Global minimum of x^x
+S: maxima-minima
+TYPE: nat
+TOL: 0.01
+Q: Find the minimum value of $f(x)=x^x$ for $x>0$, to 2 decimal places.
+ANS: 0.69
+EXP: Write $f=e^{x\ln x}$. Since $e^u$ is increasing, $f$ is minimised where $x\ln x$ is minimised.
+$(x\ln x)'=\ln x+1=0\Rightarrow x=\tfrac1e$, and $(x\ln x)''=\tfrac1x>0$.
+Minimum value: $e^{(1/e)\ln(1/e)}=e^{-1/e}\approx e^{-0.3679}\approx0.69$.
+$0.37$ is the minimiser $x=\tfrac1e$, not the minimum value.
+
+@ calc h calc-h-044
+T: Which is larger, e^π or π^e
+S: maxima-minima
+Q: By studying $f(x)=\dfrac{\ln x}{x}$, decide which is true.
+A: $e^\pi>\pi^e$
+B: $\pi^e>e^\pi$
+C: $e^\pi=\pi^e$
+D: It cannot be decided without a calculator
+ANS: A
+EXP: $f'(x)=\dfrac{1-\ln x}{x^2}$, which is $>0$ for $x<e$ and $<0$ for $x>e$. So $f$ has its global maximum at $x=e$.
+Hence $f(e)>f(\pi)$: $\dfrac1e>\dfrac{\ln\pi}{\pi}\Rightarrow\pi>e\ln\pi\Rightarrow e^\pi>\pi^e$.
+(Numerically $23.14$ vs $22.46$.) The two are close, which is what makes the guess $\pi^e$ tempting.
+
+@ calc h calc-h-045
+T: Extrema of |x² − 4| on [−3, 3]
+S: maxima-minima
+TYPE: msq
+Q: Let $f(x)=|x^2-4|$ on $[-3,3]$. Which statements are true? (More than one option may be correct.)
+A: The global minimum is attained at $x=\pm2$, where $f'$ does not exist.
+B: The global maximum value is $4$, attained at $x=0$.
+C: $x=0$ is a local maximum.
+D: $f$ has exactly two critical points in $(-3,3)$.
+ANS: A,C
+EXP: On $(-2,2)$, $f=4-x^2$; outside it, $f=x^2-4$.
+[[A]]: $f(\pm2)=0$ and $f\ge0$, so these are global minima; the slopes jump from $-4$ to $4$ (at $x=2$), so $f'$ does not exist. True.
+[[B]]: the endpoints give $f(\pm3)=5>4$, so the global max is $5$ at $x=\pm3$. False.
+[[C]]: $4-x^2$ peaks at $0$. True.
+[[D]]: critical points are where $f'=0$ or $f'$ does not exist: $x=0$ and $x=\pm2$, so three. False.
