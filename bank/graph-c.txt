@@ -1,0 +1,228 @@
+@ graph h graph-h-032
+T: Which distances Dijkstra gets wrong
+S: shortest-paths
+TYPE: msq
+Q: A directed graph has edges $s\to a$ (3), $s\to b$ (4), $b\to a$ ($-3$), $a\to c$ (2), $c\to d$ (1), $b\to d$ (6). There is no negative cycle. Dijkstra's algorithm is run from $s$; once a vertex is removed from the priority queue, its distance is never changed again. For which vertices is the reported distance different from the true shortest distance? More than one option may be correct.
+A: $a$
+B: $b$
+C: $c$
+D: $d$
+ANS: A,C,D
+EXP: Dijkstra: remove $s$ (0): $d(a)=3$, $d(b)=4$. Remove $a$ (3), final: $d(c)=5$. Remove $b$ (4): $b\to a$ would give $1$, but $a$ is final; $d(d)=10$. Remove $c$ (5): $d(d)=6$. Remove $d$ (6). Reported: $a=3$, $b=4$, $c=5$, $d=6$.
+True distances (Bellman–Ford): $a=4-3=1$ via $s\to b\to a$; $b=4$; $c=1+2=3$; $d=3+1=4$.
+So [[A]], [[C]] and [[D]] are wrong; only [[B]] is right.
+The tempting answer "only $a$" misses that the error propagates: $a$ was finalised with the wrong value and its edges were relaxed from that value, so every vertex whose shortest path runs through $a$ inherits the error.
+
+@ graph h graph-h-033
+T: Vertices pulled to minus infinity by a negative cycle
+S: shortest-paths
+Q: A directed graph has edges $s\to a$ (2), $a\to b$ (1), $b\to c$ ($-4$), $c\to a$ (2), $c\to d$ (3), $s\to e$ (4), $e\to d$ (1), $d\to f$ (2). Which vertices have a well-defined (finite) shortest distance from $s$?
+A: Only $s$ and $e$
+B: $s$, $e$, $d$ and $f$
+C: $s$, $a$ and $e$
+D: All of them, because Bellman–Ford still terminates after $V-1$ passes
+ANS: A
+EXP: The cycle $a\to b\to c\to a$ has weight $1-4+2=-1<0$ and is reachable from $s$. Going round it again and again makes the distance to $a$, $b$, $c$ arbitrarily small, so they are $-\infty$.
+Any vertex reachable from the cycle is also $-\infty$: $c\to d$ makes $d$ unbounded, and $d\to f$ makes $f$ unbounded, even though $d$ also has the harmless route $s\to e\to d$ of length $5$.
+Only $s$ (distance $0$) and $e$ (distance $4$) cannot be reached from the cycle, so they stay finite.
+The trap $s,e,d,f$ treats only the cycle's own vertices as broken. Bellman–Ford does stop after $V-1$ passes, but its $V$-th pass still finds an improvement, which is how it reports that a negative cycle exists; the numbers it holds are not shortest distances.
+
+@ graph h graph-h-034
+T: Counting shortest weighted paths
+S: shortest-paths
+TYPE: nat
+TOL: 0
+Q: An undirected graph has edges $s$–$a$ (1), $s$–$b$ (2), $a$–$b$ (1), $a$–$c$ (3), $b$–$c$ (2), $b$–$d$ (3), $c$–$d$ (1), $c$–$t$ (3), $d$–$t$ (2). How many distinct shortest paths are there from $s$ to $t$? Enter an integer.
+ANS: 8
+EXP: Run Dijkstra and keep a count $N(v)$ of shortest paths: when a strictly shorter route to $v$ is found, copy the count; when an equally short one is found, add it.
+$d(s)=0$, $N(s)=1$. $d(a)=1$, $N(a)=1$.
+$d(b)=2$, reached both by $s$–$b$ and by $s,a,b$: $N(b)=N(s)+N(a)=2$.
+$d(c)=4$, via $a$ ($1+3$) and via $b$ ($2+2$): $N(c)=1+2=3$.
+$d(d)=5$, via $b$ ($2+3$) and via $c$ ($4+1$): $N(d)=2+3=5$.
+$d(t)=7$, via $c$ ($4+3$) and via $d$ ($5+2$): $N(t)=3+5=8$.
+Every tie matters: missing the tie at $b$ alone would give $N(c)=2$, $N(d)=3$, $N(t)=5$. The counts add along the shortest-path DAG, the same idea used in betweenness centrality.
+
+@ graph h graph-h-035
+T: Most reliable path as a shortest path
+S: shortest-paths
+Q: In a directed network each edge works independently with the probability shown: $s\to a$ (0.9), $s\to b$ (0.6), $a\to b$ (0.8), $a\to t$ (0.5), $b\to t$ (0.9), $s\to c$ (0.7), $c\to d$ (0.7), $d\to e$ (0.7), $e\to t$ (0.7). A path works only if all its edges work. What is the largest probability that some single path from $s$ to $t$ works?
+A: $0.54$
+B: $0.648$
+C: $0.2401$
+D: $0.45$
+ANS: B
+EXP: The probability of a path is the product of its edge probabilities. Maximising a product of numbers in $(0,1]$ is the same as minimising $\sum(-\log p)$, and every $-\log p\ge0$, so Dijkstra works with edge weights $-\log p$.
+Paths: $s,a,b,t$: $0.9\cdot0.8\cdot0.9=0.648$. $s,b,t$: $0.6\cdot0.9=0.54$. $s,a,t$: $0.9\cdot0.5=0.45$. $s,c,d,e,t$: $0.7^4=0.2401$.
+The best is $0.648$. Maximising the sum of probabilities instead picks $s,c,d,e,t$ (sum $2.8$), whose product is only $0.2401$. Fewest edges is not the rule either: the two-edge paths are worse than the three-edge one.
+The same $-\log$ trick turns the most probable state sequence in an HMM (Viterbi) into a shortest-path problem.
+
+@ graph h graph-h-036
+T: Distances changed by one cheaper edge
+S: shortest-paths
+TYPE: nat
+TOL: 0
+Q: An undirected graph has edges $s$–$a$ (2), $s$–$b$ (3), $a$–$c$ (4), $b$–$c$ (3), $c$–$d$ (5), $b$–$e$ (9), $e$–$f$ (1), $d$–$f$ (2), $f$–$g$ (3), $a$–$e$ (6). The weight of $b$–$e$ is lowered from 9 to 1. For how many vertices does the shortest distance from $s$ change? Enter an integer.
+ANS: 4
+EXP: Before: $a=2$, $b=3$, $c=\min(2+4,3+3)=6$, $e=\min(3+9,\,2+6)=8$, $f=9$, $d=\min(6+5,\,9+2)=11$, $g=12$.
+After lowering $b$–$e$ to 1: $e=3+1=4$, $f=5$, $g=8$, and $d=\min(6+5,\,5+2)=7$.
+$c$ stays $6$ (going round through $d$ costs $7+5=12$), and $s,a,b$ are unchanged. So $e,f,g,d$ change: 4 vertices.
+Answering $3$ follows only the chain $e\to f\to g$ and forgets that $d$ is now reached more cheaply from the other side, through $f$. Any vertex whose new shortest path uses the cheaper edge can improve, so recheck all of them, not only those downstream in the old tree.
+
+@ graph h graph-h-037
+T: Passes run by Bellman–Ford with early stopping
+S: shortest-paths
+Q: Bellman–Ford is run from $s$ on a directed graph with edges, relaxed in this order in every pass: $c\to d$ (1), $b\to c$ (1), $a\to b$ (1), $s\to c$ (5), $s\to a$ (1). Updates take effect immediately, and the algorithm stops as soon as a full pass changes nothing. How many passes does it run, counting the final pass with no change?
+A: $4$
+B: $3$
+C: $5$
+D: $6$
+ANS: C
+EXP: Start $d(s)=0$, others $\infty$.
+Pass 1: only $s\to c$ and $s\to a$ fire: $c=5$, $a=1$.
+Pass 2: $c\to d$: $d=6$; $a\to b$: $b=2$.
+Pass 3: $b\to c$: $c=3$.
+Pass 4: $c\to d$: $d=4$. Now all distances are correct: $a=1$, $b=2$, $c=3$, $d=4$.
+Pass 5: nothing changes, so it stops. Total $5$ passes.
+The true shortest path $s,a,b,c,d$ has 4 edges listed in reverse order, so each pass advances it by only one edge, and one more pass is needed to see that nothing changes. $4=V-1$ is the worst-case bound on passes that change something, not the number of passes this early-stopping version runs.
+
+@ graph h graph-h-038
+T: Cheapest route with at most one stop
+S: shortest-paths
+Q: Directed flights with costs: $s\to a$ (1), $a\to b$ (1), $b\to t$ (1), $s\to c$ (4), $c\to t$ (4), $a\to t$ (6), $s\to t$ (10). What is the cheapest cost from $s$ to $t$ using at most 2 flights (at most one stop)?
+A: $3$
+B: $8$
+C: $10$
+D: $7$
+ANS: D
+EXP: Routes with at most 2 edges: $s\to t$ (10), $s\to a\to t$ ($1+6=7$), $s\to c\to t$ ($4+4=8$). The cheapest is $7$.
+The overall shortest path $s,a,b,t$ costs $3$ but needs 3 flights, so it is not allowed.
+This is Bellman–Ford stopped after $k=2$ rounds, but each round must relax from a copy of the previous round's distances. With in-place updates and the edges in the order listed, one pass already sets $d(a)=1$, $d(b)=2$, $d(t)=3$, so the result would be $3$, which uses too many edges.
+
+@ graph h graph-h-039
+T: Johnson's reweighting before Dijkstra
+S: shortest-paths
+Q: A directed graph has edges $a\to b$ ($-2$), $b\to c$ (3), $a\to c$ (2), $c\to d$ ($-1$), $b\to d$ (4). Johnson's algorithm adds a new vertex $q$ with a 0-weight edge to every vertex, sets $h(v)$ to the shortest distance from $q$ to $v$, and reweights each edge as $w'(u,v)=w(u,v)+h(u)-h(v)$. Dijkstra is then run from $a$ on the reweighted graph. What distance $d'(a,d)$ does it compute?
+A: $0$
+B: $1$
+C: $-1$
+D: $3$
+ANS: B
+EXP: Bellman–Ford from $q$: $h(a)=0$, $h(b)=-2$, $h(c)=\min(0,\,-2+3,\,0+2)=0$, $h(d)=\min(0,\,0-1,\,-2+4)=-1$.
+Reweighted edges: $a\to b$: $-2+0+2=0$; $b\to c$: $3-2-0=1$; $a\to c$: $2+0-0=2$; $c\to d$: $-1+0+1=0$; $b\to d$: $4-2+1=3$. All are $\ge0$, so Dijkstra is safe.
+On these weights $d'(a,d)=\min(0+1+0,\;2+0,\;0+3)=1$, via $a,b,c,d$.
+The answer $0$ is the true distance $d(a,d)=d'(a,d)-h(a)+h(d)=1-0-1=0$ (check: $-2+3-1=0$), not what Dijkstra computes on the reweighted graph. Every $a\to d$ path changes by the same $h(a)-h(d)=1$, which is why the shortest path itself is preserved, unlike adding a constant to every edge.
+
+@ graph h graph-h-040
+T: Number of MSTs when weights tie
+S: mst
+TYPE: nat
+TOL: 0
+Q: An undirected graph on $A,B,C,D,E,F$ has edges $A$–$B$ (1), $B$–$C$ (1), $A$–$C$ (1), $C$–$D$ (2), $B$–$D$ (2), $D$–$E$ (2), $E$–$F$ (3), $D$–$F$ (3), $A$–$F$ (3). How many distinct minimum spanning trees does it have? Enter an integer.
+ANS: 18
+EXP: Every MST takes the same number of edges of each weight, so count weight class by weight class, as Kruskal would with all tie orders.
+Weight 1: the triangle $A,B,C$; any 2 of its 3 edges join it: $3$ ways. Call the component $X$.
+Weight 2: $C$–$D$ and $B$–$D$ both join $X$ to $D$ (pick exactly one: $2$ ways), and $D$–$E$ must be taken: $2$ ways.
+Weight 3: $E$–$F$, $D$–$F$ and $A$–$F$ each join $F$ to the single component $\{A,\dots,E\}$: pick one, $3$ ways.
+Total $3\times2\times3=18$, each of weight $1+1+2+2+3=9$. Brute force over all spanning trees confirms it.
+$27=3^3$ treats the weight-2 edges as a free triangle, but $D$–$E$ is forced and only the choice between $C$–$D$ and $B$–$D$ is free.
+
+@ graph h graph-h-041
+T: Best bottleneck route
+S: mst
+Q: An undirected graph has edges $A$–$B$ (4), $A$–$C$ (2), $B$–$C$ (5), $B$–$D$ (10), $C$–$E$ (3), $D$–$E$ (7), $D$–$F$ (1), $E$–$F$ (8), $C$–$D$ (9). Among all paths from $A$ to $F$, choose one whose heaviest edge is as light as possible. What is the weight of that heaviest edge?
+A: $9$
+B: $8$
+C: $7$
+D: $12$
+ANS: C
+EXP: Minimum bottleneck (minimax) property: the path between two vertices inside a minimum spanning tree minimises the largest edge weight.
+Kruskal: $D$–$F$ (1), $A$–$C$ (2), $C$–$E$ (3), $A$–$B$ (4), skip $B$–$C$ (5), $D$–$E$ (7). MST weight $17$.
+The MST path from $A$ to $F$ is $A,C,E,D,F$ with edges $2,3,7,1$; its heaviest edge is $7$.
+Check: avoiding every edge of weight $\ge7$ leaves only edges $1,2,3,4,5$, which do not connect $\{A,B,C,E\}$ to $\{D,F\}$, so $7$ cannot be beaten.
+$9$ is the heaviest edge on the shortest path $A,C,D,F$ (length $12$); the shortest path does not minimise the bottleneck. $8$ comes from $A,C,E,F$.
+
+@ graph h graph-h-042
+T: MST after raising a tree edge
+S: mst
+Q: An undirected graph has edges $A$–$B$ (1), $B$–$C$ (2), $C$–$D$ (3), $C$–$E$ (4), $B$–$D$ (5), $A$–$D$ (6), $D$–$E$ (7). Its MST is $\{A\text{–}B,\,B\text{–}C,\,C\text{–}D,\,C\text{–}E\}$ with weight 10. The weight of $B$–$C$ is raised from 2 to 8. What is the weight of the new MST?
+A: $16$
+B: $13$
+C: $14$
+D: $10$
+ANS: B
+EXP: Remove $B$–$C$ from the old tree. It splits into $\{A,B\}$ and $\{C,D,E\}$. The new MST is the rest of the old tree plus the lightest edge crossing this cut (cut property).
+Crossing edges: $B$–$C$ (now 8), $A$–$D$ (6), $B$–$D$ (5). The lightest is $B$–$D$ (5).
+New MST $\{A\text{–}B, C\text{–}D, C\text{–}E, B\text{–}D\}$: $1+3+4+5=13$.
+$16$ keeps the old tree and just adds the increase $6$. $14$ uses $A$–$D$ (6) instead of the lightest crossing edge. Only raising a tree edge can change the tree in this way; raising a non-tree edge never changes the MST.
+
+@ graph h graph-h-043
+T: Weights that force an edge into every MST
+S: mst
+Q: An undirected graph has edges $u$–$a$ (3), $a$–$v$ (6), $u$–$b$ (5), $b$–$v$ (5), $a$–$b$ (4), and an edge $u$–$v$ of weight $x>0$. For which values of $x$ is $u$–$v$ in every minimum spanning tree?
+A: $x\le5$
+B: $x<3$
+C: $x<5$
+D: $x<9$
+ANS: C
+EXP: An edge $(u,v)$ is in every MST exactly when it is strictly lighter than the heaviest edge on every other $u$–$v$ path (then it is the unique lightest edge across some cut).
+Other $u$–$v$ paths and their heaviest edges: $u,a,v$: $6$; $u,b,v$: $5$; $u,a,b,v$: $5$; $u,b,a,v$: $6$. The best bottleneck is $5$.
+If $x<5$, every cycle through $u$–$v$ has a heavier edge, so $u$–$v$ is in every MST. If $x=5$, it ties with $b$–$v$ on the cycle $u,a,b,v$, and swapping gives another MST without it; it is in some MSTs but not all. If $x>5$, it is the unique heaviest edge on that cycle and in no MST.
+$x\le5$ is the condition for "some MST". $x<9$ compares $x$ with the shortest other path length ($3+6$), but MSTs care about the largest edge, not the sum.
+
+@ graph h graph-h-044
+T: True facts about MST uniqueness
+S: mst
+TYPE: msq
+Q: $G$ is a connected undirected weighted graph. Which statements are always true? More than one option may be correct.
+A: If all edge weights of $G$ are distinct, $G$ has exactly one MST.
+B: If $G$ has exactly one MST, all edge weights of $G$ are distinct.
+C: All MSTs of $G$ have the same sorted list of edge weights.
+D: If an edge is strictly heavier than every other edge of $G$, it is in no MST.
+ANS: A,C
+EXP: [[A]] True: if two different MSTs existed, take the lightest edge in one but not the other; adding it to the other tree creates a cycle, and with distinct weights a strictly lighter tree follows, a contradiction.
+[[B]] False: if $G$ is itself a tree with every weight 1, its only spanning tree is $G$, so the MST is unique although the weights repeat.
+[[C]] True: for every threshold $t$, the edges of weight $\le t$ in any MST form a spanning forest of the subgraph of edges with weight $\le t$, so every MST has the same number of edges of each weight. (Kruskal with different tie orders shows the same thing.)
+[[D]] False: in the path $X$–$Y$ (1), $Y$–$Z$ (5), the edge $Y$–$Z$ is the unique heaviest edge but it is a bridge, so every spanning tree needs it. The cycle property removes the heaviest edge of a cycle, not of the whole graph.
+
+@ graph h graph-h-045
+T: Weight of the second-best spanning tree
+S: mst
+Q: An undirected graph has edges $A$–$B$ (3), $A$–$C$ (1), $B$–$C$ (4), $B$–$D$ (2), $C$–$D$ (6), $C$–$E$ (5), $D$–$E$ (7), $B$–$E$ (8). All weights are distinct, so the MST is unique. What is the smallest weight of a spanning tree that is different from the MST?
+A: $11$
+B: $14$
+C: $13$
+D: $12$
+ANS: D
+EXP: Kruskal: $A$–$C$ (1), $B$–$D$ (2), $A$–$B$ (3), skip $B$–$C$ (4), $C$–$E$ (5). MST weight $11$.
+A second-best tree is found by one swap: add a non-tree edge $e$ and drop the heaviest tree edge on the cycle it closes. Cost increase $=w(e)-(\text{max tree edge on the path})$.
+$B$–$C$ (4): path $B,A,C$, max $3$: $+1$. $C$–$D$ (6): path $C,A,B,D$, max $3$: $+3$. $D$–$E$ (7): path $D,B,A,C,E$, max $5$: $+2$. $B$–$E$ (8): path $B,A,C,E$, max $5$: $+3$.
+Smallest increase $+1$, so the answer is $11+1=12$ (swap $A$–$B$ for $B$–$C$).
+$14$ drops the lightest edge $A$–$C$ on the cycle instead of the heaviest. $11$ is impossible: with distinct weights any other spanning tree is strictly heavier.
+
+@ graph h graph-h-046
+T: One round of Borůvka's algorithm
+S: mst
+Q: An undirected graph has edges $A$–$B$ (3), $B$–$C$ (1), $C$–$D$ (4), $D$–$A$ (9), $E$–$F$ (2), $F$–$G$ (6), $G$–$H$ (5), $H$–$E$ (10), $A$–$E$ (7), $B$–$F$ (11), $C$–$G$ (12), $D$–$H$ (8). In the first round of Borůvka's algorithm every vertex picks its lightest incident edge, and all picked edges are added. How many distinct edges are added, and how many components remain?
+A: $5$ edges, $3$ components
+B: $4$ edges, $4$ components
+C: $8$ edges, $1$ component
+D: $6$ edges, $2$ components
+ANS: A
+EXP: Lightest edge at each vertex: $A$: $A$–$B$ (3); $B$: $B$–$C$ (1); $C$: $B$–$C$ (1); $D$: $C$–$D$ (4); $E$: $E$–$F$ (2); $F$: $E$–$F$ (2); $G$: $G$–$H$ (5); $H$: $G$–$H$ (5).
+Distinct edges: $B$–$C$, $A$–$B$, $C$–$D$, $E$–$F$, $G$–$H$, so $5$ edges. Each is the lightest edge across a cut, so all are MST edges, and with distinct weights they cannot form a cycle.
+A forest with $8$ vertices and $5$ edges has $8-5=3$ components: $\{A,B,C,D\}$, $\{E,F\}$, $\{G,H\}$.
+$8$ edges counts one per vertex but $B$–$C$, $E$–$F$, $G$–$H$ are each picked twice. "4 components" is the worst case $V/2$, reached only when picks pair up exactly. Every round at least halves the number of components, so Borůvka needs $O(\log V)$ rounds.
+
+@ graph h graph-h-047
+T: MST of a complete graph with weights i+j
+S: mst
+Q: The complete graph $K_6$ on vertices $1,2,\dots,6$ gives edge $\{i,j\}$ the weight $i+j$. What is the total weight of its minimum spanning tree?
+A: $35$
+B: $20$
+C: $25$
+D: $29$
+ANS: C
+EXP: Lower bound: root any spanning tree at vertex $1$. Each other vertex $j$ has exactly one edge to its parent $p\ge1$, with weight $j+p\ge j+1$. So every spanning tree weighs at least $\sum_{j=2}^{6}(j+1)=3+4+5+6+7=25$.
+The star centred at $1$ has edges $1$–$j$ of weight $j+1$, so it reaches the bound: the MST weight is $25$ (and the star is the only MST, since any other parent $p>1$ is strictly heavier).
+Kruskal agrees: it takes $1$–$2$ (3), $1$–$3$ (4), then among the weight-5 edges $1$–$4$ and $2$–$3$ it must reject $2$–$3$ (cycle), and so on.
+$35$ is the path $1,2,\dots,6$ ($3+5+7+9+11$). $29$ is the star centred at $2$. $20$ sums only the vertex labels $2+\dots+6$ and forgets the $+1$ from vertex $1$ on each edge.

@@ -779,3 +779,187 @@ EXP: Double count pairs (tree, edge in tree). There are $5^3=125$ trees (Cayley)
 By symmetry each of the $\binom52=10$ possible edges lies in the same number of trees: $500/10=50$.
 General formula: $n^{n-2}(n-1)/\binom n2=2n^{n-3}$. Answering $25=n^{n-3}$ drops the factor 2; $125$ is all trees.
 
+
+@ graph h graph-h-019
+T: Labelled trees with a prescribed degree sequence
+S: trees
+Q: How many labelled trees on the vertex set $\{1,2,\dots,7\}$ have $\deg(1)=\deg(2)=3$, $\deg(3)=2$, and vertices $4,5,6,7$ as leaves?
+A: $15$
+B: $30$
+C: $70$
+D: $120$
+ANS: B
+EXP: Use Prüfer codes: a labelled tree on 7 vertices is a sequence of length $n-2=5$, and vertex $v$ appears exactly $\deg(v)-1$ times.
+So we need sequences with two 1s, two 2s and one 3: the multinomial $\dfrac{5!}{2!\,2!\,1!}=30$.
+General formula: $\dfrac{(n-2)!}{\prod_v(\deg v-1)!}$. Answering $70=\dfrac{7!}{3!\,3!\,2!}$ divides by the degrees instead of the degrees minus one (and uses $n!$); $120=5!$ forgets that repeated entries in the code are interchangeable; $15$ divides by an extra $2!$.
+
+@ graph h graph-h-020
+T: Unlabelled 7-vertex trees with maximum degree 3
+S: trees
+Q: How many non-isomorphic (unlabelled) trees on 7 vertices have maximum degree exactly $3$?
+A: $3$
+B: $6$
+C: $5$
+D: $11$
+ANS: C
+EXP: Let $n_3$ be the number of degree-3 vertices. In a tree whose degrees are all at most 3, the number of leaves is $2+n_3$ (from $\sum\deg=2(n-1)$).
+$n_3=1$: 3 leaves, so the tree is a "spider" with three legs from the centre whose lengths add to $6$: $(4,1,1)$, $(3,2,1)$, $(2,2,2)$. That is 3 trees.
+$n_3=2$: 4 leaves and $7-2-4=1$ vertex of degree 2. Either the degree-2 vertex sits between the two degree-3 vertices, or they are adjacent and it lies on one of the four pendant legs (all such placements are isomorphic). That is 2 trees.
+$n_3\ge3$ would need at least $3+5=8$ vertices. Total $3+2=5$.
+$3$ forgets the trees with two branch vertices; $11$ is the number of all trees on 7 vertices (the others are the path, and trees with maximum degree 4, 5 or 6).
+
+@ graph h graph-h-021
+T: Spanning trees of K(2,3)
+S: trees
+TYPE: nat
+TOL: 0
+Q: The complete bipartite graph $K_{2,3}$ has parts $\{a,b\}$ and $\{x,y,z\}$, with all 6 edges between the parts. How many spanning trees does it have? Enter an integer.
+ANS: 12
+EXP: A spanning tree has $5-1=4$ of the 6 edges. Each of $x,y,z$ is joined to $a$, to $b$, or to both.
+To connect $a$ and $b$, at least one of $x,y,z$ must use both its edges. If two did, say $x$ and $y$, then $a,x,b,y$ would form a 4-cycle. So exactly one vertex uses both edges (3 choices), and each of the other two picks $a$ or $b$ ($2\cdot2$ choices).
+Total $3\cdot4=12$, matching the formula $m^{n-1}n^{m-1}=2^{2}\cdot3^{1}=12$ for $K_{m,n}$.
+Picking any 4 of the 6 edges gives $\binom64=15$; the 3 subsets that drop both edges at one of $x,y,z$ (leaving it isolated, with a 4-cycle on the rest) must be removed.
+
+@ graph h graph-h-022
+T: Binary trees of maximum height
+S: trees
+Q: Binary trees are unlabelled, and a left child is different from a right child. How many structurally different binary trees with 5 nodes have height 4 (height = number of edges on the longest root-to-leaf path)?
+A: $1$
+B: $8$
+C: $42$
+D: $16$
+ANS: D
+EXP: Height 4 with 5 nodes means the tree is a single chain: every node except the last has exactly one child.
+Each of the 4 non-root nodes is either the left or the right child of its parent, independently: $2^4=16$ shapes.
+In general there are $2^{n-1}$ binary trees of maximum height $n-1$; these are the worst case for a binary search tree, where search costs $O(n)$.
+$42$ is the Catalan number $C_5$, the count of all binary trees with 5 nodes. $1$ ignores the left/right distinction. $8=2^3$ counts one choice too few (the root has no left/right choice, but every other node does).
+
+@ graph h graph-h-023
+T: Centre and diameter of a tree
+S: trees
+TYPE: msq
+Q: $T$ is a tree with at least 3 vertices. The centre of $T$ is the set of vertices of minimum eccentricity. Which statements must be true? More than one option may be correct.
+A: The centre of $T$ consists of one vertex or of two adjacent vertices
+B: Every longest path in $T$ passes through every centre vertex
+C: Some centre vertex has the maximum degree in $T$
+D: Deleting all leaves of $T$ gives a tree with the same centre and diameter one less than that of $T$
+ANS: A,B
+EXP: Key fact: deleting all leaves lowers every remaining vertex's eccentricity by exactly 1 (the farthest vertex from any non-leaf is always a leaf), so the centre does not change. Repeat until 1 or 2 vertices remain.
+[[A]] True: the peeling above ends with a single vertex or a single edge.
+[[B]] True: a longest path has its ends at leaves, and each peeling round removes both ends, so the path shrinks symmetrically to its middle vertex (even diameter) or middle edge (odd diameter), which is the centre.
+[[C]] False: take the path $a,b,c,d,e,f,g$ and hang three extra leaves on $b$. The diameter is still 6 and the centre is $d$ (eccentricity 3), of degree 2, while $b$ has degree 5.
+[[D]] False: deleting the leaves removes both ends of every longest path, so the diameter drops by 2, not 1 (the centre is preserved, as said above).
+
+@ graph h graph-h-024
+T: Counting cross edges in a directed DFS forest
+S: traversal
+Q: A directed graph on $A,\dots,F$ has edges $A\to B$, $A\to D$, $A\to E$, $B\to C$, $C\to A$, $D\to C$, $D\to E$, $E\to B$, $F\to D$, $F\to E$. DFS is run with the outer loop taking vertices in alphabetical order (starting a new tree at each undiscovered vertex), and out-neighbours explored in alphabetical order. How many edges are classified as cross edges?
+A: $2$
+B: $3$
+C: $5$
+D: $4$
+ANS: D
+EXP: Trace with [discovery, finish]: $A$ [1,10] $\to B$ [2,5] $\to C$ [3,4]. $C\to A$: $A$ is open, a back edge. $C$ and $B$ finish.
+$A\to D$ [6,9]: $D\to C$ goes to a finished vertex in another branch (cross). $D\to E$ [7,8]: $E\to B$ goes to a finished vertex in another branch (cross).
+$A\to E$: $E$ is a finished descendant of $A$, a forward edge. $A$ finishes at 10.
+The outer loop then starts a second tree at $F$ [11,12]: $F\to D$ and $F\to E$ point into the earlier tree, so both are cross edges.
+Totals: 4 tree, 1 back, 1 forward, 4 cross. Answering $2$ forgets the second DFS tree rooted at $F$. Answering $5$ counts $A\to E$ as a cross edge; it is a forward edge because $E$ is a descendant of $A$ ($[7,8]\subset[1,10]$).
+
+@ graph h graph-h-025
+T: Impossible DFS intervals for an edge
+S: traversal
+Q: A directed graph contains the edge $u\to v$. A DFS of the whole graph assigns each vertex a discovery time $d$ and a finish time $f$, written $[d,f]$, from one clock that ticks at every discovery and finish. Which pair of intervals is impossible?
+A: $u:[2,9]$, $v:[3,4]$
+B: $u:[5,6]$, $v:[1,10]$
+C: $u:[2,5]$, $v:[6,9]$
+D: $u:[7,8]$, $v:[2,5]$
+ANS: C
+EXP: White-path theorem: when $u$ is discovered, if $v$ is still undiscovered then DFS explores the edge $u\to v$ before $u$ finishes, so $v$ becomes a descendant of $u$ and $[d_v,f_v]\subset[d_u,f_u]$.
+[[C]] has $u$ finish at 5 while $v$ is not discovered until 6: $v$ was undiscovered throughout $u$'s visit, contradicting the theorem. Impossible.
+The others are the three legal edge types: [[A]] $v$ nested inside $u$ (tree or forward edge); [[B]] $u$ nested inside $v$ (back edge, which closes a cycle); [[D]] $v$ finished before $u$ was discovered (cross edge, which always points to an earlier-finished vertex).
+So for every edge $u\to v$ that is not a back edge, $f_v<f_u$; this is why reverse finish order is a topological order of a DAG.
+
+@ graph h graph-h-026
+T: Shortest odd cycle from a BFS test
+S: traversal
+Q: An undirected graph has edges $S$–$A$, $S$–$B$, $A$–$C$, $B$–$C$, $B$–$D$, $C$–$E$, $D$–$F$, $E$–$F$, $F$–$G$. BFS from $S$ is used to test bipartiteness. What is the length of the shortest odd cycle in the graph?
+A: $3$
+B: $5$
+C: $7$
+D: The graph is bipartite, so it has no odd cycle
+ANS: B
+EXP: BFS levels: $S$:0; $A,B$:1; $C,D$:2; $E,F$:3; $G$:4.
+Every edge joins adjacent levels except $E$–$F$, which joins two level-3 vertices, so the graph is not bipartite.
+Joining $E$ and $F$ back to $S$ along shortest paths gives an odd cycle of length at most $2\cdot3+1=7$, e.g. $S,A,C,E,F,D,B,S$. But the paths can meet earlier: $C$ and $D$ are both neighbours of $B$, so $E,C,B,D,F,E$ is a 5-cycle.
+No triangle exists (no two neighbours of any vertex are adjacent), so the shortest odd cycle has length 5.
+$7=2k+1$ is the trap: a same-level edge at level $k$ only guarantees an odd cycle of length at most $2k+1$, not exactly that.
+
+@ graph h graph-h-027
+T: Number of DFS orders in a wheel
+S: traversal
+TYPE: nat
+TOL: 0
+Q: The wheel graph has a hub $H$ joined to each of $A,B,C,D$, and the rim edges $A$–$B$, $B$–$C$, $C$–$D$, $D$–$A$. A recursive DFS starts at $A$, and at each vertex the unvisited neighbours may be explored in any order. How many different visiting orders (sequences of all 5 vertices) can DFS produce? Enter an integer.
+ANS: 12
+EXP: From $A$ the first step is to $B$, $D$ or $H$.
+First step $H$: $H$ can go to $B$, $C$ or $D$. From $B$ the only unvisited neighbour is $C$, then $D$: 1 order. From $D$, symmetrically 1. From $C$, it can go to $B$ or $D$; the one left is reached by backtracking to $C$: 2 orders. Subtotal $4$.
+First step $B$: $B$ goes to $C$ or $H$. From $C$ the remaining $D,H$ are adjacent, so $C$ then $D,H$ or $H,D$: 2 orders. From $H$ the remaining $C,D$ are adjacent: 2 orders. Subtotal $4$.
+First step $D$: symmetric to $B$, subtotal $4$. Total $4+4+4=12$.
+$4!=24$ would assume every ordering of the other four vertices is reachable. Orders such as $A,B,D,\dots$ are impossible: $B$ still has unvisited neighbours $C,H$, and $D$ is not adjacent to $B$.
+
+@ graph h graph-h-028
+T: BFS queue size vs DFS stack depth
+S: traversal
+Q: A complete binary tree of height 4 has 31 nodes (levels 0 to 4). BFS and recursive DFS are both run from the root. Let $Q$ be the largest number of vertices in the BFS queue at any moment, and $R$ the largest number of vertices on the DFS recursion stack at any moment. What is $(Q,R)$?
+A: $(16,5)$
+B: $(8,5)$
+C: $(16,16)$
+D: $(31,5)$
+ANS: A
+EXP: BFS: when the internal node with heap index $i$ is processed, it is dequeued and its two children enqueued, so the queue holds nodes $i+1,\dots,2i+1$: $i+1$ nodes. The last internal node is $i=15$, giving $Q=16$: the whole bottom level. After that the queue only shrinks.
+DFS: the recursion stack holds the current root-to-node path, at most one node per level: $R=5$.
+So BFS memory grows with the width of the graph and DFS memory with its depth. That is why iterative deepening and DFS-based search are preferred on wide search trees.
+$(8,5)$ stops one level too early (level 3 has 8 nodes). $(16,16)$ treats DFS as storing a frontier like BFS; recursive DFS stores only the current path. $31$ is every node, but each internal node leaves the queue before its children's children enter it.
+
+@ graph h graph-h-029
+T: Non-tree edges in undirected DFS and BFS
+S: traversal
+Q: A connected simple undirected graph has 12 vertices and 20 edges. Both DFS and BFS are run from the same vertex, and each non-tree edge is classified as a back edge (joins a vertex to a proper ancestor in that search tree) or a cross edge (any other non-tree edge). Which counts are correct?
+A: DFS: 9 back, 0 cross; BFS: 9 back, 0 cross
+B: DFS: 0 back, 9 cross; BFS: 9 back, 0 cross
+C: DFS: 8 back, 0 cross; BFS: 0 back, 8 cross
+D: DFS: 9 back, 0 cross; BFS: 0 back, 9 cross
+ANS: D
+EXP: Both searches give a spanning tree with $12-1=11$ edges, so each has $20-11=9$ non-tree edges.
+DFS (undirected): there are no cross edges. If $\{u,v\}$ is an edge and $u$ is discovered first, then $v$ is discovered before $u$ finishes, so $v$ is a descendant of $u$. Every non-tree edge is a back edge: 9 back, 0 cross.
+BFS (undirected): there are no back edges. A non-tree edge joins vertices whose levels differ by at most 1; a proper ancestor at level $k$ and a descendant at level $k+1$ would be parent and child, i.e. a tree edge. So all 9 are cross edges.
+The two answers that put back edges in BFS mix up the two searches. $8$ non-tree edges comes from subtracting 12 (vertices) instead of 11 (tree edges).
+
+@ graph h graph-h-030
+T: BFS levels across a directed edge
+S: traversal
+Q: BFS is run from $s$ on a directed graph, and $\ell(x)$ is the level (shortest-path distance from $s$) of each reachable vertex. For an edge $u\to v$ with $u$ reachable from $s$, which relation is impossible?
+A: $\ell(v)=\ell(u)+1$
+B: $\ell(v)=\ell(u)$
+C: $\ell(v)=\ell(u)-3$
+D: $\ell(v)=\ell(u)+2$
+ANS: D
+EXP: The edge $u\to v$ gives a path to $v$ of length $\ell(u)+1$, so $\ell(v)\le\ell(u)+1$ always. That rules out $\ell(u)+2$.
+There is no lower bound in a directed graph, because the edge cannot be used in the other direction. Path $s\to a\to b\to c$ plus edge $c\to s$: $\ell(c)=3$ and $\ell(s)=0$, a drop of 3.
+Equal levels: $s\to a$, $s\to b$, $a\to b$ gives $\ell(a)=\ell(b)=1$. A tree edge always has $\ell(v)=\ell(u)+1$.
+The tempting wrong idea is the undirected rule $|\ell(u)-\ell(v)|\le1$, which would wrongly exclude the drop of 3; in a directed graph only the upper bound holds.
+
+@ graph h graph-h-031
+T: Number of trees in a DFS forest
+S: traversal
+Q: A directed graph on $A,\dots,F$ has edges $A\to B$, $C\to A$, $C\to D$, $D\to E$, $E\to C$, $F\to E$. DFS is run with the outer loop taking vertices in alphabetical order (starting a new tree at each undiscovered vertex), and out-neighbours explored in alphabetical order. How many trees does the DFS forest have?
+A: $1$
+B: $2$
+C: $3$
+D: $4$
+ANS: C
+EXP: Outer loop at $A$: $A\to B$, and $B$ has no out-edges. Tree 1 is $\{A,B\}$.
+$B$ is discovered. At $C$: $C\to A$ points to a finished vertex (cross edge); $C\to D\to E$, and $E\to C$ is a back edge. Tree 2 is $\{C,D,E\}$.
+$D$, $E$ are discovered. At $F$: $F\to E$ is a cross edge. Tree 3 is $\{F\}$. So there are 3 trees.
+The count depends on the start order: running the outer loop as $F,E,\dots$ reaches every vertex from $F$ ($F\to E\to C\to A\to B$, $C\to D$) and gives a single tree, which is where $1$ comes from.
+$4$ is the number of strongly connected components $\{A\},\{B\},\{C,D,E\},\{F\}$, a different quantity: a DFS tree can contain several SCCs.
