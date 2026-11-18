@@ -1,6 +1,8 @@
 # ML Math Practice
 
-Daily MCQ practice for the maths behind ML and GATE DA: Linear Algebra, Probability, Calculus & Optimization, Statistics and Graph Theory, at Easy, Medium and Hard levels. Each problem comes with a full explanation.
+**Live site: https://shuvbytes.github.io/ML-solver/**
+
+Daily practice for the maths behind ML and GATE DA: Linear Algebra, Probability, Calculus & Optimization, Statistics and Graph Theory, at Easy, Medium and Hard levels. The bank has 1000 questions (single answer, numerical answer and multiple select), each with a full explanation.
 
 Features: daily set with streak, problem list with filters, fresh-numbers problems that never run out, review list for wrong answers and bookmarks, and progress by topic and level with an activity calendar.
 
