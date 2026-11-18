@@ -3,7 +3,7 @@ const TOPICS = { la: 'Linear Algebra', prob: 'Probability', calc: 'Calculus & Op
 const TOPIC_SHORT = { la: 'Lin Alg', prob: 'Prob', calc: 'Calculus', stat: 'Stats', graph: 'Graphs' };
 const DIFF = { e: 'Easy', m: 'Medium', h: 'Hard' };
 const QTYPES = { mcq: 'Single choice', nat: 'Numerical', msq: 'Multiple select' };
-// Syllabus subtopics per topic (slug -> label). Keep in sync with CLAUDE.md.
+// Syllabus subtopics per topic (slug -> label). The checker requires every S: to be one of these.
 const SUBTOPICS = {
   la: { 'vectors-norms': 'Vectors & norms', 'vector-spaces': 'Vector spaces', 'matrix-ops': 'Matrix operations', 'linear-systems': 'Linear systems',
     'rank-nullity': 'Rank & nullity', determinants: 'Determinants', eigen: 'Eigenvalues & eigenvectors', 'special-matrices': 'Special matrices',

@@ -47,7 +47,7 @@ Deleted: none. Ids are unchanged.
 
 ## Explanations that named options by bare letter
 
-Options are shuffled on screen, so "(C) fails" or "B is the trap" pointed at the wrong option for most students. 60 `la` explanations now use the markers (including the rewrites), plus 4 in `stat` and 1 in `graph`. All were converted to `[[A]]`..`[[D]]`, which the app now renders as the on-screen letter. The checker rejects bare letters and repeated fields, and CLAUDE.md documents the convention.
+Options are shuffled on screen, so "(C) fails" or "B is the trap" pointed at the wrong option for most students. 60 `la` explanations now use the markers (including the rewrites), plus 4 in `stat` and 1 in `graph`. All were converted to `[[A]]`..`[[D]]`, which the app now renders as the on-screen letter. The checker rejects bare letters and repeated fields, and the README documents the convention.
 
 ## Near-duplicate scan
 

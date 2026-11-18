@@ -25,7 +25,7 @@ Date: 2026-11-17. Scope: all 200 `calc` questions (`bank/calc.txt`, `bank/calc-a
 
 None. One solver noted on calc-h-045 that "critical points" can be read two ways; the option in question is false under both readings, so no change was needed.
 
-Single-variable subtopics (limits, continuity/differentiability, derivatives, Taylor series, maxima/minima, single-variable optimisation, integrals) hold 132 of the 200 questions, above the half that CLAUDE.md requires.
+Single-variable subtopics (limits, continuity/differentiability, derivatives, Taylor series, maxima/minima, single-variable optimisation, integrals) hold 132 of the 200 questions, above the required half.
 
 ## Final counts
 
